@@ -1,0 +1,39 @@
+targets:
+  $default:
+    sources:
+      - lib/**
+      - graphql/aniim/**
+      - graphql/anilist/**
+      - graphql/aniim.schema.graphql
+      - graphql/anilist.schema.graphql
+    builders:
+      artemis:
+        options:
+          schema_mapping:
+            - schema: graphql/aniim.schema.graphql
+              queries_glob: graphql/aniim/**.graphql
+              output: lib/api/graphql_api.graphql.dart
+            - schema: graphql/anilist.schema.graphql
+              queries_glob: graphql/anilist/**.graphql
+              output: lib/api/graphql_anilist_api.graphql.dart
+          scalar_mapping:
+            - graphql_type: Mixed
+              dart_type: String
+            - graphql_type: Date
+              dart_type: DateTime
+            - graphql_type: DateTime
+              dart_type: DateTime
+            - graphql_type: DateTimeTz
+              dart_type: DateTime
+            - graphql_type: AnilistMedia
+              dart_type:
+                name: GraphqlAnilistApi$Query$Media
+                imports:
+                  - 'package:kayaya_flutter/api/graphql_anilist_api.graphql.dart'
+              custom_parser_import: 'package:kayaya_flutter/api/coercers.dart'
+            - graphql_type: CountryCode
+              dart_type: String
+            - graphql_type: FuzzyDateInt
+              dart_type: DateTime
+            - graphql_type: Json
+              dart_type: String

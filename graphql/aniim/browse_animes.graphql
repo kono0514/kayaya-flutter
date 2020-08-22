@@ -1,0 +1,30 @@
+query BrowseAnimes($first: Int, $page: Int, $orderBy: [AnimesOrderByOrderByClause!], $hasGenres: AnimesHasGenresWhereConditions, $typeIn: [AnimeType!]) {
+    animes(first: $first, page: $page, orderBy: $orderBy, hasGenres: $hasGenres, animeTypeIn: $typeIn) {
+        paginatorInfo {
+            total
+            lastPage
+            hasMorePages
+            currentPage
+        }
+        data {
+            id
+            name {
+                en
+                mn
+            }
+            animeType
+            rating
+            coverImage {
+                large
+            }
+            coverColor
+            genres {
+                id
+                name {
+                    en
+                    mn
+                }
+            }
+        }
+    }
+}

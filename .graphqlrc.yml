@@ -1,0 +1,17 @@
+projects:
+  aniim:
+    schema: http://aniim-api.test/graphql
+    extensions:
+      codegen:
+        generates:
+          ./graphql/aniim.schema.graphql:
+            plugins:
+              - schema-ast
+  anilist:
+    schema: https://graphql.anilist.co
+    extensions:
+      codegen:
+        generates:
+          ./graphql/anilist.schema.graphql:
+            plugins:
+              - schema-ast

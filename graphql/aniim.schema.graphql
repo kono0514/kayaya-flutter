@@ -1,0 +1,557 @@
+type Query {
+  me: User
+  user(id: ID!): User
+  animes(
+    animeIdIn: [ID!]
+    animeTypeIn: [AnimeType!]
+    hasGenres: AnimesHasGenresWhereConditions
+    orderBy: [AnimesOrderByOrderByClause!]
+
+    """Limits number of fetched elements. Maximum allowed value: 30."""
+    first: Int = 20
+
+    """The offset from which elements are returned."""
+    page: Int
+  ): AnimePaginator
+  anime(id: ID!): Anime
+  episodes(
+    episodeIdIn: [ID!]
+
+    """Limits number of fetched elements. Maximum allowed value: 10000."""
+    first: Int = 20
+
+    """The offset from which elements are returned."""
+    page: Int
+  ): EpisodePaginator
+  genres(orderBy: [GenresOrderByOrderByClause!]): [Genre!]!
+  genre(id: ID!): Genre
+  scrapyJob(id: ID!): ScrapyJob
+  scrapyManyJob(ids: [ID!]!): [ScrapyJob!]
+  scrapySpiders: [ScrapySpider!]!
+}
+
+type User {
+  id: ID!
+  email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`.
+"""
+scalar DateTime
+
+enum AnimeType {
+  SERIES
+  MOVIE
+}
+
+"""
+Dynamic WHERE conditions for the `hasGenres` argument on the query `animes`.
+"""
+input AnimesHasGenresWhereConditions {
+  """The column that is used for the condition."""
+  column: AnimesHasGenresColumn
+
+  """The operator that is used for the condition."""
+  operator: SQLOperator = EQ
+
+  """The value that is used for the condition."""
+  value: Mixed
+
+  """A set of conditions that requires all conditions to match."""
+  AND: [AnimesHasGenresWhereConditions!]
+
+  """A set of conditions that requires at least one condition to match."""
+  OR: [AnimesHasGenresWhereConditions!]
+}
+
+"""
+Allowed column names for the `hasGenres` argument on the query `animes`.
+"""
+enum AnimesHasGenresColumn {
+  ID
+}
+
+"""The available SQL operators that are used to filter query results."""
+enum SQLOperator {
+  """Equal operator (`=`)"""
+  EQ
+
+  """Not equal operator (`!=`)"""
+  NEQ
+
+  """Greater than operator (`>`)"""
+  GT
+
+  """Greater than or equal operator (`>=`)"""
+  GTE
+
+  """Less than operator (`<`)"""
+  LT
+
+  """Less than or equal operator (`<=`)"""
+  LTE
+
+  """Simple pattern matching (`LIKE`)"""
+  LIKE
+
+  """Negation of simple pattern matching (`NOT LIKE`)"""
+  NOT_LIKE
+
+  """Whether a value is within a set of values (`IN`)"""
+  IN
+
+  """Whether a value is not within a set of values (`NOT IN`)"""
+  NOT_IN
+
+  """Whether a value is within a range of values (`BETWEEN`)"""
+  BETWEEN
+
+  """Whether a value is not within a range of values (`NOT BETWEEN`)"""
+  NOT_BETWEEN
+
+  """Whether a value is null (`IS NULL`)"""
+  IS_NULL
+
+  """Whether a value is not null (`IS NOT NULL`)"""
+  IS_NOT_NULL
+}
+
+"""
+Loose type that allows any value. Be careful when passing in large `Int` or `Float` literals,
+as they may not be parsed correctly on the server side. Use `String` literals if you are
+dealing with really large numbers to be on the safe side.
+"""
+scalar Mixed
+
+"""Order by clause for the `orderBy` argument on the query `animes`."""
+input AnimesOrderByOrderByClause {
+  """The column that is used for ordering."""
+  field: AnimeOrderColumns!
+
+  """The direction that is used for ordering."""
+  order: SortOrder!
+}
+
+enum AnimeOrderColumns {
+  ID
+  NAME_EN
+  NAME_MN
+  RATING
+  ANIME_TYPE
+  CREATED_AT
+  ANILIST_DATA_UPDATED_AT
+}
+
+"""The available directions for ordering a list of records."""
+enum SortOrder {
+  """Sort records in ascending order."""
+  ASC
+
+  """Sort records in descending order."""
+  DESC
+}
+
+"""A paginated list of Anime items."""
+type AnimePaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of Anime items."""
+  data: [Anime!]!
+}
+
+"""Pagination information about the corresponding list of items."""
+type PaginatorInfo {
+  """Total count of available items in the page."""
+  count: Int!
+
+  """Current pagination page."""
+  currentPage: Int!
+
+  """Index of first item in the current page."""
+  firstItem: Int
+
+  """If collection has more pages."""
+  hasMorePages: Boolean!
+
+  """Index of last item in the current page."""
+  lastItem: Int
+
+  """Last page number of the collection."""
+  lastPage: Int!
+
+  """Number of items per page in the collection."""
+  perPage: Int!
+
+  """Total items available in the collection."""
+  total: Int!
+}
+
+type Anime {
+  id: ID!
+  anilistId: String!
+  name: Translatable!
+  description: Translatable!
+  animeType: AnimeType!
+  rating: Int
+  coverImage: AnimeCoverImage!
+  coverColor: String!
+  anilist: AnilistMedia
+  genres: [Genre!]!
+  episodes(
+    """Limits number of fetched elements. Maximum allowed value: 10000."""
+    first: Int = 20
+
+    """The offset from which elements are returned."""
+    page: Int
+  ): EpisodePaginator
+  recommendations: [Anime!]!
+  recommendationPivot: AnimeRecommendationPivot
+  relations: [Anime!]!
+  relationPivot: AnimeRelationPivot
+  status: PublishStatus!
+  sources: [Source!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  anilistDataUpdatedAt: DateTime
+}
+
+type Translatable {
+  en: String
+  mn: String
+}
+
+type AnimeCoverImage {
+  extraLarge: String
+  large: String
+  medium: String
+}
+
+"""
+The `String` scalar type represents textual data, represented as UTF-8
+character sequences. The String type is most often used by GraphQL to
+represent free-form human-readable text.
+"""
+scalar AnilistMedia
+
+type Genre {
+  id: ID!
+  name: Translatable!
+  animesCount: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A paginated list of Episode items."""
+type EpisodePaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of Episode items."""
+  data: [Episode!]!
+}
+
+type Episode {
+  id: ID!
+  number: Int!
+  releases: [Release!]!
+  anime: Anime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Release {
+  id: ID!
+  url: String!
+  type: String!
+  resolution: Int
+  group: String!
+  groupUrl: String
+  health: ReleaseHealth!
+  healthCheckedOn: DateTime
+  status: PublishStatus!
+  episode: Episode!
+}
+
+enum ReleaseHealth {
+  UNCHECKED
+  ALIVE
+  DEAD
+}
+
+enum PublishStatus {
+  PUBLISHED
+  DRAFT
+}
+
+type AnimeRecommendationPivot {
+  rating: Int!
+}
+
+type AnimeRelationPivot {
+  relationId: String
+  relationType: String
+}
+
+type Source {
+  id: ID!
+  url: String!
+  spider: String!
+  anime: Anime!
+}
+
+"""Order by clause for the `orderBy` argument on the query `genres`."""
+input GenresOrderByOrderByClause {
+  """The column that is used for ordering."""
+  field: GenreOrderColumns!
+
+  """The direction that is used for ordering."""
+  order: SortOrder!
+}
+
+enum GenreOrderColumns {
+  ID
+  NAME_EN
+  NAME_MN
+}
+
+type ScrapyJob {
+  id: ID!
+  status: ScrapyJobStatus!
+  spider: String!
+  url: String!
+  type: String!
+  results: [ScrapyJobResult!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum ScrapyJobStatus {
+  INITIALIZING
+  RUNNING
+  FINISHED
+  ERRORED
+}
+
+type ScrapyJobResult {
+  id: ID!
+  data: String!
+}
+
+type ScrapySpider {
+  name: String!
+}
+
+type Mutation {
+  login(email: String!, password: String!): AuthToken
+  logout: Boolean
+  generateLongLivedToken: AuthToken
+  addAnime(input: AddAnimeInput!): Anime
+  deleteAnime(id: ID!): Anime
+  updateAnimeTranslations(id: ID!, input: UpdateAnimeTranslationsInput!): Anime
+  changeAnimeStatus(id: ID!, input: ChangeAnimeStatusInput!): Anime
+  changeManyAnimeStatus(input: [ChangeManyAnimeStatusInput!]!): [Anime!]
+  syncAnime(id: ID!): Anime
+  deleteEpisode(id: ID!): Episode
+  updateGenreTranslations(id: ID!, input: UpdateGenreTranslationsInput!): Genre
+  syncGenres: Boolean
+  addReleases(animeId: ID!, input: AddReleasesInput!): [Release!]
+  changeReleaseStatus(id: ID!, input: ChangeReleaseStatusInput!): Release
+  changeReleaseHealth(id: ID!, input: ChangeReleaseHealthInput!): Release
+  changeManyReleaseHealth(input: [ChangeManyReleaseHealthInput!]!): [Release!]
+  deleteRelease(id: ID!): Release
+  addSource(animeId: ID!, input: AddSourceInput!): Source
+  deleteSource(id: ID!): Source
+  addScrapyJob(input: AddScrapyJobInput!): ScrapyJob
+  addScrapyJobHealthChecker(input: AddScrapyJobHealthCheckerInput!): ScrapyJob
+  changeScrapyJobStatus(id: ID!, input: ChangeScrapyJobStatusInput!): ScrapyJob
+  addScrapyJobResults(id: ID!, input: AddScrapyJobResultsInput!): [ScrapyJobResult!]
+}
+
+type AuthToken {
+  access_token: String!
+  token_type: String!
+  expires_in: Int!
+}
+
+input AddAnimeInput {
+  name: String
+  description: String
+  anilistId: String!
+}
+
+input UpdateAnimeTranslationsInput {
+  name: String
+  description: String
+}
+
+input ChangeAnimeStatusInput {
+  status: PublishStatus!
+}
+
+input ChangeManyAnimeStatusInput {
+  id: ID!
+  status: PublishStatus!
+}
+
+input UpdateGenreTranslationsInput {
+  name: String!
+}
+
+input AddReleasesInput {
+  group: String!
+  items: [AddReleaseInputItem!]!
+}
+
+input AddReleaseInputItem {
+  number: Int!
+  url: String
+  medias: [AddReleaseInputItemMedia!]!
+}
+
+input AddReleaseInputItemMedia {
+  resolution: Int
+  mediaType: ReleaseMediaType!
+  url: String!
+}
+
+enum ReleaseMediaType {
+  EMBED
+  DIRECT
+}
+
+input ChangeReleaseStatusInput {
+  status: PublishStatus!
+}
+
+input ChangeReleaseHealthInput {
+  health: ReleaseHealth!
+  healthCheckedOn: DateTime
+}
+
+input ChangeManyReleaseHealthInput {
+  id: ID!
+  health: ReleaseHealth!
+  healthCheckedOn: DateTime
+}
+
+input AddSourceInput {
+  url: String!
+  spider: String!
+}
+
+input AddScrapyJobInput {
+  url: String!
+  type: ScrapyJobType!
+  spider: String!
+  episodes: [String!]
+  callScrapyApi: Boolean
+}
+
+enum ScrapyJobType {
+  SERIES
+  RELEASE
+
+  """Only used internally. Don't use this in a mutation."""
+  OTHER
+}
+
+input AddScrapyJobHealthCheckerInput {
+  """
+  If both 'animes' and 'episodes' are provided, 'episodes' takes precedence
+  """
+  animes: [ID!]
+
+  """
+  If both 'animes' and 'episodes' are provided, 'episodes' takes precedence
+  """
+  episodes: [ID!]
+  callScrapyApi: Boolean
+}
+
+input ChangeScrapyJobStatusInput {
+  status: ScrapyJobStatus!
+}
+
+input AddScrapyJobResultsInput {
+  items: [String!]!
+}
+
+"""A date string with format `Y-m-d`, e.g. `2011-05-23`."""
+scalar Date
+
+"""
+A datetime and timezone string in ISO 8601 format `Y-m-dTH:i:sO`, e.g. `2020-04-20T13:53:12+02:00`.
+"""
+scalar DateTimeTz
+
+"""Pagination information about the corresponding list of items."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+
+  """Total number of node in connection."""
+  total: Int
+
+  """Count of nodes in current request."""
+  count: Int
+
+  """Current page of request."""
+  currentPage: Int
+
+  """Last page in connection."""
+  lastPage: Int
+}
+
+"""Allows ordering a list of records."""
+input OrderByClause {
+  """The column that is used for ordering."""
+  field: String!
+
+  """The direction that is used for ordering."""
+  order: SortOrder!
+}
+
+"""
+Specify if you want to include or exclude trashed results from a query.
+"""
+enum Trashed {
+  """Only return trashed results."""
+  ONLY
+
+  """Return both trashed and non-trashed results."""
+  WITH
+
+  """Only return non-trashed results."""
+  WITHOUT
+}
+
+"""Dynamic WHERE conditions for queries."""
+input WhereConditions {
+  """The column that is used for the condition."""
+  column: String
+
+  """The operator that is used for the condition."""
+  operator: SQLOperator = EQ
+
+  """The value that is used for the condition."""
+  value: Mixed
+
+  """A set of conditions that requires all conditions to match."""
+  AND: [WhereConditions!]
+
+  """A set of conditions that requires at least one condition to match."""
+  OR: [WhereConditions!]
+}

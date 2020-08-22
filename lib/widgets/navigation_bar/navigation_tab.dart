@@ -28,8 +28,9 @@ class NavigationTab extends StatefulWidget {
 }
 
 class _NavigationTabState extends State<NavigationTab> {
-  final CupertinoTabController _tabController = CupertinoTabController();
-  int previousTabIndex = 0;
+  int previousTabIndex = 1;
+  final CupertinoTabController _tabController =
+      CupertinoTabController(initialIndex: 1);
 
   final List<TabViewItem> items = [
     TabViewItem(
@@ -78,8 +79,6 @@ class _NavigationTabState extends State<NavigationTab> {
 
   @override
   Widget build(BuildContext context) {
-    _tabController.index = 1;
-
     return WillPopScope(
       onWillPop: () async {
         // Pop from the current tab's route stack, if possible.

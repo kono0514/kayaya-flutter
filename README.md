@@ -2,15 +2,16 @@
 
 A new Flutter project.
 
-## Getting Started
+## Download / Update schema files
 
-This project is a starting point for a Flutter application.
+```bash
+yarn dl-schema
+```
 
-A few resources to get you started if this is your first Flutter project:
+## Regenerating Dart types from GraphQL queries using Artemis
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+You should regenrate types if the schema has changed or you modified a query in /graphql/aniim or /graphql/anilist directory.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+yarn gen-dart-types
+```
