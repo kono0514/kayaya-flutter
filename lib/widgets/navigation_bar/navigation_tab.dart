@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/logger.dart';
 import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/screens/tabs/browse.dart';
 import 'package:kayaya_flutter/screens/tabs/featured.dart';
 import 'package:kayaya_flutter/screens/tabs/library.dart';
 import 'package:kayaya_flutter/screens/tabs/search.dart';
-import 'package:kayaya_flutter/widgets/navigation_bar/custom_cupertino_tab_bar.dart';
-import 'package:kayaya_flutter/widgets/navigation_bar/scroll_bottom_navigation_bar.dart';
 
 class TabViewItem {
   final GlobalKey<NavigatorState> navigatorKey;
@@ -36,7 +36,7 @@ class _NavigationTabState extends State<NavigationTab> {
     TabViewItem(
       navbarItem: BottomNavigationBarItem(
         icon: Icon(Icons.donut_small),
-        title: Text('Онцлох'),
+        title: Text(S.current.tabs_discover),
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       pageWidget: (scrollController) =>
@@ -46,7 +46,7 @@ class _NavigationTabState extends State<NavigationTab> {
     TabViewItem(
       navbarItem: BottomNavigationBarItem(
         icon: Icon(Icons.local_movies),
-        title: Text('Анийм'),
+        title: Text(S.current.tabs_browse),
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       pageWidget: (scrollController) =>
@@ -56,7 +56,7 @@ class _NavigationTabState extends State<NavigationTab> {
     TabViewItem(
       navbarItem: BottomNavigationBarItem(
         icon: Icon(Icons.library_add),
-        title: Text('Миний сан'),
+        title: Text(S.current.tabs_library),
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       pageWidget: (scrollController) =>
@@ -66,7 +66,7 @@ class _NavigationTabState extends State<NavigationTab> {
     TabViewItem(
       navbarItem: BottomNavigationBarItem(
         icon: Icon(Icons.search),
-        title: Text('Хайлт'),
+        title: Text(S.current.tabs_search),
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       pageWidget: (scrollController) =>

@@ -5,12 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/bloc/anime_list_bloc.dart';
-import 'package:kayaya_flutter/client_provider.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
-import 'package:kayaya_flutter/graphql_client.dart';
+import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/repository.dart';
 import 'package:kayaya_flutter/widgets/browse/anime_list_tile.dart';
 import 'package:kayaya_flutter/widgets/app_bar/custom_sliver_app_bar.dart';
@@ -47,7 +44,7 @@ class _BrowsePageState extends State<BrowsePage> {
           return [
             CustomSliverAppBar(
               title: Text(
-                "Анийм",
+                S.current.tabs_browse,
                 style: TextStyle(color: Colors.black),
               ),
               actions: [

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:kayaya_flutter/cubit/animes_cubit.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
 import 'package:kayaya_flutter/cubit/genre_list_cubit.dart';
+import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/graphql_client.dart';
+import 'package:kayaya_flutter/language_service.dart';
 import 'package:kayaya_flutter/repository.dart';
 import 'package:kayaya_flutter/simple_bloc_observer.dart';
 import 'package:kayaya_flutter/widgets/navigation_bar/navigation_tab.dart';
-import 'client_provider.dart';
 
 void main() {
   Bloc.observer = SimpleBlocObserver();
@@ -30,8 +30,30 @@ void main() {
   ));
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale locale;
+  bool localeLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    LanguageService.instance.then((languageService) {
+      setState(() {
+        String languageCode = languageService.languageCode;
+        if (languageCode != null) {
+          locale = Locale(languageCode);
+        }
+        localeLoaded = true;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -47,7 +69,17 @@ class MyApp extends StatelessWidget {
           actionsIconTheme: IconThemeData(color: Colors.black),
         ),
       ),
-      home: RootScreen(),
+      localizationsDelegates: [
+        localeLoaded ? S.delegate : null,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      locale: locale,
+      home: localeLoaded
+          ? RootScreen()
+          : Scaffold(body: Center(child: CircularProgressIndicator())),
     );
   }
 }

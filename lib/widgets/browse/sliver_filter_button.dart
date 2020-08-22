@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
+import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/widgets/browse/filter_dialog.dart';
 
 class SliverFilterButton extends StatefulWidget {
@@ -81,7 +82,7 @@ class _SliverFilterButtonState extends State<SliverFilterButton>
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
-                            'FILTER',
+                            S.current.common_filter.toUpperCase(),
                             style: TextStyle(
                               color: _hasFilter ? Colors.deepPurple : null,
                               fontWeight: FontWeight.bold,

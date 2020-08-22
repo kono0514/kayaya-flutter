@@ -1,0 +1,13 @@
+{
+  "@@locale": "en",
+  "common_filter": "Filter",
+  "@common_filter": {},
+  "tabs_browse": "Browse",
+  "@tabs_browse": {},
+  "tabs_discover": "Discover",
+  "@tabs_discover": {},
+  "tabs_library": "Library",
+  "@tabs_library": {},
+  "tabs_search": "Search",
+  "@tabs_search": {}
+}

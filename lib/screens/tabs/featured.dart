@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/widgets/app_bar/custom_sliver_app_bar.dart';
-import 'package:kayaya_flutter/widgets/navigation_bar/navigation_tab.dart';
 
 class FeaturedPage extends StatefulWidget {
   final ScrollController scrollController;
@@ -21,7 +21,7 @@ class _FeaturedPageState extends State<FeaturedPage> {
         slivers: <Widget>[
           CustomSliverAppBar(
             title: Text(
-              'Онцлох',
+              S.current.tabs_discover,
               style: TextStyle(color: Colors.black),
             ),
           ),

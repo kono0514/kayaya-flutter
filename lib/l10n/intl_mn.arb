@@ -1,0 +1,13 @@
+{
+  "@@locale": "mn",
+  "common_filter": "Шүүх",
+  "@common_filter": {},
+  "tabs_browse": "Анийм",
+  "@tabs_browse": {},
+  "tabs_discover": "Онцлох",
+  "@tabs_discover": {},
+  "tabs_library": "Миний сан",
+  "@tabs_library": {},
+  "tabs_search": "Хайлт",
+  "@tabs_search": {}
+}
