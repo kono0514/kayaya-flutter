@@ -10,8 +10,18 @@ import 'package:kayaya_flutter/repository.dart';
 import 'package:kayaya_flutter/simple_bloc_observer.dart';
 import 'package:kayaya_flutter/widgets/navigation_bar/navigation_tab.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
+
+  Locale locale;
+  final languageService = await LanguageService.instance;
+  await Future.delayed(const Duration(seconds: 3));
+  String languageCode = languageService.languageCode;
+  if (languageCode != null) {
+    locale = Locale(languageCode);
+  }
+
   runApp(RepositoryProvider(
     create: (context) => AniimRepository(getGraphQLClient()),
     child: MultiBlocProvider(
@@ -25,34 +35,15 @@ void main() {
           create: (context) => BrowseFilterCubit(),
         ),
       ],
-      child: MyApp(),
+      child: MyApp(locale: locale),
     ),
   ));
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
+class MyApp extends StatelessWidget {
+  final Locale locale;
 
-class _MyAppState extends State<MyApp> {
-  Locale locale;
-  bool localeLoaded = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    LanguageService.instance.then((languageService) {
-      setState(() {
-        String languageCode = languageService.languageCode;
-        if (languageCode != null) {
-          locale = Locale(languageCode);
-        }
-        localeLoaded = true;
-      });
-    });
-  }
+  const MyApp({Key key, this.locale}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,16 +61,14 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       localizationsDelegates: [
-        localeLoaded ? S.delegate : null,
+        S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: S.delegate.supportedLocales,
       locale: locale,
-      home: localeLoaded
-          ? RootScreen()
-          : Scaffold(body: Center(child: CircularProgressIndicator())),
+      supportedLocales: S.delegate.supportedLocales,
+      home: RootScreen(),
     );
   }
 }
