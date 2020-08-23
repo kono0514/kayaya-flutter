@@ -16,7 +16,6 @@ void main() async {
 
   Locale locale;
   final languageService = await LanguageService.instance;
-  await Future.delayed(const Duration(seconds: 3));
   String languageCode = languageService.languageCode;
   if (languageCode != null) {
     locale = Locale(languageCode);
