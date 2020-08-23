@@ -36,12 +36,16 @@ class AnimeListTile extends StatelessWidget {
                   fontSize: 12,
                 ),
               ),
-              color: Colors.grey[200],
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.grey[800]
+                  : Colors.grey[200],
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
               ),
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              textColor: Colors.black87,
+              textColor: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black87,
               padding: EdgeInsets.only(left: 10.0, right: 10.0),
             ),
           ),
@@ -69,6 +73,7 @@ class AnimeListTile extends StatelessWidget {
                 height: 125,
                 fit: BoxFit.cover,
               ),
+              margin: EdgeInsets.zero,
             ),
             Expanded(
               child: Padding(

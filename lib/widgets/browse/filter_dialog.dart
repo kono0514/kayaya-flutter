@@ -78,20 +78,21 @@ class _FilterDialogState extends State<FilterDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final _labelColor = Theme.of(context).brightness == Brightness.dark
+        ? Colors.grey[400]
+        : Colors.grey[600];
     final _labelStyle =
-        Theme.of(context).textTheme.bodyText1.apply(color: Colors.grey[600]);
+        Theme.of(context).textTheme.bodyText1.apply(color: _labelColor);
 
     return Container(
       margin:
           EdgeInsets.only(top: MediaQuery.of(widget.mainContext).padding.top),
-      color: Colors.white,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
         children: <Widget>[
           AppBar(
-            title: Text(
-              'Filter and Sort',
-              style: TextStyle(color: Colors.black),
-            ),
+            title: Text('Filter and Sort'),
+            centerTitle: true,
             leading: IconButton(
               icon: Icon(Icons.close),
               onPressed: () => Navigator.pop(context),
@@ -234,8 +235,8 @@ class _FilterDialogState extends State<FilterDialog> {
                               Navigator.pop(context);
                             },
                             child: Text('Apply'),
-                            color: Theme.of(context).primaryColor,
-                            textTheme: ButtonTextTheme.primary,
+                            // color: Theme.of(context).primaryColor,
+                            // textTheme: ButtonTextTheme.primary,
                           ),
                         ],
                       )),

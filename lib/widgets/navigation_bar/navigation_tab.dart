@@ -116,7 +116,7 @@ class _NavigationTabState extends State<NavigationTab> {
                     ?.popUntil((route) => route.isFirst);
               }
               _currentTabViewItem().scrollController.animateTo(0.0,
-                  duration: const Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 250),
                   curve: Curves.linear);
             }
 

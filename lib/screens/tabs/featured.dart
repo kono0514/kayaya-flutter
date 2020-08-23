@@ -20,10 +20,7 @@ class _FeaturedPageState extends State<FeaturedPage> {
         controller: widget.scrollController,
         slivers: <Widget>[
           CustomSliverAppBar(
-            title: Text(
-              S.current.tabs_discover,
-              style: TextStyle(color: Colors.black),
-            ),
+            title: Text(S.current.tabs_discover),
           ),
           SliverFillRemaining(
             child: Center(

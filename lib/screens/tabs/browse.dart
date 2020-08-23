@@ -43,10 +43,7 @@ class _BrowsePageState extends State<BrowsePage> {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             CustomSliverAppBar(
-              title: Text(
-                S.current.tabs_browse,
-                style: TextStyle(color: Colors.black),
-              ),
+              title: Text(S.current.tabs_browse),
               actions: [
                 SliverFilterButton(),
               ],
