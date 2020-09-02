@@ -7,6 +7,8 @@ import 'package:kayaya_flutter/cubit/anime_details/anime_details_cubit.dart';
 import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/widgets/anime_related_tile.dart';
 
+// TODO: Create view dedicated for empty related/recommended
+
 class RelatedTabViewItem extends StatefulWidget {
   final Key tabKey;
 

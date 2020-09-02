@@ -9,9 +9,11 @@ import 'package:kayaya_flutter/cubit/anime_details/anime_details_cubit.dart';
 import 'package:kayaya_flutter/easing_linear_gradient.dart';
 import 'package:kayaya_flutter/hex_color.dart';
 import 'package:kayaya_flutter/repository.dart';
-import 'package:kayaya_flutter/screens/series/tab_episodes.dart';
-import 'package:kayaya_flutter/screens/series/tab_info.dart';
-import 'package:kayaya_flutter/screens/series/tab_related.dart';
+import 'package:kayaya_flutter/widgets/anime_details/anime_detail.dart';
+import 'package:kayaya_flutter/widgets/anime_details/tab_episodes.dart';
+import 'package:kayaya_flutter/widgets/anime_details/tab_info.dart';
+import 'package:kayaya_flutter/widgets/anime_details/tab_related.dart';
+import 'package:kayaya_flutter/widgets/colored_tab_bar.dart';
 import 'package:kayaya_flutter/widgets/rating_bar.dart';
 import 'package:kayaya_flutter/widgets/rounded_cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
@@ -31,13 +33,24 @@ class _SeriesPageState extends State<SeriesPage>
     with SingleTickerProviderStateMixin {
   ListItemAnimeMixin anime;
   TabController _controller;
+  TabBar _tabBar;
+
   final GlobalKey<NestedScrollViewState> _key =
       GlobalKey<NestedScrollViewState>();
 
   @override
   void initState() {
     anime = widget.argument;
-    _controller = TabController(length: 3, vsync: this);
+    final _tabs = [
+      Tab(text: 'Info'),
+      Tab(text: 'Episodes'),
+      Tab(text: 'Related')
+    ];
+    _controller = TabController(length: _tabs.length, vsync: this);
+    _tabBar = TabBar(
+      tabs: _tabs,
+      controller: _controller,
+    );
     super.initState();
   }
 
@@ -49,10 +62,6 @@ class _SeriesPageState extends State<SeriesPage>
 
   @override
   Widget build(BuildContext context) {
-    final TabBar _tabBar = TabBar(
-      tabs: [Tab(text: 'Info'), Tab(text: 'Episodes'), Tab(text: 'Related')],
-      controller: _controller,
-    );
     final double _appBarHeight = 335.0 + _tabBar.preferredSize.height;
     final bool _isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -93,14 +102,22 @@ class _SeriesPageState extends State<SeriesPage>
                           ),
                           Positioned(
                             left: 20,
-                            bottom: 53 + _tabBar.preferredSize.height,
-                            child: _buildPosterWidget(),
-                          ),
-                          Positioned(
-                            left: 149,
                             right: 20,
                             bottom: 53 + _tabBar.preferredSize.height,
-                            child: _buildInfoWidget(),
+                            child: AnimeDetail(
+                              anime: anime,
+                              actions: [
+                                FlatButton.icon(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.notifications),
+                                  label: Text('SUBSCRIBE'),
+                                  color: Theme.of(context).primaryColor,
+                                  textTheme: ButtonTextTheme.primary,
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -127,119 +144,6 @@ class _SeriesPageState extends State<SeriesPage>
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildInfoWidget() {
-    final separator = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: Text('•'),
-    );
-    TextTheme textTheme = Theme.of(context).textTheme;
-    final bool _isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        AutoSizeText(
-          anime.name.mn,
-          style: textTheme.headline4
-              .apply(color: _isDark ? Colors.white : Colors.black),
-          maxLines: 3,
-        ),
-        SizedBox(height: 6),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            BlocBuilder<AnimeDetailsCubit, AnimeDetailsState>(
-              builder: (context, state) {
-                if (state is AnimeDetailsInitial) {
-                  return Shimmer.fromColors(
-                    baseColor: _isDark ? Colors.grey[700] : Colors.grey[300],
-                    highlightColor:
-                        _isDark ? Colors.grey[500] : Colors.grey[100],
-                    child: Row(
-                      children: [
-                        Container(width: 35, height: 5, color: Colors.white),
-                        separator,
-                        Container(width: 45, height: 5, color: Colors.white),
-                        separator,
-                        Container(width: 45, height: 5, color: Colors.white),
-                      ],
-                    ),
-                  );
-                }
-
-                if (state is AnimeDetailsLoaded) {
-                  final items = <Widget>[];
-
-                  final year =
-                      state.details.anilist.startDate?.year?.toString();
-                  if (year != null) {
-                    items.add(Text(year));
-                  }
-
-                  final totalEpisodes =
-                      state.details.anilist.episodes?.toString();
-                  if (totalEpisodes != null) {
-                    items.addAll([separator, Text('$totalEpisodes анги')]);
-                  }
-
-                  final duration = state.details.anilist.duration?.toString();
-                  if (duration != null) {
-                    items.addAll([separator, Text('$duration мин')]);
-                  }
-
-                  return Row(children: items);
-                }
-
-                return Row();
-              },
-            ),
-          ],
-        ),
-        SizedBox(height: 12),
-        FlatButton(
-          onPressed: () {},
-          child: Text('SUBSCRIBE'),
-          color: Theme.of(context).primaryColor,
-          textTheme: ButtonTextTheme.primary,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPosterWidget() {
-    final bool _isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Column(
-      children: <Widget>[
-        RoundedCachedNetworkImage(
-          url: anime.coverImage.large,
-          width: 109,
-          height: 163,
-          placeholderColor: HexColor(
-            anime.coverColor ?? "#000000",
-          ),
-          boxShadow: BoxShadow(
-            blurRadius: 5.0,
-            spreadRadius: 2.0,
-            color: _isDark
-                ? Colors.white.withOpacity(0.8)
-                : Colors.grey[400].withOpacity(0.8),
-          ),
-        ),
-        if (anime.rating != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: RatingBar(
-              rating: anime.rating,
-              size: 16,
-              color: _isDark ? Colors.yellow : Colors.yellow[800],
-            ),
-          ),
-      ],
     );
   }
 
@@ -272,20 +176,4 @@ class _SeriesPageState extends State<SeriesPage>
             ),
     );
   }
-}
-
-class ColoredTabBar extends Container implements PreferredSizeWidget {
-  ColoredTabBar({this.color, this.tabBar});
-
-  final Color color;
-  final TabBar tabBar;
-
-  @override
-  Size get preferredSize => tabBar.preferredSize;
-
-  @override
-  Widget build(BuildContext context) => Container(
-        color: color,
-        child: tabBar,
-      );
 }
