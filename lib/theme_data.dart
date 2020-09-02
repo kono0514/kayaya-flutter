@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
@@ -10,6 +11,8 @@ ThemeData lightTheme = ThemeData(
     iconTheme: IconThemeData(color: Colors.black),
     actionsIconTheme: IconThemeData(color: Colors.black),
   ),
+  typography: Typography.material2018(platform: defaultTargetPlatform),
+  splashFactory: InkRipple.splashFactory,
 );
 
 ThemeData darkTheme = ThemeData(
@@ -18,4 +21,6 @@ ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     barBackgroundColor: Colors.grey[900],
   ),
+  typography: Typography.material2018(platform: defaultTargetPlatform),
+  splashFactory: InkRipple.splashFactory,
 );

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/screens/movie.dart';
 import 'package:kayaya_flutter/screens/search.dart';
-import 'package:kayaya_flutter/screens/series.dart';
+import 'package:kayaya_flutter/screens/series/series.dart';
 import 'package:kayaya_flutter/screens/settings.dart';
 
 abstract class RouteConstants {

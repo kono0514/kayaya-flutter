@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/shared_preferences_service.dart';
+import 'package:kayaya_flutter/widgets/app_bar/custom_app_bar.dart';
 
 class LibraryPage extends StatefulWidget {
   final ScrollController scrollController;
@@ -17,7 +18,7 @@ class _LibraryPageState extends State<LibraryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomStaticAppBar(
         title: Text(S.current.tabs_library),
       ),
       body: Builder(

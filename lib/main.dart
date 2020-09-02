@@ -7,6 +7,7 @@ import 'package:kayaya_flutter/cubit/genre_list_cubit.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/graphql_client.dart';
+import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/shared_preferences_service.dart';
 import 'package:kayaya_flutter/repository.dart';
 import 'package:kayaya_flutter/simple_bloc_observer.dart';
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
           locale: locale,
           supportedLocales: S.delegate.supportedLocales,
           home: RootScreen(),
+          onGenerateRoute: Routes.materialRoutes,
         );
       },
     );

@@ -68,6 +68,8 @@ class _FilterDialogState extends State<FilterDialog> {
     _selectedType = _selectedType ?? _defaultType;
     _selectedGenres = _selectedGenres ?? []
       ..addAll(_defaultGenres);
+
+    context.bloc<GenreListCubit>().getGenreList();
   }
 
   // If filters are in default
@@ -78,9 +80,8 @@ class _FilterDialogState extends State<FilterDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final _labelColor = Theme.of(context).brightness == Brightness.dark
-        ? Colors.grey[400]
-        : Colors.grey[600];
+    final bool _isDark = Theme.of(context).brightness == Brightness.dark;
+    final _labelColor = _isDark ? Colors.grey[400] : Colors.grey[600];
     final _labelStyle =
         Theme.of(context).textTheme.bodyText1.apply(color: _labelColor);
 
@@ -178,8 +179,10 @@ class _FilterDialogState extends State<FilterDialog> {
                       }
 
                       return Shimmer.fromColors(
-                        baseColor: Colors.grey[300],
-                        highlightColor: Colors.grey[100],
+                        baseColor:
+                            _isDark ? Colors.grey[700] : Colors.grey[300],
+                        highlightColor:
+                            _isDark ? Colors.grey[500] : Colors.grey[100],
                         child: Wrap(
                           children: List.generate(
                             10,
@@ -249,7 +252,7 @@ class _FilterDialogState extends State<FilterDialog> {
     );
   }
 
-  Widget _buildGenreChipsWidget(List<GetGenres$Query$Genre> genres) {
+  Widget _buildGenreChipsWidget(List<GetGenres$Query$Genres> genres) {
     List<Widget> _list = [];
     genres.forEach((genre) {
       _list.add(Padding(

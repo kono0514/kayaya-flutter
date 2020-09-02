@@ -11,7 +11,7 @@ class BrowseFilterInitial extends BrowseFilterState {
 
   const BrowseFilterInitial({
     this.filter = const Filter(
-      orderBy: FilterOrderBy.recent,
+      // orderBy: FilterOrderBy.recent,
       type: FilterType.all,
       genres: <String>[],
     ),

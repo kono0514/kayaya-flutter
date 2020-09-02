@@ -16,6 +16,8 @@ type Query {
   anime(id: ID!): Anime
   episodes(
     episodeIdIn: [ID!]
+    hasAnime: EpisodesHasAnimeWhereConditions
+    orderBy: [EpisodesOrderByOrderByClause!]
 
     """Limits number of fetched elements. Maximum allowed value: 10000."""
     first: Int = 20
@@ -198,7 +200,8 @@ type Anime {
   animeType: AnimeType!
   rating: Int
   coverImage: AnimeCoverImage!
-  coverColor: String!
+  coverColor: String
+  bannerImage: String
   anilist: AnilistMedia
   genres: [Genre!]!
   episodes(
@@ -301,6 +304,49 @@ type Source {
   url: String!
   spider: String!
   anime: Anime!
+}
+
+"""
+Dynamic WHERE conditions for the `hasAnime` argument on the query `episodes`.
+"""
+input EpisodesHasAnimeWhereConditions {
+  """The column that is used for the condition."""
+  column: EpisodesHasAnimeColumn
+
+  """The operator that is used for the condition."""
+  operator: SQLOperator = EQ
+
+  """The value that is used for the condition."""
+  value: Mixed
+
+  """A set of conditions that requires all conditions to match."""
+  AND: [EpisodesHasAnimeWhereConditions!]
+
+  """A set of conditions that requires at least one condition to match."""
+  OR: [EpisodesHasAnimeWhereConditions!]
+}
+
+"""
+Allowed column names for the `hasAnime` argument on the query `episodes`.
+"""
+enum EpisodesHasAnimeColumn {
+  ID
+}
+
+"""Order by clause for the `orderBy` argument on the query `episodes`."""
+input EpisodesOrderByOrderByClause {
+  """The column that is used for ordering."""
+  field: EpisodesOrderByColumn!
+
+  """The direction that is used for ordering."""
+  order: SortOrder!
+}
+
+"""
+Allowed column names for the `orderBy` argument on the query `episodes`.
+"""
+enum EpisodesOrderByColumn {
+  NUMBER
 }
 
 """Order by clause for the `orderBy` argument on the query `genres`."""

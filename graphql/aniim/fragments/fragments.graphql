@@ -1,0 +1,21 @@
+fragment ListItemAnime on Anime {
+    id
+    name {
+        en
+        mn
+    }
+    animeType
+    rating
+    coverImage {
+        large
+    }
+    coverColor
+    bannerImage
+    genres {
+        id
+        name {
+            en
+            mn
+        }
+    }
+}

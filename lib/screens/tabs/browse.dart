@@ -5,10 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/bloc/anime_list_bloc.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/repository.dart';
+import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/widgets/browse/anime_list_tile.dart';
 import 'package:kayaya_flutter/widgets/app_bar/custom_sliver_app_bar.dart';
 import 'package:kayaya_flutter/widgets/browse/sliver_filter_button.dart';
@@ -152,7 +154,21 @@ class _BrowsePageState extends State<BrowsePage> {
                               (BuildContext context, int index) {
                                 return index >= state.animes.length
                                     ? BottomLoader(animeLoadedState: state)
-                                    : AnimeListTile(anime: state.animes[index]);
+                                    : AnimeListTile(
+                                        anime: state.animes[index],
+                                        onPressed: () {
+                                          final anime = state.animes[index];
+                                          // open detail view
+                                          Navigator.of(
+                                            context,
+                                            rootNavigator: true,
+                                          ).pushNamed(
+                                              anime.animeType == AnimeType.movie
+                                                  ? RouteConstants.movieDetail
+                                                  : RouteConstants.seriesDetail,
+                                              arguments: anime);
+                                        },
+                                      );
                               },
                               childCount: state.paginatorInfo.hasMorePages
                                   ? state.animes.length + 1

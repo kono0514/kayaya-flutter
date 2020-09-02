@@ -1,6 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-import 'package:meta/meta.dart';
 import 'package:artemis/artemis.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -388,89 +387,89 @@ class GraphqlAnilistApi$Query with EquatableMixin {
 }
 
 enum MediaType {
-  @JsonValue("ANIME")
+  @JsonValue('ANIME')
   anime,
-  @JsonValue("MANGA")
+  @JsonValue('MANGA')
   manga,
-  @JsonValue("ARTEMIS_UNKNOWN")
+  @JsonValue('ARTEMIS_UNKNOWN')
   artemisUnknown,
 }
 enum MediaFormat {
-  @JsonValue("TV")
+  @JsonValue('TV')
   tv,
-  @JsonValue("TV_SHORT")
+  @JsonValue('TV_SHORT')
   tvShort,
-  @JsonValue("MOVIE")
+  @JsonValue('MOVIE')
   movie,
-  @JsonValue("SPECIAL")
+  @JsonValue('SPECIAL')
   special,
-  @JsonValue("OVA")
+  @JsonValue('OVA')
   ova,
-  @JsonValue("ONA")
+  @JsonValue('ONA')
   ona,
-  @JsonValue("MUSIC")
+  @JsonValue('MUSIC')
   music,
-  @JsonValue("MANGA")
+  @JsonValue('MANGA')
   manga,
-  @JsonValue("NOVEL")
+  @JsonValue('NOVEL')
   novel,
-  @JsonValue("ONE_SHOT")
+  @JsonValue('ONE_SHOT')
   oneShot,
-  @JsonValue("ARTEMIS_UNKNOWN")
+  @JsonValue('ARTEMIS_UNKNOWN')
   artemisUnknown,
 }
 enum MediaStatus {
-  @JsonValue("FINISHED")
+  @JsonValue('FINISHED')
   finished,
-  @JsonValue("RELEASING")
+  @JsonValue('RELEASING')
   releasing,
-  @JsonValue("NOT_YET_RELEASED")
+  @JsonValue('NOT_YET_RELEASED')
   notYetReleased,
-  @JsonValue("CANCELLED")
+  @JsonValue('CANCELLED')
   cancelled,
-  @JsonValue("ARTEMIS_UNKNOWN")
+  @JsonValue('ARTEMIS_UNKNOWN')
   artemisUnknown,
 }
 enum MediaSeason {
-  @JsonValue("WINTER")
+  @JsonValue('WINTER')
   winter,
-  @JsonValue("SPRING")
+  @JsonValue('SPRING')
   spring,
-  @JsonValue("SUMMER")
+  @JsonValue('SUMMER')
   summer,
-  @JsonValue("FALL")
+  @JsonValue('FALL')
   fall,
-  @JsonValue("ARTEMIS_UNKNOWN")
+  @JsonValue('ARTEMIS_UNKNOWN')
   artemisUnknown,
 }
 enum MediaRelation {
-  @JsonValue("ADAPTATION")
+  @JsonValue('ADAPTATION')
   adaptation,
-  @JsonValue("PREQUEL")
+  @JsonValue('PREQUEL')
   prequel,
-  @JsonValue("SEQUEL")
+  @JsonValue('SEQUEL')
   sequel,
-  @JsonValue("PARENT")
+  @JsonValue('PARENT')
   parent,
-  @JsonValue("SIDE_STORY")
+  @JsonValue('SIDE_STORY')
   sideStory,
-  @JsonValue("CHARACTER")
+  @JsonValue('CHARACTER')
   character,
-  @JsonValue("SUMMARY")
+  @JsonValue('SUMMARY')
   summary,
-  @JsonValue("ALTERNATIVE")
+  @JsonValue('ALTERNATIVE')
   alternative,
-  @JsonValue("SPIN_OFF")
+  @JsonValue('SPIN_OFF')
   spinOff,
-  @JsonValue("OTHER")
+  @JsonValue('OTHER')
   other,
-  @JsonValue("SOURCE")
+  @JsonValue('SOURCE')
   source,
-  @JsonValue("COMPILATION")
+  @JsonValue('COMPILATION')
   compilation,
-  @JsonValue("CONTAINS")
+  @JsonValue('CONTAINS')
   contains,
-  @JsonValue("ARTEMIS_UNKNOWN")
+  @JsonValue('ARTEMIS_UNKNOWN')
   artemisUnknown,
 }
 
@@ -478,6 +477,7 @@ enum MediaRelation {
 class GraphqlAnilistApiArguments extends JsonSerializable with EquatableMixin {
   GraphqlAnilistApiArguments({this.id});
 
+  @override
   factory GraphqlAnilistApiArguments.fromJson(Map<String, dynamic> json) =>
       _$GraphqlAnilistApiArgumentsFromJson(json);
 
@@ -485,6 +485,7 @@ class GraphqlAnilistApiArguments extends JsonSerializable with EquatableMixin {
 
   @override
   List<Object> get props => [id];
+  @override
   Map<String, dynamic> toJson() => _$GraphqlAnilistApiArgumentsToJson(this);
 }
 

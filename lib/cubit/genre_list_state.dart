@@ -19,7 +19,7 @@ class GenreListLoading extends GenreListState {
 }
 
 class GenreListLoaded extends GenreListState {
-  final List<GetGenres$Query$Genre> genres;
+  final List<GetGenres$Query$Genres> genres;
 
   GenreListLoaded(this.genres);
 

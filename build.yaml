@@ -9,9 +9,11 @@ targets:
     builders:
       artemis:
         options:
+          fragments_glob: graphql/aniim/fragments/**.graphql
           schema_mapping:
             - schema: graphql/aniim.schema.graphql
-              queries_glob: graphql/aniim/**.graphql
+              queries_glob: graphql/aniim/*.graphql
+              naming_scheme: pathedWithFields
               output: lib/api/graphql_api.graphql.dart
             - schema: graphql/anilist.schema.graphql
               queries_glob: graphql/anilist/**.graphql

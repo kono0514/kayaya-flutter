@@ -6,11 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
+import 'package:kayaya_flutter/hex_color.dart';
+import 'package:kayaya_flutter/widgets/rounded_cached_network_image.dart';
 
 class AnimeListTile extends StatelessWidget {
-  final BrowseAnimes$Query$AnimePaginator$Anime anime;
+  final BrowseAnimes$Query$Animes$Data anime;
+  final VoidCallback onPressed;
 
-  const AnimeListTile({Key key, this.anime}) : super(key: key);
+  const AnimeListTile({Key key, this.anime, @required this.onPressed})
+      : super(key: key);
 
   List<Widget> _buildGenres(BuildContext context) {
     List<Widget> _items = [];
@@ -60,20 +64,18 @@ class AnimeListTile extends StatelessWidget {
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return InkWell(
-      onTap: () => {},
+      onTap: onPressed,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
           children: <Widget>[
-            Card(
-              elevation: 3.0,
-              child: CachedNetworkImage(
-                imageUrl: anime.coverImage.large,
-                width: 90,
-                height: 125,
-                fit: BoxFit.cover,
+            RoundedCachedNetworkImage(
+              url: anime.coverImage.large,
+              width: 90,
+              height: 135,
+              placeholderColor: HexColor(
+                anime.coverColor ?? "#000000",
               ),
-              margin: EdgeInsets.zero,
             ),
             Expanded(
               child: Padding(
@@ -96,7 +98,7 @@ class AnimeListTile extends StatelessWidget {
                           anime.animeType == AnimeType.movie
                               ? 'Кино'
                               : 'Цуврал',
-                          style: textTheme.caption.copyWith(fontSize: 14),
+                          style: textTheme.caption.copyWith(fontSize: 13),
                         ),
                         SizedBox(width: 12),
                         if (anime.rating != null)
@@ -110,7 +112,8 @@ class AnimeListTile extends StatelessWidget {
                               ),
                               SizedBox(width: 2),
                               Text(
-                                (anime.rating / 10).toString(),
+                                '${anime.rating / 10}',
+                                style: textTheme.caption.copyWith(fontSize: 13),
                               ),
                             ],
                           )

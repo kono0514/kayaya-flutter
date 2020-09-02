@@ -1,0 +1,22 @@
+query GetAnimeDetails($id: ID!) {
+    anime(id: $id) {
+        id
+        description {
+            en
+            mn
+        }
+        anilist
+        relations {
+            ...ListItemAnime
+            relationPivot {
+                relationType
+            }
+        }
+        recommendations {
+            ...ListItemAnime
+            recommendationPivot {
+                rating
+            }
+        }
+    }
+}

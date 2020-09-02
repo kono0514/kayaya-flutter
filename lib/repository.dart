@@ -7,7 +7,7 @@ class AniimRepository {
 
   const AniimRepository(this.client);
 
-  Future<BrowseAnimes$Query$AnimePaginator> fetchAnimes({
+  Future<BrowseAnimes$Query$Animes> fetchAnimes({
     int page = 1,
     Filter filter,
   }) async {
@@ -112,7 +112,7 @@ class AniimRepository {
     );
   }
 
-  Future<List<GetGenres$Query$Genre>> fetchGenres() async {
+  Future<List<GetGenres$Query$Genres>> fetchGenres() async {
     final _options = QueryOptions(
       documentNode: GetGenresQuery().document,
       fetchPolicy: FetchPolicy.cacheAndNetwork,
@@ -124,5 +124,57 @@ class AniimRepository {
     }
 
     return GetGenres$Query.fromJson(result.data).genres;
+  }
+
+  Future<GetAnimeDetails$Query$Anime> fetchDetails(String id) async {
+    final args = GetAnimeDetailsArguments(id: id);
+    final _options = QueryOptions(
+      documentNode: GetAnimeDetailsQuery().document,
+      variables: args.toJson(),
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+    );
+
+    final result = await client.query(_options);
+
+    if (result.hasException) {
+      throw result.exception;
+    }
+
+    return GetAnimeDetails$Query.fromJson(result.data).anime;
+  }
+
+  Future<GetAnimeEpisodes$Query$Episodes> fetchEpisodes(
+    String id, {
+    int page = 1,
+    SortOrder sortOrder = SortOrder.asc,
+  }) async {
+    final args = GetAnimeEpisodesArguments(
+      hasAnime: EpisodesHasAnimeWhereConditions(
+        column: EpisodesHasAnimeColumn.id,
+        value: id,
+        kw$operator: SQLOperator.eq,
+      ),
+      page: page,
+      first: 10,
+      orderBy: <EpisodesOrderByOrderByClause>[
+        EpisodesOrderByOrderByClause(
+          field: EpisodesOrderByColumn.number,
+          order: sortOrder,
+        ),
+      ],
+    );
+    final _options = QueryOptions(
+      documentNode: GetAnimeEpisodesQuery().document,
+      variables: args.toJson(),
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+    );
+
+    final result = await client.query(_options);
+
+    if (result.hasException) {
+      throw result.exception;
+    }
+
+    return GetAnimeEpisodes$Query.fromJson(result.data).episodes;
   }
 }

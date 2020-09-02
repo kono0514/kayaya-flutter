@@ -17,8 +17,8 @@ class AnimeListInitialState extends AnimeListState {
 }
 
 class AnimeListLoadedState extends AnimeListState {
-  final List<BrowseAnimes$Query$AnimePaginator$Anime> animes;
-  final BrowseAnimes$Query$AnimePaginator$PaginatorInfo paginatorInfo;
+  final List<BrowseAnimes$Query$Animes$Data> animes;
+  final BrowseAnimes$Query$Animes$PaginatorInfo paginatorInfo;
   final Exception error;
   final String timestamp;
 
@@ -30,8 +30,8 @@ class AnimeListLoadedState extends AnimeListState {
   });
 
   AnimeListLoadedState copyWith({
-    List<BrowseAnimes$Query$AnimePaginator$Anime> animes,
-    BrowseAnimes$Query$AnimePaginator$PaginatorInfo paginatorInfo,
+    List<BrowseAnimes$Query$Animes$Data> animes,
+    BrowseAnimes$Query$Animes$PaginatorInfo paginatorInfo,
     Optional<Exception> error,
     String timestamp,
   }) {

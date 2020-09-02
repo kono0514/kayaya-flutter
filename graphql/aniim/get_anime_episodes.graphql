@@ -1,0 +1,21 @@
+query GetAnimeEpisodes($hasAnime: EpisodesHasAnimeWhereConditions!, $orderBy: [EpisodesOrderByOrderByClause!], $first: Int, $page: Int) {
+    episodes(hasAnime: $hasAnime, orderBy: $orderBy, first: $first, page: $page) {
+        paginatorInfo {
+            total
+            lastPage
+            hasMorePages
+            currentPage
+        }
+        data {
+            id
+            number
+            releases {
+                id
+                url
+                type
+                resolution
+                group
+            }
+        }
+    }
+}

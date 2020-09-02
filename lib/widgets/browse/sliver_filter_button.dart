@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
@@ -22,7 +24,7 @@ class _SliverFilterButtonState extends State<SliverFilterButton>
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    _collapseAnimation = Tween<double>(begin: 55.0, end: 0.0).animate(
+    _collapseAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
         CurvedAnimation(parent: _controller, curve: const Interval(0.5, 1.0)));
     _fadeAnimation = Tween(begin: 1.0, end: 0.0).animate(
         CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.5)));
@@ -36,6 +38,8 @@ class _SliverFilterButtonState extends State<SliverFilterButton>
 
   @override
   Widget build(BuildContext context) {
+    final bool _isDark = Theme.of(context).brightness == Brightness.dark;
+
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
       final FlexibleSpaceBarSettings settings = context
@@ -69,22 +73,28 @@ class _SliverFilterButtonState extends State<SliverFilterButton>
                 children: <Widget>[
                   Icon(
                     Icons.tune,
-                    color: _hasFilter ? Colors.deepPurple : null,
+                    color: _hasFilter
+                        ? _isDark ? Colors.lightBlue : Colors.deepPurple
+                        : null,
                   ),
                   AnimatedBuilder(
                     animation: _controller,
                     builder: (context, child) => FadeTransition(
                       opacity: _fadeAnimation,
-                      child: Container(
-                        width: _collapseAnimation.value,
-                        height: 36.0,
-                        alignment: Alignment.centerLeft,
+                      child: Align(
+                        alignment: Alignment.center,
+                        heightFactor: 1.0,
+                        widthFactor: max(_collapseAnimation.value, 0.0),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             S.current.common_filter.toUpperCase(),
                             style: TextStyle(
-                              color: _hasFilter ? Colors.deepPurple : null,
+                              color: _hasFilter
+                                  ? _isDark
+                                      ? Colors.lightBlue
+                                      : Colors.deepPurple
+                                  : null,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

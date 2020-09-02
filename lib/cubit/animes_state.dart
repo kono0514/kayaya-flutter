@@ -13,8 +13,8 @@ class AnimesInitialState extends AnimesState {
 }
 
 class AnimesLoadedState extends AnimesState {
-  final List<BrowseAnimes$Query$AnimePaginator$Anime> animes;
-  final BrowseAnimes$Query$AnimePaginator$PaginatorInfo paginatorInfo;
+  final List<BrowseAnimes$Query$Animes$Data> animes;
+  final BrowseAnimes$Query$Animes$PaginatorInfo paginatorInfo;
 
   const AnimesLoadedState(this.animes, this.paginatorInfo);
 
