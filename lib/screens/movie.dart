@@ -33,7 +33,7 @@ class _MoviePageState extends State<MoviePage>
     with SingleTickerProviderStateMixin {
   ListItemAnimeMixin anime;
   TabController _controller;
-  TabBar _tabBar;
+  final List<String> _tabs = ['INFO', 'RELATED'];
 
   final GlobalKey<NestedScrollViewState> _key =
       GlobalKey<NestedScrollViewState>();
@@ -41,12 +41,7 @@ class _MoviePageState extends State<MoviePage>
   @override
   void initState() {
     anime = widget.argument;
-    final _tabs = [Tab(text: 'Info'), Tab(text: 'Related')];
     _controller = TabController(length: _tabs.length, vsync: this);
-    _tabBar = TabBar(
-      tabs: _tabs,
-      controller: _controller,
-    );
     super.initState();
   }
 
@@ -58,6 +53,13 @@ class _MoviePageState extends State<MoviePage>
 
   @override
   Widget build(BuildContext context) {
+    final _tabBar = TabBar(
+      tabs: _tabs.map((e) => Tab(text: e)).toList(),
+      controller: _controller,
+      indicatorSize: TabBarIndicatorSize.label,
+      isScrollable: true,
+      labelColor: Theme.of(context).textTheme.bodyText1.color,
+    );
     final double _appBarHeight = 335.0 + _tabBar.preferredSize.height;
     final bool _isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -120,7 +122,7 @@ class _MoviePageState extends State<MoviePage>
                     ),
                     backgroundColor: _isDark ? Colors.black : Colors.white,
                     bottom: ColoredTabBar(
-                      color: Colors.deepPurple,
+                      color: _isDark ? Colors.black : Colors.white,
                       tabBar: _tabBar,
                     ),
                     elevation: 0.0,
