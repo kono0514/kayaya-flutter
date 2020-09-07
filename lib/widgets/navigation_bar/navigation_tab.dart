@@ -76,6 +76,7 @@ class _NavigationTabState extends State<NavigationTab> {
   ];
   // final ValueNotifier<double> heightNotifier = ValueNotifier<double>(1.0);
   // final ValueNotifier<double> snapNotifier = ValueNotifier<double>(0.0);
+  DateTime _lastBackPressTime;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +88,7 @@ class _NavigationTabState extends State<NavigationTab> {
 
         // Nothing was popped. This means we're on a tab's root route and user pressed back button.
         if (!tabNavigatorPopped) {
-          if (_tabController.index == 0) return true;
+          if (_tabController.index == 0) return await shouldPopAppRoot();
 
           _tabController.index = 0;
           previousTabIndex = 0;
@@ -189,5 +190,31 @@ class _NavigationTabState extends State<NavigationTab> {
 
   TabViewItem _currentTabViewItem() {
     return items[_tabController.index];
+  }
+
+  Future<bool> shouldPopAppRoot() async {
+    final snackbarVisibleDuration = Duration(seconds: 2);
+    final now = DateTime.now();
+    final difference = now.difference(_lastBackPressTime ?? now);
+
+    /// Can only exit while snackbar is visible
+    /// Ignore quick succession taps
+    if (difference.inMilliseconds > 200 &&
+        difference < snackbarVisibleDuration) {
+      return true;
+    }
+
+    _lastBackPressTime = now;
+    // Prevent duplicate snackbar
+    if (difference >= snackbarVisibleDuration) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Press back again to exit'),
+          duration: snackbarVisibleDuration,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+    return false;
   }
 }

@@ -75,6 +75,6 @@ class MyApp extends StatelessWidget {
 class RootScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return NavigationTab();
+    return Scaffold(body: NavigationTab());
   }
 }
