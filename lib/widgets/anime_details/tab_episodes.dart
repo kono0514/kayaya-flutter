@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/bloc/anime_episodes_bloc.dart';
 import 'package:kayaya_flutter/repository.dart';
+import 'package:kayaya_flutter/widgets/player/launcher.dart';
+import 'package:kayaya_flutter/widgets/player/source_chooser_dialog.dart';
 
 class EpisodesTabViewItem extends StatefulWidget {
   final String id;
@@ -148,65 +150,63 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem>
   PopupMenuButton<SortOrder> buildSortPopupMenuButton(
       BuildContext context, SortOrder initialValue) {
     return PopupMenuButton(
-                              offset: Offset(32.0, 0.0),
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 4, 8, 4),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.sort,
-                                      color: Colors.grey,
-                                    ),
-                                    SizedBox(width: 8.0),
-                                    Text('Sort by'),
-                                    SizedBox(width: 8.0),
-                                    Icon(
-                                      Icons.arrow_drop_down,
+      offset: Offset(32.0, 0.0),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 4, 8, 4),
+        child: Row(
+          children: [
+            Icon(
+              Icons.sort,
+              color: Colors.grey,
+            ),
+            SizedBox(width: 8.0),
+            Text('Sort by'),
+            SizedBox(width: 8.0),
+            Icon(
+              Icons.arrow_drop_down,
               color: Theme.of(context).brightness == Brightness.dark
-                                          ? Colors.white70
-                                          : Colors.grey.shade700,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              itemBuilder: (context) => [
-                                PopupMenuItem(
-                                  child: Text('Asc'),
-                                  value: SortOrder.asc,
-                                ),
-                                PopupMenuItem(
-                                  child: Text('Desc'),
-                                  value: SortOrder.desc,
-                                ),
-                              ],
+                  ? Colors.white70
+                  : Colors.grey.shade700,
+            ),
+          ],
+        ),
+      ),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          child: Text('Asc'),
+          value: SortOrder.asc,
+        ),
+        PopupMenuItem(
+          child: Text('Desc'),
+          value: SortOrder.desc,
+        ),
+      ],
       initialValue: initialValue,
-                              onSelected: (value) {
+      onSelected: (value) {
         context.bloc<AnimeEpisodesBloc>().add(AnimeEpisodesRefreshed(
-                                      widget.id,
+              widget.id,
               sortOrder: value,
-                                    ));
-                              },
-                                  );
+            ));
+      },
+    );
   }
 
   Widget buildEpisodeListItem(
       BuildContext context, GetAnimeEpisodes$Query$Episodes$Data episode) {
     return InkWell(
       onTap: () async {
-                          },
-                          childCount: state.paginatorInfo.hasMorePages
-                              ? state.episodes.length + 1
-                              : state.episodes.length,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }
+        final chosenRelease =
+            await showDialog<GetAnimeEpisodes$Query$Episodes$Data$Releases>(
+          context: context,
+          builder: (context) => SourceChooserDialog(
+            releases: episode.releases,
+          ),
+        );
 
-            return Center(child: CircularProgressIndicator());
-          },
+        if (chosenRelease != null) {
+          launchPlayRelease(context, chosenRelease);
+        }
+      },
       child: ListTile(
         title: Text('Episode ${episode.number}'),
       ),

@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart'
     hide NestedScrollView, NestedScrollViewState;
@@ -8,16 +7,13 @@ import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/bloc/anime_episodes_bloc.dart';
 import 'package:kayaya_flutter/cubit/anime_details/anime_details_cubit.dart';
 import 'package:kayaya_flutter/easing_linear_gradient.dart';
-import 'package:kayaya_flutter/hex_color.dart';
 import 'package:kayaya_flutter/repository.dart';
-import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/widgets/anime_details/anime_detail.dart';
 import 'package:kayaya_flutter/widgets/anime_details/tab_info.dart';
 import 'package:kayaya_flutter/widgets/anime_details/tab_related.dart';
 import 'package:kayaya_flutter/widgets/colored_tab_bar.dart';
-import 'package:kayaya_flutter/widgets/rating_bar.dart';
-import 'package:kayaya_flutter/widgets/rounded_cached_network_image.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:kayaya_flutter/widgets/player/launcher.dart';
+import 'package:kayaya_flutter/widgets/player/source_chooser_dialog.dart';
 
 // (Implemented workaround with extended_nested_scroll_view) TODO: https://github.com/flutter/flutter/issues/40740
 
@@ -67,8 +63,8 @@ class _MoviePageState extends State<MoviePage>
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-      create: (context) =>
-          AnimeDetailsCubit(context.repository<AniimRepository>())
+            create: (context) =>
+                AnimeDetailsCubit(context.repository<AniimRepository>())
                   ..loadDetails(anime.id)),
         BlocProvider(
           create: (context) =>
@@ -162,6 +158,19 @@ class _MoviePageState extends State<MoviePage>
       iconData = Icons.play_circle_outline;
       buttonText = 'Play';
       onPressed = () async {
+        if (state.episodes.length == 0) return;
+
+        final chosenRelease =
+            await showDialog<GetAnimeEpisodes$Query$Episodes$Data$Releases>(
+          context: context,
+          builder: (context) => SourceChooserDialog(
+            releases: state.episodes.first.releases,
+          ),
+        );
+
+        if (chosenRelease != null) {
+          launchPlayRelease(context, chosenRelease);
+        }
       };
     } else {
       iconData = Icons.error;

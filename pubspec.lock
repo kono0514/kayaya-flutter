@@ -38,6 +38,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.2"
+  auto_orientation:
+    dependency: transitive
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: f9b8909cfe631a1bb02d0d3e4601e1c3dfd4b225
+      url: "https://github.com/kono0514/auto_orientation"
+    source: git
+    version: "1.0.6"
   auto_size_text:
     dependency: "direct main"
     description:
@@ -45,6 +54,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  awsome_video_player:
+    dependency: "direct main"
+    description:
+      name: awsome_video_player
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.8+1"
+  better_player:
+    dependency: "direct main"
+    description:
+      name: better_player
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.13"
   bloc:
     dependency: "direct main"
     description:
@@ -157,6 +180,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0+1"
+  chewie_extended:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "0b211cc3cbe881d36241848eee8314eb23b505f8"
+      url: "https://github.com/kono0514/chewie_extended.git"
+    source: git
+    version: "0.9.10"
   cli_util:
     dependency: transitive
     description:
@@ -297,6 +329,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.11"
+  flick_video_player:
+    dependency: "direct main"
+    description:
+      name: flick_video_player
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -316,6 +355,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.1"
+  flutter_custom_tabs:
+    dependency: "direct main"
+    description:
+      name: flutter_custom_tabs
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.0"
   flutter_html:
     dependency: "direct main"
     description:
@@ -328,6 +374,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_spinkit:
+    dependency: transitive
+    description:
+      name: flutter_spinkit
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.2+1"
   flutter_svg:
     dependency: transitive
     description:
@@ -345,6 +398,20 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_widget_from_html_core:
+    dependency: transitive
+    description:
+      name: flutter_widget_from_html_core
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.3"
+  flutter_widgets:
+    dependency: transitive
+    description:
+      name: flutter_widgets
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.12"
   freezed_annotation:
     dependency: transitive
     description:
@@ -464,6 +531,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.8+3"
+  intent:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: b48cbb72e325ea0b2ddb1f4ee8273eca956e12ed
+      url: "https://github.com/kono0514/intent"
+    source: git
+    version: "1.4.0"
   intl:
     dependency: "direct main"
     description:
@@ -527,6 +603,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.8"
+  meedu_player:
+    dependency: "direct main"
+    description:
+      name: meedu_player
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   meta:
     dependency: transitive
     description:
@@ -569,6 +652,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
+  orientation:
+    dependency: transitive
+    description:
+      name: orientation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   package_config:
     dependency: transitive
     description:
@@ -960,7 +1050,7 @@ packages:
     source: hosted
     version: "2.0.8"
   video_player:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: video_player
       url: "https://pub.dartlang.org"
@@ -1016,7 +1106,7 @@ packages:
     source: hosted
     version: "0.0.5"
   webview_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: webview_flutter
       url: "https://pub.dartlang.org"
