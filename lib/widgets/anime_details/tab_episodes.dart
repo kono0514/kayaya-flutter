@@ -114,7 +114,40 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem>
                         sliver: SliverToBoxAdapter(
                           child: UnconstrainedBox(
                             alignment: Alignment.centerLeft,
-                            child: PopupMenuButton(
+                            child: buildSortPopupMenuButton(
+                                context, state.sortOrder),
+                          ),
+                        ),
+                      ),
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            return index >= state.episodes.length
+                                ? BottomLoader(episodesLoadedState: state)
+                                : buildEpisodeListItem(
+                                    context, state.episodes[index]);
+                          },
+                          childCount: state.paginatorInfo.hasMorePages
+                              ? state.episodes.length + 1
+                              : state.episodes.length,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            return Center(child: CircularProgressIndicator());
+          },
+        ),
+      ),
+    );
+  }
+
+  PopupMenuButton<SortOrder> buildSortPopupMenuButton(
+      BuildContext context, SortOrder initialValue) {
+    return PopupMenuButton(
                               offset: Offset(32.0, 0.0),
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 4, 8, 4),
@@ -129,8 +162,7 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem>
                                     SizedBox(width: 8.0),
                                     Icon(
                                       Icons.arrow_drop_down,
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.dark
+              color: Theme.of(context).brightness == Brightness.dark
                                           ? Colors.white70
                                           : Colors.grey.shade700,
                                     ),
@@ -147,33 +179,20 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem>
                                   value: SortOrder.desc,
                                 ),
                               ],
-                              initialValue: state.sortOrder,
+      initialValue: initialValue,
                               onSelected: (value) {
-                                context
-                                    .bloc<AnimeEpisodesBloc>()
-                                    .add(AnimeEpisodesRefreshed(
+        context.bloc<AnimeEpisodesBloc>().add(AnimeEpisodesRefreshed(
                                       widget.id,
-                                      sortOrder: value == 'asc'
-                                          ? SortOrder.asc
-                                          : SortOrder.desc,
+              sortOrder: value,
                                     ));
                               },
-                            ),
-                          ),
-                        ),
-                      ),
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
-                            return index >= state.episodes.length
-                                ? BottomLoader(episodesLoadedState: state)
-                                : InkWell(
-                                    onTap: () => {},
-                                    child: ListTile(
-                                      title: Text(
-                                          'Episode ${state.episodes[index].number}'),
-                                    ),
                                   );
+  }
+
+  Widget buildEpisodeListItem(
+      BuildContext context, GetAnimeEpisodes$Query$Episodes$Data episode) {
+    return InkWell(
+      onTap: () async {
                           },
                           childCount: state.paginatorInfo.hasMorePages
                               ? state.episodes.length + 1
@@ -188,7 +207,8 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem>
 
             return Center(child: CircularProgressIndicator());
           },
-        ),
+      child: ListTile(
+        title: Text('Episode ${episode.number}'),
       ),
     );
   }

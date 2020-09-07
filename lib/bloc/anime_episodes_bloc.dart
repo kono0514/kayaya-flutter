@@ -68,7 +68,7 @@ class AnimeEpisodesBloc extends Bloc<AnimeEpisodesEvent, AnimeEpisodesState> {
 
       try {
         int page = 1;
-        SortOrder sortOrder = event.sortOrder;
+        SortOrder sortOrder = event.sortOrder ?? SortOrder.asc;
         if (currentState is AnimeEpisodesLoaded) {
           page = currentState.paginatorInfo.currentPage + 1;
           sortOrder = currentState.sortOrder;
