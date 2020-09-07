@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
 import 'package:kayaya_flutter/cubit/genre_list_cubit.dart';
-import 'package:kayaya_flutter/graphql_client.dart';
 import 'package:kayaya_flutter/models/filter.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:collection/collection.dart';
@@ -253,13 +252,16 @@ class _FilterDialogState extends State<FilterDialog> {
   }
 
   Widget _buildGenreChipsWidget(List<GetGenres$Query$Genres> genres) {
+    final bool _isDark = Theme.of(context).brightness == Brightness.dark;
+
     List<Widget> _list = [];
     genres.forEach((genre) {
       _list.add(Padding(
         padding: const EdgeInsets.only(right: 8.0, bottom: 16.0),
         child: FilterChip(
           showCheckmark: false,
-          selectedColor: Colors.blue[200],
+          backgroundColor: _isDark ? Colors.grey[800] : Colors.grey[200],
+          selectedColor: _isDark ? Colors.blue[600] : Colors.blue[100],
           label: Text(genre.name.mn),
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           selected: _selectedGenres.contains(genre.id),

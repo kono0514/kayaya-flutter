@@ -67,16 +67,15 @@ class _SliverFilterButtonState extends State<SliverFilterButton>
 
           return ButtonTheme(
             minWidth: 36.0,
-            child: OutlineButton(
+            child: RaisedButton(
+              color: _hasFilter
+                  ? Colors.blue
+                  : _isDark ? Colors.grey[850] : Colors.white,
+              textColor: _hasFilter ? Colors.white : null,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Icon(
-                    Icons.tune,
-                    color: _hasFilter
-                        ? _isDark ? Colors.lightBlue : Colors.deepPurple
-                        : null,
-                  ),
+                  Icon(Icons.tune),
                   AnimatedBuilder(
                     animation: _controller,
                     builder: (context, child) => FadeTransition(
@@ -90,11 +89,6 @@ class _SliverFilterButtonState extends State<SliverFilterButton>
                           child: Text(
                             S.current.common_filter.toUpperCase(),
                             style: TextStyle(
-                              color: _hasFilter
-                                  ? _isDark
-                                      ? Colors.lightBlue
-                                      : Colors.deepPurple
-                                  : null,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -118,7 +112,6 @@ class _SliverFilterButtonState extends State<SliverFilterButton>
                   ),
                 );
               },
-              highlightedBorderColor: Colors.transparent,
             ),
           );
         },
