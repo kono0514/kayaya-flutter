@@ -5,6 +5,7 @@ import 'package:flutter/material.dart'
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
+import 'package:kayaya_flutter/bloc/anime_episodes_bloc.dart';
 import 'package:kayaya_flutter/cubit/anime_details/anime_details_cubit.dart';
 import 'package:kayaya_flutter/easing_linear_gradient.dart';
 import 'package:kayaya_flutter/hex_color.dart';
@@ -63,10 +64,18 @@ class _MoviePageState extends State<MoviePage>
     final double _appBarHeight = 335.0 + _tabBar.preferredSize.height;
     final bool _isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return BlocProvider(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
       create: (context) =>
           AnimeDetailsCubit(context.repository<AniimRepository>())
-            ..loadDetails(anime.id),
+                  ..loadDetails(anime.id)),
+        BlocProvider(
+          create: (context) =>
+              AnimeEpisodesBloc(context.repository<AniimRepository>())
+                ..add(AnimeEpisodesFetched(anime.id)),
+        ),
+      ],
       child: Scaffold(
         body: SafeArea(
           top: false,
@@ -105,14 +114,11 @@ class _MoviePageState extends State<MoviePage>
                             child: AnimeDetail(
                               anime: anime,
                               actions: [
-                                FlatButton.icon(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.play_circle_outline),
-                                  label: Text('PLAY'),
-                                  color: Theme.of(context).primaryColor,
-                                  textTheme: ButtonTextTheme.primary,
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
+                                BlocBuilder<AnimeEpisodesBloc,
+                                    AnimeEpisodesState>(
+                                  builder: (context, state) {
+                                    return _buildPlayButton(state);
+                                  },
                                 ),
                               ],
                             ),
@@ -141,6 +147,34 @@ class _MoviePageState extends State<MoviePage>
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildPlayButton(AnimeEpisodesState state) {
+    String buttonText;
+    IconData iconData;
+    Function onPressed = () {};
+
+    if (state is AnimeEpisodesInitial) {
+      iconData = Icons.more_horiz;
+      buttonText = 'Loading';
+    } else if (state is AnimeEpisodesLoaded) {
+      iconData = Icons.play_circle_outline;
+      buttonText = 'Play';
+      onPressed = () async {
+      };
+    } else {
+      iconData = Icons.error;
+      buttonText = 'Not available';
+    }
+
+    return FlatButton.icon(
+      onPressed: onPressed,
+      icon: Icon(iconData),
+      label: Text(buttonText),
+      color: Theme.of(context).primaryColor,
+      textTheme: ButtonTextTheme.primary,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }
 
