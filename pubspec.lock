@@ -54,20 +54,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  awsome_video_player:
-    dependency: "direct main"
-    description:
-      name: awsome_video_player
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.8+1"
-  better_player:
-    dependency: "direct main"
-    description:
-      name: better_player
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.13"
   bloc:
     dependency: "direct main"
     description:
@@ -145,6 +131,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.0+1"
+  carousel_slider:
+    dependency: "direct main"
+    description:
+      name: carousel_slider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.1"
   characters:
     dependency: transitive
     description:
@@ -294,6 +287,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  dynamic_widget:
+    dependency: "direct main"
+    description:
+      name: dynamic_widget
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   equatable:
     dependency: "direct main"
     description:
@@ -329,13 +329,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.11"
-  flick_video_player:
-    dependency: "direct main"
-    description:
-      name: flick_video_player
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -374,13 +367,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_spinkit:
-    dependency: transitive
-    description:
-      name: flutter_spinkit
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.1.2+1"
   flutter_svg:
     dependency: transitive
     description:
@@ -398,20 +384,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_widget_from_html_core:
+  font_awesome_flutter:
     dependency: transitive
     description:
-      name: flutter_widget_from_html_core
+      name: font_awesome_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.3"
-  flutter_widgets:
-    dependency: transitive
-    description:
-      name: flutter_widgets
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.12"
+    version: "8.8.1"
   freezed_annotation:
     dependency: transitive
     description:
@@ -603,13 +582,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.8"
-  meedu_player:
-    dependency: "direct main"
-    description:
-      name: meedu_player
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.0"
   meta:
     dependency: transitive
     description:
@@ -652,13 +624,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
-  orientation:
-    dependency: transitive
-    description:
-      name: orientation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0"
   package_config:
     dependency: transitive
     description:

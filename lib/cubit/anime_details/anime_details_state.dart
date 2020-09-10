@@ -5,17 +5,21 @@ abstract class AnimeDetailsState extends Equatable {
 }
 
 class AnimeDetailsInitial extends AnimeDetailsState {
+  const AnimeDetailsInitial();
+
   @override
   List<Object> get props => [];
 }
 
 class AnimeDetailsLoaded extends AnimeDetailsState {
   final GetAnimeDetails$Query$Anime details;
+  final BrowseAnimes$Query$Animes$Data listData;
+  final bool hasListData;
 
-  AnimeDetailsLoaded(this.details);
+  const AnimeDetailsLoaded(this.details, {this.listData, this.hasListData});
 
   @override
-  List<Object> get props => [details];
+  List<Object> get props => [details, listData, hasListData];
 }
 
 class AnimeDetailsError extends AnimeDetailsState {

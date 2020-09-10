@@ -30,7 +30,7 @@ class NavigationTab extends StatefulWidget {
 class _NavigationTabState extends State<NavigationTab> {
   int previousTabIndex = 1;
   final CupertinoTabController _tabController =
-      CupertinoTabController(initialIndex: 1);
+      CupertinoTabController(initialIndex: 0);
 
   final List<TabViewItem> items = [
     TabViewItem(

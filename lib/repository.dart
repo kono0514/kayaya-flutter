@@ -143,6 +143,23 @@ class AniimRepository {
     return GetAnimeDetails$Query.fromJson(result.data).anime;
   }
 
+  Future<GetAnimeDetailsFull$Query$Anime> fetchDetailsFull(String id) async {
+    final args = GetAnimeDetailsFullArguments(id: id);
+    final _options = QueryOptions(
+      documentNode: GetAnimeDetailsFullQuery().document,
+      variables: args.toJson(),
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+    );
+
+    final result = await client.query(_options);
+
+    if (result.hasException) {
+      throw result.exception;
+    }
+
+    return GetAnimeDetailsFull$Query.fromJson(result.data).anime;
+  }
+
   Future<GetAnimeEpisodes$Query$Episodes> fetchEpisodes(
     String id, {
     int page = 1,
@@ -176,5 +193,20 @@ class AniimRepository {
     }
 
     return GetAnimeEpisodes$Query.fromJson(result.data).episodes;
+  }
+
+  Future<String> fetchFeatured() async {
+    final result = await client.query(
+      QueryOptions(
+        documentNode: GetFeaturedQuery().document,
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
+      ),
+    );
+
+    if (result.hasException) {
+      throw result.exception;
+    }
+
+    return GetFeatured$Query.fromJson(result.data).featured;
   }
 }
