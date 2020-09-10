@@ -6,37 +6,55 @@ class RoundedCachedNetworkImage extends StatelessWidget {
   final double width;
   final double height;
   final Color placeholderColor;
+  final bool adaptiveColor;
   final BoxShadow boxShadow;
   final Widget child;
   final Clip childClipBehavior;
 
+  /// TODO: Assert Can't specify both adaptiveColor = true and placeholderColor
   const RoundedCachedNetworkImage(
       {Key key,
       @required this.url,
-      @required this.width,
-      @required this.height,
+      this.width,
+      this.height,
       this.child,
       this.placeholderColor,
+      this.adaptiveColor = false,
       this.boxShadow,
       this.childClipBehavior = Clip.none})
       : super(key: key);
 
+  Widget _generatePlaceholder(BuildContext context) {
+    Color color = Colors.black;
+    if (adaptiveColor) {
+      color = Theme.of(context).brightness == Brightness.dark
+          ? Colors.black
+          : Colors.white;
+    } else if (placeholderColor != null) {
+      color = placeholderColor;
+    }
+
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.0),
+        color: color,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (url == null) {
+      return _generatePlaceholder(context);
+    }
+
     return CachedNetworkImage(
       imageUrl: url,
-      placeholder: (context, url) => placeholderColor == null
-          ? null
-          : Container(
-              width: width,
-              height: height,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.0),
-                color: placeholderColor,
-              ),
-            ),
+      placeholder: (context, url) => _generatePlaceholder(context),
       imageBuilder: (context, imageProvider) => Container(
-        width: width,
+        width: width ?? MediaQuery.of(context).size.width,
         height: height,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.0),
