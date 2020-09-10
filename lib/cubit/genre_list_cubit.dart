@@ -16,7 +16,7 @@ class GenreListCubit extends Cubit<GenreListState> {
 
     print('getGenreList state is ${currentState.runtimeType}');
 
-    if (!(currentState is GenreListLoaded)) {
+    if (currentState is! GenreListLoaded) {
       try {
         print('loading');
         emit(GenreListLoading());

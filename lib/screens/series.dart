@@ -9,6 +9,7 @@ import 'package:kayaya_flutter/cubit/anime_details/anime_details_cubit.dart';
 import 'package:kayaya_flutter/easing_linear_gradient.dart';
 import 'package:kayaya_flutter/hex_color.dart';
 import 'package:kayaya_flutter/repository.dart';
+import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/widgets/anime_details/anime_detail.dart';
 import 'package:kayaya_flutter/widgets/anime_details/tab_episodes.dart';
 import 'package:kayaya_flutter/widgets/anime_details/tab_info.dart';
@@ -21,7 +22,7 @@ import 'package:shimmer/shimmer.dart';
 // (Implemented workaround with extended_nested_scroll_view) TODO: https://github.com/flutter/flutter/issues/40740
 
 class SeriesPage extends StatefulWidget {
-  final ListItemAnimeMixin argument;
+  final MediumArguments argument;
 
   SeriesPage(this.argument);
 
@@ -32,6 +33,7 @@ class SeriesPage extends StatefulWidget {
 class _SeriesPageState extends State<SeriesPage>
     with SingleTickerProviderStateMixin {
   ListItemAnimeMixin anime;
+  AnimeDetailsCubit _animeDetailsCubit;
   TabController _controller;
   final List<String> _tabs = ['INFO', 'EPISODES', 'RELATED'];
 
@@ -40,13 +42,33 @@ class _SeriesPageState extends State<SeriesPage>
 
   @override
   void initState() {
-    anime = widget.argument;
-    _controller = TabController(length: _tabs.length, vsync: this);
     super.initState();
+    anime = widget.argument.anime;
+    _animeDetailsCubit =
+        AnimeDetailsCubit(context.repository<AniimRepository>());
+
+    /// Only minimal amount of data was passed (id, poster, name)
+    /// as opposed to the full listing item data (id, poster, name, banner, genres, etc...)
+    /// So we should fetch other missing informations along with the details.
+    if (widget.argument.isMinimal) {
+      _animeDetailsCubit.listen((state) {
+        if (state is AnimeDetailsLoaded) {
+          setState(() {
+            anime = state.listData;
+          });
+        }
+      });
+      _animeDetailsCubit.loadDetailsFull(anime.id);
+    } else {
+      _animeDetailsCubit.loadDetails(anime.id);
+    }
+
+    _controller = TabController(length: _tabs.length, vsync: this);
   }
 
   @override
   void dispose() {
+    _animeDetailsCubit.close();
     _controller.dispose();
     super.dispose();
   }
@@ -63,10 +85,8 @@ class _SeriesPageState extends State<SeriesPage>
     final double _appBarHeight = 335.0 + _tabBar.preferredSize.height;
     final bool _isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return BlocProvider(
-      create: (context) =>
-          AnimeDetailsCubit(context.repository<AniimRepository>())
-            ..loadDetails(anime.id),
+    return BlocProvider.value(
+      value: _animeDetailsCubit,
       child: Scaffold(
         body: SafeArea(
           top: false,

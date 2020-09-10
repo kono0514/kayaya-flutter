@@ -1,6 +1,6 @@
-query GetAnimeDetails($id: ID!) {
+query GetAnimeDetailsFull($id: ID!) {
     anime(id: $id) {
-        id
+        ...ListItemAnime
         description {
             en
             mn

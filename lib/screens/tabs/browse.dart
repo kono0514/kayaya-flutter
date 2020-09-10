@@ -166,7 +166,8 @@ class _BrowsePageState extends State<BrowsePage> {
                                               anime.animeType == AnimeType.movie
                                                   ? RouteConstants.movieDetail
                                                   : RouteConstants.seriesDetail,
-                                              arguments: anime);
+                                              arguments:
+                                                  MediumArguments(anime));
                                         },
                                       );
                               },

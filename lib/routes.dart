@@ -4,12 +4,14 @@ import 'package:kayaya_flutter/screens/movie.dart';
 import 'package:kayaya_flutter/screens/search.dart';
 import 'package:kayaya_flutter/screens/series.dart';
 import 'package:kayaya_flutter/screens/settings.dart';
+import 'package:kayaya_flutter/screens/tabs/library.dart';
 
 abstract class RouteConstants {
   static const String seriesDetail = '/series';
   static const String movieDetail = '/movie';
   static const String search = '/search';
   static const String settings = '/settings';
+  static const String library = '/library';
 }
 
 abstract class Routes {
@@ -26,8 +28,17 @@ abstract class Routes {
             builder: (context) => SearchPage(settings.arguments));
       case RouteConstants.settings:
         return MaterialPageRoute(builder: (context) => SettingsPage());
+      case RouteConstants.library:
+        return MaterialPageRoute(builder: (context) => LibraryPage());
       default:
-        return MaterialPageRoute(builder: (context) => SettingsPage());
+        return MaterialPageRoute(builder: (context) => LibraryPage());
     }
   }
+}
+
+class MediumArguments {
+  final ListItemAnimeMixin anime;
+  final bool isMinimal;
+
+  MediumArguments(this.anime, {this.isMinimal = false});
 }

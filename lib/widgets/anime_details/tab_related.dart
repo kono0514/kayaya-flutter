@@ -41,7 +41,7 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem>
                       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 ),
                 SliverPadding(padding: const EdgeInsets.only(top: 30)),
-                if (state.details.relations.length > 0)
+                if (state.details.relations.data.length > 0)
                   SliverToBoxAdapter(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,10 +64,11 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem>
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
                               child: AnimeRelatedTile(
-                                anime: state.details.relations[index],
+                                anime: state.details.relations.data[index],
                                 height: 163,
                                 onPressed: () {
-                                  final anime = state.details.relations[index];
+                                  final anime =
+                                      state.details.relations.data[index];
 
                                   Navigator.of(
                                     context,
@@ -76,18 +77,18 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem>
                                       anime.animeType == AnimeType.movie
                                           ? RouteConstants.movieDetail
                                           : RouteConstants.seriesDetail,
-                                      arguments: anime);
+                                      arguments: MediumArguments(anime));
                                 },
                               ),
                             ),
-                            itemCount: state.details.relations.length,
+                            itemCount: state.details.relations.data.length,
                           ),
                         ),
                         SizedBox(height: 30),
                       ],
                     ),
                   ),
-                if (state.details.recommendations.length > 0)
+                if (state.details.recommendations.data.length > 0)
                   SliverToBoxAdapter(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,11 +111,12 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem>
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
                               child: AnimeRelatedTile(
-                                anime: state.details.recommendations[index],
+                                anime:
+                                    state.details.recommendations.data[index],
                                 height: 163,
                                 onPressed: () {
                                   final anime =
-                                      state.details.recommendations[index];
+                                      state.details.recommendations.data[index];
 
                                   Navigator.of(
                                     context,
@@ -123,11 +125,12 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem>
                                       anime.animeType == AnimeType.movie
                                           ? RouteConstants.movieDetail
                                           : RouteConstants.seriesDetail,
-                                      arguments: anime);
+                                      arguments: MediumArguments(anime));
                                 },
                               ),
                             ),
-                            itemCount: state.details.recommendations.length,
+                            itemCount:
+                                state.details.recommendations.data.length,
                           ),
                         ),
                       ],

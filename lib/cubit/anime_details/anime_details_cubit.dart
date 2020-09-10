@@ -20,4 +20,19 @@ class AnimeDetailsCubit extends Cubit<AnimeDetailsState> {
       emit(AnimeDetailsError(e));
     }
   }
+
+  void loadDetailsFull(String id) async {
+    emit(AnimeDetailsInitial());
+
+    try {
+      final detailsFull = await repository.fetchDetailsFull(id);
+      final details =
+          GetAnimeDetails$Query$Anime.fromJson(detailsFull.toJson());
+      final listData =
+          BrowseAnimes$Query$Animes$Data.fromJson(detailsFull.toJson());
+      emit(AnimeDetailsLoaded(details, hasListData: true, listData: listData));
+    } catch (e) {
+      emit(AnimeDetailsError(e));
+    }
+  }
 }

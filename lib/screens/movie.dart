@@ -8,6 +8,7 @@ import 'package:kayaya_flutter/bloc/anime_episodes_bloc.dart';
 import 'package:kayaya_flutter/cubit/anime_details/anime_details_cubit.dart';
 import 'package:kayaya_flutter/easing_linear_gradient.dart';
 import 'package:kayaya_flutter/repository.dart';
+import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/widgets/anime_details/anime_detail.dart';
 import 'package:kayaya_flutter/widgets/anime_details/tab_info.dart';
 import 'package:kayaya_flutter/widgets/anime_details/tab_related.dart';
@@ -18,7 +19,7 @@ import 'package:kayaya_flutter/widgets/player/source_chooser_dialog.dart';
 // (Implemented workaround with extended_nested_scroll_view) TODO: https://github.com/flutter/flutter/issues/40740
 
 class MoviePage extends StatefulWidget {
-  final ListItemAnimeMixin argument;
+  final MediumArguments argument;
 
   MoviePage(this.argument);
 
@@ -29,6 +30,7 @@ class MoviePage extends StatefulWidget {
 class _MoviePageState extends State<MoviePage>
     with SingleTickerProviderStateMixin {
   ListItemAnimeMixin anime;
+  AnimeDetailsCubit _animeDetailsCubit;
   TabController _controller;
   final List<String> _tabs = ['INFO', 'RELATED'];
 
@@ -37,13 +39,33 @@ class _MoviePageState extends State<MoviePage>
 
   @override
   void initState() {
-    anime = widget.argument;
-    _controller = TabController(length: _tabs.length, vsync: this);
     super.initState();
+    anime = widget.argument.anime;
+    _animeDetailsCubit =
+        AnimeDetailsCubit(context.repository<AniimRepository>());
+
+    /// Only minimal amount of data (ie. when using dynamic remote widget) was passed (id, poster, name)
+    /// as opposed to the full listing item data (id, poster, name, banner, genres, etc...)
+    /// So we should fetch the missing informations along with the details.
+    if (widget.argument.isMinimal) {
+      _animeDetailsCubit.listen((state) {
+        if (state is AnimeDetailsLoaded) {
+          setState(() {
+            anime = state.listData;
+          });
+        }
+      });
+      _animeDetailsCubit.loadDetailsFull(anime.id);
+    } else {
+      _animeDetailsCubit.loadDetails(anime.id);
+    }
+
+    _controller = TabController(length: _tabs.length, vsync: this);
   }
 
   @override
   void dispose() {
+    _animeDetailsCubit.close();
     _controller.dispose();
     super.dispose();
   }
@@ -62,10 +84,7 @@ class _MoviePageState extends State<MoviePage>
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-            create: (context) =>
-                AnimeDetailsCubit(context.repository<AniimRepository>())
-                  ..loadDetails(anime.id)),
+        BlocProvider.value(value: _animeDetailsCubit),
         BlocProvider(
           create: (context) =>
               AnimeEpisodesBloc(context.repository<AniimRepository>())
