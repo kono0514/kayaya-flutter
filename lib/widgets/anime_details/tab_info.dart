@@ -54,7 +54,7 @@ class _InfoTabViewItemState extends State<InfoTabViewItem>
                           ),
                           SizedBox(height: 10),
                           Text(
-                            widget.anime.genres
+                            (widget.anime.genres ?? [])
                                 .map((e) => e.name.mn)
                                 .join(', '),
                             style: Theme.of(context).textTheme.caption,

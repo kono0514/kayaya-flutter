@@ -33,7 +33,7 @@ class AnimeDetail extends StatelessWidget {
     return Column(
       children: <Widget>[
         RoundedCachedNetworkImage(
-          url: anime.coverImage.large,
+          url: anime.coverImage?.large,
           width: 109,
           height: 163,
           placeholderColor: HexColor(
