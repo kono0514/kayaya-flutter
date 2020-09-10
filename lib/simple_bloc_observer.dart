@@ -11,6 +11,12 @@ class SimpleBlocObserver extends BlocObserver {
   }
 
   @override
+  void onChange(Cubit cubit, Change change) {
+    if (cubit is! Bloc) logger.i(change);
+    super.onChange(cubit, change);
+  }
+
+  @override
   void onTransition(Bloc bloc, Transition transition) {
     logger.i(transition);
     super.onTransition(bloc, transition);

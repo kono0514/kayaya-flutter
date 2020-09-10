@@ -56,7 +56,7 @@ class AnimeListBloc extends Bloc<AnimeListEvent, AnimeListState> {
 
     if (event is AnimeListRefreshed) {
       try {
-        // if (!(currentState is AnimeListLoadedState)) {
+        // if (currentState is! AnimeListLoadedState) {
         yield AnimeListInitialState();
         // }
         Filter filter = _getCurrentFilterFromState(filterCubit.state);

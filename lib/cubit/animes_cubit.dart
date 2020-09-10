@@ -13,7 +13,7 @@ class AnimesCubit extends Cubit<AnimesState> {
 
   void getAnimesNextPage() async {
     if (state is AnimesLoadedState &&
-        !(state as AnimesLoadedState).paginatorInfo.hasMorePages) {
+        (state as AnimesLoadedState).paginatorInfo.hasMorePages == false) {
       return;
     }
 
