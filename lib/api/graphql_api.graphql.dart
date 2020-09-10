@@ -11,7 +11,7 @@ part 'graphql_api.graphql.g.dart';
 
 mixin ListItemAnimeMixin {
   String id;
-  ListItemAnimeMixin$Name name;
+  String name;
   @JsonKey(unknownEnumValue: AnimeType.artemisUnknown)
   AnimeType animeType;
   int rating;
@@ -95,22 +95,6 @@ class BrowseAnimes$Query with EquatableMixin {
 }
 
 @JsonSerializable(explicitToJson: true)
-class ListItemAnimeMixin$Name with EquatableMixin {
-  ListItemAnimeMixin$Name();
-
-  factory ListItemAnimeMixin$Name.fromJson(Map<String, dynamic> json) =>
-      _$ListItemAnimeMixin$NameFromJson(json);
-
-  String en;
-
-  String mn;
-
-  @override
-  List<Object> get props => [en, mn];
-  Map<String, dynamic> toJson() => _$ListItemAnimeMixin$NameToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
 class ListItemAnimeMixin$CoverImage with EquatableMixin {
   ListItemAnimeMixin$CoverImage();
 
@@ -125,22 +109,6 @@ class ListItemAnimeMixin$CoverImage with EquatableMixin {
 }
 
 @JsonSerializable(explicitToJson: true)
-class ListItemAnimeMixin$Genres$Name with EquatableMixin {
-  ListItemAnimeMixin$Genres$Name();
-
-  factory ListItemAnimeMixin$Genres$Name.fromJson(Map<String, dynamic> json) =>
-      _$ListItemAnimeMixin$Genres$NameFromJson(json);
-
-  String en;
-
-  String mn;
-
-  @override
-  List<Object> get props => [en, mn];
-  Map<String, dynamic> toJson() => _$ListItemAnimeMixin$Genres$NameToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
 class ListItemAnimeMixin$Genres with EquatableMixin {
   ListItemAnimeMixin$Genres();
 
@@ -149,7 +117,7 @@ class ListItemAnimeMixin$Genres with EquatableMixin {
 
   String id;
 
-  ListItemAnimeMixin$Genres$Name name;
+  String name;
 
   @override
   List<Object> get props => [id, name];
@@ -199,24 +167,6 @@ class AnimesOrderByOrderByClause with EquatableMixin {
   @override
   List<Object> get props => [field, order];
   Map<String, dynamic> toJson() => _$AnimesOrderByOrderByClauseToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class GetAnimeDetails$Query$Anime$Description with EquatableMixin {
-  GetAnimeDetails$Query$Anime$Description();
-
-  factory GetAnimeDetails$Query$Anime$Description.fromJson(
-          Map<String, dynamic> json) =>
-      _$GetAnimeDetails$Query$Anime$DescriptionFromJson(json);
-
-  String en;
-
-  String mn;
-
-  @override
-  List<Object> get props => [en, mn];
-  Map<String, dynamic> toJson() =>
-      _$GetAnimeDetails$Query$Anime$DescriptionToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -351,7 +301,7 @@ class GetAnimeDetails$Query$Anime with EquatableMixin {
 
   String id;
 
-  GetAnimeDetails$Query$Anime$Description description;
+  String description;
 
   @JsonKey(
     fromJson: fromGraphQLAnilistMediaToDartGraphqlAnilistApi$Query$Media,
@@ -381,24 +331,6 @@ class GetAnimeDetails$Query with EquatableMixin {
   @override
   List<Object> get props => [anime];
   Map<String, dynamic> toJson() => _$GetAnimeDetails$QueryToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class GetAnimeDetailsFull$Query$Anime$Description with EquatableMixin {
-  GetAnimeDetailsFull$Query$Anime$Description();
-
-  factory GetAnimeDetailsFull$Query$Anime$Description.fromJson(
-          Map<String, dynamic> json) =>
-      _$GetAnimeDetailsFull$Query$Anime$DescriptionFromJson(json);
-
-  String en;
-
-  String mn;
-
-  @override
-  List<Object> get props => [en, mn];
-  Map<String, dynamic> toJson() =>
-      _$GetAnimeDetailsFull$Query$Anime$DescriptionToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -533,7 +465,7 @@ class GetAnimeDetailsFull$Query$Anime with EquatableMixin, ListItemAnimeMixin {
   factory GetAnimeDetailsFull$Query$Anime.fromJson(Map<String, dynamic> json) =>
       _$GetAnimeDetailsFull$Query$AnimeFromJson(json);
 
-  GetAnimeDetailsFull$Query$Anime$Description description;
+  String description;
 
   @JsonKey(
     fromJson: fromGraphQLAnilistMediaToDartGraphqlAnilistApi$Query$Media,
@@ -736,22 +668,6 @@ class GetFeatured$Query with EquatableMixin {
 }
 
 @JsonSerializable(explicitToJson: true)
-class GetGenres$Query$Genres$Name with EquatableMixin {
-  GetGenres$Query$Genres$Name();
-
-  factory GetGenres$Query$Genres$Name.fromJson(Map<String, dynamic> json) =>
-      _$GetGenres$Query$Genres$NameFromJson(json);
-
-  String en;
-
-  String mn;
-
-  @override
-  List<Object> get props => [en, mn];
-  Map<String, dynamic> toJson() => _$GetGenres$Query$Genres$NameToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
 class GetGenres$Query$Genres with EquatableMixin {
   GetGenres$Query$Genres();
 
@@ -760,7 +676,7 @@ class GetGenres$Query$Genres with EquatableMixin {
 
   String id;
 
-  GetGenres$Query$Genres$Name name;
+  String name;
 
   @override
   List<Object> get props => [id, name];
@@ -1023,20 +939,7 @@ class BrowseAnimesQuery
               alias: null,
               arguments: [],
               directives: [],
-              selectionSet: SelectionSetNode(selections: [
-                FieldNode(
-                    name: NameNode(value: 'en'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'mn'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null)
-              ])),
+              selectionSet: null),
           FieldNode(
               name: NameNode(value: 'animeType'),
               alias: null,
@@ -1091,20 +994,7 @@ class BrowseAnimesQuery
                     alias: null,
                     arguments: [],
                     directives: [],
-                    selectionSet: SelectionSetNode(selections: [
-                      FieldNode(
-                          name: NameNode(value: 'en'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null),
-                      FieldNode(
-                          name: NameNode(value: 'mn'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null)
-                    ]))
+                    selectionSet: null)
               ]))
         ]))
   ]);
@@ -1177,20 +1067,7 @@ class GetAnimeDetailsQuery
                     alias: null,
                     arguments: [],
                     directives: [],
-                    selectionSet: SelectionSetNode(selections: [
-                      FieldNode(
-                          name: NameNode(value: 'en'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null),
-                      FieldNode(
-                          name: NameNode(value: 'mn'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null)
-                    ])),
+                    selectionSet: null),
                 FieldNode(
                     name: NameNode(value: 'anilist'),
                     alias: null,
@@ -1277,20 +1154,7 @@ class GetAnimeDetailsQuery
               alias: null,
               arguments: [],
               directives: [],
-              selectionSet: SelectionSetNode(selections: [
-                FieldNode(
-                    name: NameNode(value: 'en'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'mn'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null)
-              ])),
+              selectionSet: null),
           FieldNode(
               name: NameNode(value: 'animeType'),
               alias: null,
@@ -1345,20 +1209,7 @@ class GetAnimeDetailsQuery
                     alias: null,
                     arguments: [],
                     directives: [],
-                    selectionSet: SelectionSetNode(selections: [
-                      FieldNode(
-                          name: NameNode(value: 'en'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null),
-                      FieldNode(
-                          name: NameNode(value: 'mn'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null)
-                    ]))
+                    selectionSet: null)
               ]))
         ]))
   ]);
@@ -1428,20 +1279,7 @@ class GetAnimeDetailsFullQuery extends GraphQLQuery<GetAnimeDetailsFull$Query,
                     alias: null,
                     arguments: [],
                     directives: [],
-                    selectionSet: SelectionSetNode(selections: [
-                      FieldNode(
-                          name: NameNode(value: 'en'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null),
-                      FieldNode(
-                          name: NameNode(value: 'mn'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null)
-                    ])),
+                    selectionSet: null),
                 FieldNode(
                     name: NameNode(value: 'anilist'),
                     alias: null,
@@ -1528,20 +1366,7 @@ class GetAnimeDetailsFullQuery extends GraphQLQuery<GetAnimeDetailsFull$Query,
               alias: null,
               arguments: [],
               directives: [],
-              selectionSet: SelectionSetNode(selections: [
-                FieldNode(
-                    name: NameNode(value: 'en'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'mn'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null)
-              ])),
+              selectionSet: null),
           FieldNode(
               name: NameNode(value: 'animeType'),
               alias: null,
@@ -1596,20 +1421,7 @@ class GetAnimeDetailsFullQuery extends GraphQLQuery<GetAnimeDetailsFull$Query,
                     alias: null,
                     arguments: [],
                     directives: [],
-                    selectionSet: SelectionSetNode(selections: [
-                      FieldNode(
-                          name: NameNode(value: 'en'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null),
-                      FieldNode(
-                          name: NameNode(value: 'mn'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null)
-                    ]))
+                    selectionSet: null)
               ]))
         ]))
   ]);
@@ -1873,20 +1685,7 @@ class GetGenresQuery extends GraphQLQuery<GetGenres$Query, JsonSerializable> {
                     alias: null,
                     arguments: [],
                     directives: [],
-                    selectionSet: SelectionSetNode(selections: [
-                      FieldNode(
-                          name: NameNode(value: 'en'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null),
-                      FieldNode(
-                          name: NameNode(value: 'mn'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: null)
-                    ]))
+                    selectionSet: null)
               ]))
         ]))
   ]);

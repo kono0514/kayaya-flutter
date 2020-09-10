@@ -131,10 +131,7 @@ class DefaultClickListener implements ClickListener {
                   'coverImage': {
                     'large': uri.queryParameters['image'],
                   },
-                  'name': {
-                    'en': uri.queryParameters['name'],
-                    'mn': uri.queryParameters['name'],
-                  },
+                  'name': uri.queryParameters['name'],
                 },
               ),
               isMinimal: true,

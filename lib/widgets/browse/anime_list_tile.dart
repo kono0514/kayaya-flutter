@@ -34,7 +34,7 @@ class AnimeListTile extends StatelessWidget {
                     _filterCubit.state.filter.copyWith(genres: [genre.id]));
               },
               child: Text(
-                genre.name.mn,
+                genre.name,
                 style: TextStyle(
                   fontWeight: FontWeight.normal,
                   fontSize: 12,
@@ -85,7 +85,7 @@ class AnimeListTile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      anime.name.mn,
+                      anime.name,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.headline6,

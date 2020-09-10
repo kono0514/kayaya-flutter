@@ -1,10 +1,7 @@
 query GetAnimeDetails($id: ID!) {
     anime(id: $id) {
         id
-        description {
-            en
-            mn
-        }
+        description
         anilist
         relations {
             data {

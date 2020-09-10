@@ -1,9 +1,6 @@
 fragment ListItemAnime on Anime {
     id
-    name {
-        en
-        mn
-    }
+    name
     animeType
     rating
     coverImage {
@@ -13,9 +10,6 @@ fragment ListItemAnime on Anime {
     bannerImage
     genres {
         id
-        name {
-            en
-            mn
-        }
+        name
     }
 }

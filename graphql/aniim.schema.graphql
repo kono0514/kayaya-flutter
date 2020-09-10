@@ -196,8 +196,8 @@ type PaginatorInfo {
 type Anime {
   id: ID!
   anilistId: String!
-  name: Translatable!
-  description: Translatable!
+  name: String!
+  description: String!
   animeType: AnimeType!
   rating: Int
   coverImage: AnimeCoverImage!
@@ -235,11 +235,6 @@ type Anime {
   anilistDataUpdatedAt: DateTime
 }
 
-type Translatable {
-  en: String
-  mn: String
-}
-
 type AnimeCoverImage {
   extraLarge: String
   large: String
@@ -255,7 +250,7 @@ scalar AnilistMedia
 
 type Genre {
   id: ID!
-  name: Translatable!
+  name: String!
   animesCount: Int!
   createdAt: DateTime!
   updatedAt: DateTime!

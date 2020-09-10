@@ -55,7 +55,7 @@ class _InfoTabViewItemState extends State<InfoTabViewItem>
                           SizedBox(height: 10),
                           Text(
                             (widget.anime.genres ?? [])
-                                .map((e) => e.name.mn)
+                                .map((e) => e.name)
                                 .join(', '),
                             style: Theme.of(context).textTheme.caption,
                           ),
@@ -69,7 +69,7 @@ class _InfoTabViewItemState extends State<InfoTabViewItem>
                           ),
                           SizedBox(height: 10),
                           Html(
-                            data: state.details.description.mn,
+                            data: state.details.description,
                             style: {
                               'body': Style.fromTextStyle(
                                       Theme.of(context).textTheme.caption)

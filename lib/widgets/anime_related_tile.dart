@@ -37,7 +37,7 @@ class AnimeRelatedTile extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       vertical: 8.0, horizontal: 10.0),
                   child: Text(
-                    anime.name.mn,
+                    anime.name,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12,

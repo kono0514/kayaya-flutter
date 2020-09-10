@@ -262,7 +262,7 @@ class _FilterDialogState extends State<FilterDialog> {
           showCheckmark: false,
           backgroundColor: _isDark ? Colors.grey[800] : Colors.grey[200],
           selectedColor: _isDark ? Colors.blue[600] : Colors.blue[100],
-          label: Text(genre.name.mn),
+          label: Text(genre.name),
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           selected: _selectedGenres.contains(genre.id),
           onSelected: (value) {

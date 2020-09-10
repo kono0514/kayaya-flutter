@@ -72,7 +72,7 @@ class AnimeDetail extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         AutoSizeText(
-          anime.name.mn,
+          anime.name,
           style: textTheme.headline4
               .apply(color: _isDark ? Colors.white : Colors.black),
           maxLines: 3,

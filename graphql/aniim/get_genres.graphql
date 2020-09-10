@@ -1,9 +1,6 @@
 query GetGenres {
     genres {
         id
-        name {
-            en
-            mn
-        }
+        name
     }
 }
