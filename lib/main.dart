@@ -18,15 +18,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
 
-  Locale locale;
+  // Get the user's chosen locale from SharedPreferences
+  // Fallback to 'en'
   final sharedPrefService = await SharedPreferencesService.instance;
-  String languageCode = sharedPrefService.languageCode;
-  if (languageCode != null) {
-    locale = Locale(languageCode);
-  }
+  String languageCode = sharedPrefService.languageCode ?? 'en';
+  Locale locale = Locale(languageCode);
 
   runApp(RepositoryProvider(
-    create: (context) => AniimRepository(getGraphQLClient()),
+    create: (context) => AniimRepository(
+      getGraphQLClient(locale: locale.languageCode),
+    ),
     child: MultiBlocProvider(
       providers: [
         BlocProvider(

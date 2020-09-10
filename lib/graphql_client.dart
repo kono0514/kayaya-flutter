@@ -4,13 +4,14 @@ final NormalizedInMemoryCache cache = NormalizedInMemoryCache(
   dataIdFromObject: typenameDataIdFromObject,
 );
 
-Link link = HttpLink(uri: 'http://aniim-api.test/graphql');
-
 GraphQLClient _client;
 
-GraphQLClient getGraphQLClient() {
+GraphQLClient getGraphQLClient({String locale = 'en'}) {
   _client ??= GraphQLClient(
-    link: link,
+    link: HttpLink(
+      uri: 'http://aniim-api.test/graphql',
+      headers: {'Accept-Language': locale},
+    ),
     cache: cache,
   );
 
