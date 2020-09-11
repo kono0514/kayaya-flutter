@@ -18,11 +18,9 @@ class InfoTabViewItem extends StatefulWidget {
   _InfoTabViewItemState createState() => _InfoTabViewItemState();
 }
 
-class _InfoTabViewItemState extends State<InfoTabViewItem>
-    with AutomaticKeepAliveClientMixin {
+class _InfoTabViewItemState extends State<InfoTabViewItem> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return NestedScrollViewInnerScrollPositionKeyWidget(
       widget.tabKey,
       CustomScrollView(
@@ -144,7 +142,4 @@ class _InfoTabViewItemState extends State<InfoTabViewItem>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

@@ -13,6 +13,7 @@ import 'package:kayaya_flutter/widgets/anime_details/anime_detail.dart';
 import 'package:kayaya_flutter/widgets/anime_details/tab_info.dart';
 import 'package:kayaya_flutter/widgets/anime_details/tab_related.dart';
 import 'package:kayaya_flutter/widgets/colored_tab_bar.dart';
+import 'package:kayaya_flutter/widgets/keep_alive_widget.dart';
 import 'package:kayaya_flutter/widgets/player/launcher.dart';
 import 'package:kayaya_flutter/widgets/player/source_chooser_dialog.dart';
 
@@ -155,8 +156,12 @@ class _MoviePageState extends State<MoviePage>
             body: TabBarView(
               controller: _controller,
               children: [
-                InfoTabViewItem(tabKey: Key('Tab0'), anime: anime),
-                RelatedTabViewItem(tabKey: Key('Tab1')),
+                KeepAliveWidget(
+                  child: InfoTabViewItem(tabKey: Key('Tab0'), anime: anime),
+                ),
+                KeepAliveWidget(
+                  child: RelatedTabViewItem(tabKey: Key('Tab1')),
+                ),
               ],
             ),
           ),

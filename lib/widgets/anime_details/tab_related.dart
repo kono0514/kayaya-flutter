@@ -18,11 +18,9 @@ class RelatedTabViewItem extends StatefulWidget {
   _RelatedTabViewItemState createState() => _RelatedTabViewItemState();
 }
 
-class _RelatedTabViewItemState extends State<RelatedTabViewItem>
-    with AutomaticKeepAliveClientMixin {
+class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return NestedScrollViewInnerScrollPositionKeyWidget(
       widget.tabKey,
       BlocBuilder<AnimeDetailsCubit, AnimeDetailsState>(
@@ -145,7 +143,4 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

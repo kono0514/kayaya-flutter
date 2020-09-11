@@ -15,6 +15,7 @@ import 'package:kayaya_flutter/widgets/anime_details/tab_episodes.dart';
 import 'package:kayaya_flutter/widgets/anime_details/tab_info.dart';
 import 'package:kayaya_flutter/widgets/anime_details/tab_related.dart';
 import 'package:kayaya_flutter/widgets/colored_tab_bar.dart';
+import 'package:kayaya_flutter/widgets/keep_alive_widget.dart';
 import 'package:kayaya_flutter/widgets/rating_bar.dart';
 import 'package:kayaya_flutter/widgets/rounded_cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
@@ -154,9 +155,15 @@ class _SeriesPageState extends State<SeriesPage>
             body: TabBarView(
               controller: _controller,
               children: [
-                InfoTabViewItem(tabKey: Key('Tab0'), anime: anime),
-                EpisodesTabViewItem(tabKey: Key('Tab1'), id: anime.id),
-                RelatedTabViewItem(tabKey: Key('Tab2')),
+                KeepAliveWidget(
+                  child: InfoTabViewItem(tabKey: Key('Tab0'), anime: anime),
+                ),
+                KeepAliveWidget(
+                  child: EpisodesTabViewItem(tabKey: Key('Tab1'), id: anime.id),
+                ),
+                KeepAliveWidget(
+                  child: RelatedTabViewItem(tabKey: Key('Tab2')),
+                ),
               ],
             ),
           ),

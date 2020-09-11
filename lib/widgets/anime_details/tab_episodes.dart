@@ -20,8 +20,7 @@ class EpisodesTabViewItem extends StatefulWidget {
   _EpisodesTabViewItemState createState() => _EpisodesTabViewItemState();
 }
 
-class _EpisodesTabViewItemState extends State<EpisodesTabViewItem>
-    with AutomaticKeepAliveClientMixin {
+class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
   Completer<void> _refreshCompleter;
 
   @override
@@ -35,7 +34,6 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem>
     // Disable infinite scroll while more data is loading
     bool disableInfiniteScroll = false;
 
-    super.build(context);
     return NestedScrollViewInnerScrollPositionKeyWidget(
       widget.tabKey,
       BlocProvider(
@@ -212,9 +210,6 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
 
 class BottomLoader extends StatelessWidget {

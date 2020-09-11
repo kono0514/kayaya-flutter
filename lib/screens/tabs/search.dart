@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatefulWidget {
-  final ScrollController scrollController;
-
-  const SearchPage({Key key, this.scrollController}) : super(key: key);
+  const SearchPage({Key key}) : super(key: key);
 
   @override
   _SearchPageState createState() => _SearchPageState();
