@@ -133,8 +133,9 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
         ),
       ),
       bottomNavigationBar: Theme(
-        data:
-            Theme.of(context).copyWith(splashFactory: InkSplash.splashFactory),
+        data: Theme.of(context).copyWith(
+          highlightColor: Colors.transparent,
+        ),
         child: Container(
           decoration: BoxDecoration(
             border: Border(
