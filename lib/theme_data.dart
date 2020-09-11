@@ -17,9 +17,8 @@ ThemeData lightTheme = ThemeData(
 
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
-  cupertinoOverrideTheme: CupertinoThemeData(
-    brightness: Brightness.dark,
-    barBackgroundColor: Colors.grey[900],
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: Colors.grey[900],
   ),
   typography: Typography.material2018(platform: defaultTargetPlatform),
   splashFactory: InkRipple.splashFactory,

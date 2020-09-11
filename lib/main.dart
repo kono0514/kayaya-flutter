@@ -12,7 +12,7 @@ import 'package:kayaya_flutter/shared_preferences_service.dart';
 import 'package:kayaya_flutter/repository.dart';
 import 'package:kayaya_flutter/simple_bloc_observer.dart';
 import 'package:kayaya_flutter/theme_data.dart';
-import 'package:kayaya_flutter/widgets/navigation_bar/navigation_tab.dart';
+import 'package:kayaya_flutter/widgets/navigation_bar/material_tab_scaffold.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -76,6 +76,7 @@ class MyApp extends StatelessWidget {
 class RootScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: NavigationTab());
+    // return NavigationTabScaffold();
+    return MaterialTabScaffold();
   }
 }
