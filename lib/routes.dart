@@ -24,8 +24,7 @@ abstract class Routes {
         return MaterialPageRoute(
             builder: (context) => MoviePage(settings.arguments));
       case RouteConstants.search:
-        return MaterialPageRoute(
-            builder: (context) => SearchPage(settings.arguments));
+        return MaterialPageRoute(builder: (context) => SearchPage());
       case RouteConstants.settings:
         return MaterialPageRoute(builder: (context) => SettingsPage());
       case RouteConstants.library:

@@ -4,6 +4,7 @@ class SharedPrefKeys {
   SharedPrefKeys._();
   static const String darkModeEnabled = 'darkModeEnabled';
   static const String languageCode = 'languageCode';
+  static const String searchHistory = 'searchHistory';
 }
 
 class SharedPreferencesService {
@@ -42,4 +43,20 @@ class SharedPreferencesService {
 
   bool get isDarkModeEnabled =>
       _preferences.getBool(SharedPrefKeys.darkModeEnabled);
+
+  Future<void> addSearchHistory(String query) async {
+    print(searchHistory);
+    List<String> _history = searchHistory?.toList() ?? [];
+    if (_history.length >= 20) {
+      _history = _history.getRange(0, 20);
+    }
+
+    _history.removeWhere((element) => element == query);
+    _history.insert(0, query);
+    print(_history);
+    await _preferences.setStringList(SharedPrefKeys.searchHistory, _history);
+  }
+
+  List<String> get searchHistory =>
+      _preferences.getStringList(SharedPrefKeys.searchHistory);
 }

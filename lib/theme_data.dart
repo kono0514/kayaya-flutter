@@ -13,6 +13,7 @@ ThemeData lightTheme = ThemeData(
   ),
   typography: Typography.material2018(platform: defaultTargetPlatform),
   splashFactory: InkRipple.splashFactory,
+  highlightColor: Colors.transparent,
 );
 
 ThemeData darkTheme = ThemeData(
@@ -22,4 +23,5 @@ ThemeData darkTheme = ThemeData(
   ),
   typography: Typography.material2018(platform: defaultTargetPlatform),
   splashFactory: InkRipple.splashFactory,
+  highlightColor: Colors.transparent,
 );

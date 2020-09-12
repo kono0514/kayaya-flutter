@@ -7,7 +7,7 @@ import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/screens/tabs/browse.dart';
 import 'package:kayaya_flutter/screens/tabs/featured.dart';
 import 'package:kayaya_flutter/screens/tabs/library.dart';
-import 'package:kayaya_flutter/screens/tabs/search.dart';
+import 'package:kayaya_flutter/screens/search.dart';
 import 'package:kayaya_flutter/widgets/navigation_bar/material_tab_scaffold.dart';
 
 class NavigationTabScaffold extends StatefulWidget {
