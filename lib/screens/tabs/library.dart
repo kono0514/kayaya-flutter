@@ -4,6 +4,8 @@ import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/shared_preferences_service.dart';
 import 'package:kayaya_flutter/widgets/app_bar/custom_app_bar.dart';
+import 'package:kayaya_flutter/widgets/app_bar/sliver_button.dart';
+import 'package:kayaya_flutter/widgets/library/settings_dialog.dart';
 
 class LibraryPage extends StatefulWidget {
   final ScrollController scrollController;
@@ -20,6 +22,30 @@ class _LibraryPageState extends State<LibraryPage> {
     return Scaffold(
       appBar: CustomStaticAppBar(
         title: Text(S.current.tabs_library),
+        actions: [
+          SliverButton(
+            text: Text(
+              'SETTINGS',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onPressed: () {
+              BuildContext mainContext = context;
+              showModalBottomSheet(
+                context: context,
+                useRootNavigator: true,
+                isScrollControlled: true,
+                isDismissible: false,
+                enableDrag: true,
+                backgroundColor: Colors.transparent,
+                builder: (context) => SettingsDialog(mainContext: mainContext),
+              );
+            },
+            collapsible: false,
+            icon: Icon(Icons.settings),
+          ),
+        ],
       ),
       body: Builder(
         builder: (context) => Center(
@@ -28,8 +54,8 @@ class _LibraryPageState extends State<LibraryPage> {
             children: <Widget>[
               Text('This is library page'),
               RaisedButton(
-                onPressed: () async {
-                  (await SharedPreferencesService.instance).setLanguage('en');
+                onPressed: () {
+                  SharedPreferencesService.instance.setLanguage('en');
                   Scaffold.of(context).showSnackBar(SnackBar(
                       content: Text(
                           'Language updated. Restart the app to see the changes.')));
@@ -37,8 +63,8 @@ class _LibraryPageState extends State<LibraryPage> {
                 child: Text('EN'),
               ),
               RaisedButton(
-                onPressed: () async {
-                  (await SharedPreferencesService.instance).setLanguage('mn');
+                onPressed: () {
+                  SharedPreferencesService.instance.setLanguage('mn');
                   Scaffold.of(context).showSnackBar(SnackBar(
                       content: Text(
                           'Language updated. Restart the app to see the changes.')));
