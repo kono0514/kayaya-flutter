@@ -114,7 +114,7 @@ class Search extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    searchBloc.add(SearchFetched(query));
+    searchBloc.add(QueryChanged(query));
 
     if (query == '') {
       return FutureBuilder(

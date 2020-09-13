@@ -29,7 +29,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   ) async* {
     final currentState = state;
 
-    if (event is SearchFetched) {
+    if (event is QueryChanged) {
       try {
         if (event.query == '') {
           yield SearchInitial();
