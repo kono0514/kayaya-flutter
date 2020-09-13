@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/shared_preferences_service.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsDialog extends StatefulWidget {
   final BuildContext mainContext;
@@ -33,6 +34,9 @@ class _SettingsDialogState extends State<SettingsDialog> {
     }
     return languageCode;
   }
+
+  String developerUrl = 'https://github.com/kono0514';
+  String sourceUrl = 'https://github.com/kono0514'; // TODO: Update repo url
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +120,54 @@ class _SettingsDialogState extends State<SettingsDialog> {
                         }
 
                         setState(() {});
+                      },
+                    ),
+                    SettingsTile(
+                      title: 'Clear search history',
+                      leading: Icon(Icons.history),
+                      onTap: () {
+                        SharedPreferencesService.instance.clearSearchHistory();
+                        Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Search history cleared.'),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                SettingsSection(
+                  title: 'About',
+                  tiles: [
+                    SettingsTile(
+                      title: 'Developer',
+                      subtitle: developerUrl,
+                      onTap: () async {
+                        if (await canLaunch(developerUrl)) {
+                          await launch(developerUrl);
+                        }
+                      },
+                    ),
+                    SettingsTile(
+                      title: 'Source Code',
+                      subtitle: sourceUrl,
+                      onTap: () async {
+                        if (await canLaunch(sourceUrl)) {
+                          await launch(sourceUrl);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+                SettingsSection(
+                  title: 'Credits',
+                  tiles: [
+                    SettingsTile(
+                      title: 'Search powered by Algolia',
+                      onTap: () async {
+                        if (await canLaunch('https://algolia.com')) {
+                          await launch('https://algolia.com');
+                        }
                       },
                     ),
                   ],

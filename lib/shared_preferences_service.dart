@@ -57,6 +57,10 @@ class SharedPreferencesService {
     await _preferences.setStringList(SharedPrefKeys.searchHistory, _history);
   }
 
+  Future<void> clearSearchHistory() async {
+    await _preferences.remove(SharedPrefKeys.searchHistory);
+  }
+
   List<String> get searchHistory =>
       _preferences.getStringList(SharedPrefKeys.searchHistory);
 }
