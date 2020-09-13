@@ -13,7 +13,9 @@ class SharedPreferencesService {
 
   SharedPreferencesService._internal();
 
-  static Future<SharedPreferencesService> get instance async {
+  static SharedPreferencesService get instance => _instance;
+
+  static Future<void> init() async {
     if (_instance == null) {
       _instance = SharedPreferencesService._internal();
     }
@@ -21,8 +23,6 @@ class SharedPreferencesService {
     if (_preferences == null) {
       _preferences = await SharedPreferences.getInstance();
     }
-
-    return _instance;
   }
 
   Future<void> setLanguage(String languageCode) async =>

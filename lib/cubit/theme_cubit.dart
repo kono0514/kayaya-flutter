@@ -8,9 +8,9 @@ part 'theme_state.dart';
 class ThemeCubit extends Cubit<ThemeState> {
   ThemeCubit() : super(ThemeState(ThemeMode.light));
 
-  void resolveTheme() async {
+  void resolveTheme() {
     final isDarkModeEnabled =
-        (await SharedPreferencesService.instance).isDarkModeEnabled;
+        SharedPreferencesService.instance.isDarkModeEnabled;
 
     if (isDarkModeEnabled == null) {
       emit(ThemeState(ThemeMode.system));
@@ -20,7 +20,7 @@ class ThemeCubit extends Cubit<ThemeState> {
   }
 
   void changeTheme(ThemeMode themeMode) async {
-    final sharedPrefService = await SharedPreferencesService.instance;
+    final sharedPrefService = SharedPreferencesService.instance;
 
     if (themeMode == ThemeMode.system) {
       await sharedPrefService.setDarkModeInfo(null);

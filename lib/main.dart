@@ -18,10 +18,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
 
+  await SharedPreferencesService.init();
   // Get the user's chosen locale from SharedPreferences
   // Fallback to 'en'
-  final sharedPrefService = await SharedPreferencesService.instance;
-  String languageCode = sharedPrefService.languageCode ?? 'en';
+  String languageCode = SharedPreferencesService.instance.languageCode ?? 'en';
   Locale locale = Locale(languageCode);
 
   runApp(RepositoryProvider(

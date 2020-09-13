@@ -42,7 +42,7 @@ class _SearchPageState extends State<SearchPage> {
       if (result == null) {
         Navigator.of(context).pop();
       } else {
-        (await SharedPreferencesService.instance).addSearchHistory(result);
+        SharedPreferencesService.instance.addSearchHistory(result);
       }
     });
   }
@@ -54,7 +54,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<List<String>> getSearchHistory() async {
-    return (await SharedPreferencesService.instance).searchHistory;
+    return SharedPreferencesService.instance.searchHistory;
   }
 
   @override
