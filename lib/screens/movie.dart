@@ -31,8 +31,8 @@ class MoviePage extends StatefulWidget {
 class _MoviePageState extends State<MoviePage>
     with SingleTickerProviderStateMixin {
   ListItemAnimeMixin anime;
-  AnimeDetailsCubit _animeDetailsCubit;
-  TabController _controller;
+  AnimeDetailsCubit animeDetailsCubit;
+  TabController tabController;
   final List<String> _tabs = ['INFO', 'RELATED'];
 
   final GlobalKey<NestedScrollViewState> _key =
@@ -42,32 +42,51 @@ class _MoviePageState extends State<MoviePage>
   void initState() {
     super.initState();
     anime = widget.argument.anime;
-    _animeDetailsCubit =
+    animeDetailsCubit =
         AnimeDetailsCubit(context.repository<AniimRepository>());
 
     /// Only minimal amount of data (ie. when using dynamic remote widget) was passed (id, poster, name)
     /// as opposed to the full listing item data (id, poster, name, banner, genres, etc...)
     /// So we should fetch the missing informations along with the details.
-    if (widget.argument.isMinimal) {
-      _animeDetailsCubit.listen((state) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      animeDetailsCubit.listen((state) {
         if (state is AnimeDetailsLoaded) {
-          setState(() {
-            anime = state.listData;
-          });
+          if (widget.argument.isMinimal) {
+            setState(() {
+              anime = state.listData;
+            });
+          }
+        } else if (state is AnimeDetailsError) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Failed to fetch'),
+              actions: [
+                FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Return'),
+                ),
+              ],
+            ),
+          ).then((value) => Navigator.of(context).pop());
         }
       });
-      _animeDetailsCubit.loadDetailsFull(anime.id);
-    } else {
-      _animeDetailsCubit.loadDetails(anime.id);
-    }
+      if (widget.argument.isMinimal) {
+        animeDetailsCubit.loadDetailsFull(anime.id);
+      } else {
+        animeDetailsCubit.loadDetails(anime.id);
+      }
+    });
 
-    _controller = TabController(length: _tabs.length, vsync: this);
+    tabController = TabController(length: _tabs.length, vsync: this);
   }
 
   @override
   void dispose() {
-    _animeDetailsCubit.close();
-    _controller.dispose();
+    animeDetailsCubit.close();
+    tabController.dispose();
     super.dispose();
   }
 
@@ -75,7 +94,7 @@ class _MoviePageState extends State<MoviePage>
   Widget build(BuildContext context) {
     final _tabBar = TabBar(
       tabs: _tabs.map((e) => Tab(text: e)).toList(),
-      controller: _controller,
+      controller: tabController,
       indicatorSize: TabBarIndicatorSize.label,
       isScrollable: true,
       labelColor: Theme.of(context).textTheme.bodyText1.color,
@@ -85,7 +104,7 @@ class _MoviePageState extends State<MoviePage>
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: _animeDetailsCubit),
+        BlocProvider.value(value: animeDetailsCubit),
         BlocProvider(
           create: (context) =>
               AnimeEpisodesBloc(context.repository<AniimRepository>())
@@ -152,9 +171,10 @@ class _MoviePageState extends State<MoviePage>
                 ),
               ];
             },
-            innerScrollPositionKeyBuilder: () => Key('Tab${_controller.index}'),
+            innerScrollPositionKeyBuilder: () =>
+                Key('Tab${tabController.index}'),
             body: TabBarView(
-              controller: _controller,
+              controller: tabController,
               children: [
                 KeepAliveWidget(
                   child: InfoTabViewItem(tabKey: Key('Tab0'), anime: anime),
