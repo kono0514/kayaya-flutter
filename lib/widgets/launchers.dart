@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
+import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/widgets/player/fullscreen_player.dart';
 
 void launchPlayRelease(BuildContext context,
@@ -38,4 +39,15 @@ void launchPlayRelease(BuildContext context,
       debugPrint(e.toString());
     }
   }
+}
+
+void launchMediaPage(BuildContext context, MediaArguments mediaArguments) {
+  final route = mediaArguments.anime.animeType == AnimeType.movie
+      ? RouteConstants.movieDetail
+      : RouteConstants.seriesDetail;
+
+  Navigator.of(
+    context,
+    rootNavigator: true,
+  ).pushNamed(route, arguments: mediaArguments);
 }

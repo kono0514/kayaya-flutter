@@ -12,6 +12,7 @@ import 'package:kayaya_flutter/hex_color.dart';
 import 'package:kayaya_flutter/logger.dart';
 import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/shared_preferences_service.dart';
+import 'package:kayaya_flutter/widgets/launchers.dart';
 // import 'package:kayaya_flutter/widgets/custom_search.dart';
 
 typedef GetSearchSuggestions = Future<List<String>> Function();
@@ -170,14 +171,10 @@ class Search extends SearchDelegate {
                       // So that when the destination page closes, user
                       // returns to the page below "SearchPage"
                       close(context, query);
-                      Navigator.of(
+                      Navigator.of(context).pop();
+                      launchMediaPage(
                         context,
-                        rootNavigator: true,
-                      ).popAndPushNamed(
-                        item.data['anime_type'] == 'series'
-                            ? RouteConstants.seriesDetail
-                            : RouteConstants.movieDetail,
-                        arguments: MediumArguments(
+                        MediaArguments(
                           BrowseAnimes$Query$Animes$Data.fromJson(
                             {
                               'id': item.objectID.split('::').last,
@@ -185,6 +182,9 @@ class Search extends SearchDelegate {
                                 'large': item.data['cover_image_large'],
                               },
                               'name': itemName,
+                              'animeType': item.data['anime_type']
+                                  .toString()
+                                  .toUpperCase(),
                             },
                           ),
                           isMinimal: true,

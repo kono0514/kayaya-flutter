@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/bloc/anime_episodes_bloc.dart';
 import 'package:kayaya_flutter/cubit/anime_details/anime_details_cubit.dart';
-import 'package:kayaya_flutter/easing_linear_gradient.dart';
+import 'package:kayaya_flutter/widgets/easing_linear_gradient.dart';
 import 'package:kayaya_flutter/repository.dart';
 import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/widgets/anime_details/anime_detail.dart';
@@ -14,13 +14,13 @@ import 'package:kayaya_flutter/widgets/anime_details/tab_info.dart';
 import 'package:kayaya_flutter/widgets/anime_details/tab_related.dart';
 import 'package:kayaya_flutter/widgets/colored_tab_bar.dart';
 import 'package:kayaya_flutter/widgets/keep_alive_widget.dart';
-import 'package:kayaya_flutter/widgets/player/launcher.dart';
+import 'package:kayaya_flutter/widgets/launchers.dart';
 import 'package:kayaya_flutter/widgets/player/source_chooser_dialog.dart';
 
 // (Implemented workaround with extended_nested_scroll_view) TODO: https://github.com/flutter/flutter/issues/40740
 
 class MoviePage extends StatefulWidget {
-  final MediumArguments argument;
+  final MediaArguments argument;
 
   MoviePage(this.argument);
 

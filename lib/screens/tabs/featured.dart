@@ -12,6 +12,7 @@ import 'package:kayaya_flutter/widgets/dynamic_widget/carousel_slider_parser.dar
 import 'package:kayaya_flutter/widgets/dynamic_widget/childless_sized_box_parser.dart';
 import 'package:kayaya_flutter/widgets/dynamic_widget/custom_listview_parser.dart';
 import 'package:kayaya_flutter/widgets/dynamic_widget/rounded_cached_network_image_parser.dart';
+import 'package:kayaya_flutter/widgets/launchers.dart';
 
 class FeaturedPage extends StatefulWidget {
   final ScrollController scrollController;
@@ -117,14 +118,9 @@ class DefaultClickListener implements ClickListener {
       if (uri.host == 'series' || uri.host == 'movie') {
         // At minimum, id is needed
         if (uri.queryParameters.containsKey('id')) {
-          Navigator.of(
+          launchMediaPage(
             context,
-            rootNavigator: true,
-          ).pushNamed(
-            uri.host == 'series'
-                ? RouteConstants.seriesDetail
-                : RouteConstants.movieDetail,
-            arguments: MediumArguments(
+            MediaArguments(
               BrowseAnimes$Query$Animes$Data.fromJson(
                 {
                   'id': uri.queryParameters['id'],
@@ -132,6 +128,7 @@ class DefaultClickListener implements ClickListener {
                     'large': uri.queryParameters['image'],
                   },
                   'name': uri.queryParameters['name'],
+                  'animeType': uri.host.toUpperCase()
                 },
               ),
               isMinimal: true,

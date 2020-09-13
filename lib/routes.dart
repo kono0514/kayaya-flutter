@@ -35,9 +35,9 @@ abstract class Routes {
   }
 }
 
-class MediumArguments {
+class MediaArguments {
   final ListItemAnimeMixin anime;
   final bool isMinimal;
 
-  MediumArguments(this.anime, {this.isMinimal = false});
+  MediaArguments(this.anime, {this.isMinimal = false});
 }

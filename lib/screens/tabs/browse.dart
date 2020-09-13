@@ -14,6 +14,7 @@ import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/widgets/browse/anime_list_tile.dart';
 import 'package:kayaya_flutter/widgets/app_bar/custom_sliver_app_bar.dart';
 import 'package:kayaya_flutter/widgets/browse/sliver_filter_button.dart';
+import 'package:kayaya_flutter/widgets/launchers.dart';
 
 class BrowsePage extends StatefulWidget {
   final ScrollController scrollController;
@@ -158,16 +159,7 @@ class _BrowsePageState extends State<BrowsePage> {
                                         anime: state.animes[index],
                                         onPressed: () {
                                           final anime = state.animes[index];
-                                          // open detail view
-                                          Navigator.of(
-                                            context,
-                                            rootNavigator: true,
-                                          ).pushNamed(
-                                              anime.animeType == AnimeType.movie
-                                                  ? RouteConstants.movieDetail
-                                                  : RouteConstants.seriesDetail,
-                                              arguments:
-                                                  MediumArguments(anime));
+                            launchMediaPage(context, MediaArguments(anime));
                                         },
                                       );
                               },

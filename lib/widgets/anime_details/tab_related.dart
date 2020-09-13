@@ -6,6 +6,7 @@ import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/cubit/anime_details/anime_details_cubit.dart';
 import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/widgets/anime_related_tile.dart';
+import 'package:kayaya_flutter/widgets/launchers.dart';
 
 // TODO: Create view dedicated for empty related/recommended
 
@@ -68,14 +69,8 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                                   final anime =
                                       state.details.relations.data[index];
 
-                                  Navigator.of(
-                                    context,
-                                    rootNavigator: true,
-                                  ).pushNamed(
-                                      anime.animeType == AnimeType.movie
-                                          ? RouteConstants.movieDetail
-                                          : RouteConstants.seriesDetail,
-                                      arguments: MediumArguments(anime));
+                                  launchMediaPage(
+                                      context, MediaArguments(anime));
                                 },
                               ),
                             ),
@@ -116,14 +111,8 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                                   final anime =
                                       state.details.recommendations.data[index];
 
-                                  Navigator.of(
-                                    context,
-                                    rootNavigator: true,
-                                  ).pushNamed(
-                                      anime.animeType == AnimeType.movie
-                                          ? RouteConstants.movieDetail
-                                          : RouteConstants.seriesDetail,
-                                      arguments: MediumArguments(anime));
+                                  launchMediaPage(
+                                      context, MediaArguments(anime));
                                 },
                               ),
                             ),

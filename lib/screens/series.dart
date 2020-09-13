@@ -6,7 +6,7 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/cubit/anime_details/anime_details_cubit.dart';
-import 'package:kayaya_flutter/easing_linear_gradient.dart';
+import 'package:kayaya_flutter/widgets/easing_linear_gradient.dart';
 import 'package:kayaya_flutter/hex_color.dart';
 import 'package:kayaya_flutter/repository.dart';
 import 'package:kayaya_flutter/routes.dart';
@@ -23,7 +23,7 @@ import 'package:shimmer/shimmer.dart';
 // (Implemented workaround with extended_nested_scroll_view) TODO: https://github.com/flutter/flutter/issues/40740
 
 class SeriesPage extends StatefulWidget {
-  final MediumArguments argument;
+  final MediaArguments argument;
 
   SeriesPage(this.argument);
 

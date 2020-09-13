@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/bloc/anime_episodes_bloc.dart';
 import 'package:kayaya_flutter/repository.dart';
-import 'package:kayaya_flutter/widgets/player/launcher.dart';
+import 'package:kayaya_flutter/widgets/launchers.dart';
 import 'package:kayaya_flutter/widgets/player/source_chooser_dialog.dart';
 
 class EpisodesTabViewItem extends StatefulWidget {
