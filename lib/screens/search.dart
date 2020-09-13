@@ -116,7 +116,7 @@ class Search extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     searchBloc.add(QueryChanged(query));
 
-    if (query == '') {
+    if (query.trim() == '') {
       return FutureBuilder(
         future: getSuggestions(),
         builder: (context, snapshot) {
@@ -160,7 +160,7 @@ class Search extends SearchDelegate {
               ListView.builder(
                 itemBuilder: (context, index) {
                   final item = state.hits[index];
-                  final itemName = currentLanguage == 'mn'
+                  String itemName = currentLanguage == 'mn'
                       ? item.data['name_mn']
                       : item.data['name_en'];
                   return InkWell(
@@ -208,10 +208,42 @@ class Search extends SearchDelegate {
                           ),
                           SizedBox(width: 20.0),
                           Expanded(
-                            child: Text(
-                              itemName,
-                              maxLines: 5,
-                              overflow: TextOverflow.ellipsis,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  itemName,
+                                  maxLines: 4,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(height: 4),
+                                Row(
+                                  children: [
+                                    if (item.data['start_year'] != null)
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10.0),
+                                        child: Text(
+                                          '(${item.data['start_year']})',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption
+                                              .copyWith(fontSize: 13),
+                                        ),
+                                      ),
+                                    Text(
+                                      item.data['anime_type'] == 'series'
+                                          ? 'Цуврал'
+                                          : 'Кино',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption
+                                          .copyWith(fontSize: 13),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ],

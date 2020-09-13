@@ -31,7 +31,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     if (event is QueryChanged) {
       try {
-        if (event.query == '') {
+        if (event.query.trim() == '') {
           yield SearchInitial();
           return;
         }
