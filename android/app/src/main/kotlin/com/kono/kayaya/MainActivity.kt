@@ -1,4 +1,4 @@
-package com.example.kayaya_flutter
+package com.kono.kayaya
 
 import io.flutter.embedding.android.FlutterActivity
 
