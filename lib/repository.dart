@@ -209,4 +209,50 @@ class AniimRepository {
 
     return GetFeatured$Query.fromJson(result.data).featured;
   }
+
+  Future<void> uploadFcmToken(String token, {String oldToken}) async {
+    final args = UploadFcmTokenArguments(token: token, oldToken: oldToken);
+    final result = await client.mutate(
+      MutationOptions(
+        documentNode: UploadFcmTokenMutation().document,
+        variables: args.toJson(),
+      ),
+    );
+
+    if (result.hasException) {
+      throw result.exception;
+    }
+  }
+
+  Future<bool> subscribeTo(String id) async {
+    final args = SubscribeToArguments(animeId: id);
+    final result = await client.mutate(
+      MutationOptions(
+        documentNode: SubscribeToMutation().document,
+        variables: args.toJson(),
+      ),
+    );
+
+    if (result.hasException) {
+      throw result.exception;
+    }
+
+    return SubscribeTo$Mutation.fromJson(result.data).subscribeTo;
+  }
+
+  Future<bool> unsubscribeFrom(String id) async {
+    final args = UnsubscribeFromArguments(animeId: id);
+    final result = await client.mutate(
+      MutationOptions(
+        documentNode: UnsubscribeFromMutation().document,
+        variables: args.toJson(),
+      ),
+    );
+
+    if (result.hasException) {
+      throw result.exception;
+    }
+
+    return UnsubscribeFrom$Mutation.fromJson(result.data).unsubscribeFrom;
+  }
 }

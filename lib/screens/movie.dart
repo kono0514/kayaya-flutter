@@ -16,6 +16,7 @@ import 'package:kayaya_flutter/widgets/colored_tab_bar.dart';
 import 'package:kayaya_flutter/widgets/keep_alive_widget.dart';
 import 'package:kayaya_flutter/widgets/launchers.dart';
 import 'package:kayaya_flutter/widgets/player/source_chooser_dialog.dart';
+import 'package:kayaya_flutter/widgets/spinner_button.dart';
 
 // (Implemented workaround with extended_nested_scroll_view) TODO: https://github.com/flutter/flutter/issues/40740
 
@@ -149,12 +150,7 @@ class _MoviePageState extends State<MoviePage>
                             child: AnimeDetail(
                               anime: anime,
                               actions: [
-                                BlocBuilder<AnimeEpisodesBloc,
-                                    AnimeEpisodesState>(
-                                  builder: (context, state) {
-                                    return _buildPlayButton(state);
-                                  },
-                                ),
+                                _buildPlayButton(),
                               ],
                             ),
                           ),
@@ -190,44 +186,48 @@ class _MoviePageState extends State<MoviePage>
     );
   }
 
-  Widget _buildPlayButton(AnimeEpisodesState state) {
-    String buttonText;
-    IconData iconData;
-    Function onPressed = () {};
+  Widget _buildPlayButton() {
+    return BlocBuilder<AnimeEpisodesBloc, AnimeEpisodesState>(
+      builder: (context, state) {
+        Text label;
+        Icon icon;
+        Function onPressed = () {};
+        bool loading = true;
 
-    if (state is AnimeEpisodesInitial) {
-      iconData = Icons.more_horiz;
-      buttonText = 'Loading';
-    } else if (state is AnimeEpisodesLoaded) {
-      iconData = Icons.play_circle_outline;
-      buttonText = 'Play';
-      onPressed = () async {
-        if (state.episodes.length == 0) return;
+        if (state is AnimeEpisodesLoaded) {
+          loading = false;
+          icon = Icon(Icons.play_circle_outline);
+          label = Text('PLAY');
+          onPressed = () async {
+            if (state.episodes.length == 0) return;
 
-        final chosenRelease =
-            await showDialog<GetAnimeEpisodes$Query$Episodes$Data$Releases>(
-          context: context,
-          builder: (context) => SourceChooserDialog(
-            releases: state.episodes.first.releases,
-          ),
-        );
+            final chosenRelease =
+                await showDialog<GetAnimeEpisodes$Query$Episodes$Data$Releases>(
+              context: context,
+              builder: (context) => SourceChooserDialog(
+                releases: state.episodes.first.releases,
+              ),
+            );
 
-        if (chosenRelease != null) {
-          launchPlayRelease(context, chosenRelease);
+            if (chosenRelease != null) {
+              launchPlayRelease(context, chosenRelease);
+            }
+          };
+        } else if (state is AnimeEpisodesInitial) {
+          loading = true;
+        } else {
+          loading = false;
+          icon = Icon(Icons.warning);
+          label = Text('Not available');
         }
-      };
-    } else {
-      iconData = Icons.error;
-      buttonText = 'Not available';
-    }
 
-    return FlatButton.icon(
-      onPressed: onPressed,
-      icon: Icon(iconData),
-      label: Text(buttonText),
-      color: Theme.of(context).primaryColor,
-      textTheme: ButtonTextTheme.primary,
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        return SpinnerButton(
+          label: label,
+          loading: loading,
+          icon: icon,
+          onPressed: onPressed,
+        );
+      },
     );
   }
 

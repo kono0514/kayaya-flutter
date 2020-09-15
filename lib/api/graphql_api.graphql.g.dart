@@ -398,6 +398,7 @@ GetAnimeDetails$Query$Anime _$GetAnimeDetails$Query$AnimeFromJson(
     ..description = json['description'] as String
     ..anilist = fromGraphQLAnilistMediaToDartGraphqlAnilistApi$Query$Media(
         json['anilist'] as String)
+    ..subscribed = json['subscribed'] as bool
     ..relations = json['relations'] == null
         ? null
         : GetAnimeDetails$Query$Anime$Relations.fromJson(
@@ -415,6 +416,7 @@ Map<String, dynamic> _$GetAnimeDetails$Query$AnimeToJson(
       'description': instance.description,
       'anilist': fromDartGraphqlAnilistApi$Query$MediaToGraphQLAnilistMedia(
           instance.anilist),
+      'subscribed': instance.subscribed,
       'relations': instance.relations?.toJson(),
       'recommendations': instance.recommendations?.toJson(),
     };
@@ -603,6 +605,7 @@ GetAnimeDetailsFull$Query$Anime _$GetAnimeDetailsFull$Query$AnimeFromJson(
     ..description = json['description'] as String
     ..anilist = fromGraphQLAnilistMediaToDartGraphqlAnilistApi$Query$Media(
         json['anilist'] as String)
+    ..subscribed = json['subscribed'] as bool
     ..relations = json['relations'] == null
         ? null
         : GetAnimeDetailsFull$Query$Anime$Relations.fromJson(
@@ -627,6 +630,7 @@ Map<String, dynamic> _$GetAnimeDetailsFull$Query$AnimeToJson(
       'description': instance.description,
       'anilist': fromDartGraphqlAnilistApi$Query$MediaToGraphQLAnilistMedia(
           instance.anilist),
+      'subscribed': instance.subscribed,
       'relations': instance.relations?.toJson(),
       'recommendations': instance.recommendations?.toJson(),
     };
@@ -842,6 +846,40 @@ Map<String, dynamic> _$GetGenres$QueryToJson(GetGenres$Query instance) =>
       'genres': instance.genres?.map((e) => e?.toJson())?.toList(),
     };
 
+UploadFcmToken$Mutation _$UploadFcmToken$MutationFromJson(
+    Map<String, dynamic> json) {
+  return UploadFcmToken$Mutation()
+    ..registerFcmToken = json['registerFcmToken'] as bool;
+}
+
+Map<String, dynamic> _$UploadFcmToken$MutationToJson(
+        UploadFcmToken$Mutation instance) =>
+    <String, dynamic>{
+      'registerFcmToken': instance.registerFcmToken,
+    };
+
+SubscribeTo$Mutation _$SubscribeTo$MutationFromJson(Map<String, dynamic> json) {
+  return SubscribeTo$Mutation()..subscribeTo = json['subscribeTo'] as bool;
+}
+
+Map<String, dynamic> _$SubscribeTo$MutationToJson(
+        SubscribeTo$Mutation instance) =>
+    <String, dynamic>{
+      'subscribeTo': instance.subscribeTo,
+    };
+
+UnsubscribeFrom$Mutation _$UnsubscribeFrom$MutationFromJson(
+    Map<String, dynamic> json) {
+  return UnsubscribeFrom$Mutation()
+    ..unsubscribeFrom = json['unsubscribeFrom'] as bool;
+}
+
+Map<String, dynamic> _$UnsubscribeFrom$MutationToJson(
+        UnsubscribeFrom$Mutation instance) =>
+    <String, dynamic>{
+      'unsubscribeFrom': instance.unsubscribeFrom,
+    };
+
 BrowseAnimesArguments _$BrowseAnimesArgumentsFromJson(
     Map<String, dynamic> json) {
   return BrowseAnimesArguments(
@@ -922,4 +960,44 @@ Map<String, dynamic> _$GetAnimeEpisodesArgumentsToJson(
       'orderBy': instance.orderBy?.map((e) => e?.toJson())?.toList(),
       'first': instance.first,
       'page': instance.page,
+    };
+
+UploadFcmTokenArguments _$UploadFcmTokenArgumentsFromJson(
+    Map<String, dynamic> json) {
+  return UploadFcmTokenArguments(
+    token: json['token'] as String,
+    oldToken: json['oldToken'] as String,
+  );
+}
+
+Map<String, dynamic> _$UploadFcmTokenArgumentsToJson(
+        UploadFcmTokenArguments instance) =>
+    <String, dynamic>{
+      'token': instance.token,
+      'oldToken': instance.oldToken,
+    };
+
+SubscribeToArguments _$SubscribeToArgumentsFromJson(Map<String, dynamic> json) {
+  return SubscribeToArguments(
+    animeId: json['animeId'] as String,
+  );
+}
+
+Map<String, dynamic> _$SubscribeToArgumentsToJson(
+        SubscribeToArguments instance) =>
+    <String, dynamic>{
+      'animeId': instance.animeId,
+    };
+
+UnsubscribeFromArguments _$UnsubscribeFromArgumentsFromJson(
+    Map<String, dynamic> json) {
+  return UnsubscribeFromArguments(
+    animeId: json['animeId'] as String,
+  );
+}
+
+Map<String, dynamic> _$UnsubscribeFromArgumentsToJson(
+        UnsubscribeFromArguments instance) =>
+    <String, dynamic>{
+      'animeId': instance.animeId,
     };

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:graphql/client.dart';
 
 final NormalizedInMemoryCache cache = NormalizedInMemoryCache(
@@ -7,11 +8,21 @@ final NormalizedInMemoryCache cache = NormalizedInMemoryCache(
 GraphQLClient _client;
 
 GraphQLClient getGraphQLClient({String locale = 'en'}) {
-  _client ??= GraphQLClient(
-    link: HttpLink(
-      uri: 'http://aniim-api.test/graphql',
-      headers: {'Accept-Language': locale},
-    ),
+  if (_client != null) return _client;
+
+  final httpLink = HttpLink(
+    uri: 'http://aniim-api.test/graphql',
+    headers: {'Accept-Language': locale},
+  );
+  final authLink = AuthLink(
+    getToken: () async {
+      final userToken = await FirebaseAuth.instance.currentUser.getIdToken();
+      return 'Bearer $userToken';
+    },
+  );
+
+  _client = GraphQLClient(
+    link: authLink.concat(httpLink),
     cache: cache,
   );
 

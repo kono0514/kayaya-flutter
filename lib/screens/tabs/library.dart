@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
@@ -6,6 +7,8 @@ import 'package:kayaya_flutter/shared_preferences_service.dart';
 import 'package:kayaya_flutter/widgets/app_bar/custom_app_bar.dart';
 import 'package:kayaya_flutter/widgets/app_bar/sliver_button.dart';
 import 'package:kayaya_flutter/widgets/library/settings_dialog.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class LibraryPage extends StatefulWidget {
   final ScrollController scrollController;
@@ -52,46 +55,32 @@ class _LibraryPageState extends State<LibraryPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('This is library page'),
-              RaisedButton(
-                onPressed: () {
-                  SharedPreferencesService.instance.setLanguage('en');
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                          'Language updated. Restart the app to see the changes.')));
+              StreamBuilder<User>(
+                stream: _auth.authStateChanges(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data == null) {
+                      return Text('Not signed in');
+                    } else {
+                      snapshot.data.getIdToken().then((value) => print(value));
+                      return Text(snapshot.data.uid);
+                    }
+                  }
+
+                  return Text('Not signed in. No event');
                 },
-                child: Text('EN'),
               ),
               RaisedButton(
                 onPressed: () {
-                  SharedPreferencesService.instance.setLanguage('mn');
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                          'Language updated. Restart the app to see the changes.')));
+                  _auth.signInAnonymously().then((value) => print(value));
                 },
-                child: Text('MN'),
+                child: Text('Sign in anonymously'),
               ),
-              Divider(),
               RaisedButton(
                 onPressed: () {
-                  BlocProvider.of<ThemeCubit>(context)
-                      .changeTheme(ThemeMode.light);
+                  _auth.signOut();
                 },
-                child: Text('Light'),
-              ),
-              RaisedButton(
-                onPressed: () async {
-                  BlocProvider.of<ThemeCubit>(context)
-                      .changeTheme(ThemeMode.dark);
-                },
-                child: Text('Dark'),
-              ),
-              RaisedButton(
-                onPressed: () async {
-                  BlocProvider.of<ThemeCubit>(context)
-                      .changeTheme(ThemeMode.system);
-                },
-                child: Text('System'),
+                child: Text('Signout'),
               )
             ],
           ),

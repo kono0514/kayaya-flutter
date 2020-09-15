@@ -6,6 +6,7 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/cubit/anime_details/anime_details_cubit.dart';
+import 'package:kayaya_flutter/cubit/anime_subscription_cubit.dart';
 import 'package:kayaya_flutter/widgets/easing_linear_gradient.dart';
 import 'package:kayaya_flutter/hex_color.dart';
 import 'package:kayaya_flutter/repository.dart';
@@ -18,6 +19,7 @@ import 'package:kayaya_flutter/widgets/colored_tab_bar.dart';
 import 'package:kayaya_flutter/widgets/keep_alive_widget.dart';
 import 'package:kayaya_flutter/widgets/rating_bar.dart';
 import 'package:kayaya_flutter/widgets/rounded_cached_network_image.dart';
+import 'package:kayaya_flutter/widgets/spinner_button.dart';
 import 'package:shimmer/shimmer.dart';
 
 // (Implemented workaround with extended_nested_scroll_view) TODO: https://github.com/flutter/flutter/issues/40740
@@ -105,8 +107,15 @@ class _SeriesPageState extends State<SeriesPage>
     final double _appBarHeight = 335.0 + _tabBar.preferredSize.height;
     final bool _isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return BlocProvider.value(
-      value: animeDetailsCubit,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: animeDetailsCubit),
+        BlocProvider(
+          create: (context) => AnimeSubscriptionCubit(
+            context.repository<AniimRepository>(),
+          ),
+        ),
+      ],
       child: Scaffold(
         body: SafeArea(
           top: false,
@@ -145,15 +154,7 @@ class _SeriesPageState extends State<SeriesPage>
                             child: AnimeDetail(
                               anime: anime,
                               actions: [
-                                FlatButton.icon(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.notifications),
-                                  label: Text('SUBSCRIBE'),
-                                  color: Theme.of(context).primaryColor,
-                                  textTheme: ButtonTextTheme.primary,
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
+                                SeriesSubscribeButton(id: anime.id),
                               ],
                             ),
                           ),
@@ -219,6 +220,58 @@ class _SeriesPageState extends State<SeriesPage>
               imageUrl: anime.bannerImage,
               fit: BoxFit.cover,
             ),
+    );
+  }
+}
+
+class SeriesSubscribeButton extends StatelessWidget {
+  final String id;
+
+  const SeriesSubscribeButton({Key key, this.id}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AnimeDetailsCubit, AnimeDetailsState>(
+      listener: (context, state) {
+        if (state is AnimeDetailsLoaded) {
+          context
+              .bloc<AnimeSubscriptionCubit>()
+              .assignData(id, state.details.subscribed);
+        }
+      },
+      child: BlocBuilder<AnimeSubscriptionCubit, AnimeSubscriptionState>(
+        builder: (context, state) {
+          Text label;
+          Icon icon;
+          Function onPressed = () {};
+          bool loading = true;
+
+          if (state is AnimeSubscriptionLoaded) {
+            loading = false;
+            label = Text(
+                (state.subscribed ? 'Subscribed' : 'Subscribe').toUpperCase());
+            icon = Icon(state.subscribed
+                ? Icons.notifications_active
+                : Icons.notifications_none);
+            onPressed = () {
+              final bloc = context.bloc<AnimeSubscriptionCubit>();
+              if (state.subscribed) {
+                bloc.unsubscribe();
+              } else {
+                bloc.subscribe();
+              }
+            };
+          }
+
+          return SpinnerButton(
+            label: label,
+            icon: icon,
+            loading: loading,
+            fixedWidth: 165,
+            onPressed: onPressed,
+          );
+        },
+      ),
     );
   }
 }

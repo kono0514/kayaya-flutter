@@ -16,7 +16,7 @@ class AnimeDetailsLoaded extends AnimeDetailsState {
   final BrowseAnimes$Query$Animes$Data listData;
   final bool hasListData;
 
-  const AnimeDetailsLoaded(this.details, {this.listData, this.hasListData});
+  const AnimeDetailsLoaded({this.details, this.listData, this.hasListData});
 
   @override
   List<Object> get props => [details, listData, hasListData];

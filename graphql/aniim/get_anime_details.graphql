@@ -3,6 +3,7 @@ query GetAnimeDetails($id: ID!) {
         id
         description
         anilist
+        subscribed
         relations {
             data {
                 ...ListItemAnime

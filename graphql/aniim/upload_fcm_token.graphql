@@ -1,0 +1,3 @@
+mutation UploadFcmToken($token: String!, $oldToken: String) {
+    registerFcmToken(token: $token, oldToken: $oldToken)
+}

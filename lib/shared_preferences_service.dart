@@ -5,6 +5,7 @@ class SharedPrefKeys {
   static const String darkModeEnabled = 'darkModeEnabled';
   static const String languageCode = 'languageCode';
   static const String searchHistory = 'searchHistory';
+  static const String currentFcmToken = 'currentFcmToken';
 }
 
 class SharedPreferencesService {
@@ -63,4 +64,11 @@ class SharedPreferencesService {
 
   List<String> get searchHistory =>
       _preferences.getStringList(SharedPrefKeys.searchHistory);
+
+  Future<void> saveCurrentFcmToken(String token) async {
+    await _preferences.setString(SharedPrefKeys.currentFcmToken, token);
+  }
+
+  String get currentSavedFcmToken =>
+      _preferences.getString(SharedPrefKeys.currentFcmToken);
 }

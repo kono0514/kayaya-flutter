@@ -309,13 +309,15 @@ class GetAnimeDetails$Query$Anime with EquatableMixin {
   )
   GraphqlAnilistApi$Query$Media anilist;
 
+  bool subscribed;
+
   GetAnimeDetails$Query$Anime$Relations relations;
 
   GetAnimeDetails$Query$Anime$Recommendations recommendations;
 
   @override
   List<Object> get props =>
-      [id, description, anilist, relations, recommendations];
+      [id, description, anilist, subscribed, relations, recommendations];
   Map<String, dynamic> toJson() => _$GetAnimeDetails$Query$AnimeToJson(this);
 }
 
@@ -473,6 +475,8 @@ class GetAnimeDetailsFull$Query$Anime with EquatableMixin, ListItemAnimeMixin {
   )
   GraphqlAnilistApi$Query$Media anilist;
 
+  bool subscribed;
+
   GetAnimeDetailsFull$Query$Anime$Relations relations;
 
   GetAnimeDetailsFull$Query$Anime$Recommendations recommendations;
@@ -489,6 +493,7 @@ class GetAnimeDetailsFull$Query$Anime with EquatableMixin, ListItemAnimeMixin {
         genres,
         description,
         anilist,
+        subscribed,
         relations,
         recommendations
       ];
@@ -695,6 +700,48 @@ class GetGenres$Query with EquatableMixin {
   @override
   List<Object> get props => [genres];
   Map<String, dynamic> toJson() => _$GetGenres$QueryToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class UploadFcmToken$Mutation with EquatableMixin {
+  UploadFcmToken$Mutation();
+
+  factory UploadFcmToken$Mutation.fromJson(Map<String, dynamic> json) =>
+      _$UploadFcmToken$MutationFromJson(json);
+
+  bool registerFcmToken;
+
+  @override
+  List<Object> get props => [registerFcmToken];
+  Map<String, dynamic> toJson() => _$UploadFcmToken$MutationToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class SubscribeTo$Mutation with EquatableMixin {
+  SubscribeTo$Mutation();
+
+  factory SubscribeTo$Mutation.fromJson(Map<String, dynamic> json) =>
+      _$SubscribeTo$MutationFromJson(json);
+
+  bool subscribeTo;
+
+  @override
+  List<Object> get props => [subscribeTo];
+  Map<String, dynamic> toJson() => _$SubscribeTo$MutationToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class UnsubscribeFrom$Mutation with EquatableMixin {
+  UnsubscribeFrom$Mutation();
+
+  factory UnsubscribeFrom$Mutation.fromJson(Map<String, dynamic> json) =>
+      _$UnsubscribeFrom$MutationFromJson(json);
+
+  bool unsubscribeFrom;
+
+  @override
+  List<Object> get props => [unsubscribeFrom];
+  Map<String, dynamic> toJson() => _$UnsubscribeFrom$MutationToJson(this);
 }
 
 enum AnimeType {
@@ -1075,6 +1122,12 @@ class GetAnimeDetailsQuery
                     directives: [],
                     selectionSet: null),
                 FieldNode(
+                    name: NameNode(value: 'subscribed'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null),
+                FieldNode(
                     name: NameNode(value: 'relations'),
                     alias: null,
                     arguments: [],
@@ -1282,6 +1335,12 @@ class GetAnimeDetailsFullQuery extends GraphQLQuery<GetAnimeDetailsFull$Query,
                     selectionSet: null),
                 FieldNode(
                     name: NameNode(value: 'anilist'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null),
+                FieldNode(
+                    name: NameNode(value: 'subscribed'),
                     alias: null,
                     arguments: [],
                     directives: [],
@@ -1698,4 +1757,196 @@ class GetGenresQuery extends GraphQLQuery<GetGenres$Query, JsonSerializable> {
   @override
   GetGenres$Query parse(Map<String, dynamic> json) =>
       GetGenres$Query.fromJson(json);
+}
+
+@JsonSerializable(explicitToJson: true)
+class UploadFcmTokenArguments extends JsonSerializable with EquatableMixin {
+  UploadFcmTokenArguments({@required this.token, this.oldToken});
+
+  @override
+  factory UploadFcmTokenArguments.fromJson(Map<String, dynamic> json) =>
+      _$UploadFcmTokenArgumentsFromJson(json);
+
+  final String token;
+
+  final String oldToken;
+
+  @override
+  List<Object> get props => [token, oldToken];
+  @override
+  Map<String, dynamic> toJson() => _$UploadFcmTokenArgumentsToJson(this);
+}
+
+class UploadFcmTokenMutation
+    extends GraphQLQuery<UploadFcmToken$Mutation, UploadFcmTokenArguments> {
+  UploadFcmTokenMutation({this.variables});
+
+  @override
+  final DocumentNode document = DocumentNode(definitions: [
+    OperationDefinitionNode(
+        type: OperationType.mutation,
+        name: NameNode(value: 'UploadFcmToken'),
+        variableDefinitions: [
+          VariableDefinitionNode(
+              variable: VariableNode(name: NameNode(value: 'token')),
+              type: NamedTypeNode(
+                  name: NameNode(value: 'String'), isNonNull: true),
+              defaultValue: DefaultValueNode(value: null),
+              directives: []),
+          VariableDefinitionNode(
+              variable: VariableNode(name: NameNode(value: 'oldToken')),
+              type: NamedTypeNode(
+                  name: NameNode(value: 'String'), isNonNull: false),
+              defaultValue: DefaultValueNode(value: null),
+              directives: [])
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'registerFcmToken'),
+              alias: null,
+              arguments: [
+                ArgumentNode(
+                    name: NameNode(value: 'token'),
+                    value: VariableNode(name: NameNode(value: 'token'))),
+                ArgumentNode(
+                    name: NameNode(value: 'oldToken'),
+                    value: VariableNode(name: NameNode(value: 'oldToken')))
+              ],
+              directives: [],
+              selectionSet: null)
+        ]))
+  ]);
+
+  @override
+  final String operationName = 'UploadFcmToken';
+
+  @override
+  final UploadFcmTokenArguments variables;
+
+  @override
+  List<Object> get props => [document, operationName, variables];
+  @override
+  UploadFcmToken$Mutation parse(Map<String, dynamic> json) =>
+      UploadFcmToken$Mutation.fromJson(json);
+}
+
+@JsonSerializable(explicitToJson: true)
+class SubscribeToArguments extends JsonSerializable with EquatableMixin {
+  SubscribeToArguments({@required this.animeId});
+
+  @override
+  factory SubscribeToArguments.fromJson(Map<String, dynamic> json) =>
+      _$SubscribeToArgumentsFromJson(json);
+
+  final String animeId;
+
+  @override
+  List<Object> get props => [animeId];
+  @override
+  Map<String, dynamic> toJson() => _$SubscribeToArgumentsToJson(this);
+}
+
+class SubscribeToMutation
+    extends GraphQLQuery<SubscribeTo$Mutation, SubscribeToArguments> {
+  SubscribeToMutation({this.variables});
+
+  @override
+  final DocumentNode document = DocumentNode(definitions: [
+    OperationDefinitionNode(
+        type: OperationType.mutation,
+        name: NameNode(value: 'SubscribeTo'),
+        variableDefinitions: [
+          VariableDefinitionNode(
+              variable: VariableNode(name: NameNode(value: 'animeId')),
+              type: NamedTypeNode(name: NameNode(value: 'ID'), isNonNull: true),
+              defaultValue: DefaultValueNode(value: null),
+              directives: [])
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'subscribeTo'),
+              alias: null,
+              arguments: [
+                ArgumentNode(
+                    name: NameNode(value: 'animeId'),
+                    value: VariableNode(name: NameNode(value: 'animeId')))
+              ],
+              directives: [],
+              selectionSet: null)
+        ]))
+  ]);
+
+  @override
+  final String operationName = 'SubscribeTo';
+
+  @override
+  final SubscribeToArguments variables;
+
+  @override
+  List<Object> get props => [document, operationName, variables];
+  @override
+  SubscribeTo$Mutation parse(Map<String, dynamic> json) =>
+      SubscribeTo$Mutation.fromJson(json);
+}
+
+@JsonSerializable(explicitToJson: true)
+class UnsubscribeFromArguments extends JsonSerializable with EquatableMixin {
+  UnsubscribeFromArguments({@required this.animeId});
+
+  @override
+  factory UnsubscribeFromArguments.fromJson(Map<String, dynamic> json) =>
+      _$UnsubscribeFromArgumentsFromJson(json);
+
+  final String animeId;
+
+  @override
+  List<Object> get props => [animeId];
+  @override
+  Map<String, dynamic> toJson() => _$UnsubscribeFromArgumentsToJson(this);
+}
+
+class UnsubscribeFromMutation
+    extends GraphQLQuery<UnsubscribeFrom$Mutation, UnsubscribeFromArguments> {
+  UnsubscribeFromMutation({this.variables});
+
+  @override
+  final DocumentNode document = DocumentNode(definitions: [
+    OperationDefinitionNode(
+        type: OperationType.mutation,
+        name: NameNode(value: 'UnsubscribeFrom'),
+        variableDefinitions: [
+          VariableDefinitionNode(
+              variable: VariableNode(name: NameNode(value: 'animeId')),
+              type: NamedTypeNode(name: NameNode(value: 'ID'), isNonNull: true),
+              defaultValue: DefaultValueNode(value: null),
+              directives: [])
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'unsubscribeFrom'),
+              alias: null,
+              arguments: [
+                ArgumentNode(
+                    name: NameNode(value: 'animeId'),
+                    value: VariableNode(name: NameNode(value: 'animeId')))
+              ],
+              directives: [],
+              selectionSet: null)
+        ]))
+  ]);
+
+  @override
+  final String operationName = 'UnsubscribeFrom';
+
+  @override
+  final UnsubscribeFromArguments variables;
+
+  @override
+  List<Object> get props => [document, operationName, variables];
+  @override
+  UnsubscribeFrom$Mutation parse(Map<String, dynamic> json) =>
+      UnsubscribeFrom$Mutation.fromJson(json);
 }
