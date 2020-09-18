@@ -113,29 +113,13 @@ class DefaultClickListener implements ClickListener {
     if (event.trim().isEmpty) return;
 
     final uri = Uri.parse(event.trim());
+    final route = Routes.fromURI(uri);
 
-    if (uri.scheme == 'route') {
-      if (uri.host == 'series' || uri.host == 'movie') {
-        // At minimum, id is needed
-        if (uri.queryParameters.containsKey('id')) {
-          launchMediaPage(
-            context,
-            MediaArguments(
-              BrowseAnimes$Query$Animes$Data.fromJson(
-                {
-                  'id': uri.queryParameters['id'],
-                  'coverImage': {
-                    'large': uri.queryParameters['image'],
-                  },
-                  'name': uri.queryParameters['name'],
-                  'animeType': uri.host.toUpperCase()
-                },
-              ),
-              isMinimal: true,
-            ),
-          );
-        }
-      }
+    if (route != null) {
+      Navigator.of(
+        context,
+        rootNavigator: true,
+      ).push(route);
     }
   }
 }

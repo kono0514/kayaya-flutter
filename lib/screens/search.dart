@@ -172,9 +172,10 @@ class Search extends SearchDelegate {
                       // returns to the page below "SearchPage"
                       close(context, query);
                       Navigator.of(context).pop();
-                      launchMediaPage(
-                        context,
-                        MediaArguments(
+
+                      Navigator.of(context, rootNavigator: true).pushNamed(
+                        RouteConstants.movieOrSeriesDetail,
+                        arguments: MediaArguments(
                           BrowseAnimes$Query$Animes$Data.fromJson(
                             {
                               'id': item.objectID.split('::').last,

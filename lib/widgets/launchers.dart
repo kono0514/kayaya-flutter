@@ -40,14 +40,3 @@ void launchPlayRelease(BuildContext context,
     }
   }
 }
-
-void launchMediaPage(BuildContext context, MediaArguments mediaArguments) {
-  final route = mediaArguments.anime.animeType == AnimeType.movie
-      ? RouteConstants.movieDetail
-      : RouteConstants.seriesDetail;
-
-  Navigator.of(
-    context,
-    rootNavigator: true,
-  ).pushNamed(route, arguments: mediaArguments);
-}

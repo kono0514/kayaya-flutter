@@ -69,8 +69,11 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                                   final anime =
                                       state.details.relations.data[index];
 
-                                  launchMediaPage(
-                                      context, MediaArguments(anime));
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pushNamed(
+                                    RouteConstants.movieOrSeriesDetail,
+                                    arguments: MediaArguments(anime),
+                                  );
                                 },
                               ),
                             ),
@@ -111,8 +114,11 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                                   final anime =
                                       state.details.recommendations.data[index];
 
-                                  launchMediaPage(
-                                      context, MediaArguments(anime));
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pushNamed(
+                                    RouteConstants.movieOrSeriesDetail,
+                                    arguments: MediaArguments(anime),
+                                  );
                                 },
                               ),
                             ),

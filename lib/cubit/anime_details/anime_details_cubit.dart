@@ -15,6 +15,9 @@ class AnimeDetailsCubit extends Cubit<AnimeDetailsState> {
 
     try {
       final details = await repository.fetchDetails(id);
+      if (details == null) {
+        throw Exception('Not found');
+      }
       emit(AnimeDetailsLoaded(details: details));
     } catch (e) {
       emit(AnimeDetailsError(e));
@@ -26,6 +29,9 @@ class AnimeDetailsCubit extends Cubit<AnimeDetailsState> {
 
     try {
       final detailsFull = await repository.fetchDetailsFull(id);
+      if (detailsFull == null) {
+        throw Exception('Not found');
+      }
       final details =
           GetAnimeDetails$Query$Anime.fromJson(detailsFull.toJson());
       final listData =

@@ -199,18 +199,26 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
   Future<bool> shouldPopAppRoot(BuildContext context) async {
     final snackbarVisibleDuration = Duration(seconds: 2);
     final now = DateTime.now();
-    final difference = now.difference(_lastBackPressTime ?? now);
 
-    /// Can only exit while snackbar is visible
+    var difference;
+    if (_lastBackPressTime == null) {
+      difference = Duration(seconds: 3);
+    } else {
+      difference = now.difference(_lastBackPressTime);
+    }
+
+    final isSnackbarVisible = difference < snackbarVisibleDuration;
+
+    /// Only exit while snackbar is visible
     /// Ignore quick succession taps
-    if (difference.inMilliseconds > 200 &&
-        difference < snackbarVisibleDuration) {
+    if (isSnackbarVisible && difference.inMilliseconds > 200) {
       return true;
     }
 
     _lastBackPressTime = now;
     // Prevent duplicate snackbar
-    if (difference >= snackbarVisibleDuration) {
+    if (!isSnackbarVisible) {
+      print('show snackbar');
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text('Press back again to exit'),

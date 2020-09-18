@@ -137,7 +137,11 @@ class _BrowsePageState extends State<BrowsePage> {
                           anime: state.animes[index],
                           onPressed: () {
                             final anime = state.animes[index];
-                            launchMediaPage(context, MediaArguments(anime));
+                            Navigator.of(context, rootNavigator: true)
+                                .pushNamed(
+                              RouteConstants.movieOrSeriesDetail,
+                              arguments: MediaArguments(anime),
+                            );
                           },
                         );
                 },
