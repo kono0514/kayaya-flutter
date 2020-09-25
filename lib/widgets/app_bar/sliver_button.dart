@@ -1,10 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
-import 'package:kayaya_flutter/widgets/browse/filter_dialog.dart';
 
 class SliverButton extends StatefulWidget {
   final Icon icon;

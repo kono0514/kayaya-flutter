@@ -8,11 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/algolia_client_provider.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/bloc/search_bloc.dart';
-import 'package:kayaya_flutter/hex_color.dart';
-import 'package:kayaya_flutter/logger.dart';
+import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/utils/hex_color.dart';
 import 'package:kayaya_flutter/routes.dart';
-import 'package:kayaya_flutter/shared_preferences_service.dart';
-import 'package:kayaya_flutter/widgets/launchers.dart';
+import 'package:kayaya_flutter/services/shared_preferences_service.dart';
 // import 'package:kayaya_flutter/widgets/custom_search.dart';
 
 typedef GetSearchSuggestions = Future<List<String>> Function();
@@ -176,7 +175,7 @@ class Search extends SearchDelegate {
                       Navigator.of(context, rootNavigator: true).pushNamed(
                         RouteConstants.movieOrSeriesDetail,
                         arguments: MediaArguments(
-                          BrowseAnimes$Query$Animes$Data.fromJson(
+                          AnimeItemModelGenerator$Query$Anime.fromJson(
                             {
                               'id': item.objectID.split('::').last,
                               'coverImage': {
@@ -235,8 +234,8 @@ class Search extends SearchDelegate {
                                       ),
                                     Text(
                                       item.data['anime_type'] == 'series'
-                                          ? 'Цуврал'
-                                          : 'Кино',
+                                          ? S.of(context).series
+                                          : S.of(context).movie,
                                       style: Theme.of(context)
                                           .textTheme
                                           .caption

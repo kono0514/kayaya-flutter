@@ -14,11 +14,12 @@ class AnimeSubscriptionInitial extends AnimeSubscriptionState {
 class AnimeSubscriptionLoaded extends AnimeSubscriptionState {
   final String id;
   final bool subscribed;
+  final bool isDirty;
 
-  const AnimeSubscriptionLoaded(this.id, this.subscribed);
+  const AnimeSubscriptionLoaded(this.id, this.subscribed, this.isDirty);
 
   @override
-  List<Object> get props => [id, subscribed];
+  List<Object> get props => [id, subscribed, isDirty];
 }
 
 class AnimeSubscriptionChanging extends AnimeSubscriptionState {

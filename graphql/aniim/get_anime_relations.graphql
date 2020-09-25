@@ -1,0 +1,21 @@
+query GetAnimeRelations($id: ID!) {
+    anime(id: $id) {
+        id
+        relations {
+            data {
+                ...AnimeItemFields
+                relationPivot {
+                    relationType
+                }
+            }
+        }
+        recommendations {
+            data {
+                ...AnimeItemFields
+                recommendationPivot {
+                    rating
+                }
+            }
+        }
+    }
+}

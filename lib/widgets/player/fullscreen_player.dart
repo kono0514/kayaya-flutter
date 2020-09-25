@@ -1,6 +1,5 @@
 import 'package:chewie_extended/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:kayaya_flutter/widgets/player/custom_material_controls.dart';
 import 'package:video_player/video_player.dart';
 

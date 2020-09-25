@@ -1,12 +1,6 @@
 type Query {
   """Return currently authenticated user's subscribed animes"""
-  subscriptions(
-    """Limits number of fetched elements. Maximum allowed value: 30."""
-    first: Int = 20
-
-    """The offset from which elements are returned."""
-    page: Int
-  ): AnimePaginator
+  subscriptions: [Anime]!
   me: User
   user(id: ID!): User
   animes(
@@ -39,42 +33,6 @@ type Query {
   scrapyManyJob(ids: [ID!]!): [ScrapyJob!]
   scrapySpiders: [ScrapySpider!]!
   featured: String!
-}
-
-"""A paginated list of Anime items."""
-type AnimePaginator {
-  """Pagination information about the list of items."""
-  paginatorInfo: PaginatorInfo!
-
-  """A list of Anime items."""
-  data: [Anime!]!
-}
-
-"""Pagination information about the corresponding list of items."""
-type PaginatorInfo {
-  """Total count of available items in the page."""
-  count: Int!
-
-  """Current pagination page."""
-  currentPage: Int!
-
-  """Index of first item in the current page."""
-  firstItem: Int
-
-  """If collection has more pages."""
-  hasMorePages: Boolean!
-
-  """Index of last item in the current page."""
-  lastItem: Int
-
-  """Last page number of the collection."""
-  lastPage: Int!
-
-  """Number of items per page in the collection."""
-  perPage: Int!
-
-  """Total items available in the collection."""
-  total: Int!
 }
 
 type Anime {
@@ -160,6 +118,33 @@ type EpisodePaginator {
   data: [Episode!]!
 }
 
+"""Pagination information about the corresponding list of items."""
+type PaginatorInfo {
+  """Total count of available items in the page."""
+  count: Int!
+
+  """Current pagination page."""
+  currentPage: Int!
+
+  """Index of first item in the current page."""
+  firstItem: Int
+
+  """If collection has more pages."""
+  hasMorePages: Boolean!
+
+  """Index of last item in the current page."""
+  lastItem: Int
+
+  """Last page number of the collection."""
+  lastPage: Int!
+
+  """Number of items per page in the collection."""
+  perPage: Int!
+
+  """Total items available in the collection."""
+  total: Int!
+}
+
 type Episode {
   id: ID!
   number: Int!
@@ -191,6 +176,15 @@ enum ReleaseHealth {
 enum PublishStatus {
   PUBLISHED
   DRAFT
+}
+
+"""A paginated list of Anime items."""
+type AnimePaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of Anime items."""
+  data: [Anime!]!
 }
 
 type AnimeRecommendationPivot {

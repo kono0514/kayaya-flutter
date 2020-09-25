@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
+import 'package:kayaya_flutter/generated/l10n.dart';
 
 class SourceChooserDialog extends StatelessWidget {
   final List<GetAnimeEpisodes$Query$Episodes$Data$Releases> releases;
@@ -10,7 +11,7 @@ class SourceChooserDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      title: Text('Choose source:'),
+      title: Text('${S.of(context).source_chooser_title}:'),
       children: releases
           .map((release) => _buildDialogOption(context, release))
           .toList(),

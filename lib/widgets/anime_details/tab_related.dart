@@ -2,37 +2,55 @@ import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
-import 'package:kayaya_flutter/cubit/anime_details/anime_details_cubit.dart';
+import 'package:kayaya_flutter/cubit/anime_relations_cubit.dart';
+import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/routes.dart';
-import 'package:kayaya_flutter/widgets/anime_related_tile.dart';
-import 'package:kayaya_flutter/widgets/launchers.dart';
+import 'package:kayaya_flutter/widgets/anime_horiz_tile.dart';
 
 // TODO: Create view dedicated for empty related/recommended
 
 class RelatedTabViewItem extends StatefulWidget {
+  final String id;
   final Key tabKey;
 
-  const RelatedTabViewItem({Key key, this.tabKey}) : super(key: key);
+  const RelatedTabViewItem({Key key, this.tabKey, this.id}) : super(key: key);
 
   @override
   _RelatedTabViewItemState createState() => _RelatedTabViewItemState();
 }
 
 class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
+  AnimeRelationsCubit animeRelationsCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    animeRelationsCubit =
+        AnimeRelationsCubit(context.repository<AniimRepository>())
+          ..loadRelations(widget.id);
+  }
+
+  @override
+  void dispose() {
+    animeRelationsCubit.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return NestedScrollViewInnerScrollPositionKeyWidget(
       widget.tabKey,
-      BlocBuilder<AnimeDetailsCubit, AnimeDetailsState>(
+      BlocBuilder<AnimeRelationsCubit, AnimeRelationsState>(
+        cubit: animeRelationsCubit,
         builder: (context, state) {
-          if (state is AnimeDetailsError) {
+          if (state is AnimeRelationsError) {
             return Center(
               child: Text(state.exception.toString()),
             );
           }
 
-          if (state is AnimeDetailsLoaded) {
+          if (state is AnimeRelationsLoaded) {
             return CustomScrollView(
               slivers: [
                 SliverOverlapInjector(
@@ -40,7 +58,7 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 ),
                 SliverPadding(padding: const EdgeInsets.only(top: 30)),
-                if (state.details.relations.data.length > 0)
+                if (state.relations.data.length > 0)
                   SliverToBoxAdapter(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +66,7 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                         Padding(
                           padding: const EdgeInsets.only(left: 16.0),
                           child: Text(
-                            'Related:',
+                            S.of(context).related,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
@@ -62,12 +80,11 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                             itemBuilder: (context, index) => Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: AnimeRelatedTile(
-                                anime: state.details.relations.data[index],
+                              child: AnimeHorizTile(
+                                anime: state.relations.data[index],
                                 height: 163,
                                 onPressed: () {
-                                  final anime =
-                                      state.details.relations.data[index];
+                                  final anime = state.relations.data[index];
 
                                   Navigator.of(context, rootNavigator: true)
                                       .pushNamed(
@@ -77,14 +94,14 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                                 },
                               ),
                             ),
-                            itemCount: state.details.relations.data.length,
+                            itemCount: state.relations.data.length,
                           ),
                         ),
                         SizedBox(height: 30),
                       ],
                     ),
                   ),
-                if (state.details.recommendations.data.length > 0)
+                if (state.recommendations.data.length > 0)
                   SliverToBoxAdapter(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +109,7 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                         Padding(
                           padding: const EdgeInsets.only(left: 16.0),
                           child: Text(
-                            'Recommendation:',
+                            S.of(context).recommended,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
@@ -106,13 +123,12 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                             itemBuilder: (context, index) => Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: AnimeRelatedTile(
-                                anime:
-                                    state.details.recommendations.data[index],
+                              child: AnimeHorizTile(
+                                anime: state.recommendations.data[index],
                                 height: 163,
                                 onPressed: () {
                                   final anime =
-                                      state.details.recommendations.data[index];
+                                      state.recommendations.data[index];
 
                                   Navigator.of(context, rootNavigator: true)
                                       .pushNamed(
@@ -122,8 +138,7 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                                 },
                               ),
                             ),
-                            itemCount:
-                                state.details.recommendations.data.length,
+                            itemCount: state.recommendations.data.length,
                           ),
                         ),
                       ],

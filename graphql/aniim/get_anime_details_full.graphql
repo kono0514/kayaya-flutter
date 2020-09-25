@@ -1,24 +1,6 @@
 query GetAnimeDetailsFull($id: ID!) {
     anime(id: $id) {
-        ...ListItemAnime
-        description
-        anilist
-        subscribed
-        relations {
-            data {
-                ...ListItemAnime
-                relationPivot {
-                    relationType
-                }
-            }
-        }
-        recommendations {
-            data {
-                ...ListItemAnime
-                recommendationPivot {
-                    rating
-                }
-            }
-        }
+        ...AnimeItemFields
+        ...AnimeDetailsFields
     }
 }

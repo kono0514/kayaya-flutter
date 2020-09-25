@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:kayaya_flutter/shared_preferences_service.dart';
+import 'package:kayaya_flutter/services/shared_preferences_service.dart';
 
 part 'theme_state.dart';
 

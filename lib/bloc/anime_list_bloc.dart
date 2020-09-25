@@ -1,14 +1,12 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
-import 'package:kayaya_flutter/logger.dart';
+import 'package:kayaya_flutter/utils/logger.dart';
 import 'package:kayaya_flutter/models/filter.dart';
-import 'package:kayaya_flutter/repository.dart';
+import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:quiver/core.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -33,6 +31,7 @@ class AnimeListBloc extends Bloc<AnimeListEvent, AnimeListState> {
     } else if (state is BrowseFilterModified) {
       return state.filter;
     }
+    return null;
   }
 
   @override
@@ -94,8 +93,6 @@ class AnimeListBloc extends Bloc<AnimeListEvent, AnimeListState> {
         if (currentState is AnimeListLoadedState) {
           page = currentState.paginatorInfo.currentPage + 1;
         }
-
-        print('fetch page $page');
 
         final animes = await repository.fetchAnimes(page: page, filter: filter);
 

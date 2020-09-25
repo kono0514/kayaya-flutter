@@ -5,9 +5,10 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/bloc/anime_episodes_bloc.dart';
-import 'package:kayaya_flutter/repository.dart';
+import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/widgets/icon_popup_menu.dart';
-import 'package:kayaya_flutter/widgets/launchers.dart';
+import 'package:kayaya_flutter/utils/launchers.dart';
 import 'package:kayaya_flutter/widgets/list_bottom_loader.dart';
 import 'package:kayaya_flutter/widgets/player/source_chooser_dialog.dart';
 
@@ -112,15 +113,15 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
                   child: IconPopupMenu(
                     items: [
                       PopupMenuItem(
-                        child: Text('Asc'),
+                        child: Text(S.of(context).sort_asc),
                         value: SortOrder.asc,
                       ),
                       PopupMenuItem(
-                        child: Text('Desc'),
+                        child: Text(S.of(context).sort_desc),
                         value: SortOrder.desc,
                       ),
                     ],
-                    title: 'Sort by',
+                    title: S.of(context).sort,
                     icon: Icon(Icons.sort),
                     initialValue: state.sortOrder,
                     onSelected: (value) {
@@ -195,6 +196,18 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
   }
 
   Widget buildEmptyWidget() {
-    return Center(child: Text('No episodes yet...'));
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(S.of(context).no_episodes),
+          RaisedButton(
+            onPressed: () =>
+                animeEpisodesBloc.add(AnimeEpisodesRefreshed(widget.id)),
+            child: Text('Retry'),
+          ),
+        ],
+      ),
+    );
   }
 }

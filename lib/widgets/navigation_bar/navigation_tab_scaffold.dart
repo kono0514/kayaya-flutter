@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
-import 'package:kayaya_flutter/logger.dart';
 import 'package:kayaya_flutter/routes.dart';
-import 'package:kayaya_flutter/screens/tabs/browse.dart';
-import 'package:kayaya_flutter/screens/tabs/featured.dart';
-import 'package:kayaya_flutter/screens/tabs/library.dart';
+import 'package:kayaya_flutter/screens/tabs/browse/browse.dart';
+import 'package:kayaya_flutter/screens/tabs/featured/featured.dart';
+import 'package:kayaya_flutter/screens/tabs/library/library.dart';
 import 'package:kayaya_flutter/screens/search.dart';
 import 'package:kayaya_flutter/widgets/navigation_bar/material_tab_scaffold.dart';
 

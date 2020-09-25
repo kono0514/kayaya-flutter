@@ -4,15 +4,14 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
-import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
-import 'package:kayaya_flutter/cubit/anime_details/anime_details_cubit.dart';
+import 'package:kayaya_flutter/cubit/anime_details_cubit.dart';
+import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InfoTabViewItem extends StatefulWidget {
   final Key tabKey;
-  final ListItemAnimeMixin anime;
 
-  const InfoTabViewItem({Key key, this.tabKey, this.anime}) : super(key: key);
+  const InfoTabViewItem({Key key, this.tabKey}) : super(key: key);
 
   @override
   _InfoTabViewItemState createState() => _InfoTabViewItemState();
@@ -47,12 +46,12 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                         final items = <Widget>[];
                         items.addAll([
                           Text(
-                            'Genres:',
+                            S.of(context).genre,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                           SizedBox(height: 10),
                           Text(
-                            (widget.anime.genres ?? [])
+                            (state.details.genres ?? [])
                                 .map((e) => e.name)
                                 .join(', '),
                             style: Theme.of(context).textTheme.caption,
@@ -62,7 +61,7 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                         items.addAll([
                           SizedBox(height: 30),
                           Text(
-                            'Агуулга:',
+                            S.of(context).synopsis,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                           SizedBox(height: 10),
@@ -81,7 +80,7 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                           items.addAll([
                             SizedBox(height: 30),
                             Text(
-                              'Trailer:',
+                              S.of(context).trailer,
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                             SizedBox(height: 10),

@@ -4,7 +4,6 @@ import 'package:algolia/algolia.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kayaya_flutter/algolia_client_provider.dart';
-import 'package:kayaya_flutter/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'search_event.dart';

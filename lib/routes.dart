@@ -3,25 +3,17 @@ import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/screens/movie.dart';
 import 'package:kayaya_flutter/screens/search.dart';
 import 'package:kayaya_flutter/screens/series.dart';
-import 'package:kayaya_flutter/screens/settings.dart';
-import 'package:kayaya_flutter/screens/tabs/library.dart';
+import 'package:kayaya_flutter/screens/tabs/library/library.dart';
 
 abstract class RouteConstants {
   static const seriesDetail = 'series';
   static const movieDetail = 'movie';
   static const movieOrSeriesDetail = 'movieOrSeries';
   static const search = 'search';
-  static const settings = 'settings';
   static const library = 'library';
 
-  static List<String> get values => [
-        seriesDetail,
-        movieDetail,
-        movieOrSeriesDetail,
-        search,
-        settings,
-        library
-      ];
+  static List<String> get values =>
+      [seriesDetail, movieDetail, movieOrSeriesDetail, search, library];
 }
 
 abstract class Routes {
@@ -43,13 +35,11 @@ abstract class Routes {
       }
     } else if (settings.name == RouteConstants.search) {
       return MaterialPageRoute(builder: (context) => SearchPage());
-    } else if (settings.name == RouteConstants.settings) {
-      return MaterialPageRoute(builder: (context) => SettingsPage());
     } else if (settings.name == RouteConstants.library) {
       return MaterialPageRoute(builder: (context) => LibraryPage());
     }
 
-    return MaterialPageRoute(builder: (context) => SettingsPage());
+    return MaterialPageRoute(builder: (context) => LibraryPage());
   }
 
   static MaterialPageRoute fromURI(Uri uri) {
@@ -77,7 +67,7 @@ abstract class Routes {
       }
 
       final args = MediaArguments(
-        BrowseAnimes$Query$Animes$Data.fromJson(data),
+        AnimeItemModelGenerator$Query$Anime.fromJson(data),
         isMinimal: true,
       );
       return Routes.materialRoutes(
@@ -90,7 +80,7 @@ abstract class Routes {
 }
 
 class MediaArguments {
-  final ListItemAnimeMixin anime;
+  final AnimeItemFieldsMixin anime;
   final bool isMinimal;
 
   MediaArguments(this.anime, {this.isMinimal = false});

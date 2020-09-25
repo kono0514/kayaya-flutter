@@ -19,12 +19,75 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static m0(count) => "${count} eps";
+
+  static m1(runtime) => "${runtime} min";
+
+  static m2(number) => "Episode ${number}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "common_filter" : MessageLookupByLibrary.simpleMessage("Filter"),
+    "about" : MessageLookupByLibrary.simpleMessage("About"),
+    "all" : MessageLookupByLibrary.simpleMessage("All"),
+    "apply" : MessageLookupByLibrary.simpleMessage("Apply"),
+    "clear_search_history" : MessageLookupByLibrary.simpleMessage("Clear search history"),
+    "clear_search_history_success" : MessageLookupByLibrary.simpleMessage("Search history cleared."),
+    "credits" : MessageLookupByLibrary.simpleMessage("Credits"),
+    "detail_episode_count" : m0,
+    "detail_runtime" : m1,
+    "developer" : MessageLookupByLibrary.simpleMessage("Developer"),
+    "do_search" : MessageLookupByLibrary.simpleMessage("Search"),
+    "episode_item" : m2,
+    "episodes" : MessageLookupByLibrary.simpleMessage("Episodes"),
+    "error_fetch" : MessageLookupByLibrary.simpleMessage("Failed to fetch"),
+    "filter" : MessageLookupByLibrary.simpleMessage("Filter"),
+    "filter_and_sort" : MessageLookupByLibrary.simpleMessage("Filter and Sort"),
+    "filter_sort_alpha_asc" : MessageLookupByLibrary.simpleMessage("Alphabetically (A-Z)"),
+    "filter_sort_alpha_desc" : MessageLookupByLibrary.simpleMessage("Alphabetically (Z-A)"),
+    "filter_sort_rating_high" : MessageLookupByLibrary.simpleMessage("High Rating"),
+    "filter_sort_rating_low" : MessageLookupByLibrary.simpleMessage("Low Rating"),
+    "filter_sort_recent" : MessageLookupByLibrary.simpleMessage("Most Recent"),
+    "general" : MessageLookupByLibrary.simpleMessage("General"),
+    "genre" : MessageLookupByLibrary.simpleMessage("Genre"),
+    "info" : MessageLookupByLibrary.simpleMessage("Info"),
+    "language" : MessageLookupByLibrary.simpleMessage("Language"),
+    "language_updated" : MessageLookupByLibrary.simpleMessage("Language updated. Restart the app to see the changes."),
+    "movie" : MessageLookupByLibrary.simpleMessage("Movie"),
+    "newly_added" : MessageLookupByLibrary.simpleMessage("Newly Added"),
+    "no_episodes" : MessageLookupByLibrary.simpleMessage("No episodes found"),
+    "no_subscriptions" : MessageLookupByLibrary.simpleMessage("No active subscription found. Subscribe to a series to receive notification when a new episode gets added."),
+    "play" : MessageLookupByLibrary.simpleMessage("Play"),
+    "recommended" : MessageLookupByLibrary.simpleMessage("Recommended"),
+    "related" : MessageLookupByLibrary.simpleMessage("Related"),
+    "reserved_word_return" : MessageLookupByLibrary.simpleMessage("Return"),
+    "reset" : MessageLookupByLibrary.simpleMessage("Reset"),
+    "search" : MessageLookupByLibrary.simpleMessage("Search"),
+    "series" : MessageLookupByLibrary.simpleMessage("Series"),
+    "settings" : MessageLookupByLibrary.simpleMessage("Settings"),
+    "share" : MessageLookupByLibrary.simpleMessage("Share"),
+    "sort" : MessageLookupByLibrary.simpleMessage("Sort by"),
+    "sort_asc" : MessageLookupByLibrary.simpleMessage("Asc"),
+    "sort_desc" : MessageLookupByLibrary.simpleMessage("Desc"),
+    "source_chooser_title" : MessageLookupByLibrary.simpleMessage("Choose source"),
+    "source_code" : MessageLookupByLibrary.simpleMessage("Source code"),
+    "subscribe" : MessageLookupByLibrary.simpleMessage("Subscribe"),
+    "subscribe_success" : MessageLookupByLibrary.simpleMessage("Subscribed. You\'ll receive a notification when new episode gets added."),
+    "subscriptions" : MessageLookupByLibrary.simpleMessage("Subscriptions"),
+    "synopsis" : MessageLookupByLibrary.simpleMessage("Synopsis"),
     "tabs_browse" : MessageLookupByLibrary.simpleMessage("Browse"),
     "tabs_discover" : MessageLookupByLibrary.simpleMessage("Discover"),
     "tabs_library" : MessageLookupByLibrary.simpleMessage("Library"),
-    "tabs_search" : MessageLookupByLibrary.simpleMessage("Search")
+    "tabs_search" : MessageLookupByLibrary.simpleMessage("Search"),
+    "theme" : MessageLookupByLibrary.simpleMessage("Theme"),
+    "theme_dark" : MessageLookupByLibrary.simpleMessage("Dark"),
+    "theme_light" : MessageLookupByLibrary.simpleMessage("Light"),
+    "theme_system" : MessageLookupByLibrary.simpleMessage("System"),
+    "top_movies" : MessageLookupByLibrary.simpleMessage("Top Movies"),
+    "top_series" : MessageLookupByLibrary.simpleMessage("Top Series"),
+    "trailer" : MessageLookupByLibrary.simpleMessage("Trailer"),
+    "trending" : MessageLookupByLibrary.simpleMessage("Trending"),
+    "type" : MessageLookupByLibrary.simpleMessage("Type"),
+    "unsubscribe" : MessageLookupByLibrary.simpleMessage("Unsubscribe"),
+    "unsubscribe_success" : MessageLookupByLibrary.simpleMessage("Unsubscribed.")
   };
 }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
-import 'package:kayaya_flutter/repository.dart';
+import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:quiver/core.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -73,8 +73,6 @@ class AnimeEpisodesBloc extends Bloc<AnimeEpisodesEvent, AnimeEpisodesState> {
           page = currentState.paginatorInfo.currentPage + 1;
           sortOrder = currentState.sortOrder;
         }
-
-        print('fetch page $page');
 
         final episodes = await repository.fetchEpisodes(event.id,
             page: page, sortOrder: sortOrder);

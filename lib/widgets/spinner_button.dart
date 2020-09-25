@@ -24,7 +24,9 @@ class SpinnerButton extends StatelessWidget {
       child = SizedBox(
         width: 20,
         height: 20,
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        ),
       );
     } else {
       child = Row(

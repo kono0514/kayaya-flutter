@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/routes.dart';
-import 'package:kayaya_flutter/screens/tabs/browse.dart';
-import 'package:kayaya_flutter/screens/tabs/featured.dart';
-import 'package:kayaya_flutter/screens/tabs/library.dart';
+import 'package:kayaya_flutter/screens/tabs/browse/browse.dart';
+import 'package:kayaya_flutter/screens/tabs/featured/featured.dart';
+import 'package:kayaya_flutter/screens/tabs/library/library.dart';
 import 'package:kayaya_flutter/widgets/keep_alive_widget.dart';
 
 typedef TabNavigatorPageBuilder = Widget Function(
@@ -218,7 +218,6 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
     _lastBackPressTime = now;
     // Prevent duplicate snackbar
     if (!isSnackbarVisible) {
-      print('show snackbar');
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text('Press back again to exit'),

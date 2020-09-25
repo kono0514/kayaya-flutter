@@ -9,16 +9,26 @@ import 'package:kayaya_flutter/api/graphql_anilist_api.graphql.dart';
 import 'package:kayaya_flutter/api/coercers.dart';
 part 'graphql_api.graphql.g.dart';
 
-mixin ListItemAnimeMixin {
+mixin AnimeItemFieldsMixin {
   String id;
   String name;
   @JsonKey(unknownEnumValue: AnimeType.artemisUnknown)
   AnimeType animeType;
   int rating;
-  ListItemAnimeMixin$CoverImage coverImage;
+  AnimeItemFieldsMixin$CoverImage coverImage;
   String coverColor;
   String bannerImage;
-  List<ListItemAnimeMixin$Genres> genres;
+}
+mixin AnimeDetailsFieldsMixin {
+  String id;
+  List<AnimeDetailsFieldsMixin$Genres> genres;
+  String description;
+  @JsonKey(
+    fromJson: fromGraphQLAnilistMediaToDartGraphqlAnilistApi$Query$Media,
+    toJson: fromDartGraphqlAnilistApi$Query$MediaToGraphQLAnilistMedia,
+  )
+  GraphqlAnilistApi$Query$Media anilist;
+  bool subscribed;
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -44,11 +54,31 @@ class BrowseAnimes$Query$Animes$PaginatorInfo with EquatableMixin {
 }
 
 @JsonSerializable(explicitToJson: true)
-class BrowseAnimes$Query$Animes$Data with EquatableMixin, ListItemAnimeMixin {
+class BrowseAnimes$Query$Animes$Data$Genres with EquatableMixin {
+  BrowseAnimes$Query$Animes$Data$Genres();
+
+  factory BrowseAnimes$Query$Animes$Data$Genres.fromJson(
+          Map<String, dynamic> json) =>
+      _$BrowseAnimes$Query$Animes$Data$GenresFromJson(json);
+
+  String id;
+
+  String name;
+
+  @override
+  List<Object> get props => [id, name];
+  Map<String, dynamic> toJson() =>
+      _$BrowseAnimes$Query$Animes$Data$GenresToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class BrowseAnimes$Query$Animes$Data with EquatableMixin, AnimeItemFieldsMixin {
   BrowseAnimes$Query$Animes$Data();
 
   factory BrowseAnimes$Query$Animes$Data.fromJson(Map<String, dynamic> json) =>
       _$BrowseAnimes$Query$Animes$DataFromJson(json);
+
+  List<BrowseAnimes$Query$Animes$Data$Genres> genres;
 
   @override
   List<Object> get props => [
@@ -95,33 +125,18 @@ class BrowseAnimes$Query with EquatableMixin {
 }
 
 @JsonSerializable(explicitToJson: true)
-class ListItemAnimeMixin$CoverImage with EquatableMixin {
-  ListItemAnimeMixin$CoverImage();
+class AnimeItemFieldsMixin$CoverImage with EquatableMixin {
+  AnimeItemFieldsMixin$CoverImage();
 
-  factory ListItemAnimeMixin$CoverImage.fromJson(Map<String, dynamic> json) =>
-      _$ListItemAnimeMixin$CoverImageFromJson(json);
+  factory AnimeItemFieldsMixin$CoverImage.fromJson(Map<String, dynamic> json) =>
+      _$AnimeItemFieldsMixin$CoverImageFromJson(json);
 
   String large;
 
   @override
   List<Object> get props => [large];
-  Map<String, dynamic> toJson() => _$ListItemAnimeMixin$CoverImageToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class ListItemAnimeMixin$Genres with EquatableMixin {
-  ListItemAnimeMixin$Genres();
-
-  factory ListItemAnimeMixin$Genres.fromJson(Map<String, dynamic> json) =>
-      _$ListItemAnimeMixin$GenresFromJson(json);
-
-  String id;
-
-  String name;
-
-  @override
-  List<Object> get props => [id, name];
-  Map<String, dynamic> toJson() => _$ListItemAnimeMixin$GenresToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$AnimeItemFieldsMixin$CoverImageToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -170,154 +185,14 @@ class AnimesOrderByOrderByClause with EquatableMixin {
 }
 
 @JsonSerializable(explicitToJson: true)
-class GetAnimeDetails$Query$Anime$Relations$Data$RelationPivot
-    with EquatableMixin {
-  GetAnimeDetails$Query$Anime$Relations$Data$RelationPivot();
-
-  factory GetAnimeDetails$Query$Anime$Relations$Data$RelationPivot.fromJson(
-          Map<String, dynamic> json) =>
-      _$GetAnimeDetails$Query$Anime$Relations$Data$RelationPivotFromJson(json);
-
-  String relationType;
-
-  @override
-  List<Object> get props => [relationType];
-  Map<String, dynamic> toJson() =>
-      _$GetAnimeDetails$Query$Anime$Relations$Data$RelationPivotToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class GetAnimeDetails$Query$Anime$Relations$Data
-    with EquatableMixin, ListItemAnimeMixin {
-  GetAnimeDetails$Query$Anime$Relations$Data();
-
-  factory GetAnimeDetails$Query$Anime$Relations$Data.fromJson(
-          Map<String, dynamic> json) =>
-      _$GetAnimeDetails$Query$Anime$Relations$DataFromJson(json);
-
-  GetAnimeDetails$Query$Anime$Relations$Data$RelationPivot relationPivot;
-
-  @override
-  List<Object> get props => [
-        id,
-        name,
-        animeType,
-        rating,
-        coverImage,
-        coverColor,
-        bannerImage,
-        genres,
-        relationPivot
-      ];
-  Map<String, dynamic> toJson() =>
-      _$GetAnimeDetails$Query$Anime$Relations$DataToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class GetAnimeDetails$Query$Anime$Relations with EquatableMixin {
-  GetAnimeDetails$Query$Anime$Relations();
-
-  factory GetAnimeDetails$Query$Anime$Relations.fromJson(
-          Map<String, dynamic> json) =>
-      _$GetAnimeDetails$Query$Anime$RelationsFromJson(json);
-
-  List<GetAnimeDetails$Query$Anime$Relations$Data> data;
-
-  @override
-  List<Object> get props => [data];
-  Map<String, dynamic> toJson() =>
-      _$GetAnimeDetails$Query$Anime$RelationsToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class GetAnimeDetails$Query$Anime$Recommendations$Data$RecommendationPivot
-    with EquatableMixin {
-  GetAnimeDetails$Query$Anime$Recommendations$Data$RecommendationPivot();
-
-  factory GetAnimeDetails$Query$Anime$Recommendations$Data$RecommendationPivot.fromJson(
-          Map<String, dynamic> json) =>
-      _$GetAnimeDetails$Query$Anime$Recommendations$Data$RecommendationPivotFromJson(
-          json);
-
-  int rating;
-
-  @override
-  List<Object> get props => [rating];
-  Map<String, dynamic> toJson() =>
-      _$GetAnimeDetails$Query$Anime$Recommendations$Data$RecommendationPivotToJson(
-          this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class GetAnimeDetails$Query$Anime$Recommendations$Data
-    with EquatableMixin, ListItemAnimeMixin {
-  GetAnimeDetails$Query$Anime$Recommendations$Data();
-
-  factory GetAnimeDetails$Query$Anime$Recommendations$Data.fromJson(
-          Map<String, dynamic> json) =>
-      _$GetAnimeDetails$Query$Anime$Recommendations$DataFromJson(json);
-
-  GetAnimeDetails$Query$Anime$Recommendations$Data$RecommendationPivot
-      recommendationPivot;
-
-  @override
-  List<Object> get props => [
-        id,
-        name,
-        animeType,
-        rating,
-        coverImage,
-        coverColor,
-        bannerImage,
-        genres,
-        recommendationPivot
-      ];
-  Map<String, dynamic> toJson() =>
-      _$GetAnimeDetails$Query$Anime$Recommendations$DataToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class GetAnimeDetails$Query$Anime$Recommendations with EquatableMixin {
-  GetAnimeDetails$Query$Anime$Recommendations();
-
-  factory GetAnimeDetails$Query$Anime$Recommendations.fromJson(
-          Map<String, dynamic> json) =>
-      _$GetAnimeDetails$Query$Anime$RecommendationsFromJson(json);
-
-  List<GetAnimeDetails$Query$Anime$Recommendations$Data> data;
-
-  @override
-  List<Object> get props => [data];
-  Map<String, dynamic> toJson() =>
-      _$GetAnimeDetails$Query$Anime$RecommendationsToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class GetAnimeDetails$Query$Anime with EquatableMixin {
+class GetAnimeDetails$Query$Anime with EquatableMixin, AnimeDetailsFieldsMixin {
   GetAnimeDetails$Query$Anime();
 
   factory GetAnimeDetails$Query$Anime.fromJson(Map<String, dynamic> json) =>
       _$GetAnimeDetails$Query$AnimeFromJson(json);
 
-  String id;
-
-  String description;
-
-  @JsonKey(
-    fromJson: fromGraphQLAnilistMediaToDartGraphqlAnilistApi$Query$Media,
-    toJson: fromDartGraphqlAnilistApi$Query$MediaToGraphQLAnilistMedia,
-  )
-  GraphqlAnilistApi$Query$Media anilist;
-
-  bool subscribed;
-
-  GetAnimeDetails$Query$Anime$Relations relations;
-
-  GetAnimeDetails$Query$Anime$Recommendations recommendations;
-
   @override
-  List<Object> get props =>
-      [id, description, anilist, subscribed, relations, recommendations];
+  List<Object> get props => [id, genres, description, anilist, subscribed];
   Map<String, dynamic> toJson() => _$GetAnimeDetails$Query$AnimeToJson(this);
 }
 
@@ -336,151 +211,29 @@ class GetAnimeDetails$Query with EquatableMixin {
 }
 
 @JsonSerializable(explicitToJson: true)
-class GetAnimeDetailsFull$Query$Anime$Relations$Data$RelationPivot
-    with EquatableMixin {
-  GetAnimeDetailsFull$Query$Anime$Relations$Data$RelationPivot();
+class AnimeDetailsFieldsMixin$Genres with EquatableMixin {
+  AnimeDetailsFieldsMixin$Genres();
 
-  factory GetAnimeDetailsFull$Query$Anime$Relations$Data$RelationPivot.fromJson(
-          Map<String, dynamic> json) =>
-      _$GetAnimeDetailsFull$Query$Anime$Relations$Data$RelationPivotFromJson(
-          json);
+  factory AnimeDetailsFieldsMixin$Genres.fromJson(Map<String, dynamic> json) =>
+      _$AnimeDetailsFieldsMixin$GenresFromJson(json);
 
-  String relationType;
+  String id;
+
+  String name;
 
   @override
-  List<Object> get props => [relationType];
-  Map<String, dynamic> toJson() =>
-      _$GetAnimeDetailsFull$Query$Anime$Relations$Data$RelationPivotToJson(
-          this);
+  List<Object> get props => [id, name];
+  Map<String, dynamic> toJson() => _$AnimeDetailsFieldsMixin$GenresToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class GetAnimeDetailsFull$Query$Anime$Relations$Data
-    with EquatableMixin, ListItemAnimeMixin {
-  GetAnimeDetailsFull$Query$Anime$Relations$Data();
-
-  factory GetAnimeDetailsFull$Query$Anime$Relations$Data.fromJson(
-          Map<String, dynamic> json) =>
-      _$GetAnimeDetailsFull$Query$Anime$Relations$DataFromJson(json);
-
-  GetAnimeDetailsFull$Query$Anime$Relations$Data$RelationPivot relationPivot;
-
-  @override
-  List<Object> get props => [
-        id,
-        name,
-        animeType,
-        rating,
-        coverImage,
-        coverColor,
-        bannerImage,
-        genres,
-        relationPivot
-      ];
-  Map<String, dynamic> toJson() =>
-      _$GetAnimeDetailsFull$Query$Anime$Relations$DataToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class GetAnimeDetailsFull$Query$Anime$Relations with EquatableMixin {
-  GetAnimeDetailsFull$Query$Anime$Relations();
-
-  factory GetAnimeDetailsFull$Query$Anime$Relations.fromJson(
-          Map<String, dynamic> json) =>
-      _$GetAnimeDetailsFull$Query$Anime$RelationsFromJson(json);
-
-  List<GetAnimeDetailsFull$Query$Anime$Relations$Data> data;
-
-  @override
-  List<Object> get props => [data];
-  Map<String, dynamic> toJson() =>
-      _$GetAnimeDetailsFull$Query$Anime$RelationsToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class GetAnimeDetailsFull$Query$Anime$Recommendations$Data$RecommendationPivot
-    with EquatableMixin {
-  GetAnimeDetailsFull$Query$Anime$Recommendations$Data$RecommendationPivot();
-
-  factory GetAnimeDetailsFull$Query$Anime$Recommendations$Data$RecommendationPivot.fromJson(
-          Map<String, dynamic> json) =>
-      _$GetAnimeDetailsFull$Query$Anime$Recommendations$Data$RecommendationPivotFromJson(
-          json);
-
-  int rating;
-
-  @override
-  List<Object> get props => [rating];
-  Map<String, dynamic> toJson() =>
-      _$GetAnimeDetailsFull$Query$Anime$Recommendations$Data$RecommendationPivotToJson(
-          this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class GetAnimeDetailsFull$Query$Anime$Recommendations$Data
-    with EquatableMixin, ListItemAnimeMixin {
-  GetAnimeDetailsFull$Query$Anime$Recommendations$Data();
-
-  factory GetAnimeDetailsFull$Query$Anime$Recommendations$Data.fromJson(
-          Map<String, dynamic> json) =>
-      _$GetAnimeDetailsFull$Query$Anime$Recommendations$DataFromJson(json);
-
-  GetAnimeDetailsFull$Query$Anime$Recommendations$Data$RecommendationPivot
-      recommendationPivot;
-
-  @override
-  List<Object> get props => [
-        id,
-        name,
-        animeType,
-        rating,
-        coverImage,
-        coverColor,
-        bannerImage,
-        genres,
-        recommendationPivot
-      ];
-  Map<String, dynamic> toJson() =>
-      _$GetAnimeDetailsFull$Query$Anime$Recommendations$DataToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class GetAnimeDetailsFull$Query$Anime$Recommendations with EquatableMixin {
-  GetAnimeDetailsFull$Query$Anime$Recommendations();
-
-  factory GetAnimeDetailsFull$Query$Anime$Recommendations.fromJson(
-          Map<String, dynamic> json) =>
-      _$GetAnimeDetailsFull$Query$Anime$RecommendationsFromJson(json);
-
-  List<GetAnimeDetailsFull$Query$Anime$Recommendations$Data> data;
-
-  @override
-  List<Object> get props => [data];
-  Map<String, dynamic> toJson() =>
-      _$GetAnimeDetailsFull$Query$Anime$RecommendationsToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class GetAnimeDetailsFull$Query$Anime with EquatableMixin, ListItemAnimeMixin {
+class GetAnimeDetailsFull$Query$Anime
+    with EquatableMixin, AnimeItemFieldsMixin, AnimeDetailsFieldsMixin {
   GetAnimeDetailsFull$Query$Anime();
 
   factory GetAnimeDetailsFull$Query$Anime.fromJson(Map<String, dynamic> json) =>
       _$GetAnimeDetailsFull$Query$AnimeFromJson(json);
 
-  String description;
-
-  @JsonKey(
-    fromJson: fromGraphQLAnilistMediaToDartGraphqlAnilistApi$Query$Media,
-    toJson: fromDartGraphqlAnilistApi$Query$MediaToGraphQLAnilistMedia,
-  )
-  GraphqlAnilistApi$Query$Media anilist;
-
-  bool subscribed;
-
-  GetAnimeDetailsFull$Query$Anime$Relations relations;
-
-  GetAnimeDetailsFull$Query$Anime$Recommendations recommendations;
-
   @override
   List<Object> get props => [
         id,
@@ -490,12 +243,11 @@ class GetAnimeDetailsFull$Query$Anime with EquatableMixin, ListItemAnimeMixin {
         coverImage,
         coverColor,
         bannerImage,
+        id,
         genres,
         description,
         anilist,
-        subscribed,
-        relations,
-        recommendations
+        subscribed
       ];
   Map<String, dynamic> toJson() =>
       _$GetAnimeDetailsFull$Query$AnimeToJson(this);
@@ -703,17 +455,33 @@ class GetGenres$Query with EquatableMixin {
 }
 
 @JsonSerializable(explicitToJson: true)
-class UploadFcmToken$Mutation with EquatableMixin {
-  UploadFcmToken$Mutation();
+class GetSubscriptions$Query$Subscriptions
+    with EquatableMixin, AnimeItemFieldsMixin {
+  GetSubscriptions$Query$Subscriptions();
 
-  factory UploadFcmToken$Mutation.fromJson(Map<String, dynamic> json) =>
-      _$UploadFcmToken$MutationFromJson(json);
-
-  bool registerFcmToken;
+  factory GetSubscriptions$Query$Subscriptions.fromJson(
+          Map<String, dynamic> json) =>
+      _$GetSubscriptions$Query$SubscriptionsFromJson(json);
 
   @override
-  List<Object> get props => [registerFcmToken];
-  Map<String, dynamic> toJson() => _$UploadFcmToken$MutationToJson(this);
+  List<Object> get props =>
+      [id, name, animeType, rating, coverImage, coverColor, bannerImage];
+  Map<String, dynamic> toJson() =>
+      _$GetSubscriptions$Query$SubscriptionsToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetSubscriptions$Query with EquatableMixin {
+  GetSubscriptions$Query();
+
+  factory GetSubscriptions$Query.fromJson(Map<String, dynamic> json) =>
+      _$GetSubscriptions$QueryFromJson(json);
+
+  List<GetSubscriptions$Query$Subscriptions> subscriptions;
+
+  @override
+  List<Object> get props => [subscriptions];
+  Map<String, dynamic> toJson() => _$GetSubscriptions$QueryToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -742,6 +510,204 @@ class UnsubscribeFrom$Mutation with EquatableMixin {
   @override
   List<Object> get props => [unsubscribeFrom];
   Map<String, dynamic> toJson() => _$UnsubscribeFrom$MutationToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class UploadFcmToken$Mutation with EquatableMixin {
+  UploadFcmToken$Mutation();
+
+  factory UploadFcmToken$Mutation.fromJson(Map<String, dynamic> json) =>
+      _$UploadFcmToken$MutationFromJson(json);
+
+  bool registerFcmToken;
+
+  @override
+  List<Object> get props => [registerFcmToken];
+  Map<String, dynamic> toJson() => _$UploadFcmToken$MutationToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class AnimeItemModelGenerator$Query$Anime
+    with EquatableMixin, AnimeItemFieldsMixin {
+  AnimeItemModelGenerator$Query$Anime();
+
+  factory AnimeItemModelGenerator$Query$Anime.fromJson(
+          Map<String, dynamic> json) =>
+      _$AnimeItemModelGenerator$Query$AnimeFromJson(json);
+
+  @override
+  List<Object> get props =>
+      [id, name, animeType, rating, coverImage, coverColor, bannerImage];
+  Map<String, dynamic> toJson() =>
+      _$AnimeItemModelGenerator$Query$AnimeToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class AnimeItemModelGenerator$Query with EquatableMixin {
+  AnimeItemModelGenerator$Query();
+
+  factory AnimeItemModelGenerator$Query.fromJson(Map<String, dynamic> json) =>
+      _$AnimeItemModelGenerator$QueryFromJson(json);
+
+  AnimeItemModelGenerator$Query$Anime anime;
+
+  @override
+  List<Object> get props => [anime];
+  Map<String, dynamic> toJson() => _$AnimeItemModelGenerator$QueryToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetAnimeRelations$Query$Anime$Relations$Data$RelationPivot
+    with EquatableMixin {
+  GetAnimeRelations$Query$Anime$Relations$Data$RelationPivot();
+
+  factory GetAnimeRelations$Query$Anime$Relations$Data$RelationPivot.fromJson(
+          Map<String, dynamic> json) =>
+      _$GetAnimeRelations$Query$Anime$Relations$Data$RelationPivotFromJson(
+          json);
+
+  String relationType;
+
+  @override
+  List<Object> get props => [relationType];
+  Map<String, dynamic> toJson() =>
+      _$GetAnimeRelations$Query$Anime$Relations$Data$RelationPivotToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetAnimeRelations$Query$Anime$Relations$Data
+    with EquatableMixin, AnimeItemFieldsMixin {
+  GetAnimeRelations$Query$Anime$Relations$Data();
+
+  factory GetAnimeRelations$Query$Anime$Relations$Data.fromJson(
+          Map<String, dynamic> json) =>
+      _$GetAnimeRelations$Query$Anime$Relations$DataFromJson(json);
+
+  GetAnimeRelations$Query$Anime$Relations$Data$RelationPivot relationPivot;
+
+  @override
+  List<Object> get props => [
+        id,
+        name,
+        animeType,
+        rating,
+        coverImage,
+        coverColor,
+        bannerImage,
+        relationPivot
+      ];
+  Map<String, dynamic> toJson() =>
+      _$GetAnimeRelations$Query$Anime$Relations$DataToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetAnimeRelations$Query$Anime$Relations with EquatableMixin {
+  GetAnimeRelations$Query$Anime$Relations();
+
+  factory GetAnimeRelations$Query$Anime$Relations.fromJson(
+          Map<String, dynamic> json) =>
+      _$GetAnimeRelations$Query$Anime$RelationsFromJson(json);
+
+  List<GetAnimeRelations$Query$Anime$Relations$Data> data;
+
+  @override
+  List<Object> get props => [data];
+  Map<String, dynamic> toJson() =>
+      _$GetAnimeRelations$Query$Anime$RelationsToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetAnimeRelations$Query$Anime$Recommendations$Data$RecommendationPivot
+    with EquatableMixin {
+  GetAnimeRelations$Query$Anime$Recommendations$Data$RecommendationPivot();
+
+  factory GetAnimeRelations$Query$Anime$Recommendations$Data$RecommendationPivot.fromJson(
+          Map<String, dynamic> json) =>
+      _$GetAnimeRelations$Query$Anime$Recommendations$Data$RecommendationPivotFromJson(
+          json);
+
+  int rating;
+
+  @override
+  List<Object> get props => [rating];
+  Map<String, dynamic> toJson() =>
+      _$GetAnimeRelations$Query$Anime$Recommendations$Data$RecommendationPivotToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetAnimeRelations$Query$Anime$Recommendations$Data
+    with EquatableMixin, AnimeItemFieldsMixin {
+  GetAnimeRelations$Query$Anime$Recommendations$Data();
+
+  factory GetAnimeRelations$Query$Anime$Recommendations$Data.fromJson(
+          Map<String, dynamic> json) =>
+      _$GetAnimeRelations$Query$Anime$Recommendations$DataFromJson(json);
+
+  GetAnimeRelations$Query$Anime$Recommendations$Data$RecommendationPivot
+      recommendationPivot;
+
+  @override
+  List<Object> get props => [
+        id,
+        name,
+        animeType,
+        rating,
+        coverImage,
+        coverColor,
+        bannerImage,
+        recommendationPivot
+      ];
+  Map<String, dynamic> toJson() =>
+      _$GetAnimeRelations$Query$Anime$Recommendations$DataToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetAnimeRelations$Query$Anime$Recommendations with EquatableMixin {
+  GetAnimeRelations$Query$Anime$Recommendations();
+
+  factory GetAnimeRelations$Query$Anime$Recommendations.fromJson(
+          Map<String, dynamic> json) =>
+      _$GetAnimeRelations$Query$Anime$RecommendationsFromJson(json);
+
+  List<GetAnimeRelations$Query$Anime$Recommendations$Data> data;
+
+  @override
+  List<Object> get props => [data];
+  Map<String, dynamic> toJson() =>
+      _$GetAnimeRelations$Query$Anime$RecommendationsToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetAnimeRelations$Query$Anime with EquatableMixin {
+  GetAnimeRelations$Query$Anime();
+
+  factory GetAnimeRelations$Query$Anime.fromJson(Map<String, dynamic> json) =>
+      _$GetAnimeRelations$Query$AnimeFromJson(json);
+
+  String id;
+
+  GetAnimeRelations$Query$Anime$Relations relations;
+
+  GetAnimeRelations$Query$Anime$Recommendations recommendations;
+
+  @override
+  List<Object> get props => [id, relations, recommendations];
+  Map<String, dynamic> toJson() => _$GetAnimeRelations$Query$AnimeToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetAnimeRelations$Query with EquatableMixin {
+  GetAnimeRelations$Query();
+
+  factory GetAnimeRelations$Query.fromJson(Map<String, dynamic> json) =>
+      _$GetAnimeRelations$QueryFromJson(json);
+
+  GetAnimeRelations$Query$Anime anime;
+
+  @override
+  List<Object> get props => [anime];
+  Map<String, dynamic> toJson() => _$GetAnimeRelations$QueryToJson(this);
 }
 
 enum AnimeType {
@@ -963,13 +929,32 @@ class BrowseAnimesQuery
                     directives: [],
                     selectionSet: SelectionSetNode(selections: [
                       FragmentSpreadNode(
-                          name: NameNode(value: 'ListItemAnime'),
-                          directives: [])
+                          name: NameNode(value: 'AnimeItemFields'),
+                          directives: []),
+                      FieldNode(
+                          name: NameNode(value: 'genres'),
+                          alias: null,
+                          arguments: [],
+                          directives: [],
+                          selectionSet: SelectionSetNode(selections: [
+                            FieldNode(
+                                name: NameNode(value: 'id'),
+                                alias: null,
+                                arguments: [],
+                                directives: [],
+                                selectionSet: null),
+                            FieldNode(
+                                name: NameNode(value: 'name'),
+                                alias: null,
+                                arguments: [],
+                                directives: [],
+                                selectionSet: null)
+                          ]))
                     ]))
               ]))
         ])),
     FragmentDefinitionNode(
-        name: NameNode(value: 'ListItemAnime'),
+        name: NameNode(value: 'AnimeItemFields'),
         typeCondition: TypeConditionNode(
             on: NamedTypeNode(
                 name: NameNode(value: 'Anime'), isNonNull: false)),
@@ -1023,26 +1008,7 @@ class BrowseAnimesQuery
               alias: null,
               arguments: [],
               directives: [],
-              selectionSet: null),
-          FieldNode(
-              name: NameNode(value: 'genres'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: SelectionSetNode(selections: [
-                FieldNode(
-                    name: NameNode(value: 'id'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'name'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null)
-              ]))
+              selectionSet: null)
         ]))
   ]);
 
@@ -1103,94 +1069,12 @@ class GetAnimeDetailsQuery
               ],
               directives: [],
               selectionSet: SelectionSetNode(selections: [
-                FieldNode(
-                    name: NameNode(value: 'id'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'description'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'anilist'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'subscribed'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'relations'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: SelectionSetNode(selections: [
-                      FieldNode(
-                          name: NameNode(value: 'data'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: SelectionSetNode(selections: [
-                            FragmentSpreadNode(
-                                name: NameNode(value: 'ListItemAnime'),
-                                directives: []),
-                            FieldNode(
-                                name: NameNode(value: 'relationPivot'),
-                                alias: null,
-                                arguments: [],
-                                directives: [],
-                                selectionSet: SelectionSetNode(selections: [
-                                  FieldNode(
-                                      name: NameNode(value: 'relationType'),
-                                      alias: null,
-                                      arguments: [],
-                                      directives: [],
-                                      selectionSet: null)
-                                ]))
-                          ]))
-                    ])),
-                FieldNode(
-                    name: NameNode(value: 'recommendations'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: SelectionSetNode(selections: [
-                      FieldNode(
-                          name: NameNode(value: 'data'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: SelectionSetNode(selections: [
-                            FragmentSpreadNode(
-                                name: NameNode(value: 'ListItemAnime'),
-                                directives: []),
-                            FieldNode(
-                                name: NameNode(value: 'recommendationPivot'),
-                                alias: null,
-                                arguments: [],
-                                directives: [],
-                                selectionSet: SelectionSetNode(selections: [
-                                  FieldNode(
-                                      name: NameNode(value: 'rating'),
-                                      alias: null,
-                                      arguments: [],
-                                      directives: [],
-                                      selectionSet: null)
-                                ]))
-                          ]))
-                    ]))
+                FragmentSpreadNode(
+                    name: NameNode(value: 'AnimeDetailsFields'), directives: [])
               ]))
         ])),
     FragmentDefinitionNode(
-        name: NameNode(value: 'ListItemAnime'),
+        name: NameNode(value: 'AnimeDetailsFields'),
         typeCondition: TypeConditionNode(
             on: NamedTypeNode(
                 name: NameNode(value: 'Anime'), isNonNull: false)),
@@ -1198,49 +1082,6 @@ class GetAnimeDetailsQuery
         selectionSet: SelectionSetNode(selections: [
           FieldNode(
               name: NameNode(value: 'id'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null),
-          FieldNode(
-              name: NameNode(value: 'name'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null),
-          FieldNode(
-              name: NameNode(value: 'animeType'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null),
-          FieldNode(
-              name: NameNode(value: 'rating'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null),
-          FieldNode(
-              name: NameNode(value: 'coverImage'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: SelectionSetNode(selections: [
-                FieldNode(
-                    name: NameNode(value: 'large'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null)
-              ])),
-          FieldNode(
-              name: NameNode(value: 'coverColor'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null),
-          FieldNode(
-              name: NameNode(value: 'bannerImage'),
               alias: null,
               arguments: [],
               directives: [],
@@ -1263,7 +1104,25 @@ class GetAnimeDetailsQuery
                     arguments: [],
                     directives: [],
                     selectionSet: null)
-              ]))
+              ])),
+          FieldNode(
+              name: NameNode(value: 'description'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'anilist'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'subscribed'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null)
         ]))
   ]);
 
@@ -1326,89 +1185,13 @@ class GetAnimeDetailsFullQuery extends GraphQLQuery<GetAnimeDetailsFull$Query,
               directives: [],
               selectionSet: SelectionSetNode(selections: [
                 FragmentSpreadNode(
-                    name: NameNode(value: 'ListItemAnime'), directives: []),
-                FieldNode(
-                    name: NameNode(value: 'description'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'anilist'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'subscribed'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: null),
-                FieldNode(
-                    name: NameNode(value: 'relations'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: SelectionSetNode(selections: [
-                      FieldNode(
-                          name: NameNode(value: 'data'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: SelectionSetNode(selections: [
-                            FragmentSpreadNode(
-                                name: NameNode(value: 'ListItemAnime'),
-                                directives: []),
-                            FieldNode(
-                                name: NameNode(value: 'relationPivot'),
-                                alias: null,
-                                arguments: [],
-                                directives: [],
-                                selectionSet: SelectionSetNode(selections: [
-                                  FieldNode(
-                                      name: NameNode(value: 'relationType'),
-                                      alias: null,
-                                      arguments: [],
-                                      directives: [],
-                                      selectionSet: null)
-                                ]))
-                          ]))
-                    ])),
-                FieldNode(
-                    name: NameNode(value: 'recommendations'),
-                    alias: null,
-                    arguments: [],
-                    directives: [],
-                    selectionSet: SelectionSetNode(selections: [
-                      FieldNode(
-                          name: NameNode(value: 'data'),
-                          alias: null,
-                          arguments: [],
-                          directives: [],
-                          selectionSet: SelectionSetNode(selections: [
-                            FragmentSpreadNode(
-                                name: NameNode(value: 'ListItemAnime'),
-                                directives: []),
-                            FieldNode(
-                                name: NameNode(value: 'recommendationPivot'),
-                                alias: null,
-                                arguments: [],
-                                directives: [],
-                                selectionSet: SelectionSetNode(selections: [
-                                  FieldNode(
-                                      name: NameNode(value: 'rating'),
-                                      alias: null,
-                                      arguments: [],
-                                      directives: [],
-                                      selectionSet: null)
-                                ]))
-                          ]))
-                    ]))
+                    name: NameNode(value: 'AnimeItemFields'), directives: []),
+                FragmentSpreadNode(
+                    name: NameNode(value: 'AnimeDetailsFields'), directives: [])
               ]))
         ])),
     FragmentDefinitionNode(
-        name: NameNode(value: 'ListItemAnime'),
+        name: NameNode(value: 'AnimeItemFields'),
         typeCondition: TypeConditionNode(
             on: NamedTypeNode(
                 name: NameNode(value: 'Anime'), isNonNull: false)),
@@ -1462,6 +1245,20 @@ class GetAnimeDetailsFullQuery extends GraphQLQuery<GetAnimeDetailsFull$Query,
               alias: null,
               arguments: [],
               directives: [],
+              selectionSet: null)
+        ])),
+    FragmentDefinitionNode(
+        name: NameNode(value: 'AnimeDetailsFields'),
+        typeCondition: TypeConditionNode(
+            on: NamedTypeNode(
+                name: NameNode(value: 'Anime'), isNonNull: false)),
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'id'),
+              alias: null,
+              arguments: [],
+              directives: [],
               selectionSet: null),
           FieldNode(
               name: NameNode(value: 'genres'),
@@ -1481,7 +1278,25 @@ class GetAnimeDetailsFullQuery extends GraphQLQuery<GetAnimeDetailsFull$Query,
                     arguments: [],
                     directives: [],
                     selectionSet: null)
-              ]))
+              ])),
+          FieldNode(
+              name: NameNode(value: 'description'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'anilist'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'subscribed'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null)
         ]))
   ]);
 
@@ -1759,76 +1574,95 @@ class GetGenresQuery extends GraphQLQuery<GetGenres$Query, JsonSerializable> {
       GetGenres$Query.fromJson(json);
 }
 
-@JsonSerializable(explicitToJson: true)
-class UploadFcmTokenArguments extends JsonSerializable with EquatableMixin {
-  UploadFcmTokenArguments({@required this.token, this.oldToken});
-
-  @override
-  factory UploadFcmTokenArguments.fromJson(Map<String, dynamic> json) =>
-      _$UploadFcmTokenArgumentsFromJson(json);
-
-  final String token;
-
-  final String oldToken;
-
-  @override
-  List<Object> get props => [token, oldToken];
-  @override
-  Map<String, dynamic> toJson() => _$UploadFcmTokenArgumentsToJson(this);
-}
-
-class UploadFcmTokenMutation
-    extends GraphQLQuery<UploadFcmToken$Mutation, UploadFcmTokenArguments> {
-  UploadFcmTokenMutation({this.variables});
+class GetSubscriptionsQuery
+    extends GraphQLQuery<GetSubscriptions$Query, JsonSerializable> {
+  GetSubscriptionsQuery();
 
   @override
   final DocumentNode document = DocumentNode(definitions: [
     OperationDefinitionNode(
-        type: OperationType.mutation,
-        name: NameNode(value: 'UploadFcmToken'),
-        variableDefinitions: [
-          VariableDefinitionNode(
-              variable: VariableNode(name: NameNode(value: 'token')),
-              type: NamedTypeNode(
-                  name: NameNode(value: 'String'), isNonNull: true),
-              defaultValue: DefaultValueNode(value: null),
-              directives: []),
-          VariableDefinitionNode(
-              variable: VariableNode(name: NameNode(value: 'oldToken')),
-              type: NamedTypeNode(
-                  name: NameNode(value: 'String'), isNonNull: false),
-              defaultValue: DefaultValueNode(value: null),
-              directives: [])
-        ],
+        type: OperationType.query,
+        name: NameNode(value: 'GetSubscriptions'),
+        variableDefinitions: [],
         directives: [],
         selectionSet: SelectionSetNode(selections: [
           FieldNode(
-              name: NameNode(value: 'registerFcmToken'),
+              name: NameNode(value: 'subscriptions'),
               alias: null,
-              arguments: [
-                ArgumentNode(
-                    name: NameNode(value: 'token'),
-                    value: VariableNode(name: NameNode(value: 'token'))),
-                ArgumentNode(
-                    name: NameNode(value: 'oldToken'),
-                    value: VariableNode(name: NameNode(value: 'oldToken')))
-              ],
+              arguments: [],
+              directives: [],
+              selectionSet: SelectionSetNode(selections: [
+                FragmentSpreadNode(
+                    name: NameNode(value: 'AnimeItemFields'), directives: [])
+              ]))
+        ])),
+    FragmentDefinitionNode(
+        name: NameNode(value: 'AnimeItemFields'),
+        typeCondition: TypeConditionNode(
+            on: NamedTypeNode(
+                name: NameNode(value: 'Anime'), isNonNull: false)),
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'id'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'name'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'animeType'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'rating'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'coverImage'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: SelectionSetNode(selections: [
+                FieldNode(
+                    name: NameNode(value: 'large'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null)
+              ])),
+          FieldNode(
+              name: NameNode(value: 'coverColor'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'bannerImage'),
+              alias: null,
+              arguments: [],
               directives: [],
               selectionSet: null)
         ]))
   ]);
 
   @override
-  final String operationName = 'UploadFcmToken';
+  final String operationName = 'GetSubscriptions';
 
   @override
-  final UploadFcmTokenArguments variables;
-
+  List<Object> get props => [document, operationName];
   @override
-  List<Object> get props => [document, operationName, variables];
-  @override
-  UploadFcmToken$Mutation parse(Map<String, dynamic> json) =>
-      UploadFcmToken$Mutation.fromJson(json);
+  GetSubscriptions$Query parse(Map<String, dynamic> json) =>
+      GetSubscriptions$Query.fromJson(json);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -1949,4 +1783,351 @@ class UnsubscribeFromMutation
   @override
   UnsubscribeFrom$Mutation parse(Map<String, dynamic> json) =>
       UnsubscribeFrom$Mutation.fromJson(json);
+}
+
+@JsonSerializable(explicitToJson: true)
+class UploadFcmTokenArguments extends JsonSerializable with EquatableMixin {
+  UploadFcmTokenArguments({@required this.token, this.oldToken});
+
+  @override
+  factory UploadFcmTokenArguments.fromJson(Map<String, dynamic> json) =>
+      _$UploadFcmTokenArgumentsFromJson(json);
+
+  final String token;
+
+  final String oldToken;
+
+  @override
+  List<Object> get props => [token, oldToken];
+  @override
+  Map<String, dynamic> toJson() => _$UploadFcmTokenArgumentsToJson(this);
+}
+
+class UploadFcmTokenMutation
+    extends GraphQLQuery<UploadFcmToken$Mutation, UploadFcmTokenArguments> {
+  UploadFcmTokenMutation({this.variables});
+
+  @override
+  final DocumentNode document = DocumentNode(definitions: [
+    OperationDefinitionNode(
+        type: OperationType.mutation,
+        name: NameNode(value: 'UploadFcmToken'),
+        variableDefinitions: [
+          VariableDefinitionNode(
+              variable: VariableNode(name: NameNode(value: 'token')),
+              type: NamedTypeNode(
+                  name: NameNode(value: 'String'), isNonNull: true),
+              defaultValue: DefaultValueNode(value: null),
+              directives: []),
+          VariableDefinitionNode(
+              variable: VariableNode(name: NameNode(value: 'oldToken')),
+              type: NamedTypeNode(
+                  name: NameNode(value: 'String'), isNonNull: false),
+              defaultValue: DefaultValueNode(value: null),
+              directives: [])
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'registerFcmToken'),
+              alias: null,
+              arguments: [
+                ArgumentNode(
+                    name: NameNode(value: 'token'),
+                    value: VariableNode(name: NameNode(value: 'token'))),
+                ArgumentNode(
+                    name: NameNode(value: 'oldToken'),
+                    value: VariableNode(name: NameNode(value: 'oldToken')))
+              ],
+              directives: [],
+              selectionSet: null)
+        ]))
+  ]);
+
+  @override
+  final String operationName = 'UploadFcmToken';
+
+  @override
+  final UploadFcmTokenArguments variables;
+
+  @override
+  List<Object> get props => [document, operationName, variables];
+  @override
+  UploadFcmToken$Mutation parse(Map<String, dynamic> json) =>
+      UploadFcmToken$Mutation.fromJson(json);
+}
+
+class AnimeItemModelGeneratorQuery
+    extends GraphQLQuery<AnimeItemModelGenerator$Query, JsonSerializable> {
+  AnimeItemModelGeneratorQuery();
+
+  @override
+  final DocumentNode document = DocumentNode(definitions: [
+    OperationDefinitionNode(
+        type: OperationType.query,
+        name: NameNode(value: 'AnimeItemModelGenerator'),
+        variableDefinitions: [],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'anime'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: SelectionSetNode(selections: [
+                FragmentSpreadNode(
+                    name: NameNode(value: 'AnimeItemFields'), directives: [])
+              ]))
+        ])),
+    FragmentDefinitionNode(
+        name: NameNode(value: 'AnimeItemFields'),
+        typeCondition: TypeConditionNode(
+            on: NamedTypeNode(
+                name: NameNode(value: 'Anime'), isNonNull: false)),
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'id'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'name'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'animeType'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'rating'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'coverImage'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: SelectionSetNode(selections: [
+                FieldNode(
+                    name: NameNode(value: 'large'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null)
+              ])),
+          FieldNode(
+              name: NameNode(value: 'coverColor'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'bannerImage'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null)
+        ]))
+  ]);
+
+  @override
+  final String operationName = 'AnimeItemModelGenerator';
+
+  @override
+  List<Object> get props => [document, operationName];
+  @override
+  AnimeItemModelGenerator$Query parse(Map<String, dynamic> json) =>
+      AnimeItemModelGenerator$Query.fromJson(json);
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetAnimeRelationsArguments extends JsonSerializable with EquatableMixin {
+  GetAnimeRelationsArguments({@required this.id});
+
+  @override
+  factory GetAnimeRelationsArguments.fromJson(Map<String, dynamic> json) =>
+      _$GetAnimeRelationsArgumentsFromJson(json);
+
+  final String id;
+
+  @override
+  List<Object> get props => [id];
+  @override
+  Map<String, dynamic> toJson() => _$GetAnimeRelationsArgumentsToJson(this);
+}
+
+class GetAnimeRelationsQuery
+    extends GraphQLQuery<GetAnimeRelations$Query, GetAnimeRelationsArguments> {
+  GetAnimeRelationsQuery({this.variables});
+
+  @override
+  final DocumentNode document = DocumentNode(definitions: [
+    OperationDefinitionNode(
+        type: OperationType.query,
+        name: NameNode(value: 'GetAnimeRelations'),
+        variableDefinitions: [
+          VariableDefinitionNode(
+              variable: VariableNode(name: NameNode(value: 'id')),
+              type: NamedTypeNode(name: NameNode(value: 'ID'), isNonNull: true),
+              defaultValue: DefaultValueNode(value: null),
+              directives: [])
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'anime'),
+              alias: null,
+              arguments: [
+                ArgumentNode(
+                    name: NameNode(value: 'id'),
+                    value: VariableNode(name: NameNode(value: 'id')))
+              ],
+              directives: [],
+              selectionSet: SelectionSetNode(selections: [
+                FieldNode(
+                    name: NameNode(value: 'id'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null),
+                FieldNode(
+                    name: NameNode(value: 'relations'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: SelectionSetNode(selections: [
+                      FieldNode(
+                          name: NameNode(value: 'data'),
+                          alias: null,
+                          arguments: [],
+                          directives: [],
+                          selectionSet: SelectionSetNode(selections: [
+                            FragmentSpreadNode(
+                                name: NameNode(value: 'AnimeItemFields'),
+                                directives: []),
+                            FieldNode(
+                                name: NameNode(value: 'relationPivot'),
+                                alias: null,
+                                arguments: [],
+                                directives: [],
+                                selectionSet: SelectionSetNode(selections: [
+                                  FieldNode(
+                                      name: NameNode(value: 'relationType'),
+                                      alias: null,
+                                      arguments: [],
+                                      directives: [],
+                                      selectionSet: null)
+                                ]))
+                          ]))
+                    ])),
+                FieldNode(
+                    name: NameNode(value: 'recommendations'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: SelectionSetNode(selections: [
+                      FieldNode(
+                          name: NameNode(value: 'data'),
+                          alias: null,
+                          arguments: [],
+                          directives: [],
+                          selectionSet: SelectionSetNode(selections: [
+                            FragmentSpreadNode(
+                                name: NameNode(value: 'AnimeItemFields'),
+                                directives: []),
+                            FieldNode(
+                                name: NameNode(value: 'recommendationPivot'),
+                                alias: null,
+                                arguments: [],
+                                directives: [],
+                                selectionSet: SelectionSetNode(selections: [
+                                  FieldNode(
+                                      name: NameNode(value: 'rating'),
+                                      alias: null,
+                                      arguments: [],
+                                      directives: [],
+                                      selectionSet: null)
+                                ]))
+                          ]))
+                    ]))
+              ]))
+        ])),
+    FragmentDefinitionNode(
+        name: NameNode(value: 'AnimeItemFields'),
+        typeCondition: TypeConditionNode(
+            on: NamedTypeNode(
+                name: NameNode(value: 'Anime'), isNonNull: false)),
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'id'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'name'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'animeType'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'rating'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'coverImage'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: SelectionSetNode(selections: [
+                FieldNode(
+                    name: NameNode(value: 'large'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null)
+              ])),
+          FieldNode(
+              name: NameNode(value: 'coverColor'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'bannerImage'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null)
+        ]))
+  ]);
+
+  @override
+  final String operationName = 'GetAnimeRelations';
+
+  @override
+  final GetAnimeRelationsArguments variables;
+
+  @override
+  List<Object> get props => [document, operationName, variables];
+  @override
+  GetAnimeRelations$Query parse(Map<String, dynamic> json) =>
+      GetAnimeRelations$Query.fromJson(json);
 }

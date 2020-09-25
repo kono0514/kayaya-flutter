@@ -25,6 +25,20 @@ Map<String, dynamic> _$BrowseAnimes$Query$Animes$PaginatorInfoToJson(
       'currentPage': instance.currentPage,
     };
 
+BrowseAnimes$Query$Animes$Data$Genres
+    _$BrowseAnimes$Query$Animes$Data$GenresFromJson(Map<String, dynamic> json) {
+  return BrowseAnimes$Query$Animes$Data$Genres()
+    ..id = json['id'] as String
+    ..name = json['name'] as String;
+}
+
+Map<String, dynamic> _$BrowseAnimes$Query$Animes$Data$GenresToJson(
+        BrowseAnimes$Query$Animes$Data$Genres instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+    };
+
 BrowseAnimes$Query$Animes$Data _$BrowseAnimes$Query$Animes$DataFromJson(
     Map<String, dynamic> json) {
   return BrowseAnimes$Query$Animes$Data()
@@ -35,14 +49,15 @@ BrowseAnimes$Query$Animes$Data _$BrowseAnimes$Query$Animes$DataFromJson(
     ..rating = json['rating'] as int
     ..coverImage = json['coverImage'] == null
         ? null
-        : ListItemAnimeMixin$CoverImage.fromJson(
+        : AnimeItemFieldsMixin$CoverImage.fromJson(
             json['coverImage'] as Map<String, dynamic>)
     ..coverColor = json['coverColor'] as String
     ..bannerImage = json['bannerImage'] as String
     ..genres = (json['genres'] as List)
         ?.map((e) => e == null
             ? null
-            : ListItemAnimeMixin$Genres.fromJson(e as Map<String, dynamic>))
+            : BrowseAnimes$Query$Animes$Data$Genres.fromJson(
+                e as Map<String, dynamic>))
         ?.toList();
 }
 
@@ -132,29 +147,15 @@ Map<String, dynamic> _$BrowseAnimes$QueryToJson(BrowseAnimes$Query instance) =>
       'animes': instance.animes?.toJson(),
     };
 
-ListItemAnimeMixin$CoverImage _$ListItemAnimeMixin$CoverImageFromJson(
+AnimeItemFieldsMixin$CoverImage _$AnimeItemFieldsMixin$CoverImageFromJson(
     Map<String, dynamic> json) {
-  return ListItemAnimeMixin$CoverImage()..large = json['large'] as String;
+  return AnimeItemFieldsMixin$CoverImage()..large = json['large'] as String;
 }
 
-Map<String, dynamic> _$ListItemAnimeMixin$CoverImageToJson(
-        ListItemAnimeMixin$CoverImage instance) =>
+Map<String, dynamic> _$AnimeItemFieldsMixin$CoverImageToJson(
+        AnimeItemFieldsMixin$CoverImage instance) =>
     <String, dynamic>{
       'large': instance.large,
-    };
-
-ListItemAnimeMixin$Genres _$ListItemAnimeMixin$GenresFromJson(
-    Map<String, dynamic> json) {
-  return ListItemAnimeMixin$Genres()
-    ..id = json['id'] as String
-    ..name = json['name'] as String;
-}
-
-Map<String, dynamic> _$ListItemAnimeMixin$GenresToJson(
-        ListItemAnimeMixin$Genres instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
     };
 
 AnimesHasGenresWhereConditions _$AnimesHasGenresWhereConditionsFromJson(
@@ -247,178 +248,31 @@ const _$SortOrderEnumMap = {
   SortOrder.artemisUnknown: 'ARTEMIS_UNKNOWN',
 };
 
-GetAnimeDetails$Query$Anime$Relations$Data$RelationPivot
-    _$GetAnimeDetails$Query$Anime$Relations$Data$RelationPivotFromJson(
-        Map<String, dynamic> json) {
-  return GetAnimeDetails$Query$Anime$Relations$Data$RelationPivot()
-    ..relationType = json['relationType'] as String;
-}
-
-Map<String,
-    dynamic> _$GetAnimeDetails$Query$Anime$Relations$Data$RelationPivotToJson(
-        GetAnimeDetails$Query$Anime$Relations$Data$RelationPivot instance) =>
-    <String, dynamic>{
-      'relationType': instance.relationType,
-    };
-
-GetAnimeDetails$Query$Anime$Relations$Data
-    _$GetAnimeDetails$Query$Anime$Relations$DataFromJson(
-        Map<String, dynamic> json) {
-  return GetAnimeDetails$Query$Anime$Relations$Data()
-    ..id = json['id'] as String
-    ..name = json['name'] as String
-    ..animeType = _$enumDecodeNullable(_$AnimeTypeEnumMap, json['animeType'],
-        unknownValue: AnimeType.artemisUnknown)
-    ..rating = json['rating'] as int
-    ..coverImage = json['coverImage'] == null
-        ? null
-        : ListItemAnimeMixin$CoverImage.fromJson(
-            json['coverImage'] as Map<String, dynamic>)
-    ..coverColor = json['coverColor'] as String
-    ..bannerImage = json['bannerImage'] as String
-    ..genres = (json['genres'] as List)
-        ?.map((e) => e == null
-            ? null
-            : ListItemAnimeMixin$Genres.fromJson(e as Map<String, dynamic>))
-        ?.toList()
-    ..relationPivot = json['relationPivot'] == null
-        ? null
-        : GetAnimeDetails$Query$Anime$Relations$Data$RelationPivot.fromJson(
-            json['relationPivot'] as Map<String, dynamic>);
-}
-
-Map<String, dynamic> _$GetAnimeDetails$Query$Anime$Relations$DataToJson(
-        GetAnimeDetails$Query$Anime$Relations$Data instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'animeType': _$AnimeTypeEnumMap[instance.animeType],
-      'rating': instance.rating,
-      'coverImage': instance.coverImage?.toJson(),
-      'coverColor': instance.coverColor,
-      'bannerImage': instance.bannerImage,
-      'genres': instance.genres?.map((e) => e?.toJson())?.toList(),
-      'relationPivot': instance.relationPivot?.toJson(),
-    };
-
-GetAnimeDetails$Query$Anime$Relations
-    _$GetAnimeDetails$Query$Anime$RelationsFromJson(Map<String, dynamic> json) {
-  return GetAnimeDetails$Query$Anime$Relations()
-    ..data = (json['data'] as List)
-        ?.map((e) => e == null
-            ? null
-            : GetAnimeDetails$Query$Anime$Relations$Data.fromJson(
-                e as Map<String, dynamic>))
-        ?.toList();
-}
-
-Map<String, dynamic> _$GetAnimeDetails$Query$Anime$RelationsToJson(
-        GetAnimeDetails$Query$Anime$Relations instance) =>
-    <String, dynamic>{
-      'data': instance.data?.map((e) => e?.toJson())?.toList(),
-    };
-
-GetAnimeDetails$Query$Anime$Recommendations$Data$RecommendationPivot
-    _$GetAnimeDetails$Query$Anime$Recommendations$Data$RecommendationPivotFromJson(
-        Map<String, dynamic> json) {
-  return GetAnimeDetails$Query$Anime$Recommendations$Data$RecommendationPivot()
-    ..rating = json['rating'] as int;
-}
-
-Map<String, dynamic>
-    _$GetAnimeDetails$Query$Anime$Recommendations$Data$RecommendationPivotToJson(
-            GetAnimeDetails$Query$Anime$Recommendations$Data$RecommendationPivot
-                instance) =>
-        <String, dynamic>{
-          'rating': instance.rating,
-        };
-
-GetAnimeDetails$Query$Anime$Recommendations$Data
-    _$GetAnimeDetails$Query$Anime$Recommendations$DataFromJson(
-        Map<String, dynamic> json) {
-  return GetAnimeDetails$Query$Anime$Recommendations$Data()
-    ..id = json['id'] as String
-    ..name = json['name'] as String
-    ..animeType = _$enumDecodeNullable(_$AnimeTypeEnumMap, json['animeType'],
-        unknownValue: AnimeType.artemisUnknown)
-    ..rating = json['rating'] as int
-    ..coverImage = json['coverImage'] == null
-        ? null
-        : ListItemAnimeMixin$CoverImage.fromJson(
-            json['coverImage'] as Map<String, dynamic>)
-    ..coverColor = json['coverColor'] as String
-    ..bannerImage = json['bannerImage'] as String
-    ..genres = (json['genres'] as List)
-        ?.map((e) => e == null
-            ? null
-            : ListItemAnimeMixin$Genres.fromJson(e as Map<String, dynamic>))
-        ?.toList()
-    ..recommendationPivot = json['recommendationPivot'] == null
-        ? null
-        : GetAnimeDetails$Query$Anime$Recommendations$Data$RecommendationPivot
-            .fromJson(json['recommendationPivot'] as Map<String, dynamic>);
-}
-
-Map<String, dynamic> _$GetAnimeDetails$Query$Anime$Recommendations$DataToJson(
-        GetAnimeDetails$Query$Anime$Recommendations$Data instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'animeType': _$AnimeTypeEnumMap[instance.animeType],
-      'rating': instance.rating,
-      'coverImage': instance.coverImage?.toJson(),
-      'coverColor': instance.coverColor,
-      'bannerImage': instance.bannerImage,
-      'genres': instance.genres?.map((e) => e?.toJson())?.toList(),
-      'recommendationPivot': instance.recommendationPivot?.toJson(),
-    };
-
-GetAnimeDetails$Query$Anime$Recommendations
-    _$GetAnimeDetails$Query$Anime$RecommendationsFromJson(
-        Map<String, dynamic> json) {
-  return GetAnimeDetails$Query$Anime$Recommendations()
-    ..data = (json['data'] as List)
-        ?.map((e) => e == null
-            ? null
-            : GetAnimeDetails$Query$Anime$Recommendations$Data.fromJson(
-                e as Map<String, dynamic>))
-        ?.toList();
-}
-
-Map<String, dynamic> _$GetAnimeDetails$Query$Anime$RecommendationsToJson(
-        GetAnimeDetails$Query$Anime$Recommendations instance) =>
-    <String, dynamic>{
-      'data': instance.data?.map((e) => e?.toJson())?.toList(),
-    };
-
 GetAnimeDetails$Query$Anime _$GetAnimeDetails$Query$AnimeFromJson(
     Map<String, dynamic> json) {
   return GetAnimeDetails$Query$Anime()
     ..id = json['id'] as String
+    ..genres = (json['genres'] as List)
+        ?.map((e) => e == null
+            ? null
+            : AnimeDetailsFieldsMixin$Genres.fromJson(
+                e as Map<String, dynamic>))
+        ?.toList()
     ..description = json['description'] as String
     ..anilist = fromGraphQLAnilistMediaToDartGraphqlAnilistApi$Query$Media(
         json['anilist'] as String)
-    ..subscribed = json['subscribed'] as bool
-    ..relations = json['relations'] == null
-        ? null
-        : GetAnimeDetails$Query$Anime$Relations.fromJson(
-            json['relations'] as Map<String, dynamic>)
-    ..recommendations = json['recommendations'] == null
-        ? null
-        : GetAnimeDetails$Query$Anime$Recommendations.fromJson(
-            json['recommendations'] as Map<String, dynamic>);
+    ..subscribed = json['subscribed'] as bool;
 }
 
 Map<String, dynamic> _$GetAnimeDetails$Query$AnimeToJson(
         GetAnimeDetails$Query$Anime instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'genres': instance.genres?.map((e) => e?.toJson())?.toList(),
       'description': instance.description,
       'anilist': fromDartGraphqlAnilistApi$Query$MediaToGraphQLAnilistMedia(
           instance.anilist),
       'subscribed': instance.subscribed,
-      'relations': instance.relations?.toJson(),
-      'recommendations': instance.recommendations?.toJson(),
     };
 
 GetAnimeDetails$Query _$GetAnimeDetails$QueryFromJson(
@@ -436,203 +290,61 @@ Map<String, dynamic> _$GetAnimeDetails$QueryToJson(
       'anime': instance.anime?.toJson(),
     };
 
-GetAnimeDetailsFull$Query$Anime$Relations$Data$RelationPivot
-    _$GetAnimeDetailsFull$Query$Anime$Relations$Data$RelationPivotFromJson(
-        Map<String, dynamic> json) {
-  return GetAnimeDetailsFull$Query$Anime$Relations$Data$RelationPivot()
-    ..relationType = json['relationType'] as String;
-}
-
-Map<String, dynamic>
-    _$GetAnimeDetailsFull$Query$Anime$Relations$Data$RelationPivotToJson(
-            GetAnimeDetailsFull$Query$Anime$Relations$Data$RelationPivot
-                instance) =>
-        <String, dynamic>{
-          'relationType': instance.relationType,
-        };
-
-GetAnimeDetailsFull$Query$Anime$Relations$Data
-    _$GetAnimeDetailsFull$Query$Anime$Relations$DataFromJson(
-        Map<String, dynamic> json) {
-  return GetAnimeDetailsFull$Query$Anime$Relations$Data()
+AnimeDetailsFieldsMixin$Genres _$AnimeDetailsFieldsMixin$GenresFromJson(
+    Map<String, dynamic> json) {
+  return AnimeDetailsFieldsMixin$Genres()
     ..id = json['id'] as String
-    ..name = json['name'] as String
-    ..animeType = _$enumDecodeNullable(_$AnimeTypeEnumMap, json['animeType'],
-        unknownValue: AnimeType.artemisUnknown)
-    ..rating = json['rating'] as int
-    ..coverImage = json['coverImage'] == null
-        ? null
-        : ListItemAnimeMixin$CoverImage.fromJson(
-            json['coverImage'] as Map<String, dynamic>)
-    ..coverColor = json['coverColor'] as String
-    ..bannerImage = json['bannerImage'] as String
-    ..genres = (json['genres'] as List)
-        ?.map((e) => e == null
-            ? null
-            : ListItemAnimeMixin$Genres.fromJson(e as Map<String, dynamic>))
-        ?.toList()
-    ..relationPivot = json['relationPivot'] == null
-        ? null
-        : GetAnimeDetailsFull$Query$Anime$Relations$Data$RelationPivot.fromJson(
-            json['relationPivot'] as Map<String, dynamic>);
+    ..name = json['name'] as String;
 }
 
-Map<String, dynamic> _$GetAnimeDetailsFull$Query$Anime$Relations$DataToJson(
-        GetAnimeDetailsFull$Query$Anime$Relations$Data instance) =>
+Map<String, dynamic> _$AnimeDetailsFieldsMixin$GenresToJson(
+        AnimeDetailsFieldsMixin$Genres instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'animeType': _$AnimeTypeEnumMap[instance.animeType],
-      'rating': instance.rating,
-      'coverImage': instance.coverImage?.toJson(),
-      'coverColor': instance.coverColor,
-      'bannerImage': instance.bannerImage,
-      'genres': instance.genres?.map((e) => e?.toJson())?.toList(),
-      'relationPivot': instance.relationPivot?.toJson(),
-    };
-
-GetAnimeDetailsFull$Query$Anime$Relations
-    _$GetAnimeDetailsFull$Query$Anime$RelationsFromJson(
-        Map<String, dynamic> json) {
-  return GetAnimeDetailsFull$Query$Anime$Relations()
-    ..data = (json['data'] as List)
-        ?.map((e) => e == null
-            ? null
-            : GetAnimeDetailsFull$Query$Anime$Relations$Data.fromJson(
-                e as Map<String, dynamic>))
-        ?.toList();
-}
-
-Map<String, dynamic> _$GetAnimeDetailsFull$Query$Anime$RelationsToJson(
-        GetAnimeDetailsFull$Query$Anime$Relations instance) =>
-    <String, dynamic>{
-      'data': instance.data?.map((e) => e?.toJson())?.toList(),
-    };
-
-GetAnimeDetailsFull$Query$Anime$Recommendations$Data$RecommendationPivot
-    _$GetAnimeDetailsFull$Query$Anime$Recommendations$Data$RecommendationPivotFromJson(
-        Map<String, dynamic> json) {
-  return GetAnimeDetailsFull$Query$Anime$Recommendations$Data$RecommendationPivot()
-    ..rating = json['rating'] as int;
-}
-
-Map<String, dynamic>
-    _$GetAnimeDetailsFull$Query$Anime$Recommendations$Data$RecommendationPivotToJson(
-            GetAnimeDetailsFull$Query$Anime$Recommendations$Data$RecommendationPivot
-                instance) =>
-        <String, dynamic>{
-          'rating': instance.rating,
-        };
-
-GetAnimeDetailsFull$Query$Anime$Recommendations$Data
-    _$GetAnimeDetailsFull$Query$Anime$Recommendations$DataFromJson(
-        Map<String, dynamic> json) {
-  return GetAnimeDetailsFull$Query$Anime$Recommendations$Data()
-    ..id = json['id'] as String
-    ..name = json['name'] as String
-    ..animeType = _$enumDecodeNullable(_$AnimeTypeEnumMap, json['animeType'],
-        unknownValue: AnimeType.artemisUnknown)
-    ..rating = json['rating'] as int
-    ..coverImage = json['coverImage'] == null
-        ? null
-        : ListItemAnimeMixin$CoverImage.fromJson(
-            json['coverImage'] as Map<String, dynamic>)
-    ..coverColor = json['coverColor'] as String
-    ..bannerImage = json['bannerImage'] as String
-    ..genres = (json['genres'] as List)
-        ?.map((e) => e == null
-            ? null
-            : ListItemAnimeMixin$Genres.fromJson(e as Map<String, dynamic>))
-        ?.toList()
-    ..recommendationPivot = json['recommendationPivot'] == null
-        ? null
-        : GetAnimeDetailsFull$Query$Anime$Recommendations$Data$RecommendationPivot
-            .fromJson(json['recommendationPivot'] as Map<String, dynamic>);
-}
-
-Map<String, dynamic>
-    _$GetAnimeDetailsFull$Query$Anime$Recommendations$DataToJson(
-            GetAnimeDetailsFull$Query$Anime$Recommendations$Data instance) =>
-        <String, dynamic>{
-          'id': instance.id,
-          'name': instance.name,
-          'animeType': _$AnimeTypeEnumMap[instance.animeType],
-          'rating': instance.rating,
-          'coverImage': instance.coverImage?.toJson(),
-          'coverColor': instance.coverColor,
-          'bannerImage': instance.bannerImage,
-          'genres': instance.genres?.map((e) => e?.toJson())?.toList(),
-          'recommendationPivot': instance.recommendationPivot?.toJson(),
-        };
-
-GetAnimeDetailsFull$Query$Anime$Recommendations
-    _$GetAnimeDetailsFull$Query$Anime$RecommendationsFromJson(
-        Map<String, dynamic> json) {
-  return GetAnimeDetailsFull$Query$Anime$Recommendations()
-    ..data = (json['data'] as List)
-        ?.map((e) => e == null
-            ? null
-            : GetAnimeDetailsFull$Query$Anime$Recommendations$Data.fromJson(
-                e as Map<String, dynamic>))
-        ?.toList();
-}
-
-Map<String, dynamic> _$GetAnimeDetailsFull$Query$Anime$RecommendationsToJson(
-        GetAnimeDetailsFull$Query$Anime$Recommendations instance) =>
-    <String, dynamic>{
-      'data': instance.data?.map((e) => e?.toJson())?.toList(),
     };
 
 GetAnimeDetailsFull$Query$Anime _$GetAnimeDetailsFull$Query$AnimeFromJson(
     Map<String, dynamic> json) {
   return GetAnimeDetailsFull$Query$Anime()
-    ..id = json['id'] as String
     ..name = json['name'] as String
     ..animeType = _$enumDecodeNullable(_$AnimeTypeEnumMap, json['animeType'],
         unknownValue: AnimeType.artemisUnknown)
     ..rating = json['rating'] as int
     ..coverImage = json['coverImage'] == null
         ? null
-        : ListItemAnimeMixin$CoverImage.fromJson(
+        : AnimeItemFieldsMixin$CoverImage.fromJson(
             json['coverImage'] as Map<String, dynamic>)
     ..coverColor = json['coverColor'] as String
     ..bannerImage = json['bannerImage'] as String
+    ..id = json['id'] as String
     ..genres = (json['genres'] as List)
         ?.map((e) => e == null
             ? null
-            : ListItemAnimeMixin$Genres.fromJson(e as Map<String, dynamic>))
+            : AnimeDetailsFieldsMixin$Genres.fromJson(
+                e as Map<String, dynamic>))
         ?.toList()
     ..description = json['description'] as String
     ..anilist = fromGraphQLAnilistMediaToDartGraphqlAnilistApi$Query$Media(
         json['anilist'] as String)
-    ..subscribed = json['subscribed'] as bool
-    ..relations = json['relations'] == null
-        ? null
-        : GetAnimeDetailsFull$Query$Anime$Relations.fromJson(
-            json['relations'] as Map<String, dynamic>)
-    ..recommendations = json['recommendations'] == null
-        ? null
-        : GetAnimeDetailsFull$Query$Anime$Recommendations.fromJson(
-            json['recommendations'] as Map<String, dynamic>);
+    ..subscribed = json['subscribed'] as bool;
 }
 
 Map<String, dynamic> _$GetAnimeDetailsFull$Query$AnimeToJson(
         GetAnimeDetailsFull$Query$Anime instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'name': instance.name,
       'animeType': _$AnimeTypeEnumMap[instance.animeType],
       'rating': instance.rating,
       'coverImage': instance.coverImage?.toJson(),
       'coverColor': instance.coverColor,
       'bannerImage': instance.bannerImage,
+      'id': instance.id,
       'genres': instance.genres?.map((e) => e?.toJson())?.toList(),
       'description': instance.description,
       'anilist': fromDartGraphqlAnilistApi$Query$MediaToGraphQLAnilistMedia(
           instance.anilist),
       'subscribed': instance.subscribed,
-      'relations': instance.relations?.toJson(),
-      'recommendations': instance.recommendations?.toJson(),
     };
 
 GetAnimeDetailsFull$Query _$GetAnimeDetailsFull$QueryFromJson(
@@ -846,16 +558,50 @@ Map<String, dynamic> _$GetGenres$QueryToJson(GetGenres$Query instance) =>
       'genres': instance.genres?.map((e) => e?.toJson())?.toList(),
     };
 
-UploadFcmToken$Mutation _$UploadFcmToken$MutationFromJson(
-    Map<String, dynamic> json) {
-  return UploadFcmToken$Mutation()
-    ..registerFcmToken = json['registerFcmToken'] as bool;
+GetSubscriptions$Query$Subscriptions
+    _$GetSubscriptions$Query$SubscriptionsFromJson(Map<String, dynamic> json) {
+  return GetSubscriptions$Query$Subscriptions()
+    ..id = json['id'] as String
+    ..name = json['name'] as String
+    ..animeType = _$enumDecodeNullable(_$AnimeTypeEnumMap, json['animeType'],
+        unknownValue: AnimeType.artemisUnknown)
+    ..rating = json['rating'] as int
+    ..coverImage = json['coverImage'] == null
+        ? null
+        : AnimeItemFieldsMixin$CoverImage.fromJson(
+            json['coverImage'] as Map<String, dynamic>)
+    ..coverColor = json['coverColor'] as String
+    ..bannerImage = json['bannerImage'] as String;
 }
 
-Map<String, dynamic> _$UploadFcmToken$MutationToJson(
-        UploadFcmToken$Mutation instance) =>
+Map<String, dynamic> _$GetSubscriptions$Query$SubscriptionsToJson(
+        GetSubscriptions$Query$Subscriptions instance) =>
     <String, dynamic>{
-      'registerFcmToken': instance.registerFcmToken,
+      'id': instance.id,
+      'name': instance.name,
+      'animeType': _$AnimeTypeEnumMap[instance.animeType],
+      'rating': instance.rating,
+      'coverImage': instance.coverImage?.toJson(),
+      'coverColor': instance.coverColor,
+      'bannerImage': instance.bannerImage,
+    };
+
+GetSubscriptions$Query _$GetSubscriptions$QueryFromJson(
+    Map<String, dynamic> json) {
+  return GetSubscriptions$Query()
+    ..subscriptions = (json['subscriptions'] as List)
+        ?.map((e) => e == null
+            ? null
+            : GetSubscriptions$Query$Subscriptions.fromJson(
+                e as Map<String, dynamic>))
+        ?.toList();
+}
+
+Map<String, dynamic> _$GetSubscriptions$QueryToJson(
+        GetSubscriptions$Query instance) =>
+    <String, dynamic>{
+      'subscriptions':
+          instance.subscriptions?.map((e) => e?.toJson())?.toList(),
     };
 
 SubscribeTo$Mutation _$SubscribeTo$MutationFromJson(Map<String, dynamic> json) {
@@ -878,6 +624,231 @@ Map<String, dynamic> _$UnsubscribeFrom$MutationToJson(
         UnsubscribeFrom$Mutation instance) =>
     <String, dynamic>{
       'unsubscribeFrom': instance.unsubscribeFrom,
+    };
+
+UploadFcmToken$Mutation _$UploadFcmToken$MutationFromJson(
+    Map<String, dynamic> json) {
+  return UploadFcmToken$Mutation()
+    ..registerFcmToken = json['registerFcmToken'] as bool;
+}
+
+Map<String, dynamic> _$UploadFcmToken$MutationToJson(
+        UploadFcmToken$Mutation instance) =>
+    <String, dynamic>{
+      'registerFcmToken': instance.registerFcmToken,
+    };
+
+AnimeItemModelGenerator$Query$Anime
+    _$AnimeItemModelGenerator$Query$AnimeFromJson(Map<String, dynamic> json) {
+  return AnimeItemModelGenerator$Query$Anime()
+    ..id = json['id'] as String
+    ..name = json['name'] as String
+    ..animeType = _$enumDecodeNullable(_$AnimeTypeEnumMap, json['animeType'],
+        unknownValue: AnimeType.artemisUnknown)
+    ..rating = json['rating'] as int
+    ..coverImage = json['coverImage'] == null
+        ? null
+        : AnimeItemFieldsMixin$CoverImage.fromJson(
+            json['coverImage'] as Map<String, dynamic>)
+    ..coverColor = json['coverColor'] as String
+    ..bannerImage = json['bannerImage'] as String;
+}
+
+Map<String, dynamic> _$AnimeItemModelGenerator$Query$AnimeToJson(
+        AnimeItemModelGenerator$Query$Anime instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'animeType': _$AnimeTypeEnumMap[instance.animeType],
+      'rating': instance.rating,
+      'coverImage': instance.coverImage?.toJson(),
+      'coverColor': instance.coverColor,
+      'bannerImage': instance.bannerImage,
+    };
+
+AnimeItemModelGenerator$Query _$AnimeItemModelGenerator$QueryFromJson(
+    Map<String, dynamic> json) {
+  return AnimeItemModelGenerator$Query()
+    ..anime = json['anime'] == null
+        ? null
+        : AnimeItemModelGenerator$Query$Anime.fromJson(
+            json['anime'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic> _$AnimeItemModelGenerator$QueryToJson(
+        AnimeItemModelGenerator$Query instance) =>
+    <String, dynamic>{
+      'anime': instance.anime?.toJson(),
+    };
+
+GetAnimeRelations$Query$Anime$Relations$Data$RelationPivot
+    _$GetAnimeRelations$Query$Anime$Relations$Data$RelationPivotFromJson(
+        Map<String, dynamic> json) {
+  return GetAnimeRelations$Query$Anime$Relations$Data$RelationPivot()
+    ..relationType = json['relationType'] as String;
+}
+
+Map<String,
+    dynamic> _$GetAnimeRelations$Query$Anime$Relations$Data$RelationPivotToJson(
+        GetAnimeRelations$Query$Anime$Relations$Data$RelationPivot instance) =>
+    <String, dynamic>{
+      'relationType': instance.relationType,
+    };
+
+GetAnimeRelations$Query$Anime$Relations$Data
+    _$GetAnimeRelations$Query$Anime$Relations$DataFromJson(
+        Map<String, dynamic> json) {
+  return GetAnimeRelations$Query$Anime$Relations$Data()
+    ..id = json['id'] as String
+    ..name = json['name'] as String
+    ..animeType = _$enumDecodeNullable(_$AnimeTypeEnumMap, json['animeType'],
+        unknownValue: AnimeType.artemisUnknown)
+    ..rating = json['rating'] as int
+    ..coverImage = json['coverImage'] == null
+        ? null
+        : AnimeItemFieldsMixin$CoverImage.fromJson(
+            json['coverImage'] as Map<String, dynamic>)
+    ..coverColor = json['coverColor'] as String
+    ..bannerImage = json['bannerImage'] as String
+    ..relationPivot = json['relationPivot'] == null
+        ? null
+        : GetAnimeRelations$Query$Anime$Relations$Data$RelationPivot.fromJson(
+            json['relationPivot'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic> _$GetAnimeRelations$Query$Anime$Relations$DataToJson(
+        GetAnimeRelations$Query$Anime$Relations$Data instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'animeType': _$AnimeTypeEnumMap[instance.animeType],
+      'rating': instance.rating,
+      'coverImage': instance.coverImage?.toJson(),
+      'coverColor': instance.coverColor,
+      'bannerImage': instance.bannerImage,
+      'relationPivot': instance.relationPivot?.toJson(),
+    };
+
+GetAnimeRelations$Query$Anime$Relations
+    _$GetAnimeRelations$Query$Anime$RelationsFromJson(
+        Map<String, dynamic> json) {
+  return GetAnimeRelations$Query$Anime$Relations()
+    ..data = (json['data'] as List)
+        ?.map((e) => e == null
+            ? null
+            : GetAnimeRelations$Query$Anime$Relations$Data.fromJson(
+                e as Map<String, dynamic>))
+        ?.toList();
+}
+
+Map<String, dynamic> _$GetAnimeRelations$Query$Anime$RelationsToJson(
+        GetAnimeRelations$Query$Anime$Relations instance) =>
+    <String, dynamic>{
+      'data': instance.data?.map((e) => e?.toJson())?.toList(),
+    };
+
+GetAnimeRelations$Query$Anime$Recommendations$Data$RecommendationPivot
+    _$GetAnimeRelations$Query$Anime$Recommendations$Data$RecommendationPivotFromJson(
+        Map<String, dynamic> json) {
+  return GetAnimeRelations$Query$Anime$Recommendations$Data$RecommendationPivot()
+    ..rating = json['rating'] as int;
+}
+
+Map<String, dynamic>
+    _$GetAnimeRelations$Query$Anime$Recommendations$Data$RecommendationPivotToJson(
+            GetAnimeRelations$Query$Anime$Recommendations$Data$RecommendationPivot
+                instance) =>
+        <String, dynamic>{
+          'rating': instance.rating,
+        };
+
+GetAnimeRelations$Query$Anime$Recommendations$Data
+    _$GetAnimeRelations$Query$Anime$Recommendations$DataFromJson(
+        Map<String, dynamic> json) {
+  return GetAnimeRelations$Query$Anime$Recommendations$Data()
+    ..id = json['id'] as String
+    ..name = json['name'] as String
+    ..animeType = _$enumDecodeNullable(_$AnimeTypeEnumMap, json['animeType'],
+        unknownValue: AnimeType.artemisUnknown)
+    ..rating = json['rating'] as int
+    ..coverImage = json['coverImage'] == null
+        ? null
+        : AnimeItemFieldsMixin$CoverImage.fromJson(
+            json['coverImage'] as Map<String, dynamic>)
+    ..coverColor = json['coverColor'] as String
+    ..bannerImage = json['bannerImage'] as String
+    ..recommendationPivot = json['recommendationPivot'] == null
+        ? null
+        : GetAnimeRelations$Query$Anime$Recommendations$Data$RecommendationPivot
+            .fromJson(json['recommendationPivot'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic> _$GetAnimeRelations$Query$Anime$Recommendations$DataToJson(
+        GetAnimeRelations$Query$Anime$Recommendations$Data instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'animeType': _$AnimeTypeEnumMap[instance.animeType],
+      'rating': instance.rating,
+      'coverImage': instance.coverImage?.toJson(),
+      'coverColor': instance.coverColor,
+      'bannerImage': instance.bannerImage,
+      'recommendationPivot': instance.recommendationPivot?.toJson(),
+    };
+
+GetAnimeRelations$Query$Anime$Recommendations
+    _$GetAnimeRelations$Query$Anime$RecommendationsFromJson(
+        Map<String, dynamic> json) {
+  return GetAnimeRelations$Query$Anime$Recommendations()
+    ..data = (json['data'] as List)
+        ?.map((e) => e == null
+            ? null
+            : GetAnimeRelations$Query$Anime$Recommendations$Data.fromJson(
+                e as Map<String, dynamic>))
+        ?.toList();
+}
+
+Map<String, dynamic> _$GetAnimeRelations$Query$Anime$RecommendationsToJson(
+        GetAnimeRelations$Query$Anime$Recommendations instance) =>
+    <String, dynamic>{
+      'data': instance.data?.map((e) => e?.toJson())?.toList(),
+    };
+
+GetAnimeRelations$Query$Anime _$GetAnimeRelations$Query$AnimeFromJson(
+    Map<String, dynamic> json) {
+  return GetAnimeRelations$Query$Anime()
+    ..id = json['id'] as String
+    ..relations = json['relations'] == null
+        ? null
+        : GetAnimeRelations$Query$Anime$Relations.fromJson(
+            json['relations'] as Map<String, dynamic>)
+    ..recommendations = json['recommendations'] == null
+        ? null
+        : GetAnimeRelations$Query$Anime$Recommendations.fromJson(
+            json['recommendations'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic> _$GetAnimeRelations$Query$AnimeToJson(
+        GetAnimeRelations$Query$Anime instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'relations': instance.relations?.toJson(),
+      'recommendations': instance.recommendations?.toJson(),
+    };
+
+GetAnimeRelations$Query _$GetAnimeRelations$QueryFromJson(
+    Map<String, dynamic> json) {
+  return GetAnimeRelations$Query()
+    ..anime = json['anime'] == null
+        ? null
+        : GetAnimeRelations$Query$Anime.fromJson(
+            json['anime'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic> _$GetAnimeRelations$QueryToJson(
+        GetAnimeRelations$Query instance) =>
+    <String, dynamic>{
+      'anime': instance.anime?.toJson(),
     };
 
 BrowseAnimesArguments _$BrowseAnimesArgumentsFromJson(
@@ -962,21 +933,6 @@ Map<String, dynamic> _$GetAnimeEpisodesArgumentsToJson(
       'page': instance.page,
     };
 
-UploadFcmTokenArguments _$UploadFcmTokenArgumentsFromJson(
-    Map<String, dynamic> json) {
-  return UploadFcmTokenArguments(
-    token: json['token'] as String,
-    oldToken: json['oldToken'] as String,
-  );
-}
-
-Map<String, dynamic> _$UploadFcmTokenArgumentsToJson(
-        UploadFcmTokenArguments instance) =>
-    <String, dynamic>{
-      'token': instance.token,
-      'oldToken': instance.oldToken,
-    };
-
 SubscribeToArguments _$SubscribeToArgumentsFromJson(Map<String, dynamic> json) {
   return SubscribeToArguments(
     animeId: json['animeId'] as String,
@@ -1000,4 +956,32 @@ Map<String, dynamic> _$UnsubscribeFromArgumentsToJson(
         UnsubscribeFromArguments instance) =>
     <String, dynamic>{
       'animeId': instance.animeId,
+    };
+
+UploadFcmTokenArguments _$UploadFcmTokenArgumentsFromJson(
+    Map<String, dynamic> json) {
+  return UploadFcmTokenArguments(
+    token: json['token'] as String,
+    oldToken: json['oldToken'] as String,
+  );
+}
+
+Map<String, dynamic> _$UploadFcmTokenArgumentsToJson(
+        UploadFcmTokenArguments instance) =>
+    <String, dynamic>{
+      'token': instance.token,
+      'oldToken': instance.oldToken,
+    };
+
+GetAnimeRelationsArguments _$GetAnimeRelationsArgumentsFromJson(
+    Map<String, dynamic> json) {
+  return GetAnimeRelationsArguments(
+    id: json['id'] as String,
+  );
+}
+
+Map<String, dynamic> _$GetAnimeRelationsArgumentsToJson(
+        GetAnimeRelationsArguments instance) =>
+    <String, dynamic>{
+      'id': instance.id,
     };

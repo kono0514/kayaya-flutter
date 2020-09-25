@@ -1,4 +1,4 @@
-fragment ListItemAnime on Anime {
+fragment AnimeItemFields on Anime {
     id
     name
     animeType
@@ -8,8 +8,15 @@ fragment ListItemAnime on Anime {
     }
     coverColor
     bannerImage
+}
+
+fragment AnimeDetailsFields on Anime {
+    id
     genres {
         id
         name
     }
+    description
+    anilist
+    subscribed
 }

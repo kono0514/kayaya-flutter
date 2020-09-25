@@ -1,0 +1,5 @@
+query AnimeItemModelGenerator {
+    anime {
+        ...AnimeItemFields
+    }
+}
