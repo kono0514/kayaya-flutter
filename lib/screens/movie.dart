@@ -90,14 +90,14 @@ class _MoviePageState extends State<MoviePage> {
         ),
       ],
       child: DetailView(
+        anime: anime,
+        actions: [
+          _buildPlayButton(),
+        ],
         tabs: [S.of(context).info, S.of(context).related],
         tabViews: [
           InfoTabViewItem(tabKey: Key('Tab0')),
           RelatedTabViewItem(tabKey: Key('Tab1'), id: anime.id),
-        ],
-        anime: anime,
-        actions: [
-          _buildPlayButton(),
         ],
       ),
     );

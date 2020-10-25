@@ -51,16 +51,12 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
           }
 
           if (state is AnimeRelationsLoaded) {
-            return CustomScrollView(
-              slivers: [
-                SliverOverlapInjector(
-                  handle:
-                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                ),
-                SliverPadding(padding: const EdgeInsets.only(top: 30)),
-                if (state.relations.data.length > 0)
-                  SliverToBoxAdapter(
-                    child: Column(
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 30),
+                  if (state.relations.data.length > 0)
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
@@ -100,10 +96,8 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                         SizedBox(height: 30),
                       ],
                     ),
-                  ),
-                if (state.recommendations.data.length > 0)
-                  SliverToBoxAdapter(
-                    child: Column(
+                  if (state.recommendations.data.length > 0)
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
@@ -143,8 +137,8 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                         ),
                       ],
                     ),
-                  ),
-              ],
+                ],
+              ),
             );
           }
 

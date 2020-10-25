@@ -102,9 +102,6 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
         },
         child: CustomScrollView(
           slivers: <Widget>[
-            SliverOverlapInjector(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-            ),
             SliverPadding(
               padding: const EdgeInsets.only(left: 16.0, top: 12.0),
               sliver: SliverToBoxAdapter(

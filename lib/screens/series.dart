@@ -89,6 +89,10 @@ class _SeriesPageState extends State<SeriesPage> {
         ),
       ],
       child: DetailView(
+        anime: anime,
+        actions: [
+          SeriesSubscribeButton(id: anime.id),
+        ],
         tabs: [
           S.of(context).info,
           S.of(context).episodes,
@@ -98,10 +102,6 @@ class _SeriesPageState extends State<SeriesPage> {
           InfoTabViewItem(tabKey: Key('Tab0')),
           EpisodesTabViewItem(tabKey: Key('Tab1'), id: anime.id),
           RelatedTabViewItem(tabKey: Key('Tab2'), id: anime.id),
-        ],
-        anime: anime,
-        actions: [
-          SeriesSubscribeButton(id: anime.id),
         ],
       ),
     );

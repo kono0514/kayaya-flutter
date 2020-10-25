@@ -50,7 +50,6 @@ class _DetailViewState extends State<DetailView>
       isScrollable: true,
       labelColor: Theme.of(context).textTheme.bodyText1.color,
     );
-    final double _appBarHeight = 335.0 + _tabBar.preferredSize.height;
     final bool _isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -60,57 +59,62 @@ class _DetailViewState extends State<DetailView>
           key: _key,
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
-              SliverOverlapAbsorber(
-                handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                sliver: SliverAppBar(
-                  floating: true,
-                  pinned: true,
-                  expandedHeight: _appBarHeight,
-                  actions: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.share),
-                      onPressed: () => {},
-                      tooltip: S.of(context).share,
-                    ),
-                  ],
-                  flexibleSpace: FlexibleSpaceBar(
-                    collapseMode: CollapseMode.parallax,
-                    background: Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          top: 0,
-                          child: _buildBackgroundWidget(),
-                        ),
-                        Positioned(
-                          left: 20,
-                          right: 20,
-                          bottom: 53 + _tabBar.preferredSize.height,
-                          child: AnimeInfo(
-                            anime: widget.anime,
-                            actions: widget.actions ?? [],
-                          ),
-                        ),
-                      ],
-                    ),
+              SliverAppBar(
+                floating: true,
+                pinned: true,
+                expandedHeight: 335.0,
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.share),
+                    onPressed: () => {},
+                    tooltip: S.of(context).share,
                   ),
-                  backgroundColor: _isDark ? Colors.black : Colors.white,
-                  bottom: ColoredTabBar(
-                    color: _isDark ? Colors.black : Colors.white,
-                    tabBar: _tabBar,
+                ],
+                flexibleSpace: FlexibleSpaceBar(
+                  collapseMode: CollapseMode.parallax,
+                  background: Stack(
+                    children: [
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        child: _buildBackgroundWidget(),
+                      ),
+                      Positioned(
+                        left: 20,
+                        right: 20,
+                        bottom: 53,
+                        child: AnimeInfo(
+                          anime: widget.anime,
+                          actions: widget.actions ?? [],
+                        ),
+                      ),
+                    ],
                   ),
-                  elevation: 0.0,
                 ),
+                backgroundColor: _isDark ? Colors.black : Colors.white,
+                elevation: 0.0,
               ),
             ];
           },
+          pinnedHeaderSliverHeightBuilder: () =>
+              MediaQuery.of(context).padding.top + _tabBar.preferredSize.height,
           innerScrollPositionKeyBuilder: () => Key('Tab${tabController.index}'),
-          body: TabBarView(
-            controller: tabController,
-            children:
-                widget.tabViews.map((e) => KeepAliveWidget(child: e)).toList(),
+          body: Column(
+            children: [
+              ColoredTabBar(
+                color: _isDark ? Colors.black : Colors.white,
+                tabBar: _tabBar,
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: tabController,
+                  children: widget.tabViews
+                      .map((e) => KeepAliveWidget(child: e))
+                      .toList(),
+                ),
+              ),
+            ],
           ),
         ),
       ),
