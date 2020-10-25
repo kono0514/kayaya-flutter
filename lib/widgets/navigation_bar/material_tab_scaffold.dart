@@ -153,6 +153,7 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
             type: BottomNavigationBarType.fixed,
             unselectedFontSize: 12.0,
             selectedFontSize: 12.0,
+            showUnselectedLabels: false,
             items: items.map((e) => e.navbarItem()).toList(),
             currentIndex: _currentTabIndex,
             onTap: (index) {

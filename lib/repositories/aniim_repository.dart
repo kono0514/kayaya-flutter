@@ -20,7 +20,7 @@ class AniimRepository {
         filter?.genres == null ? null : _mapGenresToGraphQL(filter.genres);
 
     final args = BrowseAnimesArguments(
-      first: 10,
+      first: 20,
       page: page,
       orderBy: orderBy ?? [],
       typeIn: typeIn ?? [],
@@ -189,7 +189,7 @@ class AniimRepository {
         kw$operator: SQLOperator.eq,
       ),
       page: page,
-      first: 10,
+      first: 30,
       orderBy: <EpisodesOrderByOrderByClause>[
         EpisodesOrderByOrderByClause(
           field: EpisodesOrderByColumn.number,
