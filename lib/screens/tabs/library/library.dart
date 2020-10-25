@@ -48,7 +48,7 @@ class _LibraryPageState extends State<LibraryPage> {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             CustomSliverAppBar(
-              title: Text(S.current.tabs_library),
+              title: Text(S.of(context).tabs_library),
               actions: [
                 SliverButton(
                   text: Text(

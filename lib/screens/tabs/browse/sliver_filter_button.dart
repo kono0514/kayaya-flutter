@@ -23,7 +23,7 @@ class _SliverFilterButtonState extends State<SliverFilterButton> {
           color: _hasFilter ? Colors.white : null,
           icon: Icon(Icons.tune),
           text: Text(
-            S.current.filter.toUpperCase(),
+            S.of(context).filter.toUpperCase(),
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),

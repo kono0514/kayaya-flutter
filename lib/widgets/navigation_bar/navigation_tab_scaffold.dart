@@ -19,9 +19,9 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
 
   final List<TabNavigatorItem> items = [
     TabNavigatorItem(
-      navbarItem: BottomNavigationBarItem(
+      navbarItem: () => BottomNavigationBarItem(
         icon: Icon(Icons.donut_small),
-        title: Text(S.current.tabs_discover),
+        label: S.current.tabs_discover,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),
@@ -29,9 +29,9 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
           FeaturedPage(scrollController: scrollController),
     ),
     TabNavigatorItem(
-      navbarItem: BottomNavigationBarItem(
+      navbarItem: () => BottomNavigationBarItem(
         icon: Icon(Icons.local_movies),
-        title: Text(S.current.tabs_browse),
+        label: S.current.tabs_browse,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),
@@ -39,9 +39,9 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
           BrowsePage(scrollController: scrollController),
     ),
     TabNavigatorItem(
-      navbarItem: BottomNavigationBarItem(
+      navbarItem: () => BottomNavigationBarItem(
         icon: Icon(Icons.library_add),
-        title: Text(S.current.tabs_library),
+        label: S.current.tabs_library,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),
@@ -49,9 +49,9 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
           LibraryPage(scrollController: scrollController),
     ),
     TabNavigatorItem(
-      navbarItem: BottomNavigationBarItem(
+      navbarItem: () => BottomNavigationBarItem(
         icon: Icon(Icons.search),
-        title: Text(S.current.tabs_search),
+        label: S.current.tabs_search,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),
@@ -123,7 +123,7 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
 
                 _previousTabIndex = index;
               },
-              items: items.map((e) => e.navbarItem).toList(),
+              items: items.map((e) => e.navbarItem()).toList(),
             ),
             tabBuilder: (context, index) {
               final TabNavigatorItem item = items[index];

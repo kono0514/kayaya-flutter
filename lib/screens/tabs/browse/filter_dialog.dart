@@ -22,18 +22,18 @@ class _FilterDialogState extends State<FilterDialog> {
   BrowseFilterCubit _filterCubit;
   Function _unorderedEq = DeepCollectionEquality.unordered().equals;
 
-  Map<String, FilterOrderBy> _sortMap = {
-    S.current.filter_sort_recent: FilterOrderBy.recent,
-    S.current.filter_sort_alpha_asc: FilterOrderBy.alpha_asc,
-    S.current.filter_sort_alpha_desc: FilterOrderBy.alpha_desc,
-    S.current.filter_sort_rating_high: FilterOrderBy.rating_desc,
-    S.current.filter_sort_rating_low: FilterOrderBy.rating_asc,
+  Map<FilterOrderBy, String> _sortMap = {
+    FilterOrderBy.recent: S.current.filter_sort_recent,
+    FilterOrderBy.alpha_asc: S.current.filter_sort_alpha_asc,
+    FilterOrderBy.alpha_desc: S.current.filter_sort_alpha_desc,
+    FilterOrderBy.rating_desc: S.current.filter_sort_rating_high,
+    FilterOrderBy.rating_asc: S.current.filter_sort_rating_low,
   };
 
-  Map<String, FilterType> _typeMap = {
-    S.current.all: FilterType.all,
-    S.current.movie: FilterType.movie,
-    S.current.series: FilterType.series,
+  Map<FilterType, String> _typeMap = {
+    FilterType.all: S.current.all,
+    FilterType.movie: S.current.movie,
+    FilterType.series: S.current.series,
   };
 
   FilterOrderBy _defaultSort;
@@ -47,8 +47,8 @@ class _FilterDialogState extends State<FilterDialog> {
   void initState() {
     super.initState();
 
-    _defaultSort = _sortMap[S.current.filter_sort_recent];
-    _defaultType = _typeMap[S.current.all];
+    _defaultSort = FilterOrderBy.recent;
+    _defaultType = FilterType.all;
     _defaultGenres = [];
     _filterCubit = context.bloc<BrowseFilterCubit>();
 
@@ -118,8 +118,8 @@ class _FilterDialogState extends State<FilterDialog> {
                             items: _sortMap.entries
                                 .map(
                                   (e) => DropdownMenuItem(
-                                    value: e.value,
-                                    child: Text(e.key),
+                                    value: e.key,
+                                    child: Text(e.value),
                                   ),
                                 )
                                 .toList(),
@@ -145,8 +145,8 @@ class _FilterDialogState extends State<FilterDialog> {
                             items: _typeMap.entries
                                 .map(
                                   (e) => DropdownMenuItem(
-                                    value: e.value,
-                                    child: Text(e.key),
+                                    value: e.key,
+                                    child: Text(e.value),
                                   ),
                                 )
                                 .toList(),

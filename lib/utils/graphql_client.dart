@@ -11,6 +11,7 @@ GraphQLClient getGraphQLClient({String locale = 'en'}) {
   if (_client != null) return _client;
 
   final httpLink = HttpLink(
+    // uri: 'https://api.kayaya.stream/graphql',
     uri: 'http://aniim-api.test/graphql',
     headers: {'Accept-Language': locale},
   );

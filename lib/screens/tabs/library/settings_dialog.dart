@@ -81,6 +81,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                         );
                         if (result != null) {
                           SharedPreferencesService.instance.setLanguage(result);
+                          S.load(Locale(result));
                           Scaffold.of(context).showSnackBar(
                             SnackBar(
                               content: Text(S.of(context).language_updated),

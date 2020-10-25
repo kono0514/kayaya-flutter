@@ -10,7 +10,7 @@ typedef TabNavigatorPageBuilder = Widget Function(
     ScrollController scrollController);
 
 class TabNavigatorItem {
-  final BottomNavigationBarItem navbarItem;
+  final BottomNavigationBarItem Function() navbarItem;
   final String route;
   final GlobalKey<NavigatorState> navigatorKey;
   final TabNavigatorPageBuilder pageBuilder;
@@ -36,9 +36,9 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
 
   final List<TabNavigatorItem> items = [
     TabNavigatorItem(
-      navbarItem: BottomNavigationBarItem(
+      navbarItem: () => BottomNavigationBarItem(
         icon: Icon(Icons.donut_small),
-        title: Text(S.current.tabs_discover),
+        label: S.current.tabs_discover,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),
@@ -46,9 +46,9 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
           FeaturedPage(scrollController: scrollController),
     ),
     TabNavigatorItem(
-      navbarItem: BottomNavigationBarItem(
+      navbarItem: () => BottomNavigationBarItem(
         icon: Icon(Icons.local_movies),
-        title: Text(S.current.tabs_browse),
+        label: S.current.tabs_browse,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),
@@ -56,9 +56,9 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
           BrowsePage(scrollController: scrollController),
     ),
     TabNavigatorItem(
-      navbarItem: BottomNavigationBarItem(
+      navbarItem: () => BottomNavigationBarItem(
         icon: Icon(Icons.library_add),
-        title: Text(S.current.tabs_library),
+        label: S.current.tabs_library,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),
@@ -66,9 +66,9 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
           LibraryPage(scrollController: scrollController),
     ),
     TabNavigatorItem(
-      navbarItem: BottomNavigationBarItem(
+      navbarItem: () => BottomNavigationBarItem(
         icon: Icon(Icons.search),
-        title: Text(S.current.tabs_search),
+        label: S.current.tabs_search,
       ),
       route: RouteConstants.search,
     ),
@@ -153,7 +153,7 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
             type: BottomNavigationBarType.fixed,
             unselectedFontSize: 12.0,
             selectedFontSize: 12.0,
-            items: items.map((e) => e.navbarItem).toList(),
+            items: items.map((e) => e.navbarItem()).toList(),
             currentIndex: _currentTabIndex,
             onTap: (index) {
               // Same tab clicked. Pop or scroll to top

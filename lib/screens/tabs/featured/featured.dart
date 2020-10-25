@@ -12,6 +12,7 @@ import 'package:kayaya_flutter/widgets/dynamic_widget_parser/carousel_slider_par
 import 'package:kayaya_flutter/widgets/dynamic_widget_parser/childless_sized_box_parser.dart';
 import 'package:kayaya_flutter/widgets/dynamic_widget_parser/custom_listview_parser.dart';
 import 'package:kayaya_flutter/widgets/dynamic_widget_parser/rounded_cached_network_image_parser.dart';
+import 'package:kayaya_flutter/widgets/dynamic_widget_parser/scale_down_on_tap_parser.dart';
 
 class FeaturedPage extends StatefulWidget {
   final ScrollController scrollController;
@@ -34,6 +35,7 @@ class _FeaturedPageState extends State<FeaturedPage> {
     DynamicWidgetBuilder.addParser(CustomListViewWidgetParser());
     DynamicWidgetBuilder.addParser(CarouselSliderWidgetParser());
     DynamicWidgetBuilder.addParser(CarouselSliderItemFadedChildWidgetParser());
+    DynamicWidgetBuilder.addParser(ScaleDownOnTapWidgetParser());
     _future = _buildWidget(context);
   }
 
@@ -52,7 +54,7 @@ class _FeaturedPageState extends State<FeaturedPage> {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             CustomSliverAppBar(
-              title: Text(S.current.tabs_discover),
+              title: Text(S.of(context).tabs_discover),
             ),
           ];
         },
