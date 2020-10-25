@@ -43,13 +43,6 @@ class _DetailViewState extends State<DetailView>
 
   @override
   Widget build(BuildContext context) {
-    final _tabBar = TabBar(
-      tabs: widget.tabs.map((e) => Tab(text: e.toUpperCase())).toList(),
-      controller: tabController,
-      indicatorSize: TabBarIndicatorSize.label,
-      isScrollable: true,
-      labelColor: Theme.of(context).textTheme.bodyText1.color,
-    );
     final bool _isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -98,13 +91,21 @@ class _DetailViewState extends State<DetailView>
             ];
           },
           pinnedHeaderSliverHeightBuilder: () =>
-              MediaQuery.of(context).padding.top + _tabBar.preferredSize.height,
+              MediaQuery.of(context).padding.top + kToolbarHeight,
           innerScrollPositionKeyBuilder: () => Key('Tab${tabController.index}'),
           body: Column(
             children: [
               ColoredTabBar(
                 color: _isDark ? Colors.black : Colors.white,
-                tabBar: _tabBar,
+                tabBar: TabBar(
+                  tabs: widget.tabs
+                      .map((e) => Tab(text: e.toUpperCase()))
+                      .toList(),
+                  controller: tabController,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  isScrollable: true,
+                  labelColor: Theme.of(context).textTheme.bodyText1.color,
+                ),
               ),
               Expanded(
                 child: TabBarView(
