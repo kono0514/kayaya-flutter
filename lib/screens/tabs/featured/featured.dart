@@ -111,7 +111,7 @@ class _FeaturedPageState extends State<FeaturedPage> {
                       snapshot.error.toString(),
                       style: TextStyle(color: Colors.red),
                     ),
-                    RaisedButton(
+                    TextButton(
                       onPressed: _refreshData,
                       child: Text('Retry'),
                     ),

@@ -112,7 +112,7 @@ class _LibraryPageState extends State<LibraryPage> {
               color: Colors.red[400],
             ),
           ),
-          RaisedButton(
+          TextButton(
             onPressed: () => subListBloc.add(SubscriptionListFetched()),
             child: Text('Retry'),
           ),
@@ -131,7 +131,7 @@ class _LibraryPageState extends State<LibraryPage> {
             Text(
               S.of(context).no_subscriptions,
             ),
-            RaisedButton(
+            TextButton(
               onPressed: () => subListBloc.add(SubscriptionListFetched()),
               child: Text('Retry'),
             ),

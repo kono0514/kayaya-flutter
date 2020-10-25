@@ -38,7 +38,7 @@ class ListBottomLoader extends StatelessWidget {
         if (onRetry != null)
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
-            child: RaisedButton(
+            child: TextButton(
               onPressed: onRetry,
               child: Text('Retry'),
             ),

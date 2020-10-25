@@ -185,7 +185,7 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
               color: Colors.red[400],
             ),
           ),
-          RaisedButton(
+          TextButton(
             onPressed: () =>
                 animeEpisodesBloc.add(AnimeEpisodesRefreshed(widget.id)),
             child: Text('Retry'),
@@ -201,7 +201,7 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(S.of(context).no_episodes),
-          RaisedButton(
+          TextButton(
             onPressed: () =>
                 animeEpisodesBloc.add(AnimeEpisodesRefreshed(widget.id)),
             child: Text('Retry'),

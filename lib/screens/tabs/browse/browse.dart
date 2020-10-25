@@ -176,7 +176,7 @@ class _BrowsePageState extends State<BrowsePage> {
               color: Colors.red[400],
             ),
           ),
-          RaisedButton(
+          TextButton(
             onPressed: () => animeListBloc.add(AnimeListRefreshed()),
             child: Text('Retry'),
           ),
@@ -193,7 +193,7 @@ class _BrowsePageState extends State<BrowsePage> {
           Text(
             'No items found. Adjust filter and try again.',
           ),
-          RaisedButton(
+          TextButton(
             onPressed: () => animeListBloc.add(AnimeListRefreshed()),
             child: Text('Retry'),
           ),
