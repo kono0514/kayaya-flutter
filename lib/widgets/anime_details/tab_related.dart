@@ -51,6 +51,11 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
           }
 
           if (state is AnimeRelationsLoaded) {
+            if (state.relations.data.length == 0 &&
+                state.recommendations.data.length == 0) {
+              return buildEmptyWidget();
+            }
+
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -145,6 +150,12 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
           return Center(child: CircularProgressIndicator());
         },
       ),
+    );
+  }
+
+  Widget buildEmptyWidget() {
+    return Center(
+      child: Text('No relations found'),
     );
   }
 }

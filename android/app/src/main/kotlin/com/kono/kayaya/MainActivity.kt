@@ -1,6 +1,6 @@
 package com.kono.kayaya
 
-import io.flutter.embedding.android.FlutterActivity
+import com.kono.flutter_auto_pip.FlutterAutoPipActivity
 
-class MainActivity: FlutterActivity() {
+class MainActivity: FlutterAutoPipActivity() {
 }
