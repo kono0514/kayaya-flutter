@@ -2,8 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/style.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:kayaya_flutter/cubit/anime_details_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -59,13 +58,9 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                       SizedBox(height: 10),
-                      Html(
-                        data: state.details.description,
-                        style: {
-                          'body': Style.fromTextStyle(
-                                  Theme.of(context).textTheme.caption)
-                              .merge(Style(margin: EdgeInsets.zero)),
-                        },
+                      HtmlWidget(
+                        state.details.description,
+                        textStyle: Theme.of(context).textTheme.caption,
                       ),
                     ]);
 
