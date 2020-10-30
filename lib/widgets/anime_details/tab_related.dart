@@ -45,9 +45,7 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
         cubit: animeRelationsCubit,
         builder: (context, state) {
           if (state is AnimeRelationsError) {
-            return Center(
-              child: Text(state.exception.toString()),
-            );
+            return buildErrorWidget(state);
           }
 
           if (state is AnimeRelationsLoaded) {
@@ -154,8 +152,33 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
   }
 
   Widget buildEmptyWidget() {
-    return Center(
-      child: Text('No relations found'),
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Center(
+            child: Text('No relations found'),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildErrorWidget(AnimeRelationsError state) {
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Center(
+            child: Text(
+              state.exception.toString(),
+              style: TextStyle(
+                color: Colors.red[400],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

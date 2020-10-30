@@ -172,39 +172,49 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
   }
 
   Widget buildErrorWidget(AnimeEpisodesError state) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            state.exception.toString(),
-            style: TextStyle(
-              color: Colors.red[400],
-            ),
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                state.exception.toString(),
+                style: TextStyle(
+                  color: Colors.red[400],
+                ),
+              ),
+              TextButton(
+                onPressed: () =>
+                    animeEpisodesBloc.add(AnimeEpisodesRefreshed(widget.id)),
+                child: Text('Retry'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () =>
-                animeEpisodesBloc.add(AnimeEpisodesRefreshed(widget.id)),
-            child: Text('Retry'),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget buildEmptyWidget() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(S.of(context).no_episodes),
-          TextButton(
-            onPressed: () =>
-                animeEpisodesBloc.add(AnimeEpisodesRefreshed(widget.id)),
-            child: Text('Retry'),
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(S.of(context).no_episodes),
+              TextButton(
+                onPressed: () =>
+                    animeEpisodesBloc.add(AnimeEpisodesRefreshed(widget.id)),
+                child: Text('Retry'),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
