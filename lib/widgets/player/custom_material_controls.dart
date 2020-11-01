@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:chewie_extended/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +29,16 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
 
   final barHeight = 48.0;
   final marginSize = 5.0;
+
+  int _rewindDuration = 10;
+  int _forwardDuration = 30;
+
+  int _rewindValue = 0;
+  int _forwardValue = 0;
+  Timer _buttonSeekTimer;
+
+  final _playbackSpeeds = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
+  double _playbackSpeedValue = 1;
 
   VideoPlayerController controller;
   ChewieController chewieController;
@@ -74,7 +85,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                     ? const Center(
                         child: const CircularProgressIndicator(),
                       )
-                    : _buildPlayPauseMiddle(),
+                    : _buildMiddleControls(),
               ),
               Align(
                 alignment: Alignment.topCenter,
@@ -102,6 +113,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
     chewieController.removeListener(_chewieListener);
     _hideTimer?.cancel();
     _initTimer?.cancel();
+    _buttonSeekTimer?.cancel();
     _showAfterExpandCollapseTimer?.cancel();
   }
 
@@ -218,6 +230,9 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                 ? Expanded(child: const Text('LIVE'))
                 : _buildPosition(),
             chewieController.isLive ? const SizedBox() : _buildProgressBar(),
+            chewieController.allowSpeedChanging
+                ? _buildSpeedButton(controller)
+                : Container(),
             chewieController.allowMuting
                 ? _buildMuteButton(controller)
                 : Container(),
@@ -250,6 +265,136 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
               onPressed: _onExpandCollapse),
         ),
       ),
+    );
+  }
+
+  Widget _buildMiddleControls() {
+    return AnimatedOpacity(
+      opacity: _hideStuff ? 0.0 : 1.0,
+      duration: Duration(milliseconds: 300),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildRewindButton(),
+          SizedBox(width: 40),
+          Material(
+            clipBehavior: Clip.hardEdge,
+            type: MaterialType.circle,
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: _playPause,
+              child: SizedBox(
+                width: 80.0,
+                height: 80.0,
+                child: Icon(
+                  controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                  size: 58.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: 40),
+          _buildForwardButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRewindButton() {
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.center,
+      children: [
+        if (_rewindValue > 0)
+          Positioned(
+            top: -26,
+            child:
+                Text('- ${formatDuration(Duration(seconds: _rewindValue))}s'),
+          ),
+        Material(
+          clipBehavior: Clip.hardEdge,
+          type: MaterialType.circle,
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              if (_latestValue?.isPlaying == true) {
+                _cancelAndRestartTimer();
+              }
+
+              if (_latestValue?.isBuffering == true) {
+                return;
+              }
+
+              setState(() {
+                _forwardValue = 0;
+                _rewindValue += _rewindDuration;
+                _cancelAndRestartButtonSeekTimer();
+              });
+            },
+            child: SizedBox(
+              width: 80.0,
+              height: 80.0,
+              child: Icon(
+                Icons.replay_10,
+                size: 36.0,
+                color: _latestValue?.isBuffering == true
+                    ? Colors.white54
+                    : Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildForwardButton() {
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.center,
+      children: [
+        if (_forwardValue > 0)
+          Positioned(
+            top: -26,
+            child:
+                Text('+ ${formatDuration(Duration(seconds: _forwardValue))}s'),
+          ),
+        Material(
+          clipBehavior: Clip.hardEdge,
+          type: MaterialType.circle,
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              if (_latestValue?.isPlaying == true) {
+                _cancelAndRestartTimer();
+              }
+
+              if (_latestValue?.isBuffering == true) {
+                return;
+              }
+
+              setState(() {
+                _rewindValue = 0;
+                _forwardValue += _forwardDuration;
+                _cancelAndRestartButtonSeekTimer();
+              });
+            },
+            child: SizedBox(
+              width: 80.0,
+              height: 80.0,
+              child: Icon(
+                Icons.forward_30,
+                size: 36.0,
+                color: _latestValue?.isBuffering == true
+                    ? Colors.white54
+                    : Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -341,6 +486,60 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
     );
   }
 
+  Widget _buildSpeedButton(
+    VideoPlayerController controller,
+  ) {
+    return AnimatedOpacity(
+      opacity: _hideStuff ? 0.0 : 1.0,
+      duration: Duration(milliseconds: 300),
+      child: Material(
+        clipBehavior: Clip.hardEdge,
+        type: MaterialType.circle,
+        color: Colors.transparent,
+        child: IconButton(
+          icon: AutoSizeText(
+            '${_playbackSpeedValue}x',
+            maxLines: 1,
+            minFontSize: 8,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+              color: Colors.white,
+            ),
+          ),
+          onPressed: () async {
+            final wasPlaying = _latestValue?.isPlaying ?? false;
+
+            if (wasPlaying) {
+              _pause();
+            }
+
+            final chosenSpeed = await showModalBottomSheet<double>(
+              context: context,
+              isScrollControlled: true,
+              useRootNavigator: true,
+              builder: (context) => PlaybackSpeedDialog(
+                speeds: _playbackSpeeds,
+                selected: _playbackSpeedValue,
+              ),
+            );
+
+            if (chosenSpeed != null && chosenSpeed != _playbackSpeedValue) {
+              controller.setPlaybackSpeed(chosenSpeed);
+              setState(() {
+                _playbackSpeedValue = chosenSpeed;
+              });
+            }
+
+            if (wasPlaying) {
+              _play();
+            }
+          },
+        ),
+      ),
+    );
+  }
+
   Widget _buildPlayPause(VideoPlayerController controller) {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0, right: 4.0),
@@ -393,6 +592,11 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
     });
   }
 
+  void _cancelAndRestartButtonSeekTimer() {
+    _buttonSeekTimer?.cancel();
+    _startButtonSeekTimer();
+  }
+
   Future<Null> _initialize() async {
     controller.addListener(_updateState);
     chewieController.addListener(_chewieListener);
@@ -436,27 +640,35 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   }
 
   void _playPause() {
+    if (controller.value.isPlaying) {
+      _pause();
+    } else {
+      _play();
+    }
+  }
+
+  void _play() {
     bool isFinished = _latestValue.position >= _latestValue.duration;
 
-    setState(() {
-      if (controller.value.isPlaying) {
-        _hideStuff = false;
-        _hideTimer?.cancel();
-        controller.pause();
-      } else {
-        _cancelAndRestartTimer();
+    _cancelAndRestartTimer();
 
-        if (!controller.value.initialized) {
-          controller.initialize().then((_) {
-            controller.play();
-          });
-        } else {
-          if (isFinished) {
-            controller.seekTo(Duration(seconds: 0));
-          }
-          controller.play();
-        }
+    if (!controller.value.initialized) {
+      controller.initialize().then((_) {
+        controller.play();
+      });
+    } else {
+      if (isFinished) {
+        controller.seekTo(Duration(seconds: 0));
       }
+      controller.play();
+    }
+  }
+
+  void _pause() {
+    setState(() {
+      _hideStuff = false;
+      _hideTimer?.cancel();
+      controller.pause();
     });
   }
 
@@ -464,6 +676,25 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
     _hideTimer = Timer(const Duration(seconds: 3), () {
       setState(() {
         _hideStuff = true;
+      });
+    });
+  }
+
+  void _startButtonSeekTimer() {
+    _buttonSeekTimer = Timer(const Duration(seconds: 1), () {
+      if (_forwardValue == 0 && _rewindValue == 0) return;
+
+      if (_forwardValue > 0) {
+        controller
+            .seekTo(_latestValue.position + Duration(seconds: _forwardValue));
+      } else {
+        controller
+            .seekTo(_latestValue.position + Duration(seconds: _rewindValue));
+      }
+
+      setState(() {
+        _rewindValue = 0;
+        _forwardValue = 0;
       });
     });
   }
@@ -501,6 +732,56 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                   bufferedColor: Colors.white,
                   backgroundColor: Colors.white.withAlpha(100)),
         ),
+      ),
+    );
+  }
+}
+
+class PlaybackSpeedDialog extends StatelessWidget {
+  const PlaybackSpeedDialog({
+    Key key,
+    @required List<num> speeds,
+    @required double selected,
+  })  : _speeds = speeds,
+        _selected = selected,
+        super(key: key);
+
+  final List<num> _speeds;
+  final double _selected;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final Color selectedColor = theme.brightness == Brightness.light
+        ? theme.primaryColor
+        : theme.accentColor;
+
+    return SingleChildScrollView(
+      child: Wrap(
+        children: _speeds
+            .map(
+              (e) => ListTile(
+                dense: true,
+                title: Row(
+                  children: [
+                    e == _selected
+                        ? Icon(
+                            Icons.check,
+                            size: 20.0,
+                            color: selectedColor,
+                          )
+                        : Container(width: 20.0),
+                    SizedBox(width: 16.0),
+                    Text(e == 1.0 ? 'Normal' : '${e}x'),
+                  ],
+                ),
+                selected: e == _selected,
+                onTap: () {
+                  Navigator.pop(context, e.toDouble());
+                },
+              ),
+            )
+            .toList(),
       ),
     );
   }
