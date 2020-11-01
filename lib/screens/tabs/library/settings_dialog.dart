@@ -23,7 +23,9 @@ class _SettingsDialogState extends State<SettingsDialog> {
     final darkModeEnabled = SharedPreferencesService.instance.isDarkModeEnabled;
     return darkModeEnabled == null
         ? 'System'
-        : darkModeEnabled == false ? 'Light' : 'Dark';
+        : darkModeEnabled == false
+            ? 'Light'
+            : 'Dark';
   }
 
   String get languageLabel {
@@ -54,6 +56,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
             builder: (context) => Column(
               children: [
                 AppBar(
+                  primary: false,
                   title: Text(S.of(context).settings),
                   centerTitle: true,
                   leading: IconButton(
@@ -61,129 +64,143 @@ class _SettingsDialogState extends State<SettingsDialog> {
                     onPressed: () => Navigator.pop(context),
                   ),
                 ),
-                SettingsSection(
-                  title: S.of(context).general,
-                  tiles: [
-                    SettingsTile(
-                      title: S.of(context).language,
-                      subtitle: languageLabel,
-                      leading: Icon(Icons.translate),
-                      onTap: () async {
-                        final result = await showDialog<String>(
-                          context: context,
-                          builder: (context) => SimpleDialog(
-                            title: Text(S.of(context).language),
-                            children: <Widget>[
-                              buildSimpleDialogItem('English', 'en'),
-                              buildSimpleDialogItem('Монгол', 'mn'),
-                            ],
-                          ),
-                        );
-                        if (result != null) {
-                          SharedPreferencesService.instance.setLanguage(result);
-                          S.load(Locale(result));
-                          Scaffold.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(S.of(context).language_updated),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SettingsSection(
+                          title: S.of(context).general,
+                          tiles: [
+                            SettingsTile(
+                              title: S.of(context).language,
+                              subtitle: languageLabel,
+                              leading: Icon(Icons.translate),
+                              onTap: () async {
+                                final result = await showDialog<String>(
+                                  context: context,
+                                  builder: (context) => SimpleDialog(
+                                    title: Text(S.of(context).language),
+                                    children: <Widget>[
+                                      buildSimpleDialogItem('English', 'en'),
+                                      buildSimpleDialogItem('Монгол', 'mn'),
+                                    ],
+                                  ),
+                                );
+                                if (result != null) {
+                                  SharedPreferencesService.instance
+                                      .setLanguage(result);
+                                  S.load(Locale(result));
+                                  Scaffold.of(context).showSnackBar(
+                                    SnackBar(
+                                      content:
+                                          Text(S.of(context).language_updated),
+                                    ),
+                                  );
+                                  setState(() {});
+                                }
+                              },
                             ),
-                          );
-                          setState(() {});
-                        }
-                      },
-                    ),
-                    SettingsTile(
-                      title: S.of(context).theme,
-                      subtitle: themeLabel,
-                      leading: Icon(Icons.brightness_medium),
-                      onTap: () async {
-                        final result = await showDialog<int>(
-                          context: context,
-                          builder: (context) => SimpleDialog(
-                            title: Text(S.of(context).theme),
-                            children: <Widget>[
-                              buildSimpleDialogItem(
-                                  S.of(context).theme_dark, 1),
-                              buildSimpleDialogItem(
-                                  S.of(context).theme_light, 2),
-                              buildSimpleDialogItem(
-                                  S.of(context).theme_system, 0),
-                            ],
-                          ),
-                        );
+                            SettingsTile(
+                              title: S.of(context).theme,
+                              subtitle: themeLabel,
+                              leading: Icon(Icons.brightness_medium),
+                              onTap: () async {
+                                final result = await showDialog<int>(
+                                  context: context,
+                                  builder: (context) => SimpleDialog(
+                                    title: Text(S.of(context).theme),
+                                    children: <Widget>[
+                                      buildSimpleDialogItem(
+                                          S.of(context).theme_dark, 1),
+                                      buildSimpleDialogItem(
+                                          S.of(context).theme_light, 2),
+                                      buildSimpleDialogItem(
+                                          S.of(context).theme_system, 0),
+                                    ],
+                                  ),
+                                );
 
-                        if (result == null) return;
+                                if (result == null) return;
 
-                        if (result == 1) {
-                          BlocProvider.of<ThemeCubit>(context)
-                              .changeTheme(ThemeMode.dark);
-                        } else if (result == 2) {
-                          BlocProvider.of<ThemeCubit>(context)
-                              .changeTheme(ThemeMode.light);
-                        } else if (result == 0) {
-                          BlocProvider.of<ThemeCubit>(context)
-                              .changeTheme(ThemeMode.system);
-                        }
+                                if (result == 1) {
+                                  BlocProvider.of<ThemeCubit>(context)
+                                      .changeTheme(ThemeMode.dark);
+                                } else if (result == 2) {
+                                  BlocProvider.of<ThemeCubit>(context)
+                                      .changeTheme(ThemeMode.light);
+                                } else if (result == 0) {
+                                  BlocProvider.of<ThemeCubit>(context)
+                                      .changeTheme(ThemeMode.system);
+                                }
 
-                        setState(() {});
-                      },
+                                setState(() {});
+                              },
+                            ),
+                            SettingsTile(
+                              title: S.of(context).clear_search_history,
+                              leading: Icon(Icons.history),
+                              onTap: () {
+                                SharedPreferencesService.instance
+                                    .clearSearchHistory();
+                                Scaffold.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(S
+                                        .of(context)
+                                        .clear_search_history_success),
+                                  ),
+                                );
+                              },
+                            ),
+                            SettingsTile(
+                              title: 'Logout',
+                              leading: Icon(Icons.history),
+                              onTap: () {
+                                context
+                                    .repository<AuthenticationRepository>()
+                                    .logOut();
+                              },
+                            ),
+                          ],
+                        ),
+                        SettingsSection(
+                          title: S.of(context).about,
+                          tiles: [
+                            SettingsTile(
+                              title: S.of(context).developer,
+                              subtitle: developerUrl,
+                              onTap: () async {
+                                if (await canLaunch(developerUrl)) {
+                                  await launch(developerUrl);
+                                }
+                              },
+                            ),
+                            SettingsTile(
+                              title: S.of(context).source_code,
+                              subtitle: sourceUrl,
+                              onTap: () async {
+                                if (await canLaunch(sourceUrl)) {
+                                  await launch(sourceUrl);
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                        SettingsSection(
+                          title: S.of(context).credits,
+                          tiles: [
+                            SettingsTile(
+                              title: 'Search powered by Algolia',
+                              onTap: () async {
+                                if (await canLaunch('https://algolia.com')) {
+                                  await launch('https://algolia.com');
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    SettingsTile(
-                      title: S.of(context).clear_search_history,
-                      leading: Icon(Icons.history),
-                      onTap: () {
-                        SharedPreferencesService.instance.clearSearchHistory();
-                        Scaffold.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                                S.of(context).clear_search_history_success),
-                          ),
-                        );
-                      },
-                    ),
-                    SettingsTile(
-                      title: 'Logout',
-                      leading: Icon(Icons.history),
-                      onTap: () {
-                        context.repository<AuthenticationRepository>().logOut();
-                      },
-                    ),
-                  ],
-                ),
-                SettingsSection(
-                  title: S.of(context).about,
-                  tiles: [
-                    SettingsTile(
-                      title: S.of(context).developer,
-                      subtitle: developerUrl,
-                      onTap: () async {
-                        if (await canLaunch(developerUrl)) {
-                          await launch(developerUrl);
-                        }
-                      },
-                    ),
-                    SettingsTile(
-                      title: S.of(context).source_code,
-                      subtitle: sourceUrl,
-                      onTap: () async {
-                        if (await canLaunch(sourceUrl)) {
-                          await launch(sourceUrl);
-                        }
-                      },
-                    ),
-                  ],
-                ),
-                SettingsSection(
-                  title: S.of(context).credits,
-                  tiles: [
-                    SettingsTile(
-                      title: 'Search powered by Algolia',
-                      onTap: () async {
-                        if (await canLaunch('https://algolia.com')) {
-                          await launch('https://algolia.com');
-                        }
-                      },
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),

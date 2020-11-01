@@ -82,172 +82,195 @@ class _FilterDialogState extends State<FilterDialog> {
     final _labelColor = _isDark ? Colors.grey[400] : Colors.grey[600];
     final _labelStyle =
         Theme.of(context).textTheme.bodyText1.apply(color: _labelColor);
+    final _orientation = MediaQuery.of(context).orientation;
 
     return Container(
       margin:
           EdgeInsets.only(top: MediaQuery.of(widget.mainContext).padding.top),
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: Column(
-        children: <Widget>[
-          AppBar(
-            title: Text(S.of(context).filter_and_sort),
-            centerTitle: true,
-            leading: IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ),
-          SizedBox(height: 30),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Table(
-                    columnWidths: {0: FixedColumnWidth(140.0)},
-                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                    children: [
-                      TableRow(
-                        children: [
-                          Text(
-                            '${S.of(context).sort.toUpperCase()}:',
-                            style: _labelStyle,
-                          ),
-                          DropdownButtonFormField(
-                            items: _sortMap.entries
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                    value: e.key,
-                                    child: Text(e.value),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedSort = value;
-                              });
-                            },
-                            value: _selectedSort,
-                            isDense: false,
-                            decoration:
-                                InputDecoration.collapsed(hintText: null),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          Text(
-                            '${S.of(context).type.toUpperCase()}:',
-                            style: _labelStyle,
-                          ),
-                          DropdownButtonFormField(
-                            items: _typeMap.entries
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                    value: e.key,
-                                    child: Text(e.value),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedType = value;
-                              });
-                            },
-                            value: _selectedType,
-                            isDense: false,
-                            decoration:
-                                InputDecoration.collapsed(hintText: null),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    '${S.of(context).genre.toUpperCase()}:',
-                    style: _labelStyle,
-                  ),
-                  SizedBox(height: 12),
-                  BlocBuilder<GenreListCubit, GenreListState>(
-                    builder: (context, state) {
-                      if (state is GenreListLoaded) {
-                        return _buildGenreChipsWidget(state.genres);
-                      }
-
-                      return Shimmer.fromColors(
-                        baseColor:
-                            _isDark ? Colors.grey[700] : Colors.grey[300],
-                        highlightColor:
-                            _isDark ? Colors.grey[500] : Colors.grey[100],
-                        child: Wrap(
-                          children: List.generate(
-                            10,
-                            (index) => Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 8.0, bottom: 16.0),
-                              child: Container(
-                                width: 80,
-                                height: 32,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: Colors.white,
+      // color: Theme.of(context).scaffoldBackgroundColor,
+      child: Scaffold(
+        body: Builder(
+          builder: (context) => Column(
+            children: <Widget>[
+              AppBar(
+                primary: false,
+                title: Text(S.of(context).filter_and_sort),
+                centerTitle: true,
+                leading: IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Table(
+                          columnWidths: {0: FixedColumnWidth(140.0)},
+                          defaultVerticalAlignment:
+                              TableCellVerticalAlignment.middle,
+                          children: [
+                            TableRow(
+                              children: [
+                                Text(
+                                  '${S.of(context).sort.toUpperCase()}:',
+                                  style: _labelStyle,
                                 ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  Spacer(),
-                  Container(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          RaisedButton(
-                            onPressed: isDefault
-                                ? null
-                                : () {
+                                DropdownButtonFormField(
+                                  items: _sortMap.entries
+                                      .map(
+                                        (e) => DropdownMenuItem(
+                                          value: e.key,
+                                          child: Text(e.value),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (value) {
                                     setState(() {
-                                      _selectedSort = _defaultSort;
-                                      _selectedType = _defaultType;
-                                      _selectedGenres = []
-                                        ..addAll(_defaultGenres);
+                                      _selectedSort = value;
                                     });
                                   },
-                            child: Text(S.of(context).reset),
-                            color: Colors.grey.shade300,
-                            textTheme: ButtonTextTheme.primary,
-                          ),
-                          RaisedButton(
-                            onPressed: () {
-                              if (isDefault) {
-                                context.bloc<BrowseFilterCubit>().resetFilter();
-                              } else {
-                                context
-                                    .bloc<BrowseFilterCubit>()
-                                    .changeFilter(Filter(
-                                      orderBy: _selectedSort,
-                                      type: _selectedType,
-                                      genres: []..addAll(_selectedGenres),
-                                    ));
-                              }
-                              Navigator.pop(context);
-                            },
-                            child: Text(S.of(context).apply),
-                            // color: Theme.of(context).primaryColor,
-                            // textTheme: ButtonTextTheme.primary,
-                          ),
-                        ],
-                      )),
-                ],
+                                  value: _selectedSort,
+                                  isDense: false,
+                                  decoration:
+                                      InputDecoration.collapsed(hintText: null),
+                                ),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                Text(
+                                  '${S.of(context).type.toUpperCase()}:',
+                                  style: _labelStyle,
+                                ),
+                                DropdownButtonFormField(
+                                  items: _typeMap.entries
+                                      .map(
+                                        (e) => DropdownMenuItem(
+                                          value: e.key,
+                                          child: Text(e.value),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectedType = value;
+                                    });
+                                  },
+                                  value: _selectedType,
+                                  isDense: false,
+                                  decoration:
+                                      InputDecoration.collapsed(hintText: null),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          '${S.of(context).genre.toUpperCase()}:',
+                          style: _labelStyle,
+                        ),
+                        SizedBox(height: 12),
+                        BlocBuilder<GenreListCubit, GenreListState>(
+                          builder: (context, state) {
+                            if (state is GenreListLoaded) {
+                              return _buildGenreChipsWidget(state.genres);
+                            }
+
+                            return Shimmer.fromColors(
+                              baseColor:
+                                  _isDark ? Colors.grey[700] : Colors.grey[300],
+                              highlightColor:
+                                  _isDark ? Colors.grey[500] : Colors.grey[100],
+                              child: Wrap(
+                                children: List.generate(
+                                  10,
+                                  (index) => Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 8.0, bottom: 16.0),
+                                    child: Container(
+                                      width: 80,
+                                      height: 32,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(30),
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                child: Builder(
+                  builder: (context) {
+                    final resetButton = RaisedButton(
+                      onPressed: isDefault
+                          ? null
+                          : () {
+                              setState(() {
+                                _selectedSort = _defaultSort;
+                                _selectedType = _defaultType;
+                                _selectedGenres = []..addAll(_defaultGenres);
+                              });
+                            },
+                      child: Text(S.of(context).reset),
+                      color: Colors.grey.shade300,
+                      textTheme: ButtonTextTheme.primary,
+                    );
+                    final applyButton = RaisedButton(
+                      onPressed: () {
+                        if (isDefault) {
+                          context.bloc<BrowseFilterCubit>().resetFilter();
+                        } else {
+                          context.bloc<BrowseFilterCubit>().changeFilter(Filter(
+                                orderBy: _selectedSort,
+                                type: _selectedType,
+                                genres: []..addAll(_selectedGenres),
+                              ));
+                        }
+                        Navigator.pop(context);
+                      },
+                      child: Text(S.of(context).apply),
+                      // color: Theme.of(context).primaryColor,
+                      // textTheme: ButtonTextTheme.primary,
+                    );
+
+                    if (_orientation == Orientation.landscape) {
+                      return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Expanded(child: resetButton),
+                            SizedBox(width: 10),
+                            Expanded(child: applyButton),
+                          ]);
+                    }
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        resetButton,
+                        applyButton,
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
