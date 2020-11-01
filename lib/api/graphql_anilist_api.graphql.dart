@@ -258,6 +258,43 @@ class GraphqlAnilistApi$Query$Media$MediaConnection with EquatableMixin {
 }
 
 @JsonSerializable(explicitToJson: true)
+class GraphqlAnilistApi$Query$Media$MediaStats$ScoreDistribution
+    with EquatableMixin {
+  GraphqlAnilistApi$Query$Media$MediaStats$ScoreDistribution();
+
+  factory GraphqlAnilistApi$Query$Media$MediaStats$ScoreDistribution.fromJson(
+          Map<String, dynamic> json) =>
+      _$GraphqlAnilistApi$Query$Media$MediaStats$ScoreDistributionFromJson(
+          json);
+
+  int score;
+
+  int amount;
+
+  @override
+  List<Object> get props => [score, amount];
+  Map<String, dynamic> toJson() =>
+      _$GraphqlAnilistApi$Query$Media$MediaStats$ScoreDistributionToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class GraphqlAnilistApi$Query$Media$MediaStats with EquatableMixin {
+  GraphqlAnilistApi$Query$Media$MediaStats();
+
+  factory GraphqlAnilistApi$Query$Media$MediaStats.fromJson(
+          Map<String, dynamic> json) =>
+      _$GraphqlAnilistApi$Query$Media$MediaStatsFromJson(json);
+
+  List<GraphqlAnilistApi$Query$Media$MediaStats$ScoreDistribution>
+      scoreDistribution;
+
+  @override
+  List<Object> get props => [scoreDistribution];
+  Map<String, dynamic> toJson() =>
+      _$GraphqlAnilistApi$Query$Media$MediaStatsToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
 class GraphqlAnilistApi$Query$Media with EquatableMixin {
   GraphqlAnilistApi$Query$Media();
 
@@ -333,6 +370,8 @@ class GraphqlAnilistApi$Query$Media with EquatableMixin {
 
   GraphqlAnilistApi$Query$Media$MediaConnection relations;
 
+  GraphqlAnilistApi$Query$Media$MediaStats stats;
+
   @override
   List<Object> get props => [
         id,
@@ -366,7 +405,8 @@ class GraphqlAnilistApi$Query$Media with EquatableMixin {
         isAdult,
         recommendations,
         siteUrl,
-        relations
+        relations,
+        stats
       ];
   Map<String, dynamic> toJson() => _$GraphqlAnilistApi$Query$MediaToJson(this);
 }
@@ -914,6 +954,32 @@ class GraphqlAnilistApiQuery
                                       directives: [],
                                       selectionSet: null)
                                 ]))
+                          ]))
+                    ])),
+                FieldNode(
+                    name: NameNode(value: 'stats'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: SelectionSetNode(selections: [
+                      FieldNode(
+                          name: NameNode(value: 'scoreDistribution'),
+                          alias: null,
+                          arguments: [],
+                          directives: [],
+                          selectionSet: SelectionSetNode(selections: [
+                            FieldNode(
+                                name: NameNode(value: 'score'),
+                                alias: null,
+                                arguments: [],
+                                directives: [],
+                                selectionSet: null),
+                            FieldNode(
+                                name: NameNode(value: 'amount'),
+                                alias: null,
+                                arguments: [],
+                                directives: [],
+                                selectionSet: null)
                           ]))
                     ]))
               ]))

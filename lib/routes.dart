@@ -46,7 +46,7 @@ abstract class Routes {
     if (uri.scheme != 'route') return null;
 
     final routeName = RouteConstants.values
-        .firstWhere((val) => val == uri.host, orElse: null);
+        .firstWhere((val) => val == uri.host, orElse: () => null);
     if (routeName == null) return null;
 
     if (routeName == RouteConstants.movieDetail ||

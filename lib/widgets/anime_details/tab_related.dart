@@ -73,6 +73,7 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                         Container(
                           height: 163,
                           child: ListView.builder(
+                            physics: BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
@@ -114,6 +115,7 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                         Container(
                           height: 163,
                           child: ListView.builder(
+                            physics: BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),

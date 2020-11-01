@@ -521,166 +521,6 @@ const _$EpisodesOrderByColumnEnumMap = {
   EpisodesOrderByColumn.artemisUnknown: 'ARTEMIS_UNKNOWN',
 };
 
-GetFeatured$Query _$GetFeatured$QueryFromJson(Map<String, dynamic> json) {
-  return GetFeatured$Query()..featured = json['featured'] as String;
-}
-
-Map<String, dynamic> _$GetFeatured$QueryToJson(GetFeatured$Query instance) =>
-    <String, dynamic>{
-      'featured': instance.featured,
-    };
-
-GetGenres$Query$Genres _$GetGenres$Query$GenresFromJson(
-    Map<String, dynamic> json) {
-  return GetGenres$Query$Genres()
-    ..id = json['id'] as String
-    ..name = json['name'] as String;
-}
-
-Map<String, dynamic> _$GetGenres$Query$GenresToJson(
-        GetGenres$Query$Genres instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-    };
-
-GetGenres$Query _$GetGenres$QueryFromJson(Map<String, dynamic> json) {
-  return GetGenres$Query()
-    ..genres = (json['genres'] as List)
-        ?.map((e) => e == null
-            ? null
-            : GetGenres$Query$Genres.fromJson(e as Map<String, dynamic>))
-        ?.toList();
-}
-
-Map<String, dynamic> _$GetGenres$QueryToJson(GetGenres$Query instance) =>
-    <String, dynamic>{
-      'genres': instance.genres?.map((e) => e?.toJson())?.toList(),
-    };
-
-GetSubscriptions$Query$Subscriptions
-    _$GetSubscriptions$Query$SubscriptionsFromJson(Map<String, dynamic> json) {
-  return GetSubscriptions$Query$Subscriptions()
-    ..id = json['id'] as String
-    ..name = json['name'] as String
-    ..animeType = _$enumDecodeNullable(_$AnimeTypeEnumMap, json['animeType'],
-        unknownValue: AnimeType.artemisUnknown)
-    ..rating = json['rating'] as int
-    ..coverImage = json['coverImage'] == null
-        ? null
-        : AnimeItemFieldsMixin$CoverImage.fromJson(
-            json['coverImage'] as Map<String, dynamic>)
-    ..coverColor = json['coverColor'] as String
-    ..bannerImage = json['bannerImage'] as String;
-}
-
-Map<String, dynamic> _$GetSubscriptions$Query$SubscriptionsToJson(
-        GetSubscriptions$Query$Subscriptions instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'animeType': _$AnimeTypeEnumMap[instance.animeType],
-      'rating': instance.rating,
-      'coverImage': instance.coverImage?.toJson(),
-      'coverColor': instance.coverColor,
-      'bannerImage': instance.bannerImage,
-    };
-
-GetSubscriptions$Query _$GetSubscriptions$QueryFromJson(
-    Map<String, dynamic> json) {
-  return GetSubscriptions$Query()
-    ..subscriptions = (json['subscriptions'] as List)
-        ?.map((e) => e == null
-            ? null
-            : GetSubscriptions$Query$Subscriptions.fromJson(
-                e as Map<String, dynamic>))
-        ?.toList();
-}
-
-Map<String, dynamic> _$GetSubscriptions$QueryToJson(
-        GetSubscriptions$Query instance) =>
-    <String, dynamic>{
-      'subscriptions':
-          instance.subscriptions?.map((e) => e?.toJson())?.toList(),
-    };
-
-SubscribeTo$Mutation _$SubscribeTo$MutationFromJson(Map<String, dynamic> json) {
-  return SubscribeTo$Mutation()..subscribeTo = json['subscribeTo'] as bool;
-}
-
-Map<String, dynamic> _$SubscribeTo$MutationToJson(
-        SubscribeTo$Mutation instance) =>
-    <String, dynamic>{
-      'subscribeTo': instance.subscribeTo,
-    };
-
-UnsubscribeFrom$Mutation _$UnsubscribeFrom$MutationFromJson(
-    Map<String, dynamic> json) {
-  return UnsubscribeFrom$Mutation()
-    ..unsubscribeFrom = json['unsubscribeFrom'] as bool;
-}
-
-Map<String, dynamic> _$UnsubscribeFrom$MutationToJson(
-        UnsubscribeFrom$Mutation instance) =>
-    <String, dynamic>{
-      'unsubscribeFrom': instance.unsubscribeFrom,
-    };
-
-UploadFcmToken$Mutation _$UploadFcmToken$MutationFromJson(
-    Map<String, dynamic> json) {
-  return UploadFcmToken$Mutation()
-    ..registerFcmToken = json['registerFcmToken'] as bool;
-}
-
-Map<String, dynamic> _$UploadFcmToken$MutationToJson(
-        UploadFcmToken$Mutation instance) =>
-    <String, dynamic>{
-      'registerFcmToken': instance.registerFcmToken,
-    };
-
-AnimeItemModelGenerator$Query$Anime
-    _$AnimeItemModelGenerator$Query$AnimeFromJson(Map<String, dynamic> json) {
-  return AnimeItemModelGenerator$Query$Anime()
-    ..id = json['id'] as String
-    ..name = json['name'] as String
-    ..animeType = _$enumDecodeNullable(_$AnimeTypeEnumMap, json['animeType'],
-        unknownValue: AnimeType.artemisUnknown)
-    ..rating = json['rating'] as int
-    ..coverImage = json['coverImage'] == null
-        ? null
-        : AnimeItemFieldsMixin$CoverImage.fromJson(
-            json['coverImage'] as Map<String, dynamic>)
-    ..coverColor = json['coverColor'] as String
-    ..bannerImage = json['bannerImage'] as String;
-}
-
-Map<String, dynamic> _$AnimeItemModelGenerator$Query$AnimeToJson(
-        AnimeItemModelGenerator$Query$Anime instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'animeType': _$AnimeTypeEnumMap[instance.animeType],
-      'rating': instance.rating,
-      'coverImage': instance.coverImage?.toJson(),
-      'coverColor': instance.coverColor,
-      'bannerImage': instance.bannerImage,
-    };
-
-AnimeItemModelGenerator$Query _$AnimeItemModelGenerator$QueryFromJson(
-    Map<String, dynamic> json) {
-  return AnimeItemModelGenerator$Query()
-    ..anime = json['anime'] == null
-        ? null
-        : AnimeItemModelGenerator$Query$Anime.fromJson(
-            json['anime'] as Map<String, dynamic>);
-}
-
-Map<String, dynamic> _$AnimeItemModelGenerator$QueryToJson(
-        AnimeItemModelGenerator$Query instance) =>
-    <String, dynamic>{
-      'anime': instance.anime?.toJson(),
-    };
-
 GetAnimeRelations$Query$Anime$Relations$Data$RelationPivot
     _$GetAnimeRelations$Query$Anime$Relations$Data$RelationPivotFromJson(
         Map<String, dynamic> json) {
@@ -851,6 +691,166 @@ Map<String, dynamic> _$GetAnimeRelations$QueryToJson(
       'anime': instance.anime?.toJson(),
     };
 
+GetFeatured$Query _$GetFeatured$QueryFromJson(Map<String, dynamic> json) {
+  return GetFeatured$Query()..featured = json['featured'] as String;
+}
+
+Map<String, dynamic> _$GetFeatured$QueryToJson(GetFeatured$Query instance) =>
+    <String, dynamic>{
+      'featured': instance.featured,
+    };
+
+GetGenres$Query$Genres _$GetGenres$Query$GenresFromJson(
+    Map<String, dynamic> json) {
+  return GetGenres$Query$Genres()
+    ..id = json['id'] as String
+    ..name = json['name'] as String;
+}
+
+Map<String, dynamic> _$GetGenres$Query$GenresToJson(
+        GetGenres$Query$Genres instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+    };
+
+GetGenres$Query _$GetGenres$QueryFromJson(Map<String, dynamic> json) {
+  return GetGenres$Query()
+    ..genres = (json['genres'] as List)
+        ?.map((e) => e == null
+            ? null
+            : GetGenres$Query$Genres.fromJson(e as Map<String, dynamic>))
+        ?.toList();
+}
+
+Map<String, dynamic> _$GetGenres$QueryToJson(GetGenres$Query instance) =>
+    <String, dynamic>{
+      'genres': instance.genres?.map((e) => e?.toJson())?.toList(),
+    };
+
+GetSubscriptions$Query$Subscriptions
+    _$GetSubscriptions$Query$SubscriptionsFromJson(Map<String, dynamic> json) {
+  return GetSubscriptions$Query$Subscriptions()
+    ..id = json['id'] as String
+    ..name = json['name'] as String
+    ..animeType = _$enumDecodeNullable(_$AnimeTypeEnumMap, json['animeType'],
+        unknownValue: AnimeType.artemisUnknown)
+    ..rating = json['rating'] as int
+    ..coverImage = json['coverImage'] == null
+        ? null
+        : AnimeItemFieldsMixin$CoverImage.fromJson(
+            json['coverImage'] as Map<String, dynamic>)
+    ..coverColor = json['coverColor'] as String
+    ..bannerImage = json['bannerImage'] as String;
+}
+
+Map<String, dynamic> _$GetSubscriptions$Query$SubscriptionsToJson(
+        GetSubscriptions$Query$Subscriptions instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'animeType': _$AnimeTypeEnumMap[instance.animeType],
+      'rating': instance.rating,
+      'coverImage': instance.coverImage?.toJson(),
+      'coverColor': instance.coverColor,
+      'bannerImage': instance.bannerImage,
+    };
+
+GetSubscriptions$Query _$GetSubscriptions$QueryFromJson(
+    Map<String, dynamic> json) {
+  return GetSubscriptions$Query()
+    ..subscriptions = (json['subscriptions'] as List)
+        ?.map((e) => e == null
+            ? null
+            : GetSubscriptions$Query$Subscriptions.fromJson(
+                e as Map<String, dynamic>))
+        ?.toList();
+}
+
+Map<String, dynamic> _$GetSubscriptions$QueryToJson(
+        GetSubscriptions$Query instance) =>
+    <String, dynamic>{
+      'subscriptions':
+          instance.subscriptions?.map((e) => e?.toJson())?.toList(),
+    };
+
+AnimeItemModelGenerator$Query$Anime
+    _$AnimeItemModelGenerator$Query$AnimeFromJson(Map<String, dynamic> json) {
+  return AnimeItemModelGenerator$Query$Anime()
+    ..id = json['id'] as String
+    ..name = json['name'] as String
+    ..animeType = _$enumDecodeNullable(_$AnimeTypeEnumMap, json['animeType'],
+        unknownValue: AnimeType.artemisUnknown)
+    ..rating = json['rating'] as int
+    ..coverImage = json['coverImage'] == null
+        ? null
+        : AnimeItemFieldsMixin$CoverImage.fromJson(
+            json['coverImage'] as Map<String, dynamic>)
+    ..coverColor = json['coverColor'] as String
+    ..bannerImage = json['bannerImage'] as String;
+}
+
+Map<String, dynamic> _$AnimeItemModelGenerator$Query$AnimeToJson(
+        AnimeItemModelGenerator$Query$Anime instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'animeType': _$AnimeTypeEnumMap[instance.animeType],
+      'rating': instance.rating,
+      'coverImage': instance.coverImage?.toJson(),
+      'coverColor': instance.coverColor,
+      'bannerImage': instance.bannerImage,
+    };
+
+AnimeItemModelGenerator$Query _$AnimeItemModelGenerator$QueryFromJson(
+    Map<String, dynamic> json) {
+  return AnimeItemModelGenerator$Query()
+    ..anime = json['anime'] == null
+        ? null
+        : AnimeItemModelGenerator$Query$Anime.fromJson(
+            json['anime'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic> _$AnimeItemModelGenerator$QueryToJson(
+        AnimeItemModelGenerator$Query instance) =>
+    <String, dynamic>{
+      'anime': instance.anime?.toJson(),
+    };
+
+SubscribeTo$Mutation _$SubscribeTo$MutationFromJson(Map<String, dynamic> json) {
+  return SubscribeTo$Mutation()..subscribeTo = json['subscribeTo'] as bool;
+}
+
+Map<String, dynamic> _$SubscribeTo$MutationToJson(
+        SubscribeTo$Mutation instance) =>
+    <String, dynamic>{
+      'subscribeTo': instance.subscribeTo,
+    };
+
+UnsubscribeFrom$Mutation _$UnsubscribeFrom$MutationFromJson(
+    Map<String, dynamic> json) {
+  return UnsubscribeFrom$Mutation()
+    ..unsubscribeFrom = json['unsubscribeFrom'] as bool;
+}
+
+Map<String, dynamic> _$UnsubscribeFrom$MutationToJson(
+        UnsubscribeFrom$Mutation instance) =>
+    <String, dynamic>{
+      'unsubscribeFrom': instance.unsubscribeFrom,
+    };
+
+UploadFcmToken$Mutation _$UploadFcmToken$MutationFromJson(
+    Map<String, dynamic> json) {
+  return UploadFcmToken$Mutation()
+    ..registerFcmToken = json['registerFcmToken'] as bool;
+}
+
+Map<String, dynamic> _$UploadFcmToken$MutationToJson(
+        UploadFcmToken$Mutation instance) =>
+    <String, dynamic>{
+      'registerFcmToken': instance.registerFcmToken,
+    };
+
 BrowseAnimesArguments _$BrowseAnimesArgumentsFromJson(
     Map<String, dynamic> json) {
   return BrowseAnimesArguments(
@@ -933,6 +933,19 @@ Map<String, dynamic> _$GetAnimeEpisodesArgumentsToJson(
       'page': instance.page,
     };
 
+GetAnimeRelationsArguments _$GetAnimeRelationsArgumentsFromJson(
+    Map<String, dynamic> json) {
+  return GetAnimeRelationsArguments(
+    id: json['id'] as String,
+  );
+}
+
+Map<String, dynamic> _$GetAnimeRelationsArgumentsToJson(
+        GetAnimeRelationsArguments instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+    };
+
 SubscribeToArguments _$SubscribeToArgumentsFromJson(Map<String, dynamic> json) {
   return SubscribeToArguments(
     animeId: json['animeId'] as String,
@@ -971,17 +984,4 @@ Map<String, dynamic> _$UploadFcmTokenArgumentsToJson(
     <String, dynamic>{
       'token': instance.token,
       'oldToken': instance.oldToken,
-    };
-
-GetAnimeRelationsArguments _$GetAnimeRelationsArgumentsFromJson(
-    Map<String, dynamic> json) {
-  return GetAnimeRelationsArguments(
-    id: json['id'] as String,
-  );
-}
-
-Map<String, dynamic> _$GetAnimeRelationsArgumentsToJson(
-        GetAnimeRelationsArguments instance) =>
-    <String, dynamic>{
-      'id': instance.id,
     };

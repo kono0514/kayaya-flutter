@@ -284,6 +284,41 @@ Map<String, dynamic> _$GraphqlAnilistApi$Query$Media$MediaConnectionToJson(
       'edges': instance.edges?.map((e) => e?.toJson())?.toList(),
     };
 
+GraphqlAnilistApi$Query$Media$MediaStats$ScoreDistribution
+    _$GraphqlAnilistApi$Query$Media$MediaStats$ScoreDistributionFromJson(
+        Map<String, dynamic> json) {
+  return GraphqlAnilistApi$Query$Media$MediaStats$ScoreDistribution()
+    ..score = json['score'] as int
+    ..amount = json['amount'] as int;
+}
+
+Map<String,
+    dynamic> _$GraphqlAnilistApi$Query$Media$MediaStats$ScoreDistributionToJson(
+        GraphqlAnilistApi$Query$Media$MediaStats$ScoreDistribution instance) =>
+    <String, dynamic>{
+      'score': instance.score,
+      'amount': instance.amount,
+    };
+
+GraphqlAnilistApi$Query$Media$MediaStats
+    _$GraphqlAnilistApi$Query$Media$MediaStatsFromJson(
+        Map<String, dynamic> json) {
+  return GraphqlAnilistApi$Query$Media$MediaStats()
+    ..scoreDistribution = (json['scoreDistribution'] as List)
+        ?.map((e) => e == null
+            ? null
+            : GraphqlAnilistApi$Query$Media$MediaStats$ScoreDistribution
+                .fromJson(e as Map<String, dynamic>))
+        ?.toList();
+}
+
+Map<String, dynamic> _$GraphqlAnilistApi$Query$Media$MediaStatsToJson(
+        GraphqlAnilistApi$Query$Media$MediaStats instance) =>
+    <String, dynamic>{
+      'scoreDistribution':
+          instance.scoreDistribution?.map((e) => e?.toJson())?.toList(),
+    };
+
 GraphqlAnilistApi$Query$Media _$GraphqlAnilistApi$Query$MediaFromJson(
     Map<String, dynamic> json) {
   return GraphqlAnilistApi$Query$Media()
@@ -339,7 +374,8 @@ GraphqlAnilistApi$Query$Media _$GraphqlAnilistApi$Query$MediaFromJson(
     ..isAdult = json['isAdult'] as bool
     ..recommendations = json['recommendations'] == null ? null : GraphqlAnilistApi$Query$Media$RecommendationConnection.fromJson(json['recommendations'] as Map<String, dynamic>)
     ..siteUrl = json['siteUrl'] as String
-    ..relations = json['relations'] == null ? null : GraphqlAnilistApi$Query$Media$MediaConnection.fromJson(json['relations'] as Map<String, dynamic>);
+    ..relations = json['relations'] == null ? null : GraphqlAnilistApi$Query$Media$MediaConnection.fromJson(json['relations'] as Map<String, dynamic>)
+    ..stats = json['stats'] == null ? null : GraphqlAnilistApi$Query$Media$MediaStats.fromJson(json['stats'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$GraphqlAnilistApi$Query$MediaToJson(
@@ -377,6 +413,7 @@ Map<String, dynamic> _$GraphqlAnilistApi$Query$MediaToJson(
       'recommendations': instance.recommendations?.toJson(),
       'siteUrl': instance.siteUrl,
       'relations': instance.relations?.toJson(),
+      'stats': instance.stats?.toJson(),
     };
 
 const _$MediaTypeEnumMap = {
