@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kayaya_flutter/bloc/authentication_bloc.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
+import 'package:kayaya_flutter/cubit/updater_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/utils/graphql_client.dart';
 import 'package:kayaya_flutter/services/notification_service.dart';
@@ -46,6 +47,14 @@ class _AppState extends State<App> {
               create: (_) =>
                   AuthenticationBloc(authenticationRepository: authRepo)),
           BlocProvider(create: (_) => ThemeCubit()..resolveTheme()),
+          BlocProvider(
+            lazy: false,
+            create: (_) {
+              final cubit = UpdaterCubit();
+              cubit.init().then((value) => cubit.checkForUpdate());
+              return cubit;
+            },
+          ),
         ],
         child: BlocBuilder<ThemeCubit, ThemeState>(
           builder: (context, state) => MaterialApp(
