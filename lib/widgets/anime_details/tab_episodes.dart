@@ -34,7 +34,7 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
   void initState() {
     super.initState();
     _refreshCompleter = Completer<void>();
-    animeEpisodesBloc = AnimeEpisodesBloc(context.repository<AniimRepository>())
+    animeEpisodesBloc = AnimeEpisodesBloc(context.read<AniimRepository>())
       ..add(AnimeEpisodesFetched(widget.id, sortOrder: SortOrder.asc));
   }
 

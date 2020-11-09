@@ -39,10 +39,10 @@ class _BrowsePageState extends State<BrowsePage> {
     refreshCompleter = Completer<void>();
     browseFilterCubit = BrowseFilterCubit();
     animeListBloc = AnimeListBloc(
-      context.repository<AniimRepository>(),
+      context.read<AniimRepository>(),
       browseFilterCubit,
     )..add(AnimeListFetched());
-    genreListCubit = GenreListCubit(context.repository<AniimRepository>())
+    genreListCubit = GenreListCubit(context.read<AniimRepository>())
       ..getGenreList();
   }
 

@@ -50,7 +50,7 @@ class _FilterDialogState extends State<FilterDialog> {
     _defaultSort = FilterOrderBy.recent;
     _defaultType = FilterType.all;
     _defaultGenres = [];
-    _filterCubit = context.bloc<BrowseFilterCubit>();
+    _filterCubit = context.read<BrowseFilterCubit>();
 
     // Restore selected values from the bloc state
     final _currentState = _filterCubit.state;
@@ -67,7 +67,7 @@ class _FilterDialogState extends State<FilterDialog> {
     _selectedGenres = _selectedGenres ?? []
       ..addAll(_defaultGenres);
 
-    context.bloc<GenreListCubit>().getGenreList();
+    context.read<GenreListCubit>().getGenreList();
   }
 
   // If filters are in default
@@ -233,9 +233,9 @@ class _FilterDialogState extends State<FilterDialog> {
                     final applyButton = RaisedButton(
                       onPressed: () {
                         if (isDefault) {
-                          context.bloc<BrowseFilterCubit>().resetFilter();
+                          context.read<BrowseFilterCubit>().resetFilter();
                         } else {
-                          context.bloc<BrowseFilterCubit>().changeFilter(Filter(
+                          context.read<BrowseFilterCubit>().changeFilter(Filter(
                                 orderBy: _selectedSort,
                                 type: _selectedType,
                                 genres: []..addAll(_selectedGenres),

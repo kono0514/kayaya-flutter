@@ -30,8 +30,8 @@ class _SliverFilterButtonState extends State<SliverFilterButton> {
           ),
           onPressed: () {
             BuildContext mainContext = context;
-            final browseFilterCubit = context.bloc<BrowseFilterCubit>();
-            final genreListCubit = context.bloc<GenreListCubit>();
+            final browseFilterCubit = context.read<BrowseFilterCubit>();
+            final genreListCubit = context.read<GenreListCubit>();
             showModalBottomSheet(
               context: context,
               useRootNavigator: true,

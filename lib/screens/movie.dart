@@ -33,8 +33,7 @@ class _MoviePageState extends State<MoviePage> {
   void initState() {
     super.initState();
     anime = widget.argument.anime;
-    animeDetailsCubit =
-        AnimeDetailsCubit(context.repository<AniimRepository>());
+    animeDetailsCubit = AnimeDetailsCubit(context.read<AniimRepository>());
 
     /// Only minimal amount of data (ie. when using dynamic remote widget) was passed (id, poster, name)
     /// as opposed to the full listing item data (id, poster, name, banner, genres, etc...)
@@ -85,7 +84,7 @@ class _MoviePageState extends State<MoviePage> {
         BlocProvider.value(value: animeDetailsCubit),
         BlocProvider(
           create: (context) =>
-              AnimeEpisodesBloc(context.repository<AniimRepository>())
+              AnimeEpisodesBloc(context.read<AniimRepository>())
                 ..add(AnimeEpisodesFetched(anime.id)),
         ),
       ],

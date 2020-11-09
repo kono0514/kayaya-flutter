@@ -26,9 +26,8 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
   @override
   void initState() {
     super.initState();
-    animeRelationsCubit =
-        AnimeRelationsCubit(context.repository<AniimRepository>())
-          ..loadRelations(widget.id);
+    animeRelationsCubit = AnimeRelationsCubit(context.read<AniimRepository>())
+      ..loadRelations(widget.id);
   }
 
   @override

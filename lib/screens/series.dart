@@ -32,8 +32,7 @@ class _SeriesPageState extends State<SeriesPage> {
   void initState() {
     super.initState();
     anime = widget.argument.anime;
-    animeDetailsCubit =
-        AnimeDetailsCubit(context.repository<AniimRepository>());
+    animeDetailsCubit = AnimeDetailsCubit(context.read<AniimRepository>());
 
     /// Only minimal amount of data was passed (id, poster, name)
     /// as opposed to the full listing item data (id, poster, name, banner, genres, etc...)
@@ -84,7 +83,7 @@ class _SeriesPageState extends State<SeriesPage> {
         BlocProvider.value(value: animeDetailsCubit),
         BlocProvider(
           create: (context) => AnimeSubscriptionCubit(
-            context.repository<AniimRepository>(),
+            context.read<AniimRepository>(),
           ),
         ),
       ],
@@ -155,7 +154,7 @@ class SeriesSubscribeButton extends StatelessWidget {
                 ? Icons.notifications_active
                 : Icons.notifications_none);
             onPressed = () {
-              final bloc = context.bloc<AnimeSubscriptionCubit>();
+              final bloc = context.read<AnimeSubscriptionCubit>();
               if (state.subscribed) {
                 bloc.unsubscribe();
               } else {
