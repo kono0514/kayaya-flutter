@@ -312,8 +312,10 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
         if (_rewindValue > 0)
           Positioned(
             top: -26,
-            child:
-                Text('- ${formatDuration(Duration(seconds: _rewindValue))}s'),
+            child: Text(
+              '- ${formatDuration(Duration(seconds: _rewindValue))}s',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         Material(
           clipBehavior: Clip.hardEdge,
@@ -360,8 +362,10 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
         if (_forwardValue > 0)
           Positioned(
             top: -26,
-            child:
-                Text('+ ${formatDuration(Duration(seconds: _forwardValue))}s'),
+            child: Text(
+              '+ ${formatDuration(Duration(seconds: _forwardValue))}s',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         Material(
           clipBehavior: Clip.hardEdge,
