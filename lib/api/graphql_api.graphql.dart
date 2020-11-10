@@ -327,8 +327,14 @@ class GetAnimeEpisodes$Query$Episodes$Data with EquatableMixin {
 
   List<GetAnimeEpisodes$Query$Episodes$Data$Releases> releases;
 
+  String title;
+
+  int duration;
+
+  String thumbnail;
+
   @override
-  List<Object> get props => [id, number, releases];
+  List<Object> get props => [id, number, releases, title, duration, thumbnail];
   Map<String, dynamic> toJson() =>
       _$GetAnimeEpisodes$Query$Episodes$DataToJson(this);
 }
@@ -1481,7 +1487,25 @@ class GetAnimeEpisodesQuery
                                 arguments: [],
                                 directives: [],
                                 selectionSet: null)
-                          ]))
+                          ])),
+                      FieldNode(
+                          name: NameNode(value: 'title'),
+                          alias: null,
+                          arguments: [],
+                          directives: [],
+                          selectionSet: null),
+                      FieldNode(
+                          name: NameNode(value: 'duration'),
+                          alias: null,
+                          arguments: [],
+                          directives: [],
+                          selectionSet: null),
+                      FieldNode(
+                          name: NameNode(value: 'thumbnail'),
+                          alias: null,
+                          arguments: [],
+                          directives: [],
+                          selectionSet: null)
                     ]))
               ]))
         ]))

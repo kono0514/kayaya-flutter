@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -103,7 +104,8 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
         child: CustomScrollView(
           slivers: <Widget>[
             SliverPadding(
-              padding: const EdgeInsets.only(left: 16.0, top: 12.0),
+              padding:
+                  const EdgeInsets.only(left: 16.0, top: 12.0, bottom: 6.0),
               sliver: SliverToBoxAdapter(
                 child: UnconstrainedBox(
                   alignment: Alignment.centerLeft,
@@ -136,7 +138,7 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
                 (BuildContext context, int index) {
                   return index >= state.episodes.length
                       ? ListBottomLoader(error: state.error != null)
-                      : buildEpisodeListItem(context, state.episodes[index]);
+                      : _EpisodeListItem(episode: state.episodes[index]);
                 },
                 childCount: state.paginatorInfo.hasMorePages
                     ? state.episodes.length + 1
@@ -145,28 +147,6 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget buildEpisodeListItem(
-      BuildContext context, GetAnimeEpisodes$Query$Episodes$Data episode) {
-    return InkWell(
-      onTap: () async {
-        final chosenRelease =
-            await showDialog<GetAnimeEpisodes$Query$Episodes$Data$Releases>(
-          context: context,
-          builder: (context) => SourceChooserDialog(
-            releases: episode.releases,
-          ),
-        );
-
-        if (chosenRelease != null) {
-          launchPlayRelease(context, chosenRelease);
-        }
-      },
-      child: ListTile(
-        title: Text('Episode ${episode.number}'),
       ),
     );
   }
@@ -215,6 +195,74 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _EpisodeListItem extends StatelessWidget {
+  final GetAnimeEpisodes$Query$Episodes$Data episode;
+
+  const _EpisodeListItem({Key key, this.episode}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _textTheme = Theme.of(context).textTheme;
+    final _subtitleColor = _textTheme.bodyText2.copyWith(
+      color: _textTheme.caption.color,
+    );
+
+    return InkWell(
+      onTap: () async {
+        final chosenRelease =
+            await showDialog<GetAnimeEpisodes$Query$Episodes$Data$Releases>(
+          context: context,
+          builder: (context) => SourceChooserDialog(
+            releases: episode.releases,
+          ),
+        );
+
+        if (chosenRelease != null) {
+          launchPlayRelease(context, chosenRelease);
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            episode.thumbnail != null
+                ? CachedNetworkImage(
+                    imageUrl: episode.thumbnail,
+                    width: 120,
+                    height: 120 / 16 * 9,
+                  )
+                : Container(
+                    width: 120,
+                    height: 120 / 16 * 9,
+                    color: Colors.black,
+                  ),
+            SizedBox(width: 16.0),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Episode ${episode.number}',
+                    style: _textTheme.subtitle1,
+                  ),
+                  SizedBox(height: 4.0),
+                  Text(
+                    episode.title ?? '',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: _subtitleColor,
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

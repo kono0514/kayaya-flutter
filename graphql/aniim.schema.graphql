@@ -33,11 +33,13 @@ type Query {
   scrapyManyJob(ids: [ID!]!): [ScrapyJob!]
   scrapySpiders: [ScrapySpider!]!
   featured: String!
+  updates(orderBy: [UpdatesOrderByOrderByClause!]): [Update!]!
 }
 
 type Anime {
   id: ID!
   anilistId: String!
+  kitsuId: String
   name: String!
   description: String!
   animeType: AnimeType!
@@ -148,6 +150,9 @@ type PaginatorInfo {
 type Episode {
   id: ID!
   number: Int!
+  title: String
+  duration: Int
+  thumbnail: String
   releases: [Release!]!
   anime: Anime!
   createdAt: DateTime!
@@ -402,6 +407,30 @@ type ScrapySpider {
   name: String!
 }
 
+"""Order by clause for the `orderBy` argument on the query `updates`."""
+input UpdatesOrderByOrderByClause {
+  """The column that is used for ordering."""
+  field: UpdateOrderColumns!
+
+  """The direction that is used for ordering."""
+  order: SortOrder!
+}
+
+enum UpdateOrderColumns {
+  ID
+}
+
+type Update {
+  id: ID!
+  versionCode: Int!
+  versionName: String!
+  changeLog: String!
+  downloadUrl: String!
+  apkSize: Int!
+  apkMd5: String!
+  isActive: Boolean!
+}
+
 type Mutation {
   """Attach a new FCM Token to the current user"""
   registerFcmToken(
@@ -438,6 +467,9 @@ type Mutation {
   addScrapyJobHealthChecker(input: AddScrapyJobHealthCheckerInput!): ScrapyJob
   changeScrapyJobStatus(id: ID!, input: ChangeScrapyJobStatusInput!): ScrapyJob
   addScrapyJobResults(id: ID!, input: AddScrapyJobResultsInput!): [ScrapyJobResult!]
+  addUpdate(input: AddUpdateInput!): Update
+  markUpdateAsActive(id: ID!): Update
+  deleteUpdate(id: ID!): Update
 }
 
 type AuthToken {
@@ -547,6 +579,15 @@ input ChangeScrapyJobStatusInput {
 
 input AddScrapyJobResultsInput {
   items: [String!]!
+}
+
+input AddUpdateInput {
+  versionCode: Int!
+  versionName: String!
+  changeLog: String!
+  downloadUrl: String!
+  apkSize: Int!
+  apkMd5: String!
 }
 
 """A date string with format `Y-m-d`, e.g. `2011-05-23`."""

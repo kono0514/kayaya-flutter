@@ -16,6 +16,9 @@ query GetAnimeEpisodes($hasAnime: EpisodesHasAnimeWhereConditions!, $orderBy: [E
                 resolution
                 group
             }
+            title
+            duration
+            thumbnail
         }
     }
 }

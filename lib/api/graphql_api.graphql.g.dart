@@ -412,7 +412,10 @@ GetAnimeEpisodes$Query$Episodes$Data
             ? null
             : GetAnimeEpisodes$Query$Episodes$Data$Releases.fromJson(
                 e as Map<String, dynamic>))
-        ?.toList();
+        ?.toList()
+    ..title = json['title'] as String
+    ..duration = json['duration'] as int
+    ..thumbnail = json['thumbnail'] as String;
 }
 
 Map<String, dynamic> _$GetAnimeEpisodes$Query$Episodes$DataToJson(
@@ -421,6 +424,9 @@ Map<String, dynamic> _$GetAnimeEpisodes$Query$Episodes$DataToJson(
       'id': instance.id,
       'number': instance.number,
       'releases': instance.releases?.map((e) => e?.toJson())?.toList(),
+      'title': instance.title,
+      'duration': instance.duration,
+      'thumbnail': instance.thumbnail,
     };
 
 GetAnimeEpisodes$Query$Episodes _$GetAnimeEpisodes$Query$EpisodesFromJson(
