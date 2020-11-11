@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:chewie_extended/chewie.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kayaya_flutter/utils/utils.dart';
@@ -38,9 +38,6 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   int _rewindValue = 0;
   int _forwardValue = 0;
   Timer _buttonSeekTimer;
-
-  final _playbackSpeeds = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
-  double _playbackSpeedValue = 1;
 
   VideoPlayerController controller;
   ChewieController chewieController;
@@ -232,7 +229,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                 ? Expanded(child: const Text('LIVE'))
                 : _buildPosition(),
             chewieController.isLive ? const SizedBox() : _buildProgressBar(),
-            chewieController.allowSpeedChanging
+            chewieController.allowPlaybackSpeedChanging
                 ? _buildSpeedButton(controller)
                 : Container(),
             chewieController.allowMuting
@@ -504,7 +501,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
         color: Colors.transparent,
         child: IconButton(
           icon: AutoSizeText(
-            '${_playbackSpeedValue}x',
+            '${_latestValue.playbackSpeed}x',
             maxLines: 1,
             minFontSize: 8,
             style: TextStyle(
@@ -525,16 +522,13 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
               isScrollControlled: true,
               useRootNavigator: true,
               builder: (context) => PlaybackSpeedDialog(
-                speeds: _playbackSpeeds,
-                selected: _playbackSpeedValue,
+                speeds: chewieController.playbackSpeeds,
+                selected: _latestValue.playbackSpeed,
               ),
             );
 
-            if (chosenSpeed != null && chosenSpeed != _playbackSpeedValue) {
+            if (chosenSpeed != null) {
               controller.setPlaybackSpeed(chosenSpeed);
-              setState(() {
-                _playbackSpeedValue = chosenSpeed;
-              });
             }
 
             if (wasPlaying) {
@@ -746,13 +740,13 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
 class PlaybackSpeedDialog extends StatelessWidget {
   const PlaybackSpeedDialog({
     Key key,
-    @required List<num> speeds,
+    @required List<double> speeds,
     @required double selected,
   })  : _speeds = speeds,
         _selected = selected,
         super(key: key);
 
-  final List<num> _speeds;
+  final List<double> _speeds;
   final double _selected;
 
   @override
@@ -762,33 +756,33 @@ class PlaybackSpeedDialog extends StatelessWidget {
         ? theme.primaryColor
         : theme.accentColor;
 
-    return SingleChildScrollView(
-      child: Wrap(
-        children: _speeds
-            .map(
-              (e) => ListTile(
-                dense: true,
-                title: Row(
-                  children: [
-                    e == _selected
-                        ? Icon(
-                            Icons.check,
-                            size: 20.0,
-                            color: selectedColor,
-                          )
-                        : Container(width: 20.0),
-                    SizedBox(width: 16.0),
-                    Text(e == 1.0 ? 'Normal' : '${e}x'),
-                  ],
-                ),
-                selected: e == _selected,
-                onTap: () {
-                  Navigator.pop(context, e.toDouble());
-                },
-              ),
-            )
-            .toList(),
-      ),
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: ScrollPhysics(),
+      itemBuilder: (context, index) {
+        final _speed = _speeds[index];
+        return ListTile(
+          dense: true,
+          title: Row(
+            children: [
+              _speed == _selected
+                  ? Icon(
+                      Icons.check,
+                      size: 20.0,
+                      color: selectedColor,
+                    )
+                  : Container(width: 20.0),
+              SizedBox(width: 16.0),
+              Text(_speed == 1.0 ? 'Normal' : '${_speed}x'),
+            ],
+          ),
+          selected: _speed == _selected,
+          onTap: () {
+            Navigator.of(context).pop(_speed);
+          },
+        );
+      },
+      itemCount: _speeds.length,
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:chewie_extended/chewie.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auto_pip/flutter_auto_pip.dart';
 import 'package:kayaya_flutter/widgets/player/custom_material_controls.dart';
@@ -20,32 +20,16 @@ class _FullscreenPlayerState extends State<FullscreenPlayer> {
   ChewieController _chewieController;
   StreamSubscription onPipModeChangedSubscription;
 
-  void initializeVideo() async {
-    _controller = VideoPlayerController.network(widget.url);
-    _chewieController = ChewieController(
-      videoPlayerController: _controller,
-      aspectRatio: 16 / 9,
-      allowFullScreen: false,
-      allowedScreenSleep: false,
-      autoInitialize: true,
-      autoPlay: true,
-      allowMuting: true,
-      allowSpeedChanging: true,
-      customControls: CustomMaterialControls(),
-    );
-  }
-
   @override
   void initState() {
     super.initState();
 
     initializeVideo();
-
     FlutterAutoPip.autoPipModeEnable();
     onPipModeChangedSubscription =
         FlutterAutoPip.onPipModeChanged.listen((event) {
       if (event) {
-        _chewieController.hideControls();
+        _chewieController?.hideControls();
       }
     });
   }
@@ -57,6 +41,21 @@ class _FullscreenPlayerState extends State<FullscreenPlayer> {
     _chewieController.dispose();
     onPipModeChangedSubscription.cancel();
     super.dispose();
+  }
+
+  void initializeVideo() {
+    _controller = VideoPlayerController.network(widget.url);
+    _chewieController = ChewieController(
+      videoPlayerController: _controller,
+      aspectRatio: 16 / 9,
+      allowFullScreen: false,
+      allowedScreenSleep: false,
+      autoInitialize: true,
+      autoPlay: true,
+      allowMuting: true,
+      allowPlaybackSpeedChanging: true,
+      customControls: CustomMaterialControls(),
+    );
   }
 
   @override

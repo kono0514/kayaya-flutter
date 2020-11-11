@@ -21,7 +21,7 @@ class UpdaterCubit extends Cubit<UpdaterState> {
   Future<void> init() async {
     if (Platform.isAndroid) {
       await FlutterXUpdate.init(
-        debug: true,
+        debug: false,
         isPost: false,
         isPostJson: false,
         isWifiOnly: false,
