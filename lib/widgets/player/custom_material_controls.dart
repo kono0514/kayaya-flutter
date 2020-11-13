@@ -4,7 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kayaya_flutter/utils/utils.dart';
+import 'package:kayaya_flutter/utils/player_utils.dart';
 import 'package:kayaya_flutter/widgets/player/material_progress_bar.dart';
 import 'package:video_player/video_player.dart';
 import 'package:intent/intent.dart' as android_intent;

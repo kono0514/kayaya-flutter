@@ -1,10 +1,10 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kayaya_flutter/utils/graphql_client.dart';
 import 'package:kayaya_flutter/models/notification.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/services/shared_preferences_service.dart';
+import 'package:kayaya_flutter/utils/utils.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService.private(
@@ -57,9 +57,7 @@ class NotificationService {
 
     if (notification.image != null) {
       try {
-        final file =
-            await DefaultCacheManager().getSingleFile(notification.image);
-        largeIconPath = file.path;
+        largeIconPath = await downloadFile(notification.image);
       } catch (e) {
         print(e);
       }
