@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_it/get_it.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:kayaya_flutter/bloc/authentication_bloc.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/cubit/updater_cubit.dart';
@@ -29,6 +31,7 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+    _setupLocators();
     _configureNotification();
   }
 
@@ -37,9 +40,7 @@ class _AppState extends State<App> {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(value: authRepo),
-        RepositoryProvider(
-            create: (_) => AniimRepository(
-                getGraphQLClient(locale: widget.locale.languageCode))),
+        RepositoryProvider(create: (_) => AniimRepository()),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -105,5 +106,10 @@ class _AppState extends State<App> {
         Navigator.of(context, rootNavigator: true).push(Routes.fromURI(uri));
       },
     );
+  }
+
+  _setupLocators() {
+    GetIt.I.registerSingleton<GraphQLClient>(
+        getGraphQLClient(locale: widget.locale.languageCode));
   }
 }

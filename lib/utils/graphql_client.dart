@@ -1,14 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:graphql/client.dart';
 
-final NormalizedInMemoryCache cache = NormalizedInMemoryCache(
-  dataIdFromObject: typenameDataIdFromObject,
-);
-
-GraphQLClient _client;
-
 GraphQLClient getGraphQLClient({String locale = 'en'}) {
-  if (_client != null) return _client;
+  final NormalizedInMemoryCache cache = NormalizedInMemoryCache(
+    dataIdFromObject: typenameDataIdFromObject,
+  );
 
   final httpLink = HttpLink(
     // uri: 'https://api.kayaya.stream/graphql',
@@ -22,10 +18,8 @@ GraphQLClient getGraphQLClient({String locale = 'en'}) {
     },
   );
 
-  _client = GraphQLClient(
+  return GraphQLClient(
     link: authLink.concat(httpLink),
     cache: cache,
   );
-
-  return _client;
 }

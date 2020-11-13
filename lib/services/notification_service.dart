@@ -46,8 +46,7 @@ class NotificationService {
     print('Uploading firebase messaging token: $newToken');
     final oldToken = SharedPreferencesService.instance.currentSavedFcmToken;
     if (oldToken != newToken) {
-      await AniimRepository(getGraphQLClient())
-          .uploadFcmToken(newToken, oldToken: oldToken);
+      await AniimRepository().uploadFcmToken(newToken, oldToken: oldToken);
       SharedPreferencesService.instance.saveCurrentFcmToken(newToken);
     }
   }

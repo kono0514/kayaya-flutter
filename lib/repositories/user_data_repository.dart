@@ -1,10 +1,13 @@
+import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 
 class UserDataRepositry {
-  final GraphQLClient client;
+  GraphQLClient client;
 
-  const UserDataRepositry(this.client);
+  UserDataRepositry() {
+    this.client = GetIt.I<GraphQLClient>();
+  }
 
   Future<List<GetSubscriptions$Query$Subscriptions>>
       fetchSubscriptions() async {

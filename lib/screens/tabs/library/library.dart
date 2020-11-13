@@ -29,7 +29,7 @@ class _LibraryPageState extends State<LibraryPage> {
   void initState() {
     super.initState();
     refreshCompleter = Completer<void>();
-    subListBloc = SubscriptionListBloc(UserDataRepositry(getGraphQLClient()))
+    subListBloc = SubscriptionListBloc(UserDataRepositry())
       ..add(SubscriptionListFetched());
   }
 
