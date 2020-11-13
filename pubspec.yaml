@@ -25,7 +25,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  graphql_flutter: ^3.0.0
+  graphql_flutter: ^4.0.0-beta
   scroll_bars_common: 2.0.0
   cached_network_image: ^2.2.0+1
   get_it: ^5.0.1
@@ -80,14 +80,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  # artemis: ^6.7.1-beta.1
-  artemis:
-    git:
-      url: https://github.com/comigor/artemis.git
-      ref: tojson-prefix-fix
+  artemis: ^6.17.1-beta.1
+  # artemis:
+  #   git:
+  #     url: https://github.com/comigor/artemis.git
+  #     ref: tojson-prefix-fix
   build_runner: ^1.10.1
   json_serializable: ^3.0.0
-  preview: ^0.0.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

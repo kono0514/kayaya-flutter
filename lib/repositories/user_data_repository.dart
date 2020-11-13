@@ -12,7 +12,7 @@ class UserDataRepositry {
   Future<List<GetSubscriptions$Query$Subscriptions>>
       fetchSubscriptions() async {
     final _options = QueryOptions(
-      documentNode: GetSubscriptionsQuery().document,
+      document: GetSubscriptionsQuery().document,
       fetchPolicy: FetchPolicy.cacheAndNetwork,
     );
 

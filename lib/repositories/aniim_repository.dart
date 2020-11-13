@@ -30,7 +30,7 @@ class AniimRepository {
       hasGenres: genres,
     );
     final _options = QueryOptions(
-      documentNode: BrowseAnimesQuery().document,
+      document: BrowseAnimesQuery().document,
       variables: args.toJson(),
       fetchPolicy: FetchPolicy.cacheAndNetwork,
     );
@@ -117,7 +117,7 @@ class AniimRepository {
 
   Future<List<GetGenres$Query$Genres>> fetchGenres() async {
     final _options = QueryOptions(
-      documentNode: GetGenresQuery().document,
+      document: GetGenresQuery().document,
       fetchPolicy: FetchPolicy.cacheAndNetwork,
     );
     final result = await client.query(_options);
@@ -132,7 +132,7 @@ class AniimRepository {
   Future<GetAnimeDetails$Query$Anime> fetchDetails(String id) async {
     final args = GetAnimeDetailsArguments(id: id);
     final _options = QueryOptions(
-      documentNode: GetAnimeDetailsQuery().document,
+      document: GetAnimeDetailsQuery().document,
       variables: args.toJson(),
       fetchPolicy: FetchPolicy.cacheAndNetwork,
     );
@@ -149,7 +149,7 @@ class AniimRepository {
   Future<GetAnimeDetailsFull$Query$Anime> fetchDetailsFull(String id) async {
     final args = GetAnimeDetailsFullArguments(id: id);
     final _options = QueryOptions(
-      documentNode: GetAnimeDetailsFullQuery().document,
+      document: GetAnimeDetailsFullQuery().document,
       variables: args.toJson(),
       fetchPolicy: FetchPolicy.cacheAndNetwork,
     );
@@ -166,7 +166,7 @@ class AniimRepository {
   Future<GetAnimeRelations$Query$Anime> fetchRelations(String id) async {
     final args = GetAnimeRelationsArguments(id: id);
     final _options = QueryOptions(
-      documentNode: GetAnimeRelationsQuery().document,
+      document: GetAnimeRelationsQuery().document,
       variables: args.toJson(),
       fetchPolicy: FetchPolicy.cacheAndNetwork,
     );
@@ -201,7 +201,7 @@ class AniimRepository {
       ],
     );
     final _options = QueryOptions(
-      documentNode: GetAnimeEpisodesQuery().document,
+      document: GetAnimeEpisodesQuery().document,
       variables: args.toJson(),
       fetchPolicy: FetchPolicy.cacheAndNetwork,
     );
@@ -218,7 +218,7 @@ class AniimRepository {
   Future<String> fetchFeatured() async {
     final result = await client.query(
       QueryOptions(
-        documentNode: GetFeaturedQuery().document,
+        document: GetFeaturedQuery().document,
         fetchPolicy: FetchPolicy.cacheAndNetwork,
       ),
     );
@@ -234,7 +234,7 @@ class AniimRepository {
     final args = UploadFcmTokenArguments(token: token, oldToken: oldToken);
     final result = await client.mutate(
       MutationOptions(
-        documentNode: UploadFcmTokenMutation().document,
+        document: UploadFcmTokenMutation().document,
         variables: args.toJson(),
       ),
     );
@@ -248,7 +248,7 @@ class AniimRepository {
     final args = SubscribeToArguments(animeId: id);
     final result = await client.mutate(
       MutationOptions(
-        documentNode: SubscribeToMutation().document,
+        document: SubscribeToMutation().document,
         variables: args.toJson(),
       ),
     );
@@ -264,7 +264,7 @@ class AniimRepository {
     final args = UnsubscribeFromArguments(animeId: id);
     final result = await client.mutate(
       MutationOptions(
-        documentNode: UnsubscribeFromMutation().document,
+        document: UnsubscribeFromMutation().document,
         variables: args.toJson(),
       ),
     );

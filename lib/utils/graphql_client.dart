@@ -1,15 +1,16 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:graphql/client.dart';
+import 'package:kayaya_flutter/services/shared_preferences_service.dart';
+import 'package:meta/meta.dart';
 
-GraphQLClient getGraphQLClient({String locale = 'en'}) {
-  final NormalizedInMemoryCache cache = NormalizedInMemoryCache(
-    dataIdFromObject: typenameDataIdFromObject,
-  );
+GraphQLClient getGraphQLClient() {
+  final GraphQLCache cache = GraphQLCache();
 
   final httpLink = HttpLink(
-    // uri: 'https://api.kayaya.stream/graphql',
-    uri: 'http://aniim-api.test/graphql',
-    headers: {'Accept-Language': locale},
+    // 'https://api.kayaya.stream/graphql',
+    'http://aniim-api.test/graphql',
   );
   final authLink = AuthLink(
     getToken: () async {
@@ -17,9 +18,35 @@ GraphQLClient getGraphQLClient({String locale = 'en'}) {
       return 'Bearer $userToken';
     },
   );
+  final localeLink = LocaleLink(
+      getLocale: () => SharedPreferencesService.instance.languageCode ?? 'en');
+  Link links = Link.from([
+    localeLink,
+    authLink,
+    httpLink,
+  ]);
 
   return GraphQLClient(
-    link: authLink.concat(httpLink),
+    link: links,
     cache: cache,
   );
+}
+
+class LocaleLink extends Link {
+  final Function() getLocale;
+  LocaleLink({@required this.getLocale});
+
+  @override
+  Stream<Response> request(Request request, [forward]) {
+    final locale = getLocale();
+    final req = request.updateContextEntry<HttpLinkHeaders>(
+      (headers) => HttpLinkHeaders(
+        headers: <String, String>{
+          ...headers?.headers ?? <String, String>{},
+          'Accept-Language': locale,
+        },
+      ),
+    );
+    return forward(req);
+  }
 }

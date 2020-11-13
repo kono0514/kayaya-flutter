@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:kayaya_flutter/bloc/authentication_bloc.dart';
+import 'package:kayaya_flutter/cubit/locale_cubit.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/cubit/updater_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
@@ -16,9 +17,7 @@ import 'package:kayaya_flutter/theme_data.dart';
 import 'package:kayaya_flutter/widgets/navigation_bar/material_tab_scaffold.dart';
 
 class App extends StatefulWidget {
-  final Locale locale;
-
-  const App({Key key, this.locale}) : super(key: key);
+  const App({Key key}) : super(key: key);
 
   @override
   _AppState createState() => _AppState();
@@ -31,8 +30,8 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    _setupLocators();
     _configureNotification();
+    _setupLocators();
   }
 
   @override
@@ -48,6 +47,7 @@ class _AppState extends State<App> {
               create: (_) =>
                   AuthenticationBloc(authenticationRepository: authRepo)),
           BlocProvider(create: (_) => ThemeCubit()..resolveTheme()),
+          BlocProvider(create: (_) => LocaleCubit()..resolveLocale()),
           BlocProvider(
             lazy: false,
             create: (_) {
@@ -57,36 +57,42 @@ class _AppState extends State<App> {
             },
           ),
         ],
-        child: BlocBuilder<ThemeCubit, ThemeState>(
-          builder: (context, state) => MaterialApp(
-            title: 'Flutter Demo',
-            theme: lightTheme,
-            darkTheme: darkTheme,
-            themeMode: state.themeMode,
-            localizationsDelegates: [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            locale: widget.locale,
-            supportedLocales: S.delegate.supportedLocales,
-            home: BlocConsumer<AuthenticationBloc, AuthenticationState>(
-              listener: (context, state) {
-                if (state is Unauthenticated) {
-                  authRepo.logInAnonymously();
-                }
-              },
-              builder: (context, state) {
-                if (state is Authenticated) {
-                  return MaterialTabScaffold();
-                }
+        child: Builder(
+          builder: (context) {
+            /// Rebuilds whenever either of these state changes
+            final localeState = context.watch<LocaleCubit>().state;
+            final themeState = context.watch<ThemeCubit>().state;
 
-                return Center(child: CircularProgressIndicator());
-              },
-            ),
-            onGenerateRoute: Routes.materialRoutes,
-          ),
+            return MaterialApp(
+              title: 'Flutter Demo',
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              themeMode: themeState.themeMode,
+              localizationsDelegates: [
+                S.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              locale: Locale(localeState.locale),
+              supportedLocales: S.delegate.supportedLocales,
+              home: BlocConsumer<AuthenticationBloc, AuthenticationState>(
+                listener: (context, state) {
+                  if (state is Unauthenticated) {
+                    authRepo.logInAnonymously();
+                  }
+                },
+                builder: (context, state) {
+                  if (state is Authenticated) {
+                    return MaterialTabScaffold();
+                  }
+
+                  return Center(child: CircularProgressIndicator());
+                },
+              ),
+              onGenerateRoute: Routes.materialRoutes,
+            );
+          },
         ),
       ),
     );
@@ -109,7 +115,6 @@ class _AppState extends State<App> {
   }
 
   _setupLocators() {
-    GetIt.I.registerSingleton<GraphQLClient>(
-        getGraphQLClient(locale: widget.locale.languageCode));
+    GetIt.I.registerSingleton<GraphQLClient>(getGraphQLClient());
   }
 }

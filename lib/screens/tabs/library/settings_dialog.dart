@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kayaya_flutter/cubit/locale_cubit.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/cubit/updater_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
@@ -107,16 +108,8 @@ class _SettingsDialogState extends State<SettingsDialog> {
                                     ),
                                   );
                                   if (result != null) {
-                                    SharedPreferencesService.instance
-                                        .setLanguage(result);
-                                    Scaffold.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            S.of(context).language_updated),
-                                      ),
-                                    );
-                                    S.load(Locale(result));
-                                    setState(() {});
+                                    BlocProvider.of<LocaleCubit>(context)
+                                        .changeLocale(result);
                                   }
                                 },
                               ),
