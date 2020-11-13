@@ -177,7 +177,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                                 leading: Icon(Icons.history),
                                 onTap: () {
                                   context
-                                      .repository<AuthenticationRepository>()
+                                      .read<AuthenticationRepository>()
                                       .logOut();
                                 },
                               ),

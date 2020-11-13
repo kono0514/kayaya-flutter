@@ -118,7 +118,7 @@ class SeriesSubscribeButton extends StatelessWidget {
       listener: (context, state) {
         if (state is AnimeDetailsLoaded) {
           context
-              .bloc<AnimeSubscriptionCubit>()
+              .read<AnimeSubscriptionCubit>()
               .assignData(id, state.details.subscribed);
         }
       },
