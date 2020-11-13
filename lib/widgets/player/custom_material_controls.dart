@@ -51,10 +51,17 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
               chewieController.videoPlayerController.value.errorDescription,
             )
           : Center(
-              child: Icon(
-                Icons.error,
-                color: Colors.white,
-                size: 42,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error,
+                    color: Colors.white,
+                    size: 42,
+                  ),
+                  SizedBox(height: 10),
+                  Text(_latestValue.errorDescription),
+                ],
               ),
             );
     }
@@ -287,7 +294,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                 width: 80.0,
                 height: 80.0,
                 child: Icon(
-                  controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                  _latestValue.isPlaying ? Icons.pause : Icons.play_arrow,
                   size: 58.0,
                   color: Colors.white,
                 ),
@@ -416,7 +423,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
               width: 80.0,
               height: 80.0,
               child: Icon(
-                controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                _latestValue.isPlaying ? Icons.pause : Icons.play_arrow,
                 size: 58.0,
                 color: Colors.white,
               ),
@@ -549,7 +556,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
         color: Colors.transparent,
         child: IconButton(
           icon: Icon(
-            controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+            _latestValue.isPlaying ? Icons.pause : Icons.play_arrow,
             color: Colors.white,
           ),
           onPressed: _playPause,
