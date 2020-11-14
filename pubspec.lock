@@ -382,11 +382,9 @@ packages:
   flutter_auto_pip:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "810c070abfc6edd2dae1facdbee7c7e8d613d51a"
-      url: "https://github.com/kono0514/flutter-auto-pip.git"
-    source: git
+      path: "../flutter_auto_pip"
+      relative: true
+    source: path
     version: "0.0.1"
   flutter_bloc:
     dependency: "direct main"
@@ -716,12 +714,12 @@ packages:
     source: hosted
     version: "1.9.3"
   package_info:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: package_info
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.3"
+    version: "0.4.3+2"
   path:
     dependency: transitive
     description:

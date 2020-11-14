@@ -65,9 +65,10 @@ dependencies:
   path_provider: ^1.6.14
   flutter_cache_manager: ^1.4.2
   flutter_auto_pip:
-    # path: ../flutter_auto_pip
-    git:
-      url: https://github.com/kono0514/flutter-auto-pip.git
+    path: ../flutter_auto_pip
+    # git:
+    #   url: https://github.com/kono0514/flutter-auto-pip.git
+  package_info: ^0.4.3+2
   fl_chart: ^0.12.0
   flutter_xupdate:
     git:

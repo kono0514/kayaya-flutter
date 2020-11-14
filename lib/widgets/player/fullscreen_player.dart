@@ -52,7 +52,7 @@ class _FullscreenPlayerState extends State<FullscreenPlayer> {
       allowedScreenSleep: false,
       autoInitialize: true,
       autoPlay: true,
-      allowMuting: true,
+      allowMuting: false,
       allowPlaybackSpeedChanging: true,
       customControls: CustomMaterialControls(),
     );

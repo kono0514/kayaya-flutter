@@ -4,9 +4,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_auto_pip/flutter_auto_pip.dart';
 import 'package:kayaya_flutter/utils/player_utils.dart';
 import 'package:kayaya_flutter/widgets/player/material_progress_bar.dart';
 import 'package:video_player/video_player.dart';
+import 'package:package_info/package_info.dart';
 import 'package:intent/intent.dart' as android_intent;
 import 'package:intent/action.dart' as android_action;
 
@@ -39,8 +41,22 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   int _forwardValue = 0;
   Timer _buttonSeekTimer;
 
+  bool _showPipButton = false;
+
   VideoPlayerController controller;
   ChewieController chewieController;
+
+  @override
+  void initState() {
+    super.initState();
+    FlutterAutoPip.isPipSupported().then((value) {
+      if (value) {
+        setState(() {
+          _showPipButton = true;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,6 +177,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
               ),
             ),
             Spacer(),
+            if (_showPipButton) _buildPipButton(),
             Material(
               clipBehavior: Clip.hardEdge,
               type: MaterialType.circle,
@@ -188,7 +205,6 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                         chooserTitle: "Open with",
                       ).catchError((e) {
                         print(e);
-                        controller.play();
                       });
                   }
                 },
@@ -247,6 +263,52 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                 : Container(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildPipButton() {
+    void _launchPipIntent() async {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      android_intent.Intent()
+        ..setAction('android.settings.PICTURE_IN_PICTURE_SETTINGS')
+        ..setData(Uri.parse("package:${packageInfo.packageName}"))
+        ..startActivity().catchError((e) {
+          print(e);
+        });
+    }
+
+    return Material(
+      clipBehavior: Clip.hardEdge,
+      type: MaterialType.circle,
+      color: Colors.transparent,
+      child: IconButton(
+        icon: Icon(Icons.picture_in_picture_alt),
+        color: Colors.white,
+        onPressed: () async {
+          try {
+            await FlutterAutoPip.enterPipMode();
+          } on PlatformException catch (e) {
+            if (e.code == 'PIP_EXCEPTION') {
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(e.message),
+                  behavior: SnackBarBehavior.floating,
+                  duration: const Duration(seconds: 5),
+                  action: SnackBarAction(
+                    label: 'PERMISSION',
+                    onPressed: () async {
+                      controller.pause();
+                      _launchPipIntent();
+                    },
+                  ),
+                ),
+              );
+            } else {
+              rethrow;
+            }
+          }
+        },
       ),
     );
   }
