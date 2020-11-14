@@ -8,7 +8,7 @@ void launchPlayRelease(BuildContext context,
   if (release.type == 'direct') {
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
       pageBuilder: (_, __, ___) => FullscreenPlayer(
-        url: release.url,
+        release: release,
       ),
       transitionDuration: Duration(seconds: 0),
     ));

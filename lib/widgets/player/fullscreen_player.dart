@@ -3,13 +3,14 @@ import 'dart:async';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auto_pip/flutter_auto_pip.dart';
+import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/widgets/player/custom_material_controls.dart';
 import 'package:video_player/video_player.dart';
 
 class FullscreenPlayer extends StatefulWidget {
-  final String url;
+  final GetAnimeEpisodes$Query$Episodes$Data$Releases release;
 
-  const FullscreenPlayer({Key key, @required this.url}) : super(key: key);
+  const FullscreenPlayer({Key key, @required this.release}) : super(key: key);
 
   @override
   _FullscreenPlayerState createState() => _FullscreenPlayerState();
@@ -44,7 +45,7 @@ class _FullscreenPlayerState extends State<FullscreenPlayer> {
   }
 
   void initializeVideo() {
-    _controller = VideoPlayerController.network(widget.url);
+    _controller = VideoPlayerController.network(widget.release.url);
     _chewieController = ChewieController(
       videoPlayerController: _controller,
       aspectRatio: 16 / 9,
@@ -54,7 +55,10 @@ class _FullscreenPlayerState extends State<FullscreenPlayer> {
       autoPlay: true,
       allowMuting: false,
       allowPlaybackSpeedChanging: true,
-      customControls: CustomMaterialControls(),
+      customControls: CustomMaterialControls(
+        title: 'Kimi No Nawa',
+        subtitle: '${widget.release.group} / ${widget.release.resolution}',
+      ),
     );
   }
 
