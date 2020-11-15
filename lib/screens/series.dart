@@ -99,7 +99,7 @@ class _SeriesPageState extends State<SeriesPage> {
         ],
         tabViews: [
           InfoTabViewItem(tabKey: Key('Tab0')),
-          EpisodesTabViewItem(tabKey: Key('Tab1'), id: anime.id),
+          EpisodesTabViewItem(tabKey: Key('Tab1'), id: anime.id, anime: anime),
           RelatedTabViewItem(tabKey: Key('Tab2'), id: anime.id),
         ],
       ),

@@ -33,6 +33,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   VideoPlayerValue _latestValue;
   double _latestVolume;
   bool _hideStuff = true;
+  Duration _hideStuffAnimationDuration = Duration(milliseconds: 300);
   Timer _hideTimer;
   Timer _initTimer;
   Timer _showAfterExpandCollapseTimer;
@@ -168,38 +169,43 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
 
     return AnimatedOpacity(
       opacity: _hideStuff ? 0.0 : 1.0,
-      duration: Duration(milliseconds: 300),
+      duration: _hideStuffAnimationDuration,
       child: Container(
         height: 58,
         child: Row(
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.title,
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  Text(
-                    widget.subtitle,
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.white,
+                    SizedBox(height: 2.0),
+                    Text(
+                      widget.subtitle,
+                      style: TextStyle(
+                        fontSize: 11.0,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            Spacer(),
             if (_showPipButton) _buildPipButton(),
             PlayerCircleButton(
               child: PopupMenuButton<String>(
@@ -263,7 +269,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   ) {
     return AnimatedOpacity(
       opacity: _hideStuff ? 0.0 : 1.0,
-      duration: Duration(milliseconds: 300),
+      duration: _hideStuffAnimationDuration,
       child: Container(
         height: barHeight,
         child: Padding(
@@ -352,15 +358,13 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   Widget _buildMiddleControls() {
     return AnimatedOpacity(
       opacity: _hideStuff ? 0.0 : 1.0,
-      duration: Duration(milliseconds: 300),
+      duration: _hideStuffAnimationDuration,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buildRewindButton(),
-          SizedBox(width: 40),
           _buildPlayPause(),
-          SizedBox(width: 40),
           _buildForwardButton(),
         ],
       ),
@@ -381,8 +385,8 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
             ),
           ),
         SizedBox(
-          width: 80,
-          height: 80,
+          width: 80.0,
+          height: 80.0,
           child: PlayerCircleButton(
             child: IconButton(
               icon: Icon(
@@ -428,8 +432,8 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
             ),
           ),
         SizedBox(
-          width: 80,
-          height: 80,
+          width: 80.0,
+          height: 80.0,
           child: PlayerCircleButton(
             child: IconButton(
               icon: Icon(
@@ -507,7 +511,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
       onTap: onTap,
       child: AnimatedOpacity(
         opacity: _hideStuff ? 0.0 : 1.0,
-        duration: Duration(milliseconds: 300),
+        duration: _hideStuffAnimationDuration,
         child: Container(
           color: Colors.black54,
         ),
@@ -651,8 +655,10 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
     if (chewieController.shouldHideControlsNow) {
       setState(() {
         _hideStuff = true;
+        _hideStuffAnimationDuration = Duration.zero;
         _hideTimer?.cancel();
       });
+      _hideStuffAnimationDuration = Duration(milliseconds: 300);
     }
   }
 

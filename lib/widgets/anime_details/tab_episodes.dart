@@ -15,10 +15,15 @@ import 'package:kayaya_flutter/widgets/player/source_chooser_dialog.dart';
 
 class EpisodesTabViewItem extends StatefulWidget {
   final String id;
+  final AnimeItemFieldsMixin anime;
   final Key tabKey;
 
-  const EpisodesTabViewItem({Key key, this.tabKey, @required this.id})
-      : super(key: key);
+  const EpisodesTabViewItem({
+    Key key,
+    this.tabKey,
+    @required this.id,
+    @required this.anime,
+  }) : super(key: key);
 
   @override
   _EpisodesTabViewItemState createState() => _EpisodesTabViewItemState();
@@ -138,7 +143,10 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
                 (BuildContext context, int index) {
                   return index >= state.episodes.length
                       ? ListBottomLoader(error: state.error != null)
-                      : _EpisodeListItem(episode: state.episodes[index]);
+                      : _EpisodeListItem(
+                          anime: widget.anime,
+                          episode: state.episodes[index],
+                        );
                 },
                 childCount: state.paginatorInfo.hasMorePages
                     ? state.episodes.length + 1
@@ -200,9 +208,14 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
 }
 
 class _EpisodeListItem extends StatelessWidget {
+  final AnimeItemFieldsMixin anime;
   final GetAnimeEpisodes$Query$Episodes$Data episode;
 
-  const _EpisodeListItem({Key key, this.episode}) : super(key: key);
+  const _EpisodeListItem({
+    Key key,
+    @required this.anime,
+    @required this.episode,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +235,12 @@ class _EpisodeListItem extends StatelessWidget {
         );
 
         if (chosenRelease != null) {
-          launchPlayRelease(context, chosenRelease);
+          launchPlayRelease(
+            context,
+            anime,
+            episode,
+            chosenRelease,
+          );
         }
       },
       child: Padding(

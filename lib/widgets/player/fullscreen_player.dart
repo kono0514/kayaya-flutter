@@ -8,9 +8,16 @@ import 'package:kayaya_flutter/widgets/player/custom_material_controls.dart';
 import 'package:video_player/video_player.dart';
 
 class FullscreenPlayer extends StatefulWidget {
+  final AnimeItemFieldsMixin anime;
+  final GetAnimeEpisodes$Query$Episodes$Data episode;
   final GetAnimeEpisodes$Query$Episodes$Data$Releases release;
 
-  const FullscreenPlayer({Key key, @required this.release}) : super(key: key);
+  const FullscreenPlayer({
+    Key key,
+    @required this.anime,
+    @required this.episode,
+    @required this.release,
+  }) : super(key: key);
 
   @override
   _FullscreenPlayerState createState() => _FullscreenPlayerState();
@@ -56,10 +63,22 @@ class _FullscreenPlayerState extends State<FullscreenPlayer> {
       allowMuting: false,
       allowPlaybackSpeedChanging: true,
       customControls: CustomMaterialControls(
-        title: 'Kimi No Nawa',
-        subtitle: '${widget.release.group} / ${widget.release.resolution}',
+        title: widget.anime.name,
+        subtitle: subtitleText,
       ),
     );
+  }
+
+  String get subtitleText {
+    String _text = '';
+    _text += '${widget.release.group}';
+    if (widget.release.resolution != null) {
+      _text += ' / ${widget.release.resolution}';
+    }
+    if (widget.anime.animeType == AnimeType.series) {
+      _text = 'Episode ${widget.episode.number} ($_text)';
+    }
+    return _text;
   }
 
   @override

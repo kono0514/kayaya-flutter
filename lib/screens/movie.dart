@@ -126,7 +126,12 @@ class _MoviePageState extends State<MoviePage> {
             );
 
             if (chosenRelease != null) {
-              launchPlayRelease(context, chosenRelease);
+              launchPlayRelease(
+                context,
+                anime,
+                state.episodes.first,
+                chosenRelease,
+              );
             }
           };
         } else if (state is AnimeEpisodesInitial) {
