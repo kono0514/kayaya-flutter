@@ -37,12 +37,12 @@ class NotificationService {
     });
   }
 
-  void uploadCurrentFcmToken({token}) async {
+  void uploadCurrentFcmToken({String token}) async {
     var newToken = token ?? await _firebaseMessaging.getToken();
-    print('Uploading firebase messaging token: $newToken');
     final sps = GetIt.I<SharedPreferencesService>();
     final oldToken = sps.currentSavedFcmToken;
     if (oldToken != newToken) {
+      print('Uploading firebase messaging token: $newToken');
       await AniimRepository().uploadFcmToken(newToken, oldToken: oldToken);
       sps.saveCurrentFcmToken(newToken);
     }
