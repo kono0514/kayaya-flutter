@@ -4,6 +4,7 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auto_pip/flutter_auto_pip.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
+import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/widgets/player/custom_material_controls.dart';
 import 'package:video_player/video_player.dart';
 
@@ -76,7 +77,8 @@ class _FullscreenPlayerState extends State<FullscreenPlayer> {
       _text += ' / ${widget.release.resolution}';
     }
     if (widget.anime.animeType == AnimeType.series) {
-      _text = 'Episode ${widget.episode.number} ($_text)';
+      final _epLabel = S.of(context).episode_item(widget.episode.number);
+      _text = '$_epLabel ($_text)';
     }
     return _text;
   }

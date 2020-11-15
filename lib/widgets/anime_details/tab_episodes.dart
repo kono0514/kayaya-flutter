@@ -265,7 +265,7 @@ class _EpisodeListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Episode ${episode.number}',
+                    S.of(context).episode_item(episode.number),
                     style: _textTheme.subtitle1,
                   ),
                   SizedBox(height: 4.0),
