@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:kayaya_flutter/cubit/locale_cubit.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/cubit/updater_cubit.dart';
@@ -20,9 +21,10 @@ class SettingsDialog extends StatefulWidget {
 
 class _SettingsDialogState extends State<SettingsDialog> {
   final List items = [];
+  final sps = GetIt.I<SharedPreferencesService>();
 
   String get themeLabel {
-    final darkModeEnabled = SharedPreferencesService.instance.isDarkModeEnabled;
+    final darkModeEnabled = sps.isDarkModeEnabled;
     return darkModeEnabled == null
         ? 'System'
         : darkModeEnabled == false
@@ -31,7 +33,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
   }
 
   String get currentLanguageCode {
-    return SharedPreferencesService.instance.languageCode ??
+    return sps.languageCode ??
         (Localizations.localeOf(context, nullOk: true)?.languageCode ?? 'en');
   }
 
@@ -153,8 +155,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                                 title: S.of(context).clear_search_history,
                                 leading: Icon(Icons.history),
                                 onTap: () {
-                                  SharedPreferencesService.instance
-                                      .clearSearchHistory();
+                                  sps.clearSearchHistory();
                                   Scaffold.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(S

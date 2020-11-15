@@ -3,17 +3,19 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_xupdate/flutter_xupdate.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:kayaya_flutter/services/shared_preferences_service.dart';
 
 part 'updater_state.dart';
 
 class UpdaterCubit extends Cubit<UpdaterState> {
+  final sps = GetIt.I<SharedPreferencesService>();
+
   UpdaterCubit() : super(UpdaterUninitialized());
 
   int get theme {
-    final _isDarkModEnabled =
-        SharedPreferencesService.instance.isDarkModeEnabled;
+    final _isDarkModEnabled = sps.isDarkModeEnabled;
     if (_isDarkModEnabled == null) return 0;
     return _isDarkModEnabled ? 2 : 1;
   }

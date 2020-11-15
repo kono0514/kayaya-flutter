@@ -1,6 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:kayaya_flutter/utils/graphql_client.dart';
+import 'package:get_it/get_it.dart';
 import 'package:kayaya_flutter/models/notification.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/services/shared_preferences_service.dart';
@@ -44,10 +44,11 @@ class NotificationService {
   void uploadCurrentFcmToken({token}) async {
     var newToken = token ?? await _firebaseMessaging.getToken();
     print('Uploading firebase messaging token: $newToken');
-    final oldToken = SharedPreferencesService.instance.currentSavedFcmToken;
+    final sps = GetIt.I<SharedPreferencesService>();
+    final oldToken = sps.currentSavedFcmToken;
     if (oldToken != newToken) {
       await AniimRepository().uploadFcmToken(newToken, oldToken: oldToken);
-      SharedPreferencesService.instance.saveCurrentFcmToken(newToken);
+      sps.saveCurrentFcmToken(newToken);
     }
   }
 

@@ -9,21 +9,13 @@ class SharedPrefKeys {
 }
 
 class SharedPreferencesService {
-  static SharedPreferences _preferences;
-  static SharedPreferencesService _instance;
+  SharedPreferences _preferences;
 
-  SharedPreferencesService._internal();
+  SharedPreferencesService();
 
-  static SharedPreferencesService get instance => _instance;
-
-  static Future<void> init() async {
-    if (_instance == null) {
-      _instance = SharedPreferencesService._internal();
-    }
-
-    if (_preferences == null) {
-      _preferences = await SharedPreferences.getInstance();
-    }
+  Future<SharedPreferencesService> init() async {
+    _preferences = await SharedPreferences.getInstance();
+    return this;
   }
 
   Future<void> setLanguage(String languageCode) async =>

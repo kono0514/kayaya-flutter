@@ -117,6 +117,6 @@ class _AppState extends State<App> {
 
   _setupLocators() {
     GetIt.I.registerSingleton<GraphQLClient>(getGraphQLClient());
-    GetIt.I.registerSingleton<SearchService>(AlgoliaSearchService());
+    GetIt.I.registerLazySingleton<SearchService>(() => AlgoliaSearchService());
   }
 }
