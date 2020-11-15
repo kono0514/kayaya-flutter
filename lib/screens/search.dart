@@ -1,18 +1,15 @@
 import 'dart:async';
 
-import 'package:algolia/algolia.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kayaya_flutter/algolia_client_provider.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/bloc/search_bloc.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/utils/hex_color.dart';
 import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/services/shared_preferences_service.dart';
-// import 'package:kayaya_flutter/widgets/custom_search.dart';
 
 typedef GetSearchSuggestions = Future<List<String>> Function();
 
@@ -24,7 +21,6 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  Algolia algoliaClient = AlgoliaClientProvider.instance.algolia;
   SearchBloc searchBloc;
 
   @override
@@ -158,11 +154,11 @@ class Search extends SearchDelegate {
             children: <Widget>[
               state.isLoading ? LinearProgressIndicator() : SizedBox.shrink(),
               ListView.builder(
+                itemCount: state.result.hits.length,
                 itemBuilder: (context, index) {
-                  final item = state.hits[index];
-                  String itemName = currentLanguage == 'mn'
-                      ? item.data['name_mn']
-                      : item.data['name_en'];
+                  final item = state.result.hits[index];
+                  String itemName =
+                      currentLanguage == 'mn' ? item.nameMn : item.nameEn;
                   return InkWell(
                     onTap: () {
                       // Close "showSearch" and "SearchPage",
@@ -177,14 +173,11 @@ class Search extends SearchDelegate {
                         arguments: MediaArguments(
                           AnimeItemModelGenerator$Query$Anime.fromJson(
                             {
-                              'id': item.objectID.split('::').last,
-                              'coverImage': {
-                                'large': item.data['cover_image_large'],
-                              },
+                              'id': item.id,
+                              'coverImage': {'large': item.coverImageLarge},
                               'name': itemName,
-                              'animeType': item.data['anime_type']
-                                  .toString()
-                                  .toUpperCase(),
+                              'animeType':
+                                  item.animeType.toString().toUpperCase(),
                             },
                           ),
                           isMinimal: true,
@@ -200,10 +193,9 @@ class Search extends SearchDelegate {
                           CachedNetworkImage(
                             width: 64,
                             height: 96,
-                            imageUrl: item.data['cover_image_large'],
+                            imageUrl: item.coverImageLarge,
                             placeholder: (context, url) => Container(
-                              color: HexColor(
-                                  item.data['cover_color'] ?? '#000000'),
+                              color: HexColor(item.coverColor ?? '#000000'),
                             ),
                           ),
                           SizedBox(width: 20.0),
@@ -220,12 +212,12 @@ class Search extends SearchDelegate {
                                 SizedBox(height: 4),
                                 Row(
                                   children: [
-                                    if (item.data['start_year'] != null)
+                                    if (item.startYear != null)
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(right: 10.0),
                                         child: Text(
-                                          '(${item.data['start_year']})',
+                                          '(${item.startYear})',
                                           style: Theme.of(context)
                                               .textTheme
                                               .caption
@@ -233,7 +225,7 @@ class Search extends SearchDelegate {
                                         ),
                                       ),
                                     Text(
-                                      item.data['anime_type'] == 'series'
+                                      item.animeType == 'series'
                                           ? S.of(context).series
                                           : S.of(context).movie,
                                       style: Theme.of(context)
@@ -251,7 +243,6 @@ class Search extends SearchDelegate {
                     ),
                   );
                 },
-                itemCount: state.hits.length,
               ),
             ],
           );

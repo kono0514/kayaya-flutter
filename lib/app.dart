@@ -8,6 +8,7 @@ import 'package:kayaya_flutter/cubit/locale_cubit.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/cubit/updater_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/services/search_service.dart';
 import 'package:kayaya_flutter/utils/graphql_client.dart';
 import 'package:kayaya_flutter/services/notification_service.dart';
 import 'package:kayaya_flutter/repositories/authentication_repository.dart';
@@ -116,5 +117,6 @@ class _AppState extends State<App> {
 
   _setupLocators() {
     GetIt.I.registerSingleton<GraphQLClient>(getGraphQLClient());
+    GetIt.I.registerSingleton<SearchService>(AlgoliaSearchService());
   }
 }

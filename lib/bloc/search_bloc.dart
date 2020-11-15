@@ -3,14 +3,16 @@ import 'dart:async';
 import 'package:algolia/algolia.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kayaya_flutter/algolia_client_provider.dart';
+import 'package:get_it/get_it.dart';
+import 'package:kayaya_flutter/models/search_result.dart';
+import 'package:kayaya_flutter/services/search_service.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'search_event.dart';
 part 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  final Algolia algolia = AlgoliaClientProvider.instance.algolia;
+  final SearchService searchService = GetIt.I<SearchService>();
 
   SearchBloc() : super(SearchInitial());
 
@@ -40,16 +42,15 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           yield currentState.copyWith(isLoading: true);
         }
 
-        final _query =
-            algolia.index('animes').setHitsPerPage(20).search(event.query);
-        final _result = await _query.getObjects();
+        final result = await searchService.search(event.query);
 
         yield (SearchLoaded(
-          hits: _result.hits,
+          result: result,
           query: event.query,
           isLoading: false,
         ));
       } catch (e) {
+        print(e);
         yield SearchError(e);
       }
     }

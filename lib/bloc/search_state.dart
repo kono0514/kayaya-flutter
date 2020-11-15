@@ -11,10 +11,10 @@ class SearchInitial extends SearchState {}
 
 class SearchLoaded extends SearchState {
   final bool isLoading;
-  final List<AlgoliaObjectSnapshot> hits;
+  final SearchResult result;
   final String query;
 
-  const SearchLoaded({this.hits, this.isLoading, this.query});
+  const SearchLoaded({this.result, this.isLoading, this.query});
 
   SearchLoaded copyWith({
     bool isLoading,
@@ -23,13 +23,13 @@ class SearchLoaded extends SearchState {
   }) {
     return SearchLoaded(
       isLoading: isLoading ?? this.isLoading,
-      hits: hits ?? this.hits,
+      result: result ?? this.result,
       query: query ?? this.query,
     );
   }
 
   @override
-  List<Object> get props => [hits, isLoading, query];
+  List<Object> get props => [result, isLoading, query];
 }
 
 class SearchError extends SearchState {
