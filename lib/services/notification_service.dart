@@ -1,18 +1,21 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/models/notification.dart';
-import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/services/shared_preferences_service.dart';
 import 'package:kayaya_flutter/utils/utils.dart';
 
 class NotificationService {
   FlutterLocalNotificationsPlugin _localNotification;
   FirebaseMessaging _firebaseMessaging;
+  GraphQLClient _client;
 
   NotificationService() {
     _localNotification = FlutterLocalNotificationsPlugin();
     _firebaseMessaging = FirebaseMessaging();
+    _client = GetIt.I<GraphQLClient>();
   }
 
   void configure({
@@ -43,7 +46,18 @@ class NotificationService {
     final oldToken = sps.currentSavedFcmToken;
     if (oldToken != newToken) {
       print('Uploading firebase messaging token: $newToken');
-      await AniimRepository().uploadFcmToken(newToken, oldToken: oldToken);
+      final args = UploadFcmTokenArguments(token: token, oldToken: oldToken);
+      final result = await _client.mutate(
+        MutationOptions(
+          document: UploadFcmTokenMutation().document,
+          variables: args.toJson(),
+        ),
+      );
+
+      if (result.hasException) {
+        throw result.exception;
+      }
+
       sps.saveCurrentFcmToken(newToken);
     }
   }

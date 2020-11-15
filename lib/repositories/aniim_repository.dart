@@ -230,20 +230,6 @@ class AniimRepository {
     return GetFeatured$Query.fromJson(result.data).featured;
   }
 
-  Future<void> uploadFcmToken(String token, {String oldToken}) async {
-    final args = UploadFcmTokenArguments(token: token, oldToken: oldToken);
-    final result = await client.mutate(
-      MutationOptions(
-        document: UploadFcmTokenMutation().document,
-        variables: args.toJson(),
-      ),
-    );
-
-    if (result.hasException) {
-      throw result.exception;
-    }
-  }
-
   Future<bool> subscribeTo(String id) async {
     final args = SubscribeToArguments(animeId: id);
     final result = await client.mutate(
