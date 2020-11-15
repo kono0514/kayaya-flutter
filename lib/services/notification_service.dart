@@ -7,17 +7,13 @@ import 'package:kayaya_flutter/services/shared_preferences_service.dart';
 import 'package:kayaya_flutter/utils/utils.dart';
 
 class NotificationService {
-  static final NotificationService _instance = NotificationService.private(
-      FlutterLocalNotificationsPlugin(), FirebaseMessaging());
-  final FlutterLocalNotificationsPlugin _localNotification;
-  final FirebaseMessaging _firebaseMessaging;
+  FlutterLocalNotificationsPlugin _localNotification;
+  FirebaseMessaging _firebaseMessaging;
 
-  factory NotificationService() => _instance;
-
-  NotificationService.private(FlutterLocalNotificationsPlugin localNotification,
-      FirebaseMessaging firebaseMessaging)
-      : _localNotification = localNotification,
-        _firebaseMessaging = firebaseMessaging;
+  NotificationService() {
+    _localNotification = FlutterLocalNotificationsPlugin();
+    _firebaseMessaging = FirebaseMessaging();
+  }
 
   void configure({
     MessageHandler onMessage,
@@ -132,8 +128,6 @@ class NotificationService {
 }
 
 Future<dynamic> backgroundMessageHandler(Map<String, dynamic> message) async {
-  print('Received message in background');
-  print(message);
   NotificationService _service = NotificationService();
 
   if (!message.containsKey('data')) return;

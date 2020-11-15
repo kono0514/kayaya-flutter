@@ -25,14 +25,13 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  NotificationService _notificationService = NotificationService();
   AuthenticationRepository authRepo = AuthenticationRepository();
 
   @override
   void initState() {
     super.initState();
-    _configureNotification();
     _setupLocators();
+    _configureNotification();
   }
 
   @override
@@ -100,7 +99,7 @@ class _AppState extends State<App> {
   }
 
   _configureNotification() {
-    _notificationService.configure(
+    GetIt.I<NotificationService>().configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         // _showItemDialog(message);
@@ -118,5 +117,6 @@ class _AppState extends State<App> {
   _setupLocators() {
     GetIt.I.registerSingleton<GraphQLClient>(getGraphQLClient());
     GetIt.I.registerLazySingleton<SearchService>(() => AlgoliaSearchService());
+    GetIt.I.registerSingleton<NotificationService>(NotificationService());
   }
 }

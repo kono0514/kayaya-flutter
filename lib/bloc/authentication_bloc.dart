@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
 import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:kayaya_flutter/services/notification_service.dart';
 import 'package:meta/meta.dart';
@@ -43,7 +44,7 @@ class AuthenticationBloc
   AuthenticationState _mapAuthenticationUserChangedToState(
       AuthenticationUserChanged event) {
     if (event.user != null) {
-      NotificationService().uploadCurrentFcmToken();
+      GetIt.I<NotificationService>().uploadCurrentFcmToken();
       return Authenticated(event.user);
     }
     return Unauthenticated();
