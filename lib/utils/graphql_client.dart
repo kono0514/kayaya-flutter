@@ -16,7 +16,8 @@ GraphQLClient getGraphQLClient() {
   );
   final authLink = AuthLink(
     getToken: () async {
-      final userToken = await FirebaseAuth.instance.currentUser.getIdToken();
+      final userToken =
+          await FirebaseAuth.instance.currentUser?.getIdToken() ?? '';
       return 'Bearer $userToken';
     },
   );

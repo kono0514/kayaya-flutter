@@ -36,7 +36,9 @@ class NotificationService {
       onBackgroundMessage: backgroundMessageHandler,
     );
     _firebaseMessaging.onTokenRefresh.listen((newToken) {
+      if (FirebaseAuth.instance.currentUser != null) {
       uploadCurrentFcmToken(token: newToken);
+      }
     });
   }
 
@@ -46,7 +48,7 @@ class NotificationService {
     final oldToken = sps.currentSavedFcmToken;
     if (oldToken != newToken) {
       print('Uploading firebase messaging token: $newToken');
-      final args = UploadFcmTokenArguments(token: token, oldToken: oldToken);
+      final args = UploadFcmTokenArguments(token: newToken, oldToken: oldToken);
       final result = await _client.mutate(
         MutationOptions(
           document: UploadFcmTokenMutation().document,
