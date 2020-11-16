@@ -17,21 +17,20 @@ import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/theme_data.dart';
 import 'package:kayaya_flutter/widgets/navigation_bar/material_tab_scaffold.dart';
 
-class App extends StatefulWidget {
-  const App({Key key}) : super(key: key);
+class AppWrapper extends StatefulWidget {
+  const AppWrapper({Key key}) : super(key: key);
 
   @override
-  _AppState createState() => _AppState();
+  _AppWrapperState createState() => _AppWrapperState();
 }
 
-class _AppState extends State<App> {
+class _AppWrapperState extends State<AppWrapper> {
   AuthenticationRepository authRepo = AuthenticationRepository();
 
   @override
   void initState() {
     super.initState();
     _setupLocators();
-    _configureNotification();
   }
 
   @override
@@ -76,25 +75,51 @@ class _AppState extends State<App> {
               ],
               locale: Locale(localeState.locale),
               supportedLocales: S.delegate.supportedLocales,
-              home: BlocConsumer<AuthenticationBloc, AuthenticationState>(
-                listener: (context, state) {
-                  if (state is Unauthenticated) {
-                    authRepo.logInAnonymously();
-                  }
-                },
-                builder: (context, state) {
-                  if (state is Authenticated) {
-                    return MaterialTabScaffold();
-                  }
-
-                  return Center(child: CircularProgressIndicator());
-                },
-              ),
+              home: AppHome(),
               onGenerateRoute: Routes.materialRoutes,
             );
           },
         ),
       ),
+    );
+  }
+
+  _setupLocators() {
+    GetIt.I.registerSingleton<GraphQLClient>(getGraphQLClient());
+    GetIt.I.registerLazySingleton<SearchService>(() => AlgoliaSearchService());
+    GetIt.I.registerSingleton<NotificationService>(NotificationService());
+  }
+}
+
+class AppHome extends StatefulWidget {
+  AppHome({Key key}) : super(key: key);
+
+  @override
+  _AppHomeState createState() => _AppHomeState();
+}
+
+class _AppHomeState extends State<AppHome> {
+  @override
+  void initState() {
+    super.initState();
+    _configureNotification();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
+      listener: (context, state) {
+        if (state is Unauthenticated) {
+          context.read<AuthenticationRepository>().logInAnonymously();
+        }
+      },
+      builder: (context, state) {
+        if (state is Authenticated) {
+          return MaterialTabScaffold();
+        }
+
+        return Center(child: CircularProgressIndicator());
+      },
     );
   }
 
@@ -112,11 +137,5 @@ class _AppState extends State<App> {
         Navigator.of(context, rootNavigator: true).push(Routes.fromURI(uri));
       },
     );
-  }
-
-  _setupLocators() {
-    GetIt.I.registerSingleton<GraphQLClient>(getGraphQLClient());
-    GetIt.I.registerLazySingleton<SearchService>(() => AlgoliaSearchService());
-    GetIt.I.registerSingleton<NotificationService>(NotificationService());
   }
 }

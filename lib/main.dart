@@ -15,5 +15,5 @@ void main() async {
   await GetIt.I.allReady();
 
   Bloc.observer = SimpleBlocObserver();
-  runApp(App());
+  runApp(AppWrapper());
 }
