@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
@@ -10,12 +11,10 @@ import 'package:kayaya_flutter/utils/utils.dart';
 class NotificationService {
   FlutterLocalNotificationsPlugin _localNotification;
   FirebaseMessaging _firebaseMessaging;
-  GraphQLClient _client;
 
   NotificationService() {
     _localNotification = FlutterLocalNotificationsPlugin();
     _firebaseMessaging = FirebaseMessaging();
-    _client = GetIt.I<GraphQLClient>();
   }
 
   void configure({
@@ -37,7 +36,7 @@ class NotificationService {
     );
     _firebaseMessaging.onTokenRefresh.listen((newToken) {
       if (FirebaseAuth.instance.currentUser != null) {
-      uploadCurrentFcmToken(token: newToken);
+        uploadCurrentFcmToken(token: newToken);
       }
     });
   }
@@ -49,6 +48,7 @@ class NotificationService {
     if (oldToken != newToken) {
       print('Uploading firebase messaging token: $newToken');
       final args = UploadFcmTokenArguments(token: newToken, oldToken: oldToken);
+      final _client = GetIt.I<GraphQLClient>();
       final result = await _client.mutate(
         MutationOptions(
           document: UploadFcmTokenMutation().document,
