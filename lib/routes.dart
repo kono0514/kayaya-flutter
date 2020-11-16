@@ -42,7 +42,8 @@ abstract class Routes {
     return MaterialPageRoute(builder: (context) => LibraryPage());
   }
 
-  static MaterialPageRoute fromURI(Uri uri) {
+  @visibleForTesting
+  static RouteSettings parseRouteFromUri(Uri uri) {
     if (uri.scheme != 'route') return null;
 
     final routeName = RouteConstants.values
@@ -70,12 +71,14 @@ abstract class Routes {
         AnimeItemModelGenerator$Query$Anime.fromJson(data),
         isMinimal: true,
       );
-      return Routes.materialRoutes(
-        RouteSettings(name: routeName, arguments: args),
-      );
+      return RouteSettings(name: routeName, arguments: args);
     }
 
-    return Routes.materialRoutes(RouteSettings(name: routeName));
+    return RouteSettings(name: routeName);
+  }
+
+  static MaterialPageRoute fromURI(Uri uri) {
+    return Routes.materialRoutes(parseRouteFromUri(uri));
   }
 }
 
