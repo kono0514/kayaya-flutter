@@ -5,16 +5,33 @@ class SpinnerButton extends StatelessWidget {
   final Icon icon;
   final Widget label;
   final bool loading;
+  final bool disabled;
   final Function onPressed;
+  final ButtonStyle style;
+  bool _isTextButton = false;
 
-  const SpinnerButton(
-      {Key key,
-      this.fixedWidth,
-      this.icon,
-      this.label,
-      this.loading = false,
-      this.onPressed})
-      : super(key: key);
+  SpinnerButton({
+    Key key,
+    this.fixedWidth,
+    this.icon,
+    this.label,
+    this.loading = false,
+    this.disabled = false,
+    this.onPressed,
+    this.style,
+  }) : super(key: key);
+
+  SpinnerButton.text({
+    Key key,
+    this.fixedWidth,
+    this.icon,
+    this.label,
+    this.loading = false,
+    this.disabled = false,
+    this.onPressed,
+    this.style,
+  })  : _isTextButton = true,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +59,29 @@ class SpinnerButton extends StatelessWidget {
       );
     }
 
-    final button = RaisedButton(
-      onPressed: onPressed,
-      child: child,
-      padding: icon == null ? null : EdgeInsets.only(left: 12.0, right: 16.0),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    var buttonStyle = style ?? ButtonStyle();
+    buttonStyle = buttonStyle.copyWith(
+      padding: icon == null
+          ? null
+          : MaterialStateProperty.all<EdgeInsetsGeometry>(
+              EdgeInsets.only(left: 12.0, right: 16.0)),
+      tapTargetSize: buttonStyle.tapTargetSize ?? MaterialTapTargetSize.padded,
     );
+
+    var button;
+    if (_isTextButton) {
+      button = TextButton(
+        onPressed: disabled || loading ? null : onPressed,
+        child: child,
+        style: buttonStyle,
+      );
+    } else {
+      button = ElevatedButton(
+        onPressed: disabled || loading ? null : onPressed,
+        child: child,
+        style: buttonStyle,
+      );
+    }
 
     if (fixedWidth != null) {
       return SizedBox(

@@ -8,6 +8,7 @@ import 'package:kayaya_flutter/cubit/locale_cubit.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/cubit/updater_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/screens/login/login.dart';
 import 'package:kayaya_flutter/services/search_service.dart';
 import 'package:kayaya_flutter/utils/graphql_client.dart';
 import 'package:kayaya_flutter/services/notification_service.dart';
@@ -109,13 +110,17 @@ class _AppHomeState extends State<AppHome> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
-        if (state is Unauthenticated) {
-          context.read<AuthenticationRepository>().logInAnonymously();
+        if (state is Authenticated) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
         }
       },
       builder: (context, state) {
         if (state is Authenticated) {
           return MaterialTabScaffold();
+        }
+
+        if (state is Unauthenticated) {
+          return LoginPage();
         }
 
         return Center(child: CircularProgressIndicator());
