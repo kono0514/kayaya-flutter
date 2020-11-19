@@ -18,28 +18,28 @@ abstract class RouteConstants {
 
 abstract class Routes {
   static MaterialPageRoute materialRoutes(RouteSettings settings) {
-    if (settings.name == RouteConstants.seriesDetail) {
-      final MediaArguments args = settings.arguments;
-      return MaterialPageRoute(builder: (_) => SeriesPage(args));
-    } else if (settings.name == RouteConstants.movieDetail) {
-      final MediaArguments args = settings.arguments;
-      return MaterialPageRoute(builder: (_) => MoviePage(args));
-    } else if (settings.name == RouteConstants.movieOrSeriesDetail) {
-      final MediaArguments args = settings.arguments;
-      if (args.anime.animeType == AnimeType.movie) {
-        return materialRoutes(
-            settings.copyWith(name: RouteConstants.movieDetail));
-      } else if (args.anime.animeType == AnimeType.series) {
+    switch (settings.name) {
+      case RouteConstants.seriesDetail:
+        final MediaArguments args = settings.arguments;
+        return MaterialPageRoute(builder: (_) => SeriesPage(args));
+      case RouteConstants.movieDetail:
+        final MediaArguments args = settings.arguments;
+        return MaterialPageRoute(builder: (_) => MoviePage(args));
+      case RouteConstants.movieOrSeriesDetail:
+        final MediaArguments args = settings.arguments;
+        if (args.anime.animeType == AnimeType.movie) {
+          return materialRoutes(
+              settings.copyWith(name: RouteConstants.movieDetail));
+        }
         return materialRoutes(
             settings.copyWith(name: RouteConstants.seriesDetail));
-      }
-    } else if (settings.name == RouteConstants.search) {
-      return MaterialPageRoute(builder: (context) => SearchPage());
-    } else if (settings.name == RouteConstants.library) {
-      return MaterialPageRoute(builder: (context) => LibraryPage());
+      case RouteConstants.search:
+        return MaterialPageRoute(builder: (context) => SearchPage());
+      case RouteConstants.library:
+        return MaterialPageRoute(builder: (context) => LibraryPage());
+      default:
+        return MaterialPageRoute(builder: (context) => LibraryPage());
     }
-
-    return MaterialPageRoute(builder: (context) => LibraryPage());
   }
 
   @visibleForTesting
