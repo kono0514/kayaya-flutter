@@ -169,6 +169,9 @@ class SeriesSubscribeButton extends StatelessWidget {
             loading: loading,
             fixedWidth: 180,
             onPressed: onPressed,
+            style: ButtonStyle(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
           );
         },
       ),

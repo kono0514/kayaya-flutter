@@ -147,6 +147,9 @@ class _MoviePageState extends State<MoviePage> {
           loading: loading,
           icon: icon,
           onPressed: onPressed,
+          style: ButtonStyle(
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
         );
       },
     );
