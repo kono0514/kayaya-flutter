@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/cubit/anime_relations_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
-import 'package:kayaya_flutter/routes.dart';
+import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/widgets/anime_horiz_tile.dart';
 
 // TODO: Create view dedicated for empty related/recommended
@@ -87,7 +87,7 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
 
                                   Navigator.of(context, rootNavigator: true)
                                       .pushNamed(
-                                    RouteConstants.movieOrSeriesDetail,
+                                    Routes.movieOrSeries,
                                     arguments: MediaArguments(anime),
                                   );
                                 },
@@ -130,7 +130,7 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
 
                                   Navigator.of(context, rootNavigator: true)
                                       .pushNamed(
-                                    RouteConstants.movieOrSeriesDetail,
+                                    Routes.movieOrSeries,
                                     arguments: MediaArguments(anime),
                                   );
                                 },

@@ -24,9 +24,8 @@ mixin AnimeDetailsFieldsMixin {
   List<AnimeDetailsFieldsMixin$Genres> genres;
   String description;
   @JsonKey(
-    fromJson: fromGraphQLAnilistMediaToDartGraphqlAnilistApi$Query$Media,
-    toJson: fromDartGraphqlAnilistApi$Query$MediaToGraphQLAnilistMedia,
-  )
+      fromJson: fromGraphQLAnilistMediaToDartGraphqlAnilistApi$Query$Media,
+      toJson: fromDartGraphqlAnilistApi$Query$MediaToGraphQLAnilistMedia)
   GraphqlAnilistApi$Query$Media anilist;
   bool subscribed;
 }

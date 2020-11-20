@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/bloc/subscription_list_bloc.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
-import 'package:kayaya_flutter/routes.dart';
-import 'package:kayaya_flutter/utils/graphql_client.dart';
+import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/repositories/user_data_repository.dart';
 import 'package:kayaya_flutter/widgets/app_bar/custom_sliver_app_bar.dart';
 import 'package:kayaya_flutter/widgets/app_bar/sliver_button.dart';
@@ -169,7 +168,7 @@ class _LibraryPageState extends State<LibraryPage> {
                   title: Text(anime.name),
                   onTap: () {
                     Navigator.of(context, rootNavigator: true).pushNamed(
-                      RouteConstants.seriesDetail,
+                      Routes.seriesPage,
                       arguments: MediaArguments(anime),
                     );
                   },

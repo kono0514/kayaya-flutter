@@ -9,7 +9,7 @@ import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
 import 'package:kayaya_flutter/cubit/genre_list_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
-import 'package:kayaya_flutter/routes.dart';
+import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/screens/tabs/browse/browse_anime_list_tile.dart';
 import 'package:kayaya_flutter/widgets/app_bar/custom_sliver_app_bar.dart';
 import 'package:kayaya_flutter/screens/tabs/browse/sliver_filter_button.dart';
@@ -148,7 +148,7 @@ class _BrowsePageState extends State<BrowsePage> {
                             final anime = state.animes[index];
                             Navigator.of(context, rootNavigator: true)
                                 .pushNamed(
-                              RouteConstants.movieOrSeriesDetail,
+                              Routes.movieOrSeries,
                               arguments: MediaArguments(anime),
                             );
                           },

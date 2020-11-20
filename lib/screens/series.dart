@@ -6,7 +6,6 @@ import 'package:kayaya_flutter/cubit/anime_details_cubit.dart';
 import 'package:kayaya_flutter/cubit/anime_subscription_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
-import 'package:kayaya_flutter/routes.dart';
 import 'package:kayaya_flutter/widgets/anime_details/detail_view.dart';
 import 'package:kayaya_flutter/widgets/anime_details/tab_episodes.dart';
 import 'package:kayaya_flutter/widgets/anime_details/tab_info.dart';
@@ -16,9 +15,10 @@ import 'package:kayaya_flutter/widgets/spinner_button.dart';
 // (Implemented workaround with extended_nested_scroll_view) TODO: https://github.com/flutter/flutter/issues/40740
 
 class SeriesPage extends StatefulWidget {
-  final MediaArguments argument;
+  final AnimeItemFieldsMixin anime;
+  final bool isMinimal;
 
-  SeriesPage(this.argument);
+  SeriesPage(this.anime, {this.isMinimal = false});
 
   @override
   _SeriesPageState createState() => _SeriesPageState();
@@ -31,7 +31,7 @@ class _SeriesPageState extends State<SeriesPage> {
   @override
   void initState() {
     super.initState();
-    anime = widget.argument.anime;
+    anime = widget.anime;
     animeDetailsCubit = AnimeDetailsCubit(context.read<AniimRepository>());
 
     /// Only minimal amount of data was passed (id, poster, name)
@@ -40,7 +40,7 @@ class _SeriesPageState extends State<SeriesPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       animeDetailsCubit.listen((state) {
         if (state is AnimeDetailsLoaded) {
-          if (widget.argument.isMinimal) {
+          if (widget.isMinimal) {
             setState(() {
               anime = state.listData;
             });
@@ -62,7 +62,7 @@ class _SeriesPageState extends State<SeriesPage> {
           ).then((value) => Navigator.of(context).pop());
         }
       });
-      if (widget.argument.isMinimal) {
+      if (widget.isMinimal) {
         animeDetailsCubit.loadDetailsFull(anime.id);
       } else {
         animeDetailsCubit.loadDetails(anime.id);

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
-import 'package:kayaya_flutter/routes.dart';
+import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/widgets/app_bar/custom_sliver_app_bar.dart';
 import 'package:kayaya_flutter/widgets/dynamic_widget_parser/auto_size_text_parser.dart';
 import 'package:kayaya_flutter/widgets/dynamic_widget_parser/carousel_slider_item_child_faded.dart';
@@ -150,7 +150,7 @@ class DefaultClickListener implements ClickListener {
     if (event.trim().isEmpty) return;
 
     final uri = Uri.parse(event.trim());
-    final route = Routes.fromURI(uri);
+    final route = MyRouter.fromURI(uri);
 
     if (route != null) {
       Navigator.of(

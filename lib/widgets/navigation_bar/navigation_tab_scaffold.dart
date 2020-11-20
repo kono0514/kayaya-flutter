@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
-import 'package:kayaya_flutter/routes.dart';
+import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/screens/tabs/browse/browse.dart';
 import 'package:kayaya_flutter/screens/tabs/featured/featured.dart';
 import 'package:kayaya_flutter/screens/tabs/library/library.dart';
@@ -130,7 +130,7 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
 
               return CupertinoTabView(
                 navigatorKey: item.navigatorKey,
-                onGenerateRoute: Routes.materialRoutes,
+                onGenerateRoute: MyRouter(),
                 builder: (context) {
                   return item.pageBuilder(item.scrollController);
                 },

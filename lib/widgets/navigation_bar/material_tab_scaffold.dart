@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
-import 'package:kayaya_flutter/routes.dart';
+import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/screens/tabs/browse/browse.dart';
 import 'package:kayaya_flutter/screens/tabs/featured/featured.dart';
 import 'package:kayaya_flutter/screens/tabs/library/library.dart';
@@ -70,7 +70,7 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
         icon: Icon(Icons.search),
         label: S.current.tabs_search,
       ),
-      route: RouteConstants.search,
+      route: Routes.searchPage,
     ),
   ];
   DateTime _lastBackPressTime;
@@ -121,7 +121,7 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
 
               return CustomMaterialTabView(
                 navigatorKey: item.navigatorKey,
-                onGenerateRoute: Routes.materialRoutes,
+                onGenerateRoute: MyRouter(),
                 builder: (context) {
                   return KeepAliveWidget(
                     child: item.pageBuilder(item.scrollController),

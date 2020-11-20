@@ -14,7 +14,7 @@ import 'package:kayaya_flutter/utils/graphql_client.dart';
 import 'package:kayaya_flutter/services/notification_service.dart';
 import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
-import 'package:kayaya_flutter/routes.dart';
+import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/theme_data.dart';
 import 'package:kayaya_flutter/widgets/navigation_bar/material_tab_scaffold.dart';
 
@@ -77,7 +77,7 @@ class _AppWrapperState extends State<AppWrapper> {
               locale: Locale(localeState.locale),
               supportedLocales: S.delegate.supportedLocales,
               home: AppHome(),
-              onGenerateRoute: Routes.materialRoutes,
+              onGenerateRoute: MyRouter(),
             );
           },
         ),
@@ -139,7 +139,7 @@ class _AppHomeState extends State<AppHome> {
         if (payload == null) return;
 
         final uri = Uri.parse(payload.trim());
-        Navigator.of(context, rootNavigator: true).push(Routes.fromURI(uri));
+        Navigator.of(context, rootNavigator: true).push(MyRouter.fromURI(uri));
       },
     );
   }
