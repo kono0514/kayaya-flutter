@@ -1,62 +1,64 @@
 import 'package:flutter/material.dart';
 
+typedef SpinnerButtonChildBuilder = Widget Function(
+  BuildContext context,
+  Widget spinner,
+);
+
 class SpinnerButton extends StatelessWidget {
-  final double fixedWidth;
-  final Icon icon;
+  final Widget icon;
   final Widget label;
   final bool loading;
   final bool disabled;
   final Function onPressed;
   final ButtonStyle style;
-  bool _isTextButton = false;
+  final Type buttonType;
+  final SpinnerButtonChildBuilder childBuilder;
+  final Color spinnerColor;
 
   SpinnerButton({
     Key key,
-    this.fixedWidth,
     this.icon,
     this.label,
     this.loading = false,
     this.disabled = false,
     this.onPressed,
     this.style,
-  }) : super(key: key);
-
-  SpinnerButton.text({
-    Key key,
-    this.fixedWidth,
-    this.icon,
-    this.label,
-    this.loading = false,
-    this.disabled = false,
-    this.onPressed,
-    this.style,
-  })  : _isTextButton = true,
+    this.buttonType = ElevatedButton,
+    this.childBuilder,
+    this.spinnerColor,
+  })  : assert(buttonType == TextButton || buttonType == ElevatedButton),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Widget child;
+    final _spinner = SizedBox(
+      width: 20,
+      height: 20,
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(spinnerColor ?? Colors.white),
+      ),
+    );
 
-    if (loading) {
-      child = SizedBox(
-        width: 20,
-        height: 20,
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-        ),
-      );
+    Widget child;
+    if (childBuilder != null) {
+      child = childBuilder(context, _spinner);
     } else {
-      child = Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          if (icon != null)
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: icon,
-            ),
-          label,
-        ],
-      );
+      if (loading) {
+        child = _spinner;
+      } else {
+        child = Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            if (icon != null)
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: icon,
+              ),
+            label,
+          ],
+        );
+      }
     }
 
     var buttonStyle = style ?? ButtonStyle();
@@ -69,7 +71,7 @@ class SpinnerButton extends StatelessWidget {
     );
 
     var button;
-    if (_isTextButton) {
+    if (buttonType == TextButton) {
       button = TextButton(
         onPressed: disabled || loading ? null : onPressed,
         child: child,
@@ -80,13 +82,6 @@ class SpinnerButton extends StatelessWidget {
         onPressed: disabled || loading ? null : onPressed,
         child: child,
         style: buttonStyle,
-      );
-    }
-
-    if (fixedWidth != null) {
-      return SizedBox(
-        width: fixedWidth,
-        child: button,
       );
     }
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:kayaya_flutter/screens/login/phone_auth.dart';
+import 'package:kayaya_flutter/widgets/sign_in_button.dart';
 import 'package:kayaya_flutter/widgets/spinner_button.dart';
 
 class LoginPage extends StatefulWidget {
@@ -40,32 +41,70 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SpinnerButton(
-              icon: Icon(Icons.phone),
-              label: Text('Sign in with Number'),
-              disabled: loggingIn,
-              loading: _numberLoggingIn,
-              onPressed: _number,
+            SizedBox(
+              width: 46,
+              height: 46,
+              child: SignInButton(
+                icon: Padding(
+                  padding: const EdgeInsets.only(left: 6.0),
+                  child: Icon(Icons.phone, size: 28),
+                ),
+                label: Text('Sign in with Number'),
+                color: Colors.grey.shade700,
+                disabled: loggingIn,
+                loading: _numberLoggingIn,
+                onPressed: _number,
+              ),
             ),
-            SpinnerButton(
-              icon: Icon(Icons.email),
-              label: Text('Sign in with Google'),
-              disabled: loggingIn,
-              loading: _googleLoggingIn,
-              onPressed: _google,
+            SizedBox(height: 8),
+            SizedBox(
+              width: 46,
+              height: 46,
+              child: SignInButton(
+                icon: Image.asset(
+                  'assets/logos/google_light.png',
+                  width: 40,
+                  height: 40,
+                ),
+                label: Text('Sign in with Google'),
+                color: Color.fromRGBO(219, 68, 55, 1),
+                disabled: loggingIn,
+                loading: _googleLoggingIn,
+                onPressed: _google,
+              ),
             ),
-            SpinnerButton(
-              icon: Icon(Icons.face),
-              label: Text('Sign in with Facebook'),
-              disabled: loggingIn,
-              loading: _facebookLoggingIn,
-              onPressed: _facebook,
+            SizedBox(height: 8),
+            SizedBox(
+              width: 46,
+              height: 46,
+              child: SignInButton(
+                icon: Padding(
+                  padding: const EdgeInsets.only(left: 6.0),
+                  child: Image.asset(
+                    'assets/logos/facebook.png',
+                    width: 30,
+                    height: 30,
+                  ),
+                ),
+                label: Text('Sign in with Facebook'),
+                color: Color.fromRGBO(23, 120, 242, 1),
+                disabled: loggingIn,
+                loading: _facebookLoggingIn,
+                onPressed: _facebook,
+              ),
             ),
-            SpinnerButton.text(
-              label: Text('Continue without signing in'),
-              disabled: loggingIn,
-              loading: _anonymousLoggingIn,
-              onPressed: _anonymous,
+            SizedBox(height: 8),
+            SizedBox(
+              width: 46,
+              height: 46,
+              child: SpinnerButton(
+                label: Text('Continue without signing in'),
+                spinnerColor: Theme.of(context).buttonColor,
+                disabled: loggingIn,
+                loading: _anonymousLoggingIn,
+                onPressed: _anonymous,
+                buttonType: TextButton,
+              ),
             ),
           ],
         ),

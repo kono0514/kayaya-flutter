@@ -108,8 +108,8 @@ class _LoginPhoneAuthVerifyPageState extends State<LoginPhoneAuthVerifyPage> {
                 loading: _verifying,
                 onPressed: _submitCode,
               ),
-              SpinnerButton.text(
-                label: Text('Change number'),
+              TextButton(
+                child: Text('Change number'),
                 onPressed: () {
                   Navigator.pop(context);
                 },
