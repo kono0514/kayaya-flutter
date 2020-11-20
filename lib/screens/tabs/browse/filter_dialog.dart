@@ -216,7 +216,7 @@ class _FilterDialogState extends State<FilterDialog> {
                 padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                 child: Builder(
                   builder: (context) {
-                    final resetButton = RaisedButton(
+                    final resetButton = ElevatedButton(
                       onPressed: isDefault
                           ? null
                           : () {
@@ -227,10 +227,12 @@ class _FilterDialogState extends State<FilterDialog> {
                               });
                             },
                       child: Text(S.of(context).reset),
-                      color: Colors.grey.shade300,
-                      textTheme: ButtonTextTheme.primary,
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.grey.shade300,
+                        onPrimary: Colors.grey.shade800,
+                      ),
                     );
-                    final applyButton = RaisedButton(
+                    final applyButton = ElevatedButton(
                       onPressed: () {
                         if (isDefault) {
                           context.read<BrowseFilterCubit>().resetFilter();

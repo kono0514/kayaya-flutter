@@ -51,7 +51,7 @@ class _SeriesPageState extends State<SeriesPage> {
             builder: (context) => AlertDialog(
               title: Text(S.of(context).error_fetch),
               actions: [
-                FlatButton(
+                TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -163,14 +163,16 @@ class SeriesSubscribeButton extends StatelessWidget {
             };
           }
 
-          return SpinnerButton(
-            label: label,
-            icon: icon,
-            loading: loading,
-            fixedWidth: 180,
-            onPressed: onPressed,
-            style: ButtonStyle(
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          return SizedBox(
+            width: 180,
+            child: SpinnerButton(
+              label: label,
+              icon: icon,
+              loading: loading,
+              onPressed: onPressed,
+              style: ButtonStyle(
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
             ),
           );
         },

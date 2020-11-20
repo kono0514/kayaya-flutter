@@ -16,6 +16,8 @@ class BrowseAnimeListTile extends StatelessWidget {
       : super(key: key);
 
   List<Widget> _buildGenres(BuildContext context) {
+    final _isDark = Theme.of(context).brightness == Brightness.dark;
+
     List<Widget> _items = [];
     for (var i = 0; i < min(5, this.anime.genres.length); i++) {
       final genre = this.anime.genres[i];
@@ -25,7 +27,7 @@ class BrowseAnimeListTile extends StatelessWidget {
           child: ButtonTheme(
             minWidth: 50,
             height: 26,
-            child: FlatButton(
+            child: TextButton(
               onPressed: () {
                 final _filterCubit =
                     BlocProvider.of<BrowseFilterCubit>(context);
@@ -39,17 +41,17 @@ class BrowseAnimeListTile extends StatelessWidget {
                   fontSize: 12,
                 ),
               ),
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.grey[800]
-                  : Colors.grey[200],
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+              style: TextButton.styleFrom(
+                backgroundColor:
+                    _isDark ? Colors.grey.shade800 : Colors.grey.shade200,
+                primary: _isDark ? Colors.white : Colors.black87,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                minimumSize: Size(60, 26),
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              textColor: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white
-                  : Colors.black87,
-              padding: EdgeInsets.only(left: 10.0, right: 10.0),
             ),
           ),
         ),

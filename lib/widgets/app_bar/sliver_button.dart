@@ -79,10 +79,12 @@ class _SliverButtonState extends State<SliverButton>
 
       return ButtonTheme(
         minWidth: 36.0,
-        child: RaisedButton(
-          color: widget.backgroundColor ??
-              (_isDark ? Colors.grey[850] : Colors.white),
-          textColor: widget.color,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: widget.backgroundColor ??
+                (_isDark ? Colors.grey[850] : Colors.white),
+            onPrimary: widget.color ?? (_isDark ? Colors.white : Colors.black),
+          ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

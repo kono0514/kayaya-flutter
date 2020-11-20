@@ -52,7 +52,7 @@ class _MoviePageState extends State<MoviePage> {
             builder: (context) => AlertDialog(
               title: Text(S.of(context).error_fetch),
               actions: [
-                FlatButton(
+                TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
