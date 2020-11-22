@@ -7,7 +7,7 @@ import 'package:kayaya_flutter/bloc/authentication_bloc.dart';
 import 'package:kayaya_flutter/cubit/locale_cubit.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/cubit/updater_cubit.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/screens/login/login.dart';
 import 'package:kayaya_flutter/shared/services/search_service.dart';
 import 'package:kayaya_flutter/utils/graphql_client.dart';
@@ -69,13 +69,13 @@ class _AppWrapperState extends State<AppWrapper> {
               darkTheme: darkTheme,
               themeMode: themeState.themeMode,
               localizationsDelegates: [
-                S.delegate,
+                TR.delegate,
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
               ],
               locale: Locale(localeState.locale),
-              supportedLocales: S.delegate.supportedLocales,
+              supportedLocales: TR.delegate.supportedLocales,
               home: AppHome(),
               onGenerateRoute: MyRouter(),
             );

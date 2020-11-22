@@ -6,7 +6,7 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/bloc/anime_episodes_bloc.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/shared/widgets/icon_popup_menu.dart';
 import 'package:kayaya_flutter/utils/launchers.dart';
@@ -117,15 +117,15 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
                   child: IconPopupMenu(
                     items: [
                       PopupMenuItem(
-                        child: Text(S.of(context).sort_asc),
+                        child: Text(TR.of(context).sort_asc),
                         value: SortOrder.asc,
                       ),
                       PopupMenuItem(
-                        child: Text(S.of(context).sort_desc),
+                        child: Text(TR.of(context).sort_desc),
                         value: SortOrder.desc,
                       ),
                     ],
-                    title: S.of(context).sort,
+                    title: TR.of(context).sort,
                     icon: Icon(Icons.sort),
                     initialValue: state.sortOrder,
                     onSelected: (value) {
@@ -193,7 +193,7 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(S.of(context).no_episodes),
+              Text(TR.of(context).no_episodes),
               TextButton(
                 onPressed: () =>
                     animeEpisodesBloc.add(AnimeEpisodesRefreshed(widget.id)),
@@ -265,7 +265,7 @@ class _EpisodeListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    S.of(context).episode_item(episode.number),
+                    TR.of(context).episode_item(episode.number),
                     style: _textTheme.subtitle1,
                   ),
                   SizedBox(height: 4.0),

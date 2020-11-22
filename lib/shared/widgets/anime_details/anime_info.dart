@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/cubit/anime_details_cubit.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/utils/hex_color.dart';
 import 'package:kayaya_flutter/shared/widgets/rating_bar.dart';
 import 'package:kayaya_flutter/shared/widgets/rounded_cached_network_image.dart';
@@ -116,7 +116,7 @@ class AnimeInfo extends StatelessWidget {
                     if (totalEpisodes != null) {
                       items.addAll([
                         separator,
-                        Text(S.of(context).detail_episode_count(totalEpisodes))
+                        Text(TR.of(context).detail_episode_count(totalEpisodes))
                       ]);
                     }
                   }
@@ -125,7 +125,7 @@ class AnimeInfo extends StatelessWidget {
                   if (duration != null) {
                     items.addAll([
                       separator,
-                      Text(S.of(context).detail_runtime(duration))
+                      Text(TR.of(context).detail_runtime(duration))
                     ]);
                   }
 

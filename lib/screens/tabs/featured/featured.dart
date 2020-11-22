@@ -2,7 +2,7 @@ import 'package:dynamic_widget/dynamic_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/shared/widgets/app_bar/custom_sliver_app_bar.dart';
@@ -54,7 +54,7 @@ class _FeaturedPageState extends State<FeaturedPage> {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             CustomSliverAppBar(
-              title: Text(S.of(context).tabs_discover),
+              title: Text(TR.of(context).tabs_discover),
             ),
           ];
         },

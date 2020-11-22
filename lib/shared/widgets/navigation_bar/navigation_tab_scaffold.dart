@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/screens/tabs/browse/browse.dart';
 import 'package:kayaya_flutter/screens/tabs/featured/featured.dart';
@@ -21,7 +21,7 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
     TabNavigatorItem(
       navbarItem: () => BottomNavigationBarItem(
         icon: Icon(Icons.donut_small),
-        label: S.current.tabs_discover,
+        label: TR.current.tabs_discover,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),
@@ -31,7 +31,7 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
     TabNavigatorItem(
       navbarItem: () => BottomNavigationBarItem(
         icon: Icon(Icons.local_movies),
-        label: S.current.tabs_browse,
+        label: TR.current.tabs_browse,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),
@@ -41,7 +41,7 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
     TabNavigatorItem(
       navbarItem: () => BottomNavigationBarItem(
         icon: Icon(Icons.library_add),
-        label: S.current.tabs_library,
+        label: TR.current.tabs_library,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),
@@ -51,7 +51,7 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
     TabNavigatorItem(
       navbarItem: () => BottomNavigationBarItem(
         icon: Icon(Icons.search),
-        label: S.current.tabs_search,
+        label: TR.current.tabs_search,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),

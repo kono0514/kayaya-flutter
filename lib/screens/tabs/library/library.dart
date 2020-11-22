@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/bloc/subscription_list_bloc.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/repositories/user_data_repository.dart';
 import 'package:kayaya_flutter/shared/widgets/app_bar/custom_sliver_app_bar.dart';
@@ -47,11 +47,11 @@ class _LibraryPageState extends State<LibraryPage> {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             CustomSliverAppBar(
-              title: Text(S.of(context).tabs_library),
+              title: Text(TR.of(context).tabs_library),
               actions: [
                 SliverButton(
                   text: Text(
-                    S.of(context).settings.toUpperCase(),
+                    TR.of(context).settings.toUpperCase(),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -128,7 +128,7 @@ class _LibraryPageState extends State<LibraryPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              S.of(context).no_subscriptions,
+              TR.of(context).no_subscriptions,
             ),
             TextButton(
               onPressed: () => subListBloc.add(SubscriptionListFetched()),
@@ -152,7 +152,7 @@ class _LibraryPageState extends State<LibraryPage> {
             padding: EdgeInsets.only(left: 16, top: 30, bottom: 14),
             sliver: SliverToBoxAdapter(
               child: Text(
-                S.of(context).subscriptions,
+                TR.of(context).subscriptions,
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
               ),
             ),

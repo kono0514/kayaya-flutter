@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/bloc/anime_list_bloc.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
 import 'package:kayaya_flutter/cubit/genre_list_cubit.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/screens/tabs/browse/browse_anime_list_tile.dart';
@@ -68,7 +68,7 @@ class _BrowsePageState extends State<BrowsePage> {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               CustomSliverAppBar(
-                title: Text(S.of(context).tabs_browse),
+                title: Text(TR.of(context).tabs_browse),
                 actions: [
                   SliverFilterButton(),
                 ],

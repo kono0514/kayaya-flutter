@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/utils/hex_color.dart';
 import 'package:kayaya_flutter/shared/widgets/rounded_cached_network_image.dart';
 
@@ -97,8 +97,8 @@ class BrowseAnimeListTile extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           anime.animeType == AnimeType.movie
-                              ? S.of(context).movie
-                              : S.of(context).series,
+                              ? TR.of(context).movie
+                              : TR.of(context).series,
                           style: textTheme.caption.copyWith(fontSize: 13),
                         ),
                         SizedBox(width: 12),

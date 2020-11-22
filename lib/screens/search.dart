@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/bloc/search_bloc.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/utils/hex_color.dart';
 import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/shared/services/shared_preferences_service.dart';
@@ -228,8 +228,8 @@ class Search extends SearchDelegate {
                                       ),
                                     Text(
                                       item.animeType == 'series'
-                                          ? S.of(context).series
-                                          : S.of(context).movie,
+                                          ? TR.of(context).series
+                                          : TR.of(context).movie,
                                       style: Theme.of(context)
                                           .textTheme
                                           .caption

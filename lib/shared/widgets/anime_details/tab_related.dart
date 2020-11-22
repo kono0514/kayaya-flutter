@@ -3,7 +3,7 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/cubit/anime_relations_cubit.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/shared/widgets/anime_horiz_tile.dart';
@@ -64,7 +64,7 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                         Padding(
                           padding: const EdgeInsets.only(left: 16.0),
                           child: Text(
-                            S.of(context).related,
+                            TR.of(context).related,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
@@ -106,7 +106,7 @@ class _RelatedTabViewItemState extends State<RelatedTabViewItem> {
                         Padding(
                           padding: const EdgeInsets.only(left: 16.0),
                           child: Text(
-                            S.of(context).recommended,
+                            TR.of(context).recommended,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),

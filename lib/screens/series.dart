@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/cubit/anime_details_cubit.dart';
 import 'package:kayaya_flutter/cubit/anime_subscription_cubit.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/shared/widgets/anime_details/detail_view.dart';
 import 'package:kayaya_flutter/shared/widgets/anime_details/tab_episodes.dart';
@@ -49,13 +49,13 @@ class _SeriesPageState extends State<SeriesPage> {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text(S.of(context).error_fetch),
+              title: Text(TR.of(context).error_fetch),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text(S.of(context).reserved_word_return),
+                  child: Text(TR.of(context).reserved_word_return),
                 ),
               ],
             ),
@@ -93,9 +93,9 @@ class _SeriesPageState extends State<SeriesPage> {
           SeriesSubscribeButton(id: anime.id),
         ],
         tabs: [
-          S.of(context).info,
-          S.of(context).episodes,
-          S.of(context).related,
+          TR.of(context).info,
+          TR.of(context).episodes,
+          TR.of(context).related,
         ],
         tabViews: [
           InfoTabViewItem(tabKey: Key('Tab0')),
@@ -131,8 +131,8 @@ class SeriesSubscribeButton extends StatelessWidget {
                 ..showSnackBar(
                   SnackBar(
                     content: Text(state.subscribed
-                        ? S.of(context).subscribe_success
-                        : S.of(context).unsubscribe_success),
+                        ? TR.of(context).subscribe_success
+                        : TR.of(context).unsubscribe_success),
                   ),
                 );
             }
@@ -147,8 +147,8 @@ class SeriesSubscribeButton extends StatelessWidget {
           if (state is AnimeSubscriptionLoaded) {
             loading = false;
             label = Text((state.subscribed
-                    ? S.of(context).unsubscribe
-                    : S.of(context).subscribe)
+                    ? TR.of(context).unsubscribe
+                    : TR.of(context).subscribe)
                 .toUpperCase());
             icon = Icon(state.subscribed
                 ? Icons.notifications_active

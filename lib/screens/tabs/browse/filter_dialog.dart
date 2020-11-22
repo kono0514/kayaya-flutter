@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
 import 'package:kayaya_flutter/cubit/genre_list_cubit.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/models/filter.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:collection/collection.dart';
@@ -23,17 +23,17 @@ class _FilterDialogState extends State<FilterDialog> {
   Function _unorderedEq = DeepCollectionEquality.unordered().equals;
 
   Map<FilterOrderBy, String> _sortMap = {
-    FilterOrderBy.recent: S.current.filter_sort_recent,
-    FilterOrderBy.alpha_asc: S.current.filter_sort_alpha_asc,
-    FilterOrderBy.alpha_desc: S.current.filter_sort_alpha_desc,
-    FilterOrderBy.rating_desc: S.current.filter_sort_rating_high,
-    FilterOrderBy.rating_asc: S.current.filter_sort_rating_low,
+    FilterOrderBy.recent: TR.current.filter_sort_recent,
+    FilterOrderBy.alpha_asc: TR.current.filter_sort_alpha_asc,
+    FilterOrderBy.alpha_desc: TR.current.filter_sort_alpha_desc,
+    FilterOrderBy.rating_desc: TR.current.filter_sort_rating_high,
+    FilterOrderBy.rating_asc: TR.current.filter_sort_rating_low,
   };
 
   Map<FilterType, String> _typeMap = {
-    FilterType.all: S.current.all,
-    FilterType.movie: S.current.movie,
-    FilterType.series: S.current.series,
+    FilterType.all: TR.current.all,
+    FilterType.movie: TR.current.movie,
+    FilterType.series: TR.current.series,
   };
 
   FilterOrderBy _defaultSort;
@@ -94,7 +94,7 @@ class _FilterDialogState extends State<FilterDialog> {
             children: <Widget>[
               AppBar(
                 primary: false,
-                title: Text(S.of(context).filter_and_sort),
+                title: Text(TR.of(context).filter_and_sort),
                 centerTitle: true,
                 leading: IconButton(
                   icon: Icon(Icons.close),
@@ -116,7 +116,7 @@ class _FilterDialogState extends State<FilterDialog> {
                             TableRow(
                               children: [
                                 Text(
-                                  '${S.of(context).sort.toUpperCase()}:',
+                                  '${TR.of(context).sort.toUpperCase()}:',
                                   style: _labelStyle,
                                 ),
                                 DropdownButtonFormField(
@@ -143,7 +143,7 @@ class _FilterDialogState extends State<FilterDialog> {
                             TableRow(
                               children: [
                                 Text(
-                                  '${S.of(context).type.toUpperCase()}:',
+                                  '${TR.of(context).type.toUpperCase()}:',
                                   style: _labelStyle,
                                 ),
                                 DropdownButtonFormField(
@@ -171,7 +171,7 @@ class _FilterDialogState extends State<FilterDialog> {
                         ),
                         SizedBox(height: 20),
                         Text(
-                          '${S.of(context).genre.toUpperCase()}:',
+                          '${TR.of(context).genre.toUpperCase()}:',
                           style: _labelStyle,
                         ),
                         SizedBox(height: 12),
@@ -226,7 +226,7 @@ class _FilterDialogState extends State<FilterDialog> {
                                 _selectedGenres = []..addAll(_defaultGenres);
                               });
                             },
-                      child: Text(S.of(context).reset),
+                      child: Text(TR.of(context).reset),
                       style: ElevatedButton.styleFrom(
                         primary: Colors.grey.shade300,
                         onPrimary: Colors.grey.shade800,
@@ -245,7 +245,7 @@ class _FilterDialogState extends State<FilterDialog> {
                         }
                         Navigator.pop(context);
                       },
-                      child: Text(S.of(context).apply),
+                      child: Text(TR.of(context).apply),
                       // color: Theme.of(context).primaryColor,
                       // textTheme: ButtonTextTheme.primary,
                     );

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/bloc/anime_episodes_bloc.dart';
 import 'package:kayaya_flutter/cubit/anime_details_cubit.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/shared/widgets/anime_details/detail_view.dart';
 import 'package:kayaya_flutter/shared/widgets/anime_details/tab_info.dart';
@@ -50,13 +50,13 @@ class _MoviePageState extends State<MoviePage> {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text(S.of(context).error_fetch),
+              title: Text(TR.of(context).error_fetch),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text(S.of(context).reserved_word_return),
+                  child: Text(TR.of(context).reserved_word_return),
                 ),
               ],
             ),
@@ -93,7 +93,7 @@ class _MoviePageState extends State<MoviePage> {
         actions: [
           _buildPlayButton(),
         ],
-        tabs: [S.of(context).info, S.of(context).related],
+        tabs: [TR.of(context).info, TR.of(context).related],
         tabViews: [
           InfoTabViewItem(tabKey: Key('Tab0')),
           RelatedTabViewItem(tabKey: Key('Tab1'), id: anime.id),
@@ -113,7 +113,7 @@ class _MoviePageState extends State<MoviePage> {
         if (state is AnimeEpisodesLoaded) {
           loading = false;
           icon = Icon(Icons.play_circle_outline);
-          label = Text(S.of(context).play.toUpperCase());
+          label = Text(TR.of(context).play.toUpperCase());
           onPressed = () async {
             if (state.episodes.length == 0) return;
 

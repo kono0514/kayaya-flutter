@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
 import 'package:kayaya_flutter/cubit/genre_list_cubit.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/shared/widgets/app_bar/sliver_button.dart';
 import 'package:kayaya_flutter/screens/tabs/browse/filter_dialog.dart';
 
@@ -23,7 +23,7 @@ class _SliverFilterButtonState extends State<SliverFilterButton> {
           color: _hasFilter ? Colors.white : null,
           icon: Icon(Icons.tune),
           text: Text(
-            S.of(context).filter.toUpperCase(),
+            TR.of(context).filter.toUpperCase(),
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),

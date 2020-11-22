@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:kayaya_flutter/codegen/graphql_anilist_api.graphql.dart';
 import 'package:kayaya_flutter/cubit/anime_details_cubit.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:math';
 
@@ -44,7 +44,7 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                     final items = <Widget>[];
                     items.addAll([
                       Text(
-                        S.of(context).genre,
+                        TR.of(context).genre,
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                       SizedBox(height: 10),
@@ -59,7 +59,7 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                     items.addAll([
                       SizedBox(height: 30),
                       Text(
-                        S.of(context).synopsis,
+                        TR.of(context).synopsis,
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                       SizedBox(height: 10),
@@ -74,7 +74,7 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                       items.addAll([
                         SizedBox(height: 30),
                         Text(
-                          S.of(context).trailer,
+                          TR.of(context).trailer,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                         SizedBox(height: 10),

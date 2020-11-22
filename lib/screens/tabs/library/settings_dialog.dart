@@ -8,7 +8,7 @@ import 'package:kayaya_flutter/bloc/authentication_bloc.dart';
 import 'package:kayaya_flutter/cubit/locale_cubit.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/cubit/updater_cubit.dart';
-import 'package:kayaya_flutter/generated/l10n.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/shared/services/shared_preferences_service.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -86,7 +86,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                 children: [
                   AppBar(
                     primary: false,
-                    title: Text(S.of(context).settings),
+                    title: Text(TR.of(context).settings),
                     centerTitle: true,
                     leading: IconButton(
                       icon: Icon(Icons.close),
@@ -98,17 +98,17 @@ class _SettingsDialogState extends State<SettingsDialog> {
                       child: Column(
                         children: [
                           CustomSettingsSection(
-                            title: S.of(context).general,
+                            title: TR.of(context).general,
                             tiles: [
                               SettingsTile(
-                                title: S.of(context).language,
+                                title: TR.of(context).language,
                                 subtitle: languageLabel,
                                 leading: Icon(Icons.translate),
                                 onTap: () async {
                                   final result = await showDialog<String>(
                                     context: context,
                                     builder: (context) => SimpleDialog(
-                                      title: Text(S.of(context).language),
+                                      title: Text(TR.of(context).language),
                                       children: <Widget>[
                                         buildSimpleDialogItem('English', 'en'),
                                         buildSimpleDialogItem('Монгол', 'mn'),
@@ -122,21 +122,21 @@ class _SettingsDialogState extends State<SettingsDialog> {
                                 },
                               ),
                               SettingsTile(
-                                title: S.of(context).theme,
+                                title: TR.of(context).theme,
                                 subtitle: themeLabel,
                                 leading: Icon(Icons.brightness_medium),
                                 onTap: () async {
                                   final result = await showDialog<int>(
                                     context: context,
                                     builder: (context) => SimpleDialog(
-                                      title: Text(S.of(context).theme),
+                                      title: Text(TR.of(context).theme),
                                       children: <Widget>[
                                         buildSimpleDialogItem(
-                                            S.of(context).theme_dark, 1),
+                                            TR.of(context).theme_dark, 1),
                                         buildSimpleDialogItem(
-                                            S.of(context).theme_light, 2),
+                                            TR.of(context).theme_light, 2),
                                         buildSimpleDialogItem(
-                                            S.of(context).theme_system, 0),
+                                            TR.of(context).theme_system, 0),
                                       ],
                                     ),
                                   );
@@ -158,7 +158,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                                 },
                               ),
                               SettingsTile(
-                                title: S.of(context).clear_search_history,
+                                title: TR.of(context).clear_search_history,
                                 leading: Icon(Icons.history),
                                 onTap: () {
                                   sps.clearSearchHistory();
@@ -192,10 +192,10 @@ class _SettingsDialogState extends State<SettingsDialog> {
                             ],
                           ),
                           CustomSettingsSection(
-                            title: S.of(context).about,
+                            title: TR.of(context).about,
                             tiles: [
                               SettingsTile(
-                                title: S.of(context).source_code,
+                                title: TR.of(context).source_code,
                                 subtitle: sourceUrl,
                                 onTap: () async {
                                   if (await canLaunch(sourceUrl)) {
@@ -206,7 +206,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                             ],
                           ),
                           CustomSettingsSection(
-                            title: S.of(context).credits,
+                            title: TR.of(context).credits,
                             tiles: [
                               SettingsTile(
                                 title: 'Search powered by Algolia',
