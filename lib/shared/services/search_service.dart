@@ -1,5 +1,5 @@
 import 'package:algolia/algolia.dart';
-import 'package:kayaya_flutter/models/search_result.dart';
+import 'package:kayaya_flutter/search/model/search_result.dart';
 
 abstract class SearchService {
   Future<SearchResult> search(String query);
