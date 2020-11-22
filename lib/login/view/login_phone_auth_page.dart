@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kayaya_flutter/bloc/authentication_bloc.dart';
+import 'package:kayaya_flutter/shared/bloc/authentication_bloc.dart';
 import 'package:kayaya_flutter/login/login.dart';
 import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:kayaya_flutter/shared/widgets/spinner_button.dart';

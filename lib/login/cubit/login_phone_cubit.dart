@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kayaya_flutter/bloc/authentication_bloc.dart';
+import 'package:kayaya_flutter/shared/bloc/authentication_bloc.dart';
 import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:quiver/core.dart';
 
