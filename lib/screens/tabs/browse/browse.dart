@@ -11,9 +11,9 @@ import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/screens/tabs/browse/browse_anime_list_tile.dart';
-import 'package:kayaya_flutter/widgets/app_bar/custom_sliver_app_bar.dart';
+import 'package:kayaya_flutter/shared/widgets/app_bar/custom_sliver_app_bar.dart';
 import 'package:kayaya_flutter/screens/tabs/browse/sliver_filter_button.dart';
-import 'package:kayaya_flutter/widgets/list_bottom_loader.dart';
+import 'package:kayaya_flutter/shared/widgets/list_bottom_loader.dart';
 
 class BrowsePage extends StatefulWidget {
   final ScrollController scrollController;

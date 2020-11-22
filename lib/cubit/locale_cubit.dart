@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
-import 'package:kayaya_flutter/services/shared_preferences_service.dart';
+import 'package:kayaya_flutter/shared/services/shared_preferences_service.dart';
 
 part 'locale_state.dart';
 

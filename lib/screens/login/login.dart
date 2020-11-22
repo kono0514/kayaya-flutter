@@ -4,8 +4,8 @@ import 'package:kayaya_flutter/bloc/authentication_bloc.dart';
 import 'package:kayaya_flutter/cubit/login_cubit.dart';
 import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:kayaya_flutter/screens/login/phone_auth.dart';
-import 'package:kayaya_flutter/widgets/sign_in_button.dart';
-import 'package:kayaya_flutter/widgets/spinner_button.dart';
+import 'package:kayaya_flutter/shared/widgets/sign_in_button.dart';
+import 'package:kayaya_flutter/shared/widgets/spinner_button.dart';
 
 class LoginPage extends StatelessWidget {
   final bool disableAnonymous;

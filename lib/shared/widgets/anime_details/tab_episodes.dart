@@ -8,10 +8,10 @@ import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/bloc/anime_episodes_bloc.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
-import 'package:kayaya_flutter/widgets/icon_popup_menu.dart';
+import 'package:kayaya_flutter/shared/widgets/icon_popup_menu.dart';
 import 'package:kayaya_flutter/utils/launchers.dart';
-import 'package:kayaya_flutter/widgets/list_bottom_loader.dart';
-import 'package:kayaya_flutter/widgets/player/source_chooser_dialog.dart';
+import 'package:kayaya_flutter/shared/widgets/list_bottom_loader.dart';
+import 'package:kayaya_flutter/shared/widgets/player/source_chooser_dialog.dart';
 
 class EpisodesTabViewItem extends StatefulWidget {
   final String id;

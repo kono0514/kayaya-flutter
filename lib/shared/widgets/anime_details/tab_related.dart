@@ -6,7 +6,7 @@ import 'package:kayaya_flutter/cubit/anime_relations_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/router.dart';
-import 'package:kayaya_flutter/widgets/anime_horiz_tile.dart';
+import 'package:kayaya_flutter/shared/widgets/anime_horiz_tile.dart';
 
 // TODO: Create view dedicated for empty related/recommended
 

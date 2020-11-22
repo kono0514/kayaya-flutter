@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kayaya_flutter/widgets/spinner_button.dart';
+import 'package:kayaya_flutter/shared/widgets/spinner_button.dart';
 
 class SignInButton extends SpinnerButton {
   SignInButton({

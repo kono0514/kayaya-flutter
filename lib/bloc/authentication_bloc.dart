@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kayaya_flutter/repositories/authentication_repository.dart';
-import 'package:kayaya_flutter/services/notification_service.dart';
+import 'package:kayaya_flutter/shared/services/notification_service.dart';
 import 'package:kayaya_flutter/utils/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';

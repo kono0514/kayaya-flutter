@@ -2,7 +2,7 @@ import 'package:dynamic_widget/dynamic_widget.dart';
 import 'package:dynamic_widget/dynamic_widget/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:kayaya_flutter/widgets/dynamic_widget_parser/utils.dart';
+import 'package:kayaya_flutter/shared/widgets/dynamic_widget_parser/utils.dart';
 
 class CustomListViewWidgetParser extends WidgetParser {
   @override

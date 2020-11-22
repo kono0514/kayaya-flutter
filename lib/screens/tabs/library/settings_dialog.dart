@@ -10,7 +10,7 @@ import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/cubit/updater_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/router.dart';
-import 'package:kayaya_flutter/services/shared_preferences_service.dart';
+import 'package:kayaya_flutter/shared/services/shared_preferences_service.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:settings_ui/src/abstract_section.dart';

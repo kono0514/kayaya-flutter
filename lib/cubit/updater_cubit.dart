@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_xupdate/flutter_xupdate.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:kayaya_flutter/services/shared_preferences_service.dart';
+import 'package:kayaya_flutter/shared/services/shared_preferences_service.dart';
 
 part 'updater_state.dart';
 

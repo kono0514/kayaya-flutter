@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auto_pip/flutter_auto_pip.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
-import 'package:kayaya_flutter/widgets/player/custom_material_controls.dart';
+import 'package:kayaya_flutter/shared/widgets/player/custom_material_controls.dart';
 import 'package:video_player/video_player.dart';
 
 class FullscreenPlayer extends StatefulWidget {

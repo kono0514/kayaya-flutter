@@ -6,7 +6,7 @@ import 'package:kayaya_flutter/screens/tabs/browse/browse.dart';
 import 'package:kayaya_flutter/screens/tabs/featured/featured.dart';
 import 'package:kayaya_flutter/screens/tabs/library/library.dart';
 import 'package:kayaya_flutter/screens/search.dart';
-import 'package:kayaya_flutter/widgets/navigation_bar/material_tab_scaffold.dart';
+import 'package:kayaya_flutter/shared/widgets/navigation_bar/material_tab_scaffold.dart';
 
 class NavigationTabScaffold extends StatefulWidget {
   @override

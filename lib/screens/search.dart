@@ -10,7 +10,7 @@ import 'package:kayaya_flutter/bloc/search_bloc.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/utils/hex_color.dart';
 import 'package:kayaya_flutter/router.dart';
-import 'package:kayaya_flutter/services/shared_preferences_service.dart';
+import 'package:kayaya_flutter/shared/services/shared_preferences_service.dart';
 
 typedef GetSearchSuggestions = Future<List<String>> Function();
 

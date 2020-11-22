@@ -9,14 +9,14 @@ import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/cubit/updater_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/screens/login/login.dart';
-import 'package:kayaya_flutter/services/search_service.dart';
+import 'package:kayaya_flutter/shared/services/search_service.dart';
 import 'package:kayaya_flutter/utils/graphql_client.dart';
-import 'package:kayaya_flutter/services/notification_service.dart';
+import 'package:kayaya_flutter/shared/services/notification_service.dart';
 import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/theme_data.dart';
-import 'package:kayaya_flutter/widgets/navigation_bar/material_tab_scaffold.dart';
+import 'package:kayaya_flutter/shared/widgets/navigation_bar/material_tab_scaffold.dart';
 
 class AppWrapper extends StatefulWidget {
   const AppWrapper({Key key}) : super(key: key);

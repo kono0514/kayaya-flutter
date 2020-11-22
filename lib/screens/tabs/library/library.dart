@@ -7,8 +7,8 @@ import 'package:kayaya_flutter/bloc/subscription_list_bloc.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/repositories/user_data_repository.dart';
-import 'package:kayaya_flutter/widgets/app_bar/custom_sliver_app_bar.dart';
-import 'package:kayaya_flutter/widgets/app_bar/sliver_button.dart';
+import 'package:kayaya_flutter/shared/widgets/app_bar/custom_sliver_app_bar.dart';
+import 'package:kayaya_flutter/shared/widgets/app_bar/sliver_button.dart';
 import 'package:kayaya_flutter/screens/tabs/library/settings_dialog.dart';
 
 class LibraryPage extends StatefulWidget {

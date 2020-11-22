@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
-import 'package:kayaya_flutter/widgets/player/fullscreen_player.dart';
+import 'package:kayaya_flutter/shared/widgets/player/fullscreen_player.dart';
 
 void launchPlayRelease(
   BuildContext context,

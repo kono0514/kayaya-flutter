@@ -5,7 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kayaya_flutter/models/search_result.dart';
-import 'package:kayaya_flutter/services/search_service.dart';
+import 'package:kayaya_flutter/shared/services/search_service.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'search_event.dart';

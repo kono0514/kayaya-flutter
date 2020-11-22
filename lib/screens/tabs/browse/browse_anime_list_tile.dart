@@ -6,7 +6,7 @@ import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/utils/hex_color.dart';
-import 'package:kayaya_flutter/widgets/rounded_cached_network_image.dart';
+import 'package:kayaya_flutter/shared/widgets/rounded_cached_network_image.dart';
 
 class BrowseAnimeListTile extends StatelessWidget {
   final BrowseAnimes$Query$Animes$Data anime;

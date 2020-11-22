@@ -4,7 +4,7 @@ import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/screens/tabs/browse/browse.dart';
 import 'package:kayaya_flutter/screens/tabs/featured/featured.dart';
 import 'package:kayaya_flutter/screens/tabs/library/library.dart';
-import 'package:kayaya_flutter/widgets/keep_alive_widget.dart';
+import 'package:kayaya_flutter/shared/widgets/keep_alive_widget.dart';
 
 typedef TabNavigatorPageBuilder = Widget Function(
     ScrollController scrollController);

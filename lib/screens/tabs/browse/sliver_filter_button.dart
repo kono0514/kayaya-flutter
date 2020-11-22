@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
 import 'package:kayaya_flutter/cubit/genre_list_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
-import 'package:kayaya_flutter/widgets/app_bar/sliver_button.dart';
+import 'package:kayaya_flutter/shared/widgets/app_bar/sliver_button.dart';
 import 'package:kayaya_flutter/screens/tabs/browse/filter_dialog.dart';
 
 class SliverFilterButton extends StatefulWidget {

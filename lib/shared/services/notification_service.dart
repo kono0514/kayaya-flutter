@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/models/notification.dart';
-import 'package:kayaya_flutter/services/shared_preferences_service.dart';
+import 'package:kayaya_flutter/shared/services/shared_preferences_service.dart';
 import 'package:kayaya_flutter/utils/utils.dart';
 
 class NotificationService {

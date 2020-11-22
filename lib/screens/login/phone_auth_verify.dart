@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/cubit/login_phone_cubit.dart';
-import 'package:kayaya_flutter/widgets/spinner_button.dart';
+import 'package:kayaya_flutter/shared/widgets/spinner_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class LoginPhoneAuthVerifyPage extends StatefulWidget {

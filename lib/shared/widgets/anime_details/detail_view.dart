@@ -5,9 +5,9 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/utils/easing_linear_gradient.dart';
-import 'package:kayaya_flutter/widgets/anime_details/anime_info.dart';
-import 'package:kayaya_flutter/widgets/colored_tab_bar.dart';
-import 'package:kayaya_flutter/widgets/keep_alive_widget.dart';
+import 'package:kayaya_flutter/shared/widgets/anime_details/anime_info.dart';
+import 'package:kayaya_flutter/shared/widgets/colored_tab_bar.dart';
+import 'package:kayaya_flutter/shared/widgets/keep_alive_widget.dart';
 
 class DetailView extends StatefulWidget {
   final List<String> tabs;
