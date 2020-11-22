@@ -6,7 +6,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/bloc/anime_list_bloc.dart';
 import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
-import 'package:kayaya_flutter/cubit/genre_list_cubit.dart';
 import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/router.dart';
@@ -27,7 +26,6 @@ class BrowsePage extends StatefulWidget {
 class _BrowsePageState extends State<BrowsePage> {
   AnimeListBloc animeListBloc;
   BrowseFilterCubit browseFilterCubit;
-  GenreListCubit genreListCubit;
   Completer<void> refreshCompleter;
 
   // Disable infinite scroll while more data is loading
@@ -42,8 +40,6 @@ class _BrowsePageState extends State<BrowsePage> {
       context.read<AniimRepository>(),
       browseFilterCubit,
     )..add(AnimeListFetched());
-    genreListCubit = GenreListCubit(context.read<AniimRepository>())
-      ..getGenreList();
   }
 
   @override
@@ -59,7 +55,6 @@ class _BrowsePageState extends State<BrowsePage> {
       providers: [
         BlocProvider.value(value: browseFilterCubit),
         BlocProvider.value(value: animeListBloc),
-        BlocProvider.value(value: genreListCubit),
       ],
       child: Scaffold(
         extendBody: true,

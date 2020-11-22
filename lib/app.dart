@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:kayaya_flutter/cubit/genre_list_cubit.dart';
 import 'package:kayaya_flutter/shared/bloc/authentication_bloc.dart';
 import 'package:kayaya_flutter/shared/cubit/locale_cubit.dart';
 import 'package:kayaya_flutter/shared/cubit/theme_cubit.dart';
@@ -27,12 +28,15 @@ class AppWrapper extends StatefulWidget {
 }
 
 class _AppWrapperState extends State<AppWrapper> {
-  AuthenticationRepository authRepo = AuthenticationRepository();
+  AuthenticationRepository authRepo;
+  AniimRepository aniimRepo;
 
   @override
   void initState() {
     super.initState();
     _setupLocators();
+    authRepo = AuthenticationRepository();
+    aniimRepo = AniimRepository();
   }
 
   @override
@@ -40,22 +44,33 @@ class _AppWrapperState extends State<AppWrapper> {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(value: authRepo),
-        RepositoryProvider(create: (_) => AniimRepository()),
+        RepositoryProvider.value(value: aniimRepo),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-              create: (_) =>
-                  AuthenticationBloc(authenticationRepository: authRepo)),
-          BlocProvider(create: (_) => ThemeCubit()..resolveTheme()),
-          BlocProvider(create: (_) => LocaleCubit()..resolveLocale()),
-          BlocProvider(
+            create: (_) => AuthenticationBloc(authRepo),
             lazy: false,
+          ),
+          BlocProvider(
+            create: (_) => ThemeCubit()..resolveTheme(),
+            lazy: false,
+          ),
+          BlocProvider(
+            create: (_) => LocaleCubit()..resolveLocale(),
+            lazy: false,
+          ),
+          BlocProvider(
+            create: (_) => GenreListCubit(aniimRepo)..getGenreList(),
+            lazy: true,
+          ),
+          BlocProvider(
             create: (_) {
               final cubit = UpdaterCubit();
               cubit.init().then((value) => cubit.checkForUpdate());
               return cubit;
             },
+            lazy: false,
           ),
         ],
         child: Builder(
