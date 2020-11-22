@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
+import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/repositories/user_data_repository.dart';
 
 part 'subscription_list_event.dart';

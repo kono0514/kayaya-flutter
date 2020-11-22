@@ -5,8 +5,8 @@ import 'package:artemis/artemis.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gql/ast.dart';
-import 'package:kayaya_flutter/api/graphql_anilist_api.graphql.dart';
-import 'package:kayaya_flutter/api/coercers.dart';
+import 'package:kayaya_flutter/codegen/graphql_anilist_api.graphql.dart';
+import 'package:kayaya_flutter/codegen/coercers.dart';
 part 'graphql_api.graphql.g.dart';
 
 mixin AnimeItemFieldsMixin {

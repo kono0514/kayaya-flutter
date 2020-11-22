@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart'
     hide NestedScrollView, NestedScrollViewState;
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
-import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
+import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:kayaya_flutter/utils/easing_linear_gradient.dart';
 import 'package:kayaya_flutter/widgets/anime_details/anime_info.dart';

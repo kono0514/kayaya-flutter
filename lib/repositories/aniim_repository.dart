@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
+import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/models/filter.dart';
 
 class AniimRepository {

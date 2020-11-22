@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:kayaya_flutter/api/graphql_anilist_api.graphql.dart';
+import 'package:kayaya_flutter/codegen/graphql_anilist_api.graphql.dart';
 
 GraphqlAnilistApi$Query$Media
     fromGraphQLAnilistMediaToDartGraphqlAnilistApi$Query$Media(

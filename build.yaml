@@ -31,8 +31,8 @@ targets:
               dart_type:
                 name: GraphqlAnilistApi$Query$Media
                 imports:
-                  - 'package:kayaya_flutter/api/graphql_anilist_api.graphql.dart'
-              custom_parser_import: 'package:kayaya_flutter/api/coercers.dart'
+                  - 'package:kayaya_flutter/codegen/graphql_anilist_api.graphql.dart'
+              custom_parser_import: 'package:kayaya_flutter/codegen/coercers.dart'
             - graphql_type: CountryCode
               dart_type: String
             - graphql_type: FuzzyDateInt

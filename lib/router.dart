@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
+import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/app.dart';
 import 'package:kayaya_flutter/screens/login/login.dart';
 import 'package:kayaya_flutter/screens/movie.dart';

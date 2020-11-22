@@ -4,7 +4,7 @@ import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:kayaya_flutter/api/graphql_anilist_api.graphql.dart';
+import 'package:kayaya_flutter/codegen/graphql_anilist_api.graphql.dart';
 import 'package:kayaya_flutter/cubit/anime_details_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';

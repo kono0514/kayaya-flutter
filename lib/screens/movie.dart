@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart'
     hide NestedScrollView, NestedScrollViewState;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
+import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/bloc/anime_episodes_bloc.dart';
 import 'package:kayaya_flutter/cubit/anime_details_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
