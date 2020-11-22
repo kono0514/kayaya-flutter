@@ -16,6 +16,9 @@ ThemeData lightTheme = ThemeData(
     buttonColor: Colors.blue,
     textTheme: ButtonTextTheme.primary,
   ),
+  snackBarTheme: SnackBarThemeData(
+    behavior: SnackBarBehavior.floating,
+  ),
   typography: Typography.material2018(platform: defaultTargetPlatform),
   splashFactory: InkRipple.splashFactory,
   highlightColor: Colors.transparent,
@@ -25,6 +28,9 @@ ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.grey[900],
+  ),
+  snackBarTheme: SnackBarThemeData(
+    behavior: SnackBarBehavior.floating,
   ),
   typography: Typography.material2018(platform: defaultTargetPlatform),
   splashFactory: InkRipple.splashFactory,

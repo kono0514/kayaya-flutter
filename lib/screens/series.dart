@@ -127,7 +127,7 @@ class SeriesSubscribeButton extends StatelessWidget {
           if (state is AnimeSubscriptionLoaded) {
             if (state.isDirty) {
               Scaffold.of(context)
-                ..removeCurrentSnackBar()
+                ..hideCurrentSnackBar()
                 ..showSnackBar(
                   SnackBar(
                     content: Text(state.subscribed

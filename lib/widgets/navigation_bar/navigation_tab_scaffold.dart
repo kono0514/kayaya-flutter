@@ -207,13 +207,14 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
     _lastBackPressTime = now;
     // Prevent duplicate snackbar
     if (difference >= snackbarVisibleDuration) {
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Press back again to exit'),
-          duration: snackbarVisibleDuration,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      Scaffold.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            content: Text('Press back again to exit'),
+            duration: snackbarVisibleDuration,
+          ),
+        );
     }
     return false;
   }

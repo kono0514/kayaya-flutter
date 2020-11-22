@@ -70,10 +70,10 @@ class _SettingsDialogState extends State<SettingsDialog> {
             builder: (context) => BlocListener<UpdaterCubit, UpdaterState>(
               listener: (context, state) {
                 if (state is UpdaterError) {
-                  Scaffold.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.message['message']),
-                    ),
+                  Scaffold.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(content: Text(state.message['message'])),
                   );
                 }
               },
@@ -157,7 +157,9 @@ class _SettingsDialogState extends State<SettingsDialog> {
                                 leading: Icon(Icons.history),
                                 onTap: () {
                                   sps.clearSearchHistory();
-                                  Scaffold.of(context).showSnackBar(
+                                  Scaffold.of(context)
+                                    ..hideCurrentSnackBar()
+                                    ..showSnackBar(
                                     SnackBar(
                                       content: Text(S
                                           .of(context)

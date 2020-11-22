@@ -38,9 +38,9 @@ void launchPlayRelease(
       );
     } catch (e) {
       // An exception is thrown if browser app is not installed on Android device.
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('Failed to open browser'),
-      ));
+      Scaffold.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text('Failed to open a browser')));
       debugPrint(e.toString());
     }
   }

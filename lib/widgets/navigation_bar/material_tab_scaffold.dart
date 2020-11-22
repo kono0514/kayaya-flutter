@@ -219,13 +219,14 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
     _lastBackPressTime = now;
     // Prevent duplicate snackbar
     if (!isSnackbarVisible) {
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Press back again to exit'),
-          duration: snackbarVisibleDuration,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      Scaffold.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            content: Text('Press back again to exit'),
+            duration: snackbarVisibleDuration,
+          ),
+        );
     }
     return false;
   }

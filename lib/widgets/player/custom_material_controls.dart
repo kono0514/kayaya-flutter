@@ -213,13 +213,14 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                   if (value == 'copy_link') {
                     Clipboard.setData(
                         new ClipboardData(text: controller.dataSource));
-                    Scaffold.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('URL copied to clipboard'),
-                        behavior: SnackBarBehavior.floating,
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
+                    Scaffold.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(
+                        SnackBar(
+                          content: Text('URL copied to clipboard'),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
                   } else if (value == 'open_external') {
                     controller.pause();
                     android_intent.Intent()
@@ -317,20 +318,21 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
             await FlutterAutoPip.enterPipMode();
           } on PlatformException catch (e) {
             if (e.code == 'PIP_EXCEPTION') {
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(e.message),
-                  behavior: SnackBarBehavior.floating,
-                  duration: const Duration(seconds: 5),
-                  action: SnackBarAction(
-                    label: 'PERMISSION',
-                    onPressed: () async {
-                      controller.pause();
-                      _launchPipIntent();
-                    },
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Text(e.message),
+                    duration: const Duration(seconds: 5),
+                    action: SnackBarAction(
+                      label: 'PERMISSION',
+                      onPressed: () async {
+                        controller.pause();
+                        _launchPipIntent();
+                      },
+                    ),
                   ),
-                ),
-              );
+                );
             } else {
               rethrow;
             }
