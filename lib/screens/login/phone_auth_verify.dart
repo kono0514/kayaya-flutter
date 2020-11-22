@@ -1,21 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kayaya_flutter/repositories/authentication_repository.dart';
-import 'package:kayaya_flutter/screens/login/phone_auth_error.dart';
+import 'package:kayaya_flutter/cubit/login_phone_cubit.dart';
 import 'package:kayaya_flutter/widgets/spinner_button.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class LoginPhoneAuthVerifyPage extends StatefulWidget {
-  final String verificationId;
-  final String phoneNumber;
-
-  const LoginPhoneAuthVerifyPage({
-    Key key,
-    @required this.verificationId,
-    @required this.phoneNumber,
-  }) : super(key: key);
+  const LoginPhoneAuthVerifyPage({Key key}) : super(key: key);
 
   @override
   _LoginPhoneAuthVerifyPageState createState() =>
@@ -23,18 +14,7 @@ class LoginPhoneAuthVerifyPage extends StatefulWidget {
 }
 
 class _LoginPhoneAuthVerifyPageState extends State<LoginPhoneAuthVerifyPage> {
-  final TextEditingController textEditingController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  AuthenticationRepository _authRepo;
-  FirebaseAuthException _authException;
-  bool _verifying = false;
-  String _currentCode = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _authRepo = context.read<AuthenticationRepository>();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,105 +26,138 @@ class _LoginPhoneAuthVerifyPageState extends State<LoginPhoneAuthVerifyPage> {
         elevation: 0,
       ),
       extendBodyBehindAppBar: true,
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 60.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Verify SMS code',
-                style: _theme.textTheme.headline4.apply(
-                  color: _theme.textTheme.bodyText1.color,
+      body: BlocListener<LoginPhoneCubit, LoginPhoneState>(
+        listenWhen: (previous, current) => previous.status != current.status,
+        listener: (context, state) {
+          if (state.status == LoginPhoneStatus.verifyError) {
+            Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Text(state.exception?.message ?? 'Wrong code?'),
+                  behavior: SnackBarBehavior.floating,
+                  margin: EdgeInsets.fromLTRB(36.0, 5.0, 36.0, 10.0),
                 ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                '${widget.phoneNumber} дугаарт явуулсан 6 оронтой кодыг оруулна уу',
-              ),
-              SizedBox(height: 30),
-              PinCodeTextField(
-                appContext: context,
-                length: 6,
-                controller: textEditingController,
-                autoFocus: true,
-                autovalidateMode: AutovalidateMode.disabled,
-                keyboardType: TextInputType.phone,
-                animationType: AnimationType.none,
-                backgroundColor: Colors.transparent,
-                cursorColor: _theme.cursorColor,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-                textStyle: _theme.textTheme.bodyText1.copyWith(fontSize: 20),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'OTP code required';
-                  }
-                  if (value.length != 6) {
-                    return 'Code must be 6 digit long';
-                  }
-                  if (num.tryParse(value) == null) {
-                    return 'Code must contain digits only';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _currentCode = value;
-                  });
-                },
-              ),
-              if (_authException != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: FirebaseAuthError(_authException),
+              );
+          }
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 60.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Verify SMS code',
+                  style: _theme.textTheme.headline4.apply(
+                    color: _theme.textTheme.bodyText1.color,
+                  ),
                 ),
-              SizedBox(height: 20),
-              SpinnerButton(
-                label: Text('Verify'),
-                loading: _verifying,
-                onPressed: _submitCode,
-              ),
-              TextButton(
-                child: Text('Change number'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+                SizedBox(height: 10),
+                Builder(builder: (context) {
+                  final _number = context.select(
+                      (LoginPhoneCubit cubit) => cubit.state.phoneNumber);
+                  return Text(
+                    '$_number дугаарт явуулсан 6 оронтой кодыг оруулна уу',
+                  );
+                }),
+                SizedBox(height: 30),
+                _PinInput(),
+                SizedBox(height: 20),
+                _VerifyButton(
+                  formKey: _formKey,
+                ),
+                TextButton(
+                  child: Text('Change number'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+}
 
-  _submitCode() async {
-    if (!_formKey.currentState.validate()) return;
+class _VerifyButton extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
 
-    setState(() {
-      _verifying = true;
-      _authException = null;
-    });
-    try {
-      await _authRepo.signInWithPhoneNumberVerify(
-        verificationId: widget.verificationId,
-        code: _currentCode,
-      );
-    } on FirebaseAuthException catch (e) {
-      _formKey.currentState.reset();
-      textEditingController.text = '';
-      setState(() {
-        _currentCode = '';
-        _authException = e;
-      });
-    }
-    if (mounted) {
-      setState(() {
-        _verifying = false;
-      });
-    }
+  const _VerifyButton({Key key, @required this.formKey}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final status =
+        context.select((LoginPhoneCubit cubit) => cubit.state.status);
+
+    return SpinnerButton(
+      label: Text('Verify'),
+      loading: status == LoginPhoneStatus.verifying,
+      onPressed: () {
+        if (formKey.currentState.validate()) {
+          context.read<LoginPhoneCubit>().verifySMSCode();
+        }
+      },
+    );
+  }
+}
+
+class _PinInput extends StatefulWidget {
+  const _PinInput({Key key}) : super(key: key);
+
+  @override
+  __PinInputState createState() => __PinInputState();
+}
+
+class __PinInputState extends State<_PinInput> {
+  final TextEditingController textEditingController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final _theme = Theme.of(context);
+
+    return BlocListener<LoginPhoneCubit, LoginPhoneState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (context, state) {
+        if (state.status == LoginPhoneStatus.verifyError) {
+          textEditingController.text = '';
+        }
+      },
+      child: PinCodeTextField(
+        appContext: context,
+        length: 6,
+        controller: textEditingController,
+        autoDisposeControllers: true,
+        autoFocus: true,
+        autovalidateMode: AutovalidateMode.disabled,
+        keyboardType: TextInputType.phone,
+        animationType: AnimationType.none,
+        backgroundColor: Colors.transparent,
+        cursorColor: _theme.cursorColor,
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+        ],
+        textStyle: _theme.textTheme.bodyText1.copyWith(fontSize: 20),
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'OTP code required';
+          }
+          if (value.length != 6) {
+            return 'Code must be 6 digit long';
+          }
+          if (num.tryParse(value) == null) {
+            return 'Code must contain digits only';
+          }
+          return null;
+        },
+        onChanged: (value) {
+          context.read<LoginPhoneCubit>().otpChanged(value);
+        },
+      ),
+    );
   }
 }

@@ -1,185 +1,183 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kayaya_flutter/bloc/authentication_bloc.dart';
+import 'package:kayaya_flutter/cubit/login_cubit.dart';
 import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:kayaya_flutter/screens/login/phone_auth.dart';
 import 'package:kayaya_flutter/widgets/sign_in_button.dart';
 import 'package:kayaya_flutter/widgets/spinner_button.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key key}) : super(key: key);
+class LoginPage extends StatelessWidget {
+  final bool disableAnonymous;
 
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  AuthenticationRepository authRepo;
-  bool _numberLoggingIn = false;
-  bool _googleLoggingIn = false;
-  bool _facebookLoggingIn = false;
-  bool _anonymousLoggingIn = false;
-
-  bool get loggingIn =>
-      _numberLoggingIn ||
-      _googleLoggingIn ||
-      _facebookLoggingIn ||
-      _anonymousLoggingIn;
-
-  @override
-  void initState() {
-    super.initState();
-    authRepo = RepositoryProvider.of<AuthenticationRepository>(context);
-  }
+  const LoginPage({
+    Key key,
+    this.disableAnonymous = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 60.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              width: 46,
-              height: 46,
-              child: SignInButton(
-                icon: Padding(
-                  padding: const EdgeInsets.only(left: 6.0),
-                  child: Icon(Icons.phone, size: 28),
-                ),
-                label: Text('Sign in with Number'),
-                color: Colors.grey.shade700,
-                disabled: loggingIn,
-                loading: _numberLoggingIn,
-                onPressed: _number,
-              ),
-            ),
-            SizedBox(height: 8),
-            SizedBox(
-              width: 46,
-              height: 46,
-              child: SignInButton(
-                icon: Image.asset(
-                  'assets/logos/google_light.png',
-                  width: 40,
-                  height: 40,
-                ),
-                label: Text('Sign in with Google'),
-                color: Color.fromRGBO(219, 68, 55, 1),
-                disabled: loggingIn,
-                loading: _googleLoggingIn,
-                onPressed: _google,
-              ),
-            ),
-            SizedBox(height: 8),
-            SizedBox(
-              width: 46,
-              height: 46,
-              child: SignInButton(
-                icon: Padding(
-                  padding: const EdgeInsets.only(left: 6.0),
-                  child: Image.asset(
-                    'assets/logos/facebook.png',
-                    width: 30,
-                    height: 30,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      extendBodyBehindAppBar: true,
+      body: BlocProvider(
+        create: (context) => LoginCubit(
+          context.read<AuthenticationRepository>(),
+          context.read<AuthenticationBloc>(),
+        ),
+        child: BlocListener<LoginCubit, LoginState>(
+          listener: (context, state) {
+            if (state is LoginError) {
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        state.exception.message ?? 'Authentication Failure'),
+                    behavior: SnackBarBehavior.floating,
+                    margin: EdgeInsets.fromLTRB(36.0, 5.0, 36.0, 10.0),
                   ),
-                ),
-                label: Text('Sign in with Facebook'),
-                color: Color.fromRGBO(23, 120, 242, 1),
-                disabled: loggingIn,
-                loading: _facebookLoggingIn,
-                onPressed: _facebook,
-              ),
+                );
+            }
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 60.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _NumberButton(),
+                SizedBox(height: 8),
+                _GoogleButton(),
+                SizedBox(height: 8),
+                _FacebookButton(),
+                SizedBox(height: 8),
+                if (!disableAnonymous) _AnonymousButton(),
+              ],
             ),
-            SizedBox(height: 8),
-            SizedBox(
-              width: 46,
-              height: 46,
-              child: SpinnerButton(
-                label: Text('Continue without signing in'),
-                spinnerColor: Theme.of(context).buttonColor,
-                disabled: loggingIn,
-                loading: _anonymousLoggingIn,
-                onPressed: _anonymous,
-                buttonType: TextButton,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
+}
 
-  void _number() async {
-    setState(() {
-      _numberLoggingIn = true;
-    });
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPhoneAuthPage()),
+class _AnonymousButton extends StatelessWidget {
+  const _AnonymousButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginCubit, LoginState>(
+      builder: (context, state) => SizedBox(
+        width: 46,
+        height: 46,
+        child: SpinnerButton(
+          label: Text('Continue without signing in'),
+          spinnerColor: Theme.of(context).buttonColor,
+          disabled: state is LoginSubmitting,
+          loading:
+              state is LoginSubmitting && state.method == LoginMethod.anonymous,
+          onPressed: () {
+            context.read<LoginCubit>().signInAnonymously();
+          },
+          buttonType: TextButton,
+        ),
+      ),
     );
-    if (mounted) {
-      setState(() {
-        _numberLoggingIn = false;
-      });
-    }
   }
+}
 
-  void _google() async {
-    setState(() {
-      _googleLoggingIn = true;
-    });
-    try {
-      await authRepo.signInWithGoogle();
-    } on SocialAuthProcessAborted {
-      print('AuthProcessAborted');
-    } on SocialAuthProcessFailed {
-      print('SocialAuthProcessFailed');
-    } on FirebaseAuthException catch (e) {
-      print(e);
-    }
-    if (mounted) {
-      setState(() {
-        _googleLoggingIn = false;
-      });
-    }
+class _FacebookButton extends StatelessWidget {
+  const _FacebookButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginCubit, LoginState>(
+      builder: (context, state) => SizedBox(
+        width: 46,
+        height: 46,
+        child: SignInButton(
+          icon: Padding(
+            padding: const EdgeInsets.only(left: 6.0),
+            child: Image.asset(
+              'assets/logos/facebook.png',
+              width: 30,
+              height: 30,
+            ),
+          ),
+          label: Text('Sign in with Facebook'),
+          color: Color.fromRGBO(23, 120, 242, 1),
+          disabled: state is LoginSubmitting,
+          loading:
+              state is LoginSubmitting && state.method == LoginMethod.facebook,
+          onPressed: () {
+            context.read<LoginCubit>().signInWithFacebook();
+          },
+        ),
+      ),
+    );
   }
+}
 
-  void _facebook() async {
-    setState(() {
-      _facebookLoggingIn = true;
-    });
-    try {
-      await authRepo.signInWithFacebook();
-    } on SocialAuthProcessAborted {
-      print('AuthProcessAborted');
-    } on SocialAuthProcessFailed {
-      print('SocialAuthProcessFailed');
-    } on FirebaseAuthException catch (e) {
-      print(e);
-    }
-    if (mounted) {
-      setState(() {
-        _facebookLoggingIn = false;
-      });
-    }
+class _GoogleButton extends StatelessWidget {
+  const _GoogleButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginCubit, LoginState>(
+      builder: (context, state) => SizedBox(
+        width: 46,
+        height: 46,
+        child: SignInButton(
+          icon: Image.asset(
+            'assets/logos/google_light.png',
+            width: 40,
+            height: 40,
+          ),
+          label: Text('Sign in with Google'),
+          color: Color.fromRGBO(219, 68, 55, 1),
+          disabled: state is LoginSubmitting,
+          loading:
+              state is LoginSubmitting && state.method == LoginMethod.google,
+          onPressed: () {
+            context.read<LoginCubit>().signInWithGoogle();
+          },
+        ),
+      ),
+    );
   }
+}
 
-  void _anonymous() async {
-    setState(() {
-      _anonymousLoggingIn = true;
-    });
-    try {
-      await authRepo.signInAnonymously();
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
-    }
-    if (mounted) {
-      setState(() {
-        _anonymousLoggingIn = false;
-      });
-    }
+class _NumberButton extends StatelessWidget {
+  const _NumberButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginCubit, LoginState>(
+      builder: (context, state) => SizedBox(
+        width: 46,
+        height: 46,
+        child: SignInButton(
+          icon: Padding(
+            padding: const EdgeInsets.only(left: 6.0),
+            child: Icon(Icons.phone, size: 28),
+          ),
+          label: Text('Sign in with Number'),
+          color: Colors.grey.shade700,
+          disabled: state is LoginSubmitting,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginPhoneAuthPage(),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }

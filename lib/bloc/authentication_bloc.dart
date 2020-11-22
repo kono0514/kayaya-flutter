@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:kayaya_flutter/services/notification_service.dart';
+import 'package:kayaya_flutter/utils/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
@@ -38,6 +39,8 @@ class AuthenticationBloc
   ) async* {
     if (event is AuthenticationUserChanged) {
       yield _mapAuthenticationUserChangedToState(event);
+    } else if (event is AuthenticationLogoutRequested) {
+      _authRepo.logOut();
     }
   }
 

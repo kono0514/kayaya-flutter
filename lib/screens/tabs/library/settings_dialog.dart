@@ -1,15 +1,20 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kayaya_flutter/bloc/authentication_bloc.dart';
 import 'package:kayaya_flutter/cubit/locale_cubit.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/cubit/updater_cubit.dart';
 import 'package:kayaya_flutter/generated/l10n.dart';
-import 'package:kayaya_flutter/repositories/authentication_repository.dart';
+import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/services/shared_preferences_service.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:settings_ui/src/abstract_section.dart';
+import 'package:settings_ui/src/cupertino_settings_section.dart';
 
 class SettingsDialog extends StatefulWidget {
   final BuildContext mainContext;
@@ -74,7 +79,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                     ..hideCurrentSnackBar()
                     ..showSnackBar(
                       SnackBar(content: Text(state.message['message'])),
-                  );
+                    );
                 }
               },
               child: Column(
@@ -92,7 +97,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          SettingsSection(
+                          CustomSettingsSection(
                             title: S.of(context).general,
                             tiles: [
                               SettingsTile(
@@ -160,12 +165,12 @@ class _SettingsDialogState extends State<SettingsDialog> {
                                   Scaffold.of(context)
                                     ..hideCurrentSnackBar()
                                     ..showSnackBar(
-                                    SnackBar(
-                                      content: Text(S
-                                          .of(context)
-                                          .clear_search_history_success),
-                                    ),
-                                  );
+                                      SnackBar(
+                                        content: Text(S
+                                            .of(context)
+                                            .clear_search_history_success),
+                                      ),
+                                    );
                                 },
                               ),
                               SettingsTile(
@@ -176,19 +181,17 @@ class _SettingsDialogState extends State<SettingsDialog> {
                                       .checkForUpdate();
                                 },
                               ),
-                              SettingsTile(
-                                title: 'Logout',
-                                leading: Icon(Icons.history),
-                                onTap: () {
-                                  context
-                                      .read<AuthenticationRepository>()
-                                      .logOut();
-                                  Navigator.pop(context);
-                                },
-                              ),
                             ],
                           ),
-                          SettingsSection(
+                          CustomSettingsSection(
+                            title: 'Account',
+                            tiles: [
+                              _buildAuthSettingsTile(),
+                              _buildCreateAccountSettingsTile(),
+                              _buildLogoutSettingsTile(),
+                            ],
+                          ),
+                          CustomSettingsSection(
                             title: S.of(context).about,
                             tiles: [
                               SettingsTile(
@@ -202,7 +205,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                               ),
                             ],
                           ),
-                          SettingsSection(
+                          CustomSettingsSection(
                             title: S.of(context).credits,
                             tiles: [
                               SettingsTile(
@@ -239,5 +242,172 @@ class _SettingsDialogState extends State<SettingsDialog> {
         horizontal: 24.0,
       ),
     );
+  }
+
+  Widget _buildAuthSettingsTile() {
+    return Builder(
+      builder: (context) {
+        final state = context.watch<AuthenticationBloc>().state;
+        var loggedInAs = 'Unauthenticated';
+        if (state is Authenticated) {
+          if (state.user.isAnonymous) {
+            loggedInAs = 'Anonymous User';
+          } else if (state.user.providerData.length > 0) {
+            final provider = state.user.providerData[0];
+            switch (provider.providerId) {
+              case 'facebook.com':
+                loggedInAs = 'Facebook (${provider.displayName})';
+                break;
+              case 'google.com':
+                loggedInAs = 'Google (${provider.email})';
+                break;
+              case 'phone':
+                loggedInAs = 'Phone (${provider.phoneNumber})';
+                break;
+              default:
+                loggedInAs = state.user.providerData[0].providerId;
+            }
+          }
+        }
+
+        return SettingsTile(
+          leading: Icon(Icons.person),
+          title: 'Logged in as',
+          subtitle: loggedInAs,
+          enabled: false,
+        );
+      },
+    );
+  }
+
+  Widget _buildCreateAccountSettingsTile() {
+    return Builder(
+      builder: (context) {
+        final state = context.watch<AuthenticationBloc>().state;
+
+        if (state is Authenticated && state.user.isAnonymous) {
+          return SettingsTile(
+            leading: Icon(Icons.merge_type),
+            title: 'Create/Link Account',
+            subtitle: 'Your anonymous account data will persist',
+            onTap: () async {
+              Navigator.pushNamed(
+                context,
+                Routes.loginPage,
+                arguments: LoginPageArguments(disableAnonymous: true),
+              );
+            },
+          );
+        }
+
+        return Container();
+      },
+    );
+  }
+
+  Widget _buildLogoutSettingsTile() {
+    return SettingsTile(
+      title: 'Logout',
+      leading: Icon(Icons.logout),
+      onTap: () async {
+        final state = context.read<AuthenticationBloc>().state;
+        var _confirm = true;
+
+        if (state is Authenticated && state.user.isAnonymous) {
+          _confirm = await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Are you sure?'),
+              content: SingleChildScrollView(
+                child: Text(
+                  'You are currently using an anonymous account. '
+                  'If you logout now, you will lose all your data. '
+                  'Consider account linking instead. ',
+                ),
+              ),
+              actions: [
+                TextButton(
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.pop(context, false);
+                  },
+                ),
+                TextButton(
+                  child: Text('Logout'),
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  },
+                ),
+              ],
+            ),
+          );
+        }
+
+        if (_confirm ?? false) {
+          context
+              .read<AuthenticationBloc>()
+              .add(AuthenticationLogoutRequested());
+          Navigator.pop(context);
+        }
+      },
+    );
+  }
+}
+
+class CustomSettingsSection extends AbstractSection {
+  final List<Widget> tiles;
+  final TextStyle titleTextStyle;
+
+  CustomSettingsSection({
+    Key key,
+    String title,
+    this.tiles,
+    this.titleTextStyle,
+  }) : super(key: key, title: title);
+
+  @override
+  Widget build(BuildContext context) {
+    if (kIsWeb || Platform.isIOS)
+      return iosSection();
+    else if (Platform.isAndroid)
+      return androidSection(context);
+    else
+      return androidSection(context);
+  }
+
+  Widget iosSection() {
+    return CupertinoSettingsSection(
+      tiles,
+      header: title == null ? null : Text(title, style: titleTextStyle),
+    );
+  }
+
+  Widget androidSection(BuildContext context) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      title == null
+          ? Container()
+          : Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                title,
+                style: titleTextStyle ??
+                    TextStyle(
+                      color: Theme.of(context).accentColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ),
+      ListView.separated(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: tiles.length,
+        separatorBuilder: (BuildContext context, int index) =>
+            Divider(height: 1),
+        itemBuilder: (BuildContext context, int index) {
+          return tiles[index];
+        },
+      ),
+      if (showBottomDivider) Divider(height: 1)
+    ]);
   }
 }

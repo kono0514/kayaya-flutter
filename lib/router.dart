@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kayaya_flutter/api/graphql_api.graphql.dart';
 import 'package:kayaya_flutter/app.dart';
+import 'package:kayaya_flutter/screens/login/login.dart';
 import 'package:kayaya_flutter/screens/movie.dart';
 import 'package:kayaya_flutter/screens/search.dart';
 import 'package:kayaya_flutter/screens/series.dart';
@@ -12,9 +13,17 @@ class Routes {
   static const movieOrSeries = '/movieOrSeries';
   static const searchPage = '/search';
   static const libraryPage = '/library';
+  static const loginPage = '/login';
 
-  static List<String> get values =>
-      [homePage, seriesPage, moviePage, movieOrSeries, searchPage, libraryPage];
+  static List<String> get values => [
+        homePage,
+        seriesPage,
+        moviePage,
+        movieOrSeries,
+        searchPage,
+        libraryPage,
+        loginPage
+      ];
 }
 
 typedef RouteResolver = Route<dynamic> Function(RouteSettings settings);
@@ -66,7 +75,16 @@ class MyRouter {
       return MaterialPageRoute(
         builder: (context) => SearchPage(),
       );
-    }
+    },
+    Routes.loginPage: (settings) {
+      var args = settings.arguments as LoginPageArguments;
+      args ??= LoginPageArguments();
+      return MaterialPageRoute(
+        builder: (context) => LoginPage(
+          disableAnonymous: args.disableAnonymous,
+        ),
+      );
+    },
   };
 
   @visibleForTesting
@@ -114,4 +132,10 @@ class MediaArguments {
   final bool isMinimal;
 
   MediaArguments(this.anime, {this.isMinimal = false});
+}
+
+class LoginPageArguments {
+  final bool disableAnonymous;
+
+  LoginPageArguments({this.disableAnonymous = false});
 }
