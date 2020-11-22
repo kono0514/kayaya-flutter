@@ -8,8 +8,9 @@ import 'package:kayaya_flutter/cubit/locale_cubit.dart';
 import 'package:kayaya_flutter/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/cubit/updater_cubit.dart';
 import 'package:kayaya_flutter/locale/generated/l10n.dart';
-import 'package:kayaya_flutter/screens/login/login.dart';
+import 'package:kayaya_flutter/login/login.dart';
 import 'package:kayaya_flutter/shared/services/search_service.dart';
+import 'package:kayaya_flutter/splash/splash.dart';
 import 'package:kayaya_flutter/utils/graphql_client.dart';
 import 'package:kayaya_flutter/shared/services/notification_service.dart';
 import 'package:kayaya_flutter/repositories/authentication_repository.dart';
@@ -123,7 +124,7 @@ class _AppHomeState extends State<AppHome> {
           return LoginPage();
         }
 
-        return Center(child: CircularProgressIndicator());
+        return SplashPage();
       },
     );
   }
