@@ -58,43 +58,6 @@ class _FeaturedPageState extends State<FeaturedPage> {
             ),
           ];
         },
-        // body: CarouselSlider(
-        //   options: CarouselOptions(height: 200.0),
-        //   items: [
-        //     RoundedCachedNetworkImage(
-        //       childClipBehavior: Clip.hardEdge,
-        //       url:
-        //           'https://s4.anilist.co/file/anilistcdn/media/anime/banner/21-wf37VakJmZqs.jpg',
-        //       child: Align(
-        //         alignment: Alignment.bottomLeft,
-        //         child: Container(
-        //           width: double.infinity,
-        //           decoration: BoxDecoration(
-        //             gradient: EasingLinearGradient.generate(
-        //               begin: Alignment.bottomCenter,
-        //               end: Alignment.topCenter,
-        //               fromColor: Color.fromRGBO(0, 0, 0, 0.8),
-        //               toColor: Color.fromRGBO(0, 0, 0, 0),
-        //             ),
-        //             border: Border.all(width: 0, color: Colors.transparent),
-        //           ),
-        //           child: Padding(
-        //             padding: const EdgeInsets.only(
-        //               left: 16.0,
-        //               right: 16.0,
-        //               bottom: 8.0,
-        //               top: 40.0,
-        //             ),
-        //             child: Text(
-        //               'One Piece',
-        //               style: TextStyle(fontSize: 20.0),
-        //             ),
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //   ],
-        // ),
         body: FutureBuilder(
           future: _future,
           builder: (context, snapshot) {
