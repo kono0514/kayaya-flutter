@@ -166,7 +166,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                                     ..hideCurrentSnackBar()
                                     ..showSnackBar(
                                       SnackBar(
-                                        content: Text(S
+                                        content: Text(TR
                                             .of(context)
                                             .clear_search_history_success),
                                       ),
