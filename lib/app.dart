@@ -15,7 +15,7 @@ import 'package:kayaya_flutter/shared/services/notification_service.dart';
 import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/router.dart';
-import 'package:kayaya_flutter/theme_data.dart';
+import 'package:kayaya_flutter/theme.dart';
 import 'package:kayaya_flutter/shared/widgets/navigation_bar/material_tab_scaffold.dart';
 
 class AppWrapper extends StatefulWidget {
