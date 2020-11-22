@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:kayaya_flutter/cubit/genre_list_cubit.dart';
+import 'package:kayaya_flutter/shared/cubit/genre_list_cubit.dart';
 import 'package:kayaya_flutter/shared/bloc/authentication_bloc.dart';
 import 'package:kayaya_flutter/shared/cubit/locale_cubit.dart';
 import 'package:kayaya_flutter/shared/cubit/theme_cubit.dart';
