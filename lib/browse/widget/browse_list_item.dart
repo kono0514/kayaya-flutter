@@ -2,17 +2,17 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kayaya_flutter/browse/browse.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
-import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
 import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/utils/hex_color.dart';
 import 'package:kayaya_flutter/shared/widgets/rounded_cached_network_image.dart';
 
-class BrowseAnimeListTile extends StatelessWidget {
+class BrowseListItem extends StatelessWidget {
   final BrowseAnimes$Query$Animes$Data anime;
   final VoidCallback onPressed;
 
-  const BrowseAnimeListTile({Key key, this.anime, @required this.onPressed})
+  const BrowseListItem({Key key, this.anime, @required this.onPressed})
       : super(key: key);
 
   List<Widget> _buildGenres(BuildContext context) {

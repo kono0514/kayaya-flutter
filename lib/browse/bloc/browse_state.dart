@@ -1,41 +1,34 @@
-part of 'anime_list_bloc.dart';
+part of 'browse_bloc.dart';
 
-abstract class AnimeListState extends Equatable {
-  const AnimeListState();
-
-  @override
-  List<Object> get props => [];
-}
-
-class AnimeListInitial extends AnimeListState {}
-
-class AnimeListInitialState extends AnimeListState {
-  const AnimeListInitialState();
+abstract class BrowseState extends Equatable {
+  const BrowseState();
 
   @override
   List<Object> get props => [];
 }
 
-class AnimeListLoadedState extends AnimeListState {
+class BrowseInitial extends BrowseState {}
+
+class BrowseLoaded extends BrowseState {
   final List<BrowseAnimes$Query$Animes$Data> animes;
   final BrowseAnimes$Query$Animes$PaginatorInfo paginatorInfo;
   final Exception error;
   final String timestamp;
 
-  const AnimeListLoadedState({
+  const BrowseLoaded({
     this.animes,
     this.paginatorInfo,
     this.timestamp,
     this.error,
   });
 
-  AnimeListLoadedState copyWith({
+  BrowseLoaded copyWith({
     List<BrowseAnimes$Query$Animes$Data> animes,
     BrowseAnimes$Query$Animes$PaginatorInfo paginatorInfo,
     Optional<Exception> error,
     String timestamp,
   }) {
-    return AnimeListLoadedState(
+    return BrowseLoaded(
       animes: animes ?? this.animes,
       paginatorInfo: paginatorInfo ?? this.paginatorInfo,
       error: error != null ? error.orNull : this.error,
@@ -48,15 +41,15 @@ class AnimeListLoadedState extends AnimeListState {
 }
 
 // Initial list fetch error
-class AnimeListErrorState extends AnimeListState {
+class BrowseError extends BrowseState {
   final Exception exception;
 
-  const AnimeListErrorState(this.exception);
+  const BrowseError(this.exception);
 
   @override
   List<Object> get props => [exception];
 }
 
-class AnimeListEmptyState extends AnimeListState {
-  const AnimeListEmptyState();
+class BrowseEmpty extends BrowseState {
+  const BrowseEmpty();
 }

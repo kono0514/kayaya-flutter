@@ -1,17 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kayaya_flutter/bloc/anime_list_bloc.dart';
-import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
+import 'package:kayaya_flutter/browse/browse.dart';
 import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/router.dart';
-import 'package:kayaya_flutter/screens/tabs/browse/browse_anime_list_tile.dart';
 import 'package:kayaya_flutter/shared/widgets/app_bar/custom_sliver_app_bar.dart';
-import 'package:kayaya_flutter/screens/tabs/browse/sliver_filter_button.dart';
 import 'package:kayaya_flutter/shared/widgets/list_bottom_loader.dart';
 
 class BrowsePage extends StatefulWidget {
@@ -24,7 +19,7 @@ class BrowsePage extends StatefulWidget {
 }
 
 class _BrowsePageState extends State<BrowsePage> {
-  AnimeListBloc animeListBloc;
+  BrowseBloc browseBloc;
   BrowseFilterCubit browseFilterCubit;
   Completer<void> refreshCompleter;
 
@@ -36,15 +31,15 @@ class _BrowsePageState extends State<BrowsePage> {
     super.initState();
     refreshCompleter = Completer<void>();
     browseFilterCubit = BrowseFilterCubit();
-    animeListBloc = AnimeListBloc(
+    browseBloc = BrowseBloc(
       context.read<AniimRepository>(),
       browseFilterCubit,
-    )..add(AnimeListFetched());
+    )..add(BrowseFetched());
   }
 
   @override
   void dispose() {
-    animeListBloc.close();
+    browseBloc.close();
     browseFilterCubit.close();
     super.dispose();
   }
@@ -54,7 +49,7 @@ class _BrowsePageState extends State<BrowsePage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: browseFilterCubit),
-        BlocProvider.value(value: animeListBloc),
+        BlocProvider.value(value: browseBloc),
       ],
       child: Scaffold(
         extendBody: true,
@@ -65,20 +60,20 @@ class _BrowsePageState extends State<BrowsePage> {
               CustomSliverAppBar(
                 title: Text(TR.of(context).tabs_browse),
                 actions: [
-                  SliverFilterButton(),
+                  FilterButton(),
                 ],
               ),
             ];
           },
-          body: BlocConsumer<AnimeListBloc, AnimeListState>(
-            cubit: animeListBloc,
+          body: BlocConsumer<BrowseBloc, BrowseState>(
+            cubit: browseBloc,
             listener: (context, state) {
               // Re-enable scroll fetching after receiving state change
               disableInfiniteScroll = false;
-              if (state is AnimeListLoadedState) {
+              if (state is BrowseLoaded) {
                 refreshCompleter?.complete();
                 refreshCompleter = Completer();
-              } else if (state is AnimeListInitialState) {
+              } else if (state is BrowseInitial) {
                 widget.scrollController.animateTo(
                   0.0,
                   duration: const Duration(milliseconds: 100),
@@ -87,15 +82,15 @@ class _BrowsePageState extends State<BrowsePage> {
               }
             },
             builder: (context, state) {
-              if (state is AnimeListErrorState) {
-                return buildErrorWidget(state);
+              if (state is BrowseError) {
+                return _BrowseError(error: state.exception.toString());
               }
 
-              if (state is AnimeListEmptyState) {
-                return buildEmptyWidget();
+              if (state is BrowseEmpty) {
+                return _BrowseEmpty();
               }
 
-              if (state is AnimeListLoadedState) {
+              if (state is BrowseLoaded) {
                 return buildListWidget(state);
               }
 
@@ -109,7 +104,7 @@ class _BrowsePageState extends State<BrowsePage> {
     );
   }
 
-  Widget buildListWidget(AnimeListLoadedState state) {
+  Widget buildListWidget(BrowseLoaded state) {
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         if (notification.depth != 0) return false;
@@ -121,13 +116,13 @@ class _BrowsePageState extends State<BrowsePage> {
             notification.metrics.pixels >
                 notification.metrics.maxScrollExtent - 200) {
           disableInfiniteScroll = true;
-          animeListBloc.add(AnimeListFetched());
+          browseBloc.add(BrowseFetched());
         }
         return false;
       },
       child: RefreshIndicator(
         onRefresh: () {
-          animeListBloc.add(AnimeListRefreshed());
+          browseBloc.add(BrowseRefreshed());
           return refreshCompleter.future;
         },
         child: CustomScrollView(
@@ -137,7 +132,7 @@ class _BrowsePageState extends State<BrowsePage> {
                 (BuildContext context, int index) {
                   return index >= state.animes.length
                       ? ListBottomLoader(error: state.error != null)
-                      : BrowseAnimeListTile(
+                      : BrowseListItem(
                           anime: state.animes[index],
                           onPressed: () {
                             final anime = state.animes[index];
@@ -159,28 +154,42 @@ class _BrowsePageState extends State<BrowsePage> {
       ),
     );
   }
+}
 
-  Widget buildErrorWidget(AnimeListErrorState state) {
+class _BrowseError extends StatelessWidget {
+  final String error;
+
+  const _BrowseError({Key key, @required this.error}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            state.exception.toString(),
+            error,
             style: TextStyle(
               color: Colors.red[400],
             ),
           ),
           TextButton(
-            onPressed: () => animeListBloc.add(AnimeListRefreshed()),
+            onPressed: () {
+              context.read<BrowseBloc>().add(BrowseRefreshed());
+            },
             child: Text('Retry'),
           ),
         ],
       ),
     );
   }
+}
 
-  Widget buildEmptyWidget() {
+class _BrowseEmpty extends StatelessWidget {
+  const _BrowseEmpty({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -189,7 +198,9 @@ class _BrowsePageState extends State<BrowsePage> {
             'No items found. Adjust filter and try again.',
           ),
           TextButton(
-            onPressed: () => animeListBloc.add(AnimeListRefreshed()),
+            onPressed: () {
+              context.read<BrowseBloc>().add(BrowseRefreshed());
+            },
             child: Text('Retry'),
           ),
         ],

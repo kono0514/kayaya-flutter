@@ -1,11 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kayaya_flutter/browse/browse.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
-import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
 import 'package:kayaya_flutter/shared/cubit/genre_list_cubit.dart';
 import 'package:kayaya_flutter/locale/generated/l10n.dart';
-import 'package:kayaya_flutter/models/filter.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:collection/collection.dart';
 

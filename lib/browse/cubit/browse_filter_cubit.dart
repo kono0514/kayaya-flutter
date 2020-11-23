@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kayaya_flutter/models/filter.dart';
+import 'package:kayaya_flutter/browse/browse.dart';
 
 part 'browse_filter_state.dart';
 

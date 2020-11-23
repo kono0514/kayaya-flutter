@@ -1,6 +1,6 @@
 import 'package:dynamic_widget/dynamic_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:kayaya_flutter/utils/easing_linear_gradient.dart';
+import 'package:kayaya_flutter/shared/widgets/easing_linear_gradient.dart';
 
 class CarouselSliderItemFadedChildWidgetParser extends WidgetParser {
   @override

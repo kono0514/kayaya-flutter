@@ -2,26 +2,25 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:kayaya_flutter/browse/browse.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
-import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
 import 'package:kayaya_flutter/utils/logger.dart';
-import 'package:kayaya_flutter/models/filter.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:quiver/core.dart';
 import 'package:rxdart/rxdart.dart';
 
-part 'anime_list_event.dart';
-part 'anime_list_state.dart';
+part 'browse_event.dart';
+part 'browse_state.dart';
 
-class AnimeListBloc extends Bloc<AnimeListEvent, AnimeListState> {
+class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
   final AniimRepository repository;
   final BrowseFilterCubit filterCubit;
 
-  AnimeListBloc(this.repository, this.filterCubit) : super(AnimeListInitial()) {
+  BrowseBloc(this.repository, this.filterCubit) : super(BrowseInitial()) {
     filterCubit.listen((filterState) {
       logger.wtf(
-          'AnimeListBloc: BrowseFilterModified emitted. Will now trigger AnimeListRefreshed');
-      add(AnimeListRefreshed());
+          'BrowseBloc: BrowseFilterModified emitted. Will now trigger BrowseRefreshed');
+      add(BrowseRefreshed());
     });
   }
 
@@ -35,12 +34,12 @@ class AnimeListBloc extends Bloc<AnimeListEvent, AnimeListState> {
   }
 
   @override
-  Stream<Transition<AnimeListEvent, AnimeListState>> transformEvents(
-      Stream<AnimeListEvent> events, transitionFn) {
-    final forwardStream = events.where((event) => event is! AnimeListFetched);
+  Stream<Transition<BrowseEvent, BrowseState>> transformEvents(
+      Stream<BrowseEvent> events, transitionFn) {
+    final forwardStream = events.where((event) => event is! BrowseFetched);
 
     final debounceStream = events
-        .where((event) => event is AnimeListFetched)
+        .where((event) => event is BrowseFetched)
         .debounceTime(Duration(milliseconds: 300));
 
     return super.transformEvents(
@@ -48,35 +47,35 @@ class AnimeListBloc extends Bloc<AnimeListEvent, AnimeListState> {
   }
 
   @override
-  Stream<AnimeListState> mapEventToState(
-    AnimeListEvent event,
+  Stream<BrowseState> mapEventToState(
+    BrowseEvent event,
   ) async* {
     final currentState = state;
 
-    if (event is AnimeListRefreshed) {
+    if (event is BrowseRefreshed) {
       try {
-        // if (currentState is! AnimeListLoadedState) {
-        yield AnimeListInitialState();
+        // if (currentState is! BrowseLoaded) {
+        yield BrowseInitial();
         // }
         Filter filter = _getCurrentFilterFromState(filterCubit.state);
 
         final animes = await repository.fetchAnimes(page: 1, filter: filter);
 
         if (animes.data.length == 0) {
-          yield AnimeListEmptyState();
+          yield BrowseEmpty();
           return;
         }
 
-        yield AnimeListLoadedState(
+        yield BrowseLoaded(
           animes: animes.data,
           paginatorInfo: animes.paginatorInfo,
           timestamp: DateTime.now().toString(),
         );
       } catch (e) {
-        yield AnimeListErrorState(e);
+        yield BrowseError(e);
       }
-    } else if (event is AnimeListFetched) {
-      if (currentState is AnimeListLoadedState) {
+    } else if (event is BrowseFetched) {
+      if (currentState is BrowseLoaded) {
         if (!currentState.paginatorInfo.hasMorePages) return;
 
         if (currentState.error != null) {
@@ -90,38 +89,38 @@ class AnimeListBloc extends Bloc<AnimeListEvent, AnimeListState> {
       try {
         int page = 1;
         Filter filter = _getCurrentFilterFromState(filterCubit.state);
-        if (currentState is AnimeListLoadedState) {
+        if (currentState is BrowseLoaded) {
           page = currentState.paginatorInfo.currentPage + 1;
         }
 
         final animes = await repository.fetchAnimes(page: page, filter: filter);
 
         if (animes.data.length == 0) {
-          yield AnimeListEmptyState();
+          yield BrowseEmpty();
           return;
         }
 
-        if (currentState is AnimeListLoadedState) {
-          yield AnimeListLoadedState(
+        if (currentState is BrowseLoaded) {
+          yield BrowseLoaded(
             animes: currentState.animes + animes.data,
             paginatorInfo: animes.paginatorInfo,
             timestamp: DateTime.now().toString(),
           );
         } else {
-          yield AnimeListLoadedState(
+          yield BrowseLoaded(
             animes: animes.data,
             paginatorInfo: animes.paginatorInfo,
             timestamp: DateTime.now().toString(),
           );
         }
       } catch (e) {
-        if (currentState is AnimeListLoadedState) {
+        if (currentState is BrowseLoaded) {
           yield currentState.copyWith(
             error: Optional.of(e),
             timestamp: DateTime.now().toString(),
           );
         } else {
-          yield AnimeListErrorState(e);
+          yield BrowseError(e);
         }
       }
     }

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kayaya_flutter/cubit/browse_filter_cubit.dart';
+import 'package:kayaya_flutter/browse/browse.dart';
 import 'package:kayaya_flutter/shared/cubit/genre_list_cubit.dart';
 import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/shared/widgets/app_bar/sliver_button.dart';
-import 'package:kayaya_flutter/screens/tabs/browse/filter_dialog.dart';
 
-class SliverFilterButton extends StatefulWidget {
+class FilterButton extends StatefulWidget {
   @override
-  _SliverFilterButtonState createState() => _SliverFilterButtonState();
+  _FilterButtonState createState() => _FilterButtonState();
 }
 
-class _SliverFilterButtonState extends State<SliverFilterButton> {
+class _FilterButtonState extends State<FilterButton> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BrowseFilterCubit, BrowseFilterState>(
