@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
-import 'package:kayaya_flutter/shared/widgets/player/fullscreen_player.dart';
+import 'package:kayaya_flutter/locale/generated/l10n.dart';
+import 'package:kayaya_flutter/player/player.dart';
 
 void launchPlayRelease(
   BuildContext context,
@@ -10,11 +11,23 @@ void launchPlayRelease(
   GetAnimeEpisodes$Query$Episodes$Data$Releases release,
 ) {
   if (release.type == 'direct') {
+    String subtitle = '';
+    subtitle += '${release.group}';
+    if (release.resolution != null) {
+      subtitle += ' / ${release.resolution}';
+    }
+    if (anime.animeType == AnimeType.series) {
+      final _epLabel = TR.of(context).episode_item(episode.number);
+      subtitle = '$_epLabel ($subtitle)';
+    }
+
     Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
       pageBuilder: (_, __, ___) => FullscreenPlayer(
-        anime: anime,
-        episode: episode,
-        release: release,
+        mediaInfo: MediaInfo(
+          title: anime.name,
+          subtitle: subtitle,
+          url: release.url,
+        ),
       ),
       transitionDuration: Duration(seconds: 0),
     ));

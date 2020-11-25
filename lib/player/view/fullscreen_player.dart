@@ -3,21 +3,15 @@ import 'dart:async';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auto_pip/flutter_auto_pip.dart';
-import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
-import 'package:kayaya_flutter/locale/generated/l10n.dart';
-import 'package:kayaya_flutter/shared/widgets/player/custom_material_controls.dart';
 import 'package:video_player/video_player.dart';
+import 'package:kayaya_flutter/player/player.dart';
 
 class FullscreenPlayer extends StatefulWidget {
-  final AnimeItemFieldsMixin anime;
-  final GetAnimeEpisodes$Query$Episodes$Data episode;
-  final GetAnimeEpisodes$Query$Episodes$Data$Releases release;
+  final MediaInfo mediaInfo;
 
   const FullscreenPlayer({
     Key key,
-    @required this.anime,
-    @required this.episode,
-    @required this.release,
+    @required this.mediaInfo,
   }) : super(key: key);
 
   @override
@@ -53,7 +47,7 @@ class _FullscreenPlayerState extends State<FullscreenPlayer> {
   }
 
   void initializeVideo() {
-    _controller = VideoPlayerController.network(widget.release.url);
+    _controller = VideoPlayerController.network(widget.mediaInfo.url);
     _chewieController = ChewieController(
       videoPlayerController: _controller,
       aspectRatio: 16 / 9,
@@ -64,23 +58,10 @@ class _FullscreenPlayerState extends State<FullscreenPlayer> {
       allowMuting: false,
       allowPlaybackSpeedChanging: true,
       customControls: CustomMaterialControls(
-        title: widget.anime.name,
-        subtitle: subtitleText,
+        title: widget.mediaInfo.title,
+        subtitle: widget.mediaInfo.subtitle,
       ),
     );
-  }
-
-  String get subtitleText {
-    String _text = '';
-    _text += '${widget.release.group}';
-    if (widget.release.resolution != null) {
-      _text += ' / ${widget.release.resolution}';
-    }
-    if (widget.anime.animeType == AnimeType.series) {
-      final _epLabel = TR.of(context).episode_item(widget.episode.number);
-      _text = '$_epLabel ($_text)';
-    }
-    return _text;
   }
 
   @override

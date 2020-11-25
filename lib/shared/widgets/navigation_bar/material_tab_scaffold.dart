@@ -57,7 +57,7 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
     ),
     TabNavigatorItem(
       navbarItem: () => BottomNavigationBarItem(
-        icon: Icon(Icons.library_add),
+        icon: Icon(Icons.library_books),
         label: TR.current.tabs_library,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),

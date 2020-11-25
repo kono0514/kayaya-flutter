@@ -6,10 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_auto_pip/flutter_auto_pip.dart';
 import 'package:kayaya_flutter/utils/player_utils.dart';
-import 'package:kayaya_flutter/shared/widgets/player/material_progress_bar.dart';
-import 'package:kayaya_flutter/shared/widgets/player/player_circle_button.dart';
 import 'package:video_player/video_player.dart';
 import 'package:package_info/package_info.dart';
+import 'package:kayaya_flutter/player/player.dart';
 import 'package:intent/intent.dart' as android_intent;
 import 'package:intent/action.dart' as android_action;
 
