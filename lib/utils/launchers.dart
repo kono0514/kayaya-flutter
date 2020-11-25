@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
+import 'package:kayaya_flutter/features/player/player.dart';
 import 'package:kayaya_flutter/locale/generated/l10n.dart';
-import 'package:kayaya_flutter/player/player.dart';
 
 void launchPlayRelease(
   BuildContext context,

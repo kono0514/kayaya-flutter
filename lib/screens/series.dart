@@ -6,11 +6,11 @@ import 'package:kayaya_flutter/cubit/anime_details_cubit.dart';
 import 'package:kayaya_flutter/cubit/anime_subscription_cubit.dart';
 import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
-import 'package:kayaya_flutter/shared/widgets/anime_details/detail_view.dart';
-import 'package:kayaya_flutter/shared/widgets/anime_details/tab_episodes.dart';
-import 'package:kayaya_flutter/shared/widgets/anime_details/tab_info.dart';
-import 'package:kayaya_flutter/shared/widgets/anime_details/tab_related.dart';
-import 'package:kayaya_flutter/shared/widgets/spinner_button.dart';
+import 'package:kayaya_flutter/core/widgets/anime_details/detail_view.dart';
+import 'package:kayaya_flutter/core/widgets/anime_details/tab_episodes.dart';
+import 'package:kayaya_flutter/core/widgets/anime_details/tab_info.dart';
+import 'package:kayaya_flutter/core/widgets/anime_details/tab_related.dart';
+import 'package:kayaya_flutter/core/widgets/spinner_button.dart';
 
 // (Implemented workaround with extended_nested_scroll_view) TODO: https://github.com/flutter/flutter/issues/40740
 

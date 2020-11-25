@@ -3,22 +3,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:kayaya_flutter/shared/cubit/genre_list_cubit.dart';
-import 'package:kayaya_flutter/shared/bloc/authentication_bloc.dart';
-import 'package:kayaya_flutter/shared/cubit/locale_cubit.dart';
-import 'package:kayaya_flutter/shared/cubit/theme_cubit.dart';
-import 'package:kayaya_flutter/shared/cubit/updater_cubit.dart';
+import 'package:kayaya_flutter/core/bloc/authentication_bloc.dart';
+import 'package:kayaya_flutter/core/cubit/genre_list_cubit.dart';
+import 'package:kayaya_flutter/core/cubit/locale_cubit.dart';
+import 'package:kayaya_flutter/core/cubit/theme_cubit.dart';
+import 'package:kayaya_flutter/core/cubit/updater_cubit.dart';
+import 'package:kayaya_flutter/core/services/notification_service.dart';
+import 'package:kayaya_flutter/core/services/search_service.dart';
+import 'package:kayaya_flutter/core/widgets/navigation_bar/material_tab_scaffold.dart';
 import 'package:kayaya_flutter/locale/generated/l10n.dart';
-import 'package:kayaya_flutter/login/login.dart';
-import 'package:kayaya_flutter/shared/services/search_service.dart';
-import 'package:kayaya_flutter/splash/splash.dart';
-import 'package:kayaya_flutter/utils/graphql_client.dart';
-import 'package:kayaya_flutter/shared/services/notification_service.dart';
-import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
+import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/theme.dart';
-import 'package:kayaya_flutter/shared/widgets/navigation_bar/material_tab_scaffold.dart';
+import 'package:kayaya_flutter/utils/graphql_client.dart';
+
+import 'features/login/login.dart';
+import 'features/splash/splash.dart';
 
 class AppWrapper extends StatefulWidget {
   const AppWrapper({Key key}) : super(key: key);

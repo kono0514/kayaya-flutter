@@ -5,14 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
 import 'package:kayaya_flutter/router.dart';
-import 'package:kayaya_flutter/shared/widgets/app_bar/custom_sliver_app_bar.dart';
-import 'package:kayaya_flutter/shared/widgets/dynamic_widget_parser/auto_size_text_parser.dart';
-import 'package:kayaya_flutter/shared/widgets/dynamic_widget_parser/carousel_slider_item_child_faded.dart';
-import 'package:kayaya_flutter/shared/widgets/dynamic_widget_parser/carousel_slider_parser.dart';
-import 'package:kayaya_flutter/shared/widgets/dynamic_widget_parser/childless_sized_box_parser.dart';
-import 'package:kayaya_flutter/shared/widgets/dynamic_widget_parser/custom_listview_parser.dart';
-import 'package:kayaya_flutter/shared/widgets/dynamic_widget_parser/rounded_cached_network_image_parser.dart';
-import 'package:kayaya_flutter/shared/widgets/dynamic_widget_parser/scale_down_on_tap_parser.dart';
+import 'package:kayaya_flutter/core/widgets/app_bar/custom_sliver_app_bar.dart';
+import 'package:kayaya_flutter/core/widgets/dynamic_widget_parser/auto_size_text_parser.dart';
+import 'package:kayaya_flutter/core/widgets/dynamic_widget_parser/carousel_slider_item_child_faded.dart';
+import 'package:kayaya_flutter/core/widgets/dynamic_widget_parser/carousel_slider_parser.dart';
+import 'package:kayaya_flutter/core/widgets/dynamic_widget_parser/childless_sized_box_parser.dart';
+import 'package:kayaya_flutter/core/widgets/dynamic_widget_parser/custom_listview_parser.dart';
+import 'package:kayaya_flutter/core/widgets/dynamic_widget_parser/rounded_cached_network_image_parser.dart';
+import 'package:kayaya_flutter/core/widgets/dynamic_widget_parser/scale_down_on_tap_parser.dart';
 
 class FeaturedPage extends StatefulWidget {
   final ScrollController scrollController;

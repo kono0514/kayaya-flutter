@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql/client.dart';
-import 'package:kayaya_flutter/shared/services/shared_preferences_service.dart';
+import 'package:kayaya_flutter/core/services/shared_preferences_service.dart';
 import 'package:meta/meta.dart';
 
 GraphQLClient getGraphQLClient() {
