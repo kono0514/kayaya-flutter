@@ -1,12 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:kayaya_flutter/core/bloc/authentication_bloc.dart';
+import 'package:kayaya_flutter/core/repositories/user_repository/auth_repository.dart';
 
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final AuthenticationRepository repository;
+  final AuthRepository repository;
   final AuthenticationBloc authBloc;
 
   LoginCubit(this.repository, this.authBloc) : super(LoginInitial());
@@ -15,12 +15,9 @@ class LoginCubit extends Cubit<LoginState> {
     final method = LoginMethod.google;
     emit(LoginSubmitting(method));
     try {
-      final cred = await repository.signInWithGoogle();
-      if (cred.wasLinkedWithAnonymous) {
-        authBloc.add(AuthenticationUserChanged(cred.userCredential.user));
-      }
+      await repository.signInWithGoogle();
       emit(LoginInitial());
-    } on AuthException catch (e) {
+    } on SignInWithGoogleFailure catch (e) {
       emit(LoginError(e));
     }
   }
@@ -29,12 +26,9 @@ class LoginCubit extends Cubit<LoginState> {
     final method = LoginMethod.facebook;
     emit(LoginSubmitting(method));
     try {
-      final cred = await repository.signInWithFacebook();
-      if (cred.wasLinkedWithAnonymous) {
-        authBloc.add(AuthenticationUserChanged(cred.userCredential.user));
-      }
+      await repository.signInWithFacebook();
       emit(LoginInitial());
-    } on AuthException catch (e) {
+    } on SignInWithFacebookFailure catch (e) {
       emit(LoginError(e));
     }
   }
@@ -45,7 +39,7 @@ class LoginCubit extends Cubit<LoginState> {
     try {
       await repository.signInAnonymously();
       emit(LoginInitial());
-    } on AuthException catch (e) {
+    } on SignInAnonymouslyFailure catch (e) {
       emit(LoginError(e));
     }
   }

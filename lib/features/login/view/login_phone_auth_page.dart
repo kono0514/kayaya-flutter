@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:kayaya_flutter/core/bloc/authentication_bloc.dart';
+import 'package:kayaya_flutter/core/repositories/user_repository/auth_repository.dart';
 import 'package:kayaya_flutter/core/widgets/spinner_button.dart';
 
 import '../login.dart';
@@ -32,7 +32,7 @@ class _LoginPhoneAuthPageState extends State<LoginPhoneAuthPage> {
       extendBodyBehindAppBar: true,
       body: BlocProvider(
         create: (context) => LoginPhoneCubit(
-          context.read<AuthenticationRepository>(),
+          context.read<AuthRepository>(),
           context.read<AuthenticationBloc>(),
         ),
         child: BlocListener<LoginPhoneCubit, LoginPhoneState>(

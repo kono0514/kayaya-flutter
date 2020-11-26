@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:get_it/get_it.dart';
-import 'package:kayaya_flutter/repositories/authentication_repository.dart';
+import 'package:kayaya_flutter/core/repositories/user_repository/auth_repository.dart';
 import 'package:kayaya_flutter/core/services/notification_service.dart';
 import 'package:equatable/equatable.dart';
 
@@ -12,10 +12,10 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final AuthenticationRepository _authRepo;
+  final AuthRepository _authRepo;
   StreamSubscription<User> _userSubscription;
 
-  AuthenticationBloc(AuthenticationRepository authenticationRepository)
+  AuthenticationBloc(AuthRepository authenticationRepository)
       : assert(authenticationRepository != null),
         _authRepo = authenticationRepository,
         super(Uninitialized()) {
@@ -37,13 +37,13 @@ class AuthenticationBloc
     if (event is AuthenticationUserChanged) {
       yield _mapAuthenticationUserChangedToState(event);
     } else if (event is AuthenticationLogoutRequested) {
-      _authRepo.logOut();
+      _authRepo.signOut();
     }
   }
 
   AuthenticationState _mapAuthenticationUserChangedToState(
       AuthenticationUserChanged event) {
-    if (event.user != null) {
+    if (event.user != User.empty) {
       GetIt.I<NotificationService>().uploadCurrentFcmToken();
       return Authenticated(event.user);
     }

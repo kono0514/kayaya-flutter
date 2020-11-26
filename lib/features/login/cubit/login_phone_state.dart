@@ -4,7 +4,7 @@ class LoginPhoneState extends Equatable {
   final String phoneNumber;
   final String otpCode;
   final LoginPhoneStatus status;
-  final AuthException exception;
+  final AuthFailure exception;
   final String verificationId;
 
   const LoginPhoneState({
@@ -23,7 +23,7 @@ class LoginPhoneState extends Equatable {
     String phoneNumber,
     String otpCode,
     LoginPhoneStatus status,
-    Optional<AuthException> exception,
+    Optional<AuthFailure> exception,
     String verificationId,
   }) {
     return LoginPhoneState(

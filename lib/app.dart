@@ -1,19 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:kayaya_flutter/core/bloc/authentication_bloc.dart';
 import 'package:kayaya_flutter/core/cubit/genre_list_cubit.dart';
 import 'package:kayaya_flutter/core/cubit/locale_cubit.dart';
 import 'package:kayaya_flutter/core/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/core/cubit/updater_cubit.dart';
+import 'package:kayaya_flutter/core/repositories/user_repository/auth_repository.dart';
 import 'package:kayaya_flutter/core/services/notification_service.dart';
 import 'package:kayaya_flutter/core/services/search_service.dart';
 import 'package:kayaya_flutter/core/widgets/navigation_bar/material_tab_scaffold.dart';
 import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/repositories/aniim_repository.dart';
-import 'package:kayaya_flutter/repositories/authentication_repository.dart';
 import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/theme.dart';
 import 'package:kayaya_flutter/utils/graphql_client.dart';
@@ -29,14 +32,18 @@ class AppWrapper extends StatefulWidget {
 }
 
 class _AppWrapperState extends State<AppWrapper> {
-  AuthenticationRepository authRepo;
+  AuthRepository authRepo;
   AniimRepository aniimRepo;
 
   @override
   void initState() {
     super.initState();
     _setupLocators();
-    authRepo = AuthenticationRepository();
+    authRepo = FirebaseAuthRepository(
+      firebaseAuth: FirebaseAuth.instance,
+      facebookAuth: FacebookAuth.instance,
+      googleAuth: GoogleSignIn(),
+    );
     aniimRepo = AniimRepository();
   }
 

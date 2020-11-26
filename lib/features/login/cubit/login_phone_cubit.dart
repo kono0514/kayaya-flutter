@@ -1,13 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kayaya_flutter/repositories/authentication_repository.dart';
+import 'package:kayaya_flutter/core/repositories/user_repository/auth_repository.dart';
 import 'package:kayaya_flutter/core/bloc/authentication_bloc.dart';
 import 'package:quiver/core.dart';
 
 part 'login_phone_state.dart';
 
 class LoginPhoneCubit extends Cubit<LoginPhoneState> {
-  final AuthenticationRepository repository;
+  final AuthRepository repository;
   final AuthenticationBloc authBloc;
 
   LoginPhoneCubit(this.repository, this.authBloc) : super(LoginPhoneState());
@@ -32,26 +32,14 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
       exception: Optional.absent(),
     ));
     await repository.signInWithPhoneNumberSend(
-      phoneNumber: state.phoneNumber,
-      verificationCompleted: () {
-        // We don't need to do anything here.
-        // AuthenticationBloc does popping/pushing screens
-        // based on firebase login state automatically
-      },
-      verificationFailed: (e) {
-        emit(state.copyWith(
-          status: LoginPhoneStatus.sendError,
-          exception: Optional.of(e),
-        ));
-      },
-      codeSent: (verificationId) {
+      number: state.phoneNumber,
+      callback: (verificationId) {
         emit(state.copyWith(
           status: LoginPhoneStatus.sent,
           verificationId: verificationId,
           exception: Optional.absent(),
         ));
       },
-      codeAutoRetrievalTimeout: (_) {},
     );
   }
 
@@ -61,15 +49,12 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
       exception: Optional.absent(),
     ));
     try {
-      final cred = await repository.signInWithPhoneNumberVerify(
+      await repository.signInWithPhoneNumberVerify(
         verificationId: state.verificationId,
         code: state.otpCode,
       );
-      if (cred.wasLinkedWithAnonymous) {
-        authBloc.add(AuthenticationUserChanged(cred.userCredential.user));
-      }
       emit(LoginPhoneState());
-    } on AuthException catch (e) {
+    } on SignInWithPhoneNumberFailure catch (e) {
       emit(state.copyWith(
         status: LoginPhoneStatus.verifyError,
         exception: Optional.of(e),

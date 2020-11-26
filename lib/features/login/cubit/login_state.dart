@@ -19,7 +19,7 @@ class LoginSubmitting extends LoginState {
 }
 
 class LoginError extends LoginState {
-  final AuthException exception;
+  final AuthFailure exception;
 
   LoginError(this.exception);
 

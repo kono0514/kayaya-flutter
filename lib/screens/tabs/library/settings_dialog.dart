@@ -248,32 +248,19 @@ class _SettingsDialogState extends State<SettingsDialog> {
     return Builder(
       builder: (context) {
         final state = context.watch<AuthenticationBloc>().state;
-        var loggedInAs = 'Unauthenticated';
+        var loggedInWith = 'Unauthenticated';
+
         if (state is Authenticated) {
-          if (state.user.isAnonymous) {
-            loggedInAs = 'Anonymous User';
-          } else if (state.user.providerData.length > 0) {
-            final provider = state.user.providerData[0];
-            switch (provider.providerId) {
-              case 'facebook.com':
-                loggedInAs = 'Facebook (${provider.displayName})';
-                break;
-              case 'google.com':
-                loggedInAs = 'Google (${provider.email})';
-                break;
-              case 'phone':
-                loggedInAs = 'Phone (${provider.phoneNumber})';
-                break;
-              default:
-                loggedInAs = state.user.providerData[0].providerId;
-            }
+          loggedInWith = state.user.provider.value;
+          if (state.user.providerIdentifier != null) {
+            loggedInWith += ' (${state.user.providerIdentifier})';
           }
         }
 
         return SettingsTile(
           leading: Icon(Icons.person),
-          title: 'Logged in as',
-          subtitle: loggedInAs,
+          title: 'Logged in using',
+          subtitle: loggedInWith,
           enabled: false,
         );
       },
