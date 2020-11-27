@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:get_it/get_it.dart';
-import 'package:kayaya_flutter/core/repositories/user_repository/auth_repository.dart';
+import 'package:kayaya_flutter/core/repositories/auth_repository/auth_repository.dart';
 import 'package:kayaya_flutter/core/services/notification_service.dart';
 import 'package:equatable/equatable.dart';
 

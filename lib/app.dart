@@ -11,7 +11,7 @@ import 'package:kayaya_flutter/core/cubit/genre_list_cubit.dart';
 import 'package:kayaya_flutter/core/cubit/locale_cubit.dart';
 import 'package:kayaya_flutter/core/cubit/theme_cubit.dart';
 import 'package:kayaya_flutter/core/cubit/updater_cubit.dart';
-import 'package:kayaya_flutter/core/repositories/user_repository/auth_repository.dart';
+import 'package:kayaya_flutter/core/repositories/auth_repository/auth_repository.dart';
 import 'package:kayaya_flutter/core/services/notification_service.dart';
 import 'package:kayaya_flutter/core/services/search_service.dart';
 import 'package:kayaya_flutter/core/widgets/navigation_bar/material_tab_scaffold.dart';

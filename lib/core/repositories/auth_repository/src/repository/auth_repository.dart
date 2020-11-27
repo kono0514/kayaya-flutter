@@ -20,4 +20,5 @@ abstract class AuthRepository {
   });
   Future<void> signOut();
   Stream<User> get user;
+  Future<String> getIdToken();
 }

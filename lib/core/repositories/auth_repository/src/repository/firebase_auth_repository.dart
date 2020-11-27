@@ -178,6 +178,11 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Stream<User> get user => userStream.stream;
 
+  @override
+  Future<String> getIdToken() {
+    return firebaseAuth.currentUser?.getIdToken();
+  }
+
   Future<void> _linkWithAnonymousOrLoginUsing(
     firebase_auth.AuthCredential credential,
   ) async {

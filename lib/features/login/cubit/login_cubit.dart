@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kayaya_flutter/core/bloc/authentication_bloc.dart';
-import 'package:kayaya_flutter/core/repositories/user_repository/auth_repository.dart';
+import 'package:kayaya_flutter/core/repositories/auth_repository/auth_repository.dart';
 
 part 'login_state.dart';
 
