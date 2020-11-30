@@ -4,17 +4,19 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:kayaya_flutter/core/bloc/authentication_bloc.dart';
-import 'package:kayaya_flutter/core/cubit/locale_cubit.dart';
-import 'package:kayaya_flutter/core/cubit/theme_cubit.dart';
-import 'package:kayaya_flutter/core/cubit/updater_cubit.dart';
-import 'package:kayaya_flutter/locale/generated/l10n.dart';
-import 'package:kayaya_flutter/router.dart';
-import 'package:kayaya_flutter/core/services/shared_preferences_service.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:settings_ui/src/abstract_section.dart';
 import 'package:settings_ui/src/cupertino_settings_section.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../../core/cubit/locale_cubit.dart';
+import '../../../core/cubit/theme_cubit.dart';
+import '../../../core/cubit/updater_cubit.dart';
+import '../../../core/modules/authentication/presentation/bloc/authentication_bloc.dart';
+import '../../../core/usecase.dart';
+import '../../../features/search/domain/usecase/clear_search_history.dart';
+import '../../../locale/generated/l10n.dart';
+import '../../../router.dart';
 
 class SettingsDialog extends StatefulWidget {
   final BuildContext mainContext;
@@ -27,24 +29,8 @@ class SettingsDialog extends StatefulWidget {
 
 class _SettingsDialogState extends State<SettingsDialog> {
   final List items = [];
-  final sps = GetIt.I<SharedPreferencesService>();
 
-  String get themeLabel {
-    final darkModeEnabled = sps.isDarkModeEnabled;
-    return darkModeEnabled == null
-        ? 'System'
-        : darkModeEnabled == false
-            ? 'Light'
-            : 'Dark';
-  }
-
-  String get currentLanguageCode {
-    return sps.languageCode ??
-        (Localizations.localeOf(context, nullOk: true)?.languageCode ?? 'en');
-  }
-
-  String get languageLabel {
-    final languageCode = currentLanguageCode;
+  String languageCodeLabel(String languageCode) {
     if (languageCode == 'en') {
       return 'English';
     } else if (languageCode == 'mn') {
@@ -58,11 +44,14 @@ class _SettingsDialogState extends State<SettingsDialog> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<UpdaterCubit>(context).resetErrors();
+    context.read<UpdaterCubit>().resetErrors();
   }
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = context.watch<ThemeCubit>().state;
+    final locale = context.watch<LocaleCubit>().state;
+
     return DraggableScrollableSheet(
       initialChildSize: 1.0,
       expand: true,
@@ -102,7 +91,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                             tiles: [
                               SettingsTile(
                                 title: TR.of(context).language,
-                                subtitle: languageLabel,
+                                subtitle: languageCodeLabel(locale.locale),
                                 leading: Icon(Icons.translate),
                                 onTap: () async {
                                   final result = await showDialog<String>(
@@ -123,7 +112,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                               ),
                               SettingsTile(
                                 title: TR.of(context).theme,
-                                subtitle: themeLabel,
+                                subtitle: themeMode.themeMode.toString(),
                                 leading: Icon(Icons.brightness_medium),
                                 onTap: () async {
                                   final result = await showDialog<int>(
@@ -161,7 +150,8 @@ class _SettingsDialogState extends State<SettingsDialog> {
                                 title: TR.of(context).clear_search_history,
                                 leading: Icon(Icons.history),
                                 onTap: () {
-                                  sps.clearSearchHistory();
+                                  GetIt.I<ClearSearchHistory>()
+                                      .call(NoParams());
                                   Scaffold.of(context)
                                     ..hideCurrentSnackBar()
                                     ..showSnackBar(

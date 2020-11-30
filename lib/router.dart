@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kayaya_flutter/app.dart';
-import 'package:kayaya_flutter/codegen/graphql_api.graphql.dart';
-import 'package:kayaya_flutter/screens/movie.dart';
-import 'package:kayaya_flutter/screens/series.dart';
 
-import 'features/login/login.dart';
-import 'features/search/search.dart';
+import 'app.dart';
+import 'codegen/graphql_api.graphql.dart';
+import 'features/login/presentation/view/login_page.dart';
+import 'features/search/presentation/view/search_page.dart';
+import 'screens/movie.dart';
+import 'screens/series.dart';
 
 class Routes {
   static const homePage = '/';

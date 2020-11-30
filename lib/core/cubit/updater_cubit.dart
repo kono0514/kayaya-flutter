@@ -5,19 +5,27 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_xupdate/flutter_xupdate.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:kayaya_flutter/core/services/shared_preferences_service.dart';
+
+import '../services/preferences_service.dart';
 
 part 'updater_state.dart';
 
 class UpdaterCubit extends Cubit<UpdaterState> {
-  final sps = GetIt.I<SharedPreferencesService>();
+  final pref = GetIt.I<PreferencesService>();
 
   UpdaterCubit() : super(UpdaterUninitialized());
 
   int get theme {
-    final _isDarkModEnabled = sps.isDarkModeEnabled;
-    if (_isDarkModEnabled == null) return 0;
-    return _isDarkModEnabled ? 2 : 1;
+    switch (pref.themeMode) {
+      case 'system':
+        return 0;
+      case 'light':
+        return 1;
+      case 'dark':
+        return 2;
+      default:
+        return 0;
+    }
   }
 
   Future<void> init() async {

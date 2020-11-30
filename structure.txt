@@ -1,0 +1,42 @@
+Features:
+	Authentication
+	Browse
+	Library
+	Settings
+	Details
+	Player
+	
+
+Project Structure:
+/lib
+	- core/
+		-modules/
+			- authentication/
+				- domain/
+					- entity/
+						- user.dart
+					- usecase/
+					- repository/
+						- auth_repository.dart (abstract)
+				- data/
+					- model/
+						- user_model.dart (extends User entity from domain)
+					- repository/
+						- auth_repository_impl.dart
+					- datasource/
+						- auth_datasource.dart (abstract)
+				- datasource
+					- local/
+						- auth_datasource_local_impl.dart
+					- network/
+						- auth_datasource_network_impl.dart
+				- presentation/
+					- bloc/
+						- authentication_bloc.dart
+						- authentication_event.dart
+						- authentication_state.dart
+					- view/
+						- empty
+					- widget/
+						- empty
+	- features/

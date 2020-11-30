@@ -1,28 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:kayaya_flutter/core/bloc/authentication_bloc.dart';
-import 'package:kayaya_flutter/core/cubit/genre_list_cubit.dart';
-import 'package:kayaya_flutter/core/cubit/locale_cubit.dart';
-import 'package:kayaya_flutter/core/cubit/theme_cubit.dart';
-import 'package:kayaya_flutter/core/cubit/updater_cubit.dart';
-import 'package:kayaya_flutter/core/repositories/auth_repository/auth_repository.dart';
-import 'package:kayaya_flutter/core/services/notification_service.dart';
-import 'package:kayaya_flutter/core/services/search_service.dart';
-import 'package:kayaya_flutter/core/widgets/navigation_bar/material_tab_scaffold.dart';
-import 'package:kayaya_flutter/locale/generated/l10n.dart';
-import 'package:kayaya_flutter/repositories/aniim_repository.dart';
-import 'package:kayaya_flutter/router.dart';
-import 'package:kayaya_flutter/theme.dart';
-import 'package:kayaya_flutter/utils/graphql_client.dart';
 
-import 'features/login/login.dart';
+import 'core/cubit/genre_list_cubit.dart';
+import 'core/cubit/locale_cubit.dart';
+import 'core/cubit/theme_cubit.dart';
+import 'core/cubit/updater_cubit.dart';
+import 'core/modules/authentication/presentation/bloc/authentication_bloc.dart';
+import 'core/services/notification_service.dart';
+import 'core/widgets/navigation_bar/material_tab_scaffold.dart';
+import 'features/login/presentation/view/login_page.dart';
 import 'features/splash/splash.dart';
+import 'locale/generated/l10n.dart';
+import 'repositories/aniim_repository.dart';
+import 'router.dart';
+import 'theme.dart';
 
 class AppWrapper extends StatefulWidget {
   const AppWrapper({Key key}) : super(key: key);
@@ -32,18 +25,11 @@ class AppWrapper extends StatefulWidget {
 }
 
 class _AppWrapperState extends State<AppWrapper> {
-  AuthRepository authRepo;
   AniimRepository aniimRepo;
 
   @override
   void initState() {
     super.initState();
-    _setupLocators();
-    authRepo = FirebaseAuthRepository(
-      firebaseAuth: FirebaseAuth.instance,
-      facebookAuth: FacebookAuth.instance,
-      googleAuth: GoogleSignIn(),
-    );
     aniimRepo = AniimRepository();
   }
 
@@ -51,13 +37,12 @@ class _AppWrapperState extends State<AppWrapper> {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider.value(value: authRepo),
         RepositoryProvider.value(value: aniimRepo),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (_) => AuthenticationBloc(authRepo),
+            create: (_) => GetIt.I<AuthenticationBloc>(),
             lazy: false,
           ),
           BlocProvider(
@@ -69,16 +54,16 @@ class _AppWrapperState extends State<AppWrapper> {
             lazy: false,
           ),
           BlocProvider(
-            create: (_) => GenreListCubit(aniimRepo)..getGenreList(),
-            lazy: true,
-          ),
-          BlocProvider(
-            create: (_) {
+            create: (context) {
               final cubit = UpdaterCubit();
               cubit.init().then((value) => cubit.checkForUpdate());
               return cubit;
             },
             lazy: false,
+          ),
+          BlocProvider(
+            create: (_) => GenreListCubit(aniimRepo)..getGenreList(),
+            lazy: true,
           ),
         ],
         child: Builder(
@@ -107,12 +92,6 @@ class _AppWrapperState extends State<AppWrapper> {
         ),
       ),
     );
-  }
-
-  _setupLocators() {
-    GetIt.I.registerSingleton<GraphQLClient>(getGraphQLClient());
-    GetIt.I.registerLazySingleton<SearchService>(() => AlgoliaSearchService());
-    GetIt.I.registerSingleton<NotificationService>(NotificationService());
   }
 }
 

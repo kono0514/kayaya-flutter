@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kayaya_flutter/features/browse/browse.dart';
-import 'package:kayaya_flutter/features/search/search.dart';
+import 'package:kayaya_flutter/features/search/presentation/view/search_page.dart';
 import 'package:kayaya_flutter/locale/generated/l10n.dart';
 import 'package:kayaya_flutter/router.dart';
 import 'package:kayaya_flutter/screens/tabs/featured/featured.dart';

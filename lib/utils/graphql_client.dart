@@ -1,14 +1,16 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get_it/get_it.dart';
 import 'package:graphql/client.dart';
-import 'package:kayaya_flutter/core/services/shared_preferences_service.dart';
 import 'package:meta/meta.dart';
 
-GraphQLClient getGraphQLClient() {
+import '../core/modules/authentication/domain/usecase/get_id_token.dart';
+import '../core/usecase.dart';
+
+GraphQLClient getGraphQLClient({
+  @required String Function() getLocale,
+  @required GetIdToken getIdToken,
+}) {
   final GraphQLCache cache = GraphQLCache();
-  final sps = GetIt.I<SharedPreferencesService>();
 
   final httpLink = HttpLink(
     // 'https://api.kayaya.stream/graphql',
@@ -16,12 +18,13 @@ GraphQLClient getGraphQLClient() {
   );
   final authLink = AuthLink(
     getToken: () async {
-      final userToken =
-          await FirebaseAuth.instance.currentUser?.getIdToken() ?? '';
-      return 'Bearer $userToken';
+      final _result = await getIdToken(NoParams());
+      var token;
+      _result.fold((l) => token = '', (r) => token = r);
+      return 'Bearer $token';
     },
   );
-  final localeLink = LocaleLink(getLocale: () => sps.languageCode ?? 'en');
+  final localeLink = LocaleLink(getLocale: getLocale);
   Link links = Link.from([
     localeLink,
     authLink,
@@ -35,7 +38,7 @@ GraphQLClient getGraphQLClient() {
 }
 
 class LocaleLink extends Link {
-  final Function() getLocale;
+  final String Function() getLocale;
   LocaleLink({@required this.getLocale});
 
   @override

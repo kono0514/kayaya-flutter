@@ -1,0 +1,31 @@
+Presentation:
+	Interacts with Domain through Usecases
+	Prepare fetched data to show on UI
+	Can depend only on Domain layer (Entity Object, Usecases)
+
+Domain: (No dependencies, plain dart module)
+	Entity Object
+	Repository Interface
+	Usecases
+
+Data:
+	Data Object
+	Repository Implementation
+		The Data layer will encapsulate all kinds of try-catches, from this layer upwards there will be no special flow to handle errors.
+		Repositories will return Either a Failure (in case of any error) or a Value in case of success (Either<Failure, Value>).
+	Datasource Abstraction
+	Transforms Data objects to Entity objects
+	
+Datasource:
+	Datasource Implementation
+	Usually highly dependent on third-party packages (http, graphql-client, firebase etc...)
+	Local/Network
+	Transforms raw response to Data objects
+	Throws ServerFailure or LocalFailure in case of errors
+
+
+
+Dependency Rule:
+	Datasource -> Data
+	Data -> Domain
+	Presentation -> Domain
