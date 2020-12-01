@@ -305,8 +305,7 @@ input AnimesOrderByOrderByClause {
 
 enum AnimeOrderColumns {
   ID
-  NAME_EN
-  NAME_MN
+  NAME
   RATING
   ANIME_TYPE
   CREATED_AT
@@ -376,8 +375,7 @@ input GenresOrderByOrderByClause {
 
 enum GenreOrderColumns {
   ID
-  NAME_EN
-  NAME_MN
+  NAME
 }
 
 type ScrapyJob {

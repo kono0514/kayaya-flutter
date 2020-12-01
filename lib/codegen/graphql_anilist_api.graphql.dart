@@ -467,6 +467,8 @@ enum MediaStatus {
   notYetReleased,
   @JsonValue('CANCELLED')
   cancelled,
+  @JsonValue('HIATUS')
+  hiatus,
   @JsonValue('ARTEMIS_UNKNOWN')
   artemisUnknown,
 }

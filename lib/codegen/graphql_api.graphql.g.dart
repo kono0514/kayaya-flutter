@@ -233,8 +233,7 @@ Map<String, dynamic> _$AnimesOrderByOrderByClauseToJson(
 
 const _$AnimeOrderColumnsEnumMap = {
   AnimeOrderColumns.id: 'ID',
-  AnimeOrderColumns.nameEn: 'NAME_EN',
-  AnimeOrderColumns.nameMn: 'NAME_MN',
+  AnimeOrderColumns.name: 'NAME',
   AnimeOrderColumns.rating: 'RATING',
   AnimeOrderColumns.animeType: 'ANIME_TYPE',
   AnimeOrderColumns.createdAt: 'CREATED_AT',

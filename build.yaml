@@ -14,10 +14,10 @@ targets:
             - schema: graphql/aniim.schema.graphql
               queries_glob: graphql/aniim/*.graphql
               naming_scheme: pathedWithFields
-              output: lib/api/graphql_api.graphql.dart
+              output: lib/codegen/graphql_api.graphql.dart
             - schema: graphql/anilist.schema.graphql
               queries_glob: graphql/anilist/**.graphql
-              output: lib/api/graphql_anilist_api.graphql.dart
+              output: lib/codegen/graphql_anilist_api.graphql.dart
           scalar_mapping:
             - graphql_type: Mixed
               dart_type: String

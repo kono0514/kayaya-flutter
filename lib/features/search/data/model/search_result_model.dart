@@ -22,7 +22,7 @@ class SearchResultModel extends SearchResult {
   factory SearchResultModel.fromJson(Map<String, dynamic> json) {
     return SearchResultModel(
       id: json['id'] as String,
-      name: json['name_mn'] as String,
+      name: json['name'] as String,
       image: json['cover_image_large'] as String,
       color: json['cover_color'] as String,
       year: json['start_year'] as int,

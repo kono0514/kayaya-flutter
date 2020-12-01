@@ -17,10 +17,6 @@ class SearchResultListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: read from pref
-    String currentLanguage = Localizations.localeOf(context).languageCode;
-    final itemName = currentLanguage == 'mn' ? item.name : item.name;
-
     return InkWell(
       onTap: () => onTap(item),
       child: Container(
@@ -43,7 +39,7 @@ class SearchResultListItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    itemName,
+                    item.name,
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                   ),

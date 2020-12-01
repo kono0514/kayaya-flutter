@@ -764,10 +764,8 @@ enum SQLOperator {
 enum AnimeOrderColumns {
   @JsonValue('ID')
   id,
-  @JsonValue('NAME_EN')
-  nameEn,
-  @JsonValue('NAME_MN')
-  nameMn,
+  @JsonValue('NAME')
+  name,
   @JsonValue('RATING')
   rating,
   @JsonValue('ANIME_TYPE')

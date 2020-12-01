@@ -1915,7 +1915,10 @@ type Media {
   format: MediaFormat
 
   """The current releasing status of the media"""
-  status: MediaStatus
+  status(
+    """Provide 2 to use new version 2 of sources enum"""
+    version: Int
+  ): MediaStatus
 
   """Short description of the media's story and characters"""
   description(
@@ -2201,6 +2204,11 @@ enum MediaStatus {
 
   """Ended before the work could be finished"""
   CANCELLED
+
+  """
+  Version 2 only. Is currently paused from releasing and will resume at a later date
+  """
+  HIATUS
 }
 
 """Date object that allows for incomplete date values (fuzzy)"""
@@ -2399,6 +2407,7 @@ type Character {
   media(
     sort: [MediaSort]
     type: MediaType
+    onList: Boolean
 
     """The page"""
     page: Int
@@ -2560,6 +2569,7 @@ type Staff {
   staffMedia(
     sort: [MediaSort]
     type: MediaType
+    onList: Boolean
 
     """The page"""
     page: Int
@@ -2578,6 +2588,20 @@ type Staff {
     """The amount of entries per page, max 25"""
     perPage: Int
   ): CharacterConnection
+
+  """
+  Media the actor voiced characters in. (Same data as characters with media as node instead of characters)
+  """
+  characterMedia(
+    sort: [MediaSort]
+    onList: Boolean
+
+    """The page"""
+    page: Int
+
+    """The amount of entries per page, max 25"""
+    perPage: Int
+  ): MediaConnection
   updatedAt: Int @deprecated(reason: "No data available")
 
   """Staff member that the submission is referencing"""
@@ -2698,6 +2722,7 @@ type Studio {
 
     """If the studio was the primary animation studio of the media"""
     isMain: Boolean
+    onList: Boolean
 
     """The page"""
     page: Int

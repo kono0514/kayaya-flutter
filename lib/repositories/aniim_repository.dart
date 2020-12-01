@@ -62,12 +62,12 @@ class AniimRepository {
     if (filterOrderBy == FilterOrderBy.alpha_asc) {
       return <AnimesOrderByOrderByClause>[
         AnimesOrderByOrderByClause(
-            field: AnimeOrderColumns.nameMn, order: SortOrder.asc)
+            field: AnimeOrderColumns.name, order: SortOrder.asc)
       ];
     } else if (filterOrderBy == FilterOrderBy.alpha_desc) {
       return <AnimesOrderByOrderByClause>[
         AnimesOrderByOrderByClause(
-            field: AnimeOrderColumns.nameMn, order: SortOrder.desc)
+            field: AnimeOrderColumns.name, order: SortOrder.desc)
       ];
     } else if (filterOrderBy == FilterOrderBy.rating_asc) {
       return <AnimesOrderByOrderByClause>[

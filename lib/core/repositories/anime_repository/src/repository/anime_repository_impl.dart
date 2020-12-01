@@ -173,14 +173,13 @@ List<AnimesOrderByOrderByClause> _mapFilterOrderByToGraphQL(
     ];
   }
 
-  /// TODO: Change nameMn to name. Sort by locale on server
   switch (filterOrderBy) {
     case FilterOrderBy.recent:
       return _wrap(AnimeOrderColumns.id, SortOrder.desc);
     case FilterOrderBy.alpha_asc:
-      return _wrap(AnimeOrderColumns.nameMn, SortOrder.asc);
+      return _wrap(AnimeOrderColumns.name, SortOrder.asc);
     case FilterOrderBy.alpha_desc:
-      return _wrap(AnimeOrderColumns.nameMn, SortOrder.desc);
+      return _wrap(AnimeOrderColumns.name, SortOrder.desc);
     case FilterOrderBy.rating_asc:
       return _wrap(AnimeOrderColumns.rating, SortOrder.asc);
     case FilterOrderBy.rating_desc:

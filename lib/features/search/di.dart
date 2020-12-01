@@ -44,7 +44,7 @@ Future<void> init() async {
     () => LocalSearchDatasourceImpl(pref: sl()),
   );
   sl.registerLazySingleton<NetworkSearchDatasource>(
-    () => AlgoliaNetworkSearchDatasourceImpl(algolia: sl()),
+    () => AlgoliaNetworkSearchDatasourceImpl(pref: sl(), algolia: sl()),
   );
 
   // External
