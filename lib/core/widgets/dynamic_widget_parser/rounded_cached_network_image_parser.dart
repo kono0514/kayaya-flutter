@@ -1,8 +1,9 @@
 import 'package:dynamic_widget/dynamic_widget.dart';
 import 'package:flutter/widgets.dart';
-import 'package:kayaya_flutter/utils/hex_color.dart';
-import 'package:kayaya_flutter/core/widgets/dynamic_widget_parser/utils.dart';
-import 'package:kayaya_flutter/core/widgets/rounded_cached_network_image.dart';
+
+import '../../utils/hex_color.dart';
+import '../rounded_cached_network_image.dart';
+import 'utils.dart';
 
 class RoundedCachedNetworkImageWidgetParser extends WidgetParser {
   @override

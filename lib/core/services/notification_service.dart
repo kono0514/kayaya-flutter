@@ -4,9 +4,9 @@ import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../codegen/graphql_api.graphql.dart';
-import '../../utils/utils.dart';
-import '../modules/authentication/domain/usecase/is_logged_in.dart';
-import '../usecase.dart';
+import '../../core/usecase.dart';
+import '../../layers/domain/usecases/authentication/is_logged_in_usecase.dart';
+import '../utils/utils.dart';
 import 'preferences_service.dart';
 
 class NotificationService {
@@ -36,7 +36,7 @@ class NotificationService {
       onBackgroundMessage: backgroundMessageHandler,
     );
     _firebaseMessaging.onTokenRefresh.listen((newToken) async {
-      IsLoggedIn isLoggedIn = GetIt.I();
+      IsLoggedInUsecase isLoggedIn = GetIt.I();
       final _result = await isLoggedIn(NoParams());
       if (_result.isRight() && _result.getOrElse(() => false)) {
         uploadCurrentFcmToken(token: newToken);

@@ -1,5 +1,15 @@
-query GetSubscriptions {
-    subscriptions {
-        ...AnimeItemFields
+query GetSubscriptions($first: Int, $page: Int) {
+    me {
+        subscriptions (first: $first, page: $page) {
+            paginatorInfo {
+                total
+                lastPage
+                hasMorePages
+                currentPage
+            }
+            data {
+                ...AnimeItemFields
+            }
+        }
     }
 }

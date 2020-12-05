@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 class _PrefKeys {
@@ -14,10 +15,11 @@ abstract class PreferencesDatasource {
   Future<void> remove(String key);
 }
 
+@Injectable(as: PreferencesDatasource)
 class HivePreferencesDatasource implements PreferencesDatasource {
-  Box hiveBox;
+  final Box hiveBox;
 
-  HivePreferencesDatasource({@required this.hiveBox});
+  HivePreferencesDatasource({@Named('preferencesBox') @required this.hiveBox});
 
   @override
   dynamic read(String key, {dynamic defaultValue}) {
@@ -35,6 +37,7 @@ class HivePreferencesDatasource implements PreferencesDatasource {
   }
 }
 
+@Injectable()
 class PreferencesService {
   final PreferencesDatasource dataSource;
 
@@ -54,7 +57,7 @@ class PreferencesService {
 
   Future<void> addSearchHistory(String query) async {
     List<String> _history =
-        dataSource.read(_PrefKeys.searchHistory, defaultValue: []);
+        dataSource.read(_PrefKeys.searchHistory, defaultValue: <String>[]);
     if (_history.length >= 20) {
       _history = _history.getRange(0, 20);
     }
@@ -68,7 +71,7 @@ class PreferencesService {
       dataSource.remove(_PrefKeys.searchHistory);
 
   List<String> get searchHistory =>
-      dataSource.read(_PrefKeys.searchHistory, defaultValue: []);
+      dataSource.read(_PrefKeys.searchHistory, defaultValue: <String>[]);
 
   Future<void> saveCurrentFcmToken(String token) =>
       dataSource.write(_PrefKeys.currentFcmToken, token);

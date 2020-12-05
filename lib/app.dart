@@ -2,94 +2,80 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kayaya_flutter/layers/presentation/library/cubit/subscription_list_cubit.dart';
 
-import 'core/cubit/genre_list_cubit.dart';
-import 'core/cubit/locale_cubit.dart';
-import 'core/cubit/theme_cubit.dart';
-import 'core/cubit/updater_cubit.dart';
-import 'core/modules/authentication/presentation/bloc/authentication_bloc.dart';
 import 'core/services/notification_service.dart';
 import 'core/widgets/navigation_bar/material_tab_scaffold.dart';
-import 'features/login/presentation/view/login_page.dart';
-import 'features/splash/splash.dart';
+import 'layers/presentation/authentication/bloc/authentication_bloc.dart';
+import 'layers/presentation/genre/cubit/genre_list_cubit.dart';
+import 'layers/presentation/locale/cubit/locale_cubit.dart';
+import 'layers/presentation/login/view/login_page.dart';
+import 'layers/presentation/splash/view/splash_page.dart';
+import 'layers/presentation/theme/cubit/theme_cubit.dart';
+import 'layers/presentation/updater/cubit/updater_cubit.dart';
 import 'locale/generated/l10n.dart';
-import 'repositories/aniim_repository.dart';
 import 'router.dart';
 import 'theme.dart';
 
-class AppWrapper extends StatefulWidget {
+class AppWrapper extends StatelessWidget {
   const AppWrapper({Key key}) : super(key: key);
 
   @override
-  _AppWrapperState createState() => _AppWrapperState();
-}
-
-class _AppWrapperState extends State<AppWrapper> {
-  AniimRepository aniimRepo;
-
-  @override
-  void initState() {
-    super.initState();
-    aniimRepo = AniimRepository();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
+    return MultiBlocProvider(
       providers: [
-        RepositoryProvider.value(value: aniimRepo),
-      ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => GetIt.I<AuthenticationBloc>(),
-            lazy: false,
-          ),
-          BlocProvider(
-            create: (_) => ThemeCubit()..resolveTheme(),
-            lazy: false,
-          ),
-          BlocProvider(
-            create: (_) => LocaleCubit()..resolveLocale(),
-            lazy: false,
-          ),
-          BlocProvider(
-            create: (context) {
-              final cubit = UpdaterCubit();
-              cubit.init().then((value) => cubit.checkForUpdate());
-              return cubit;
-            },
-            lazy: false,
-          ),
-          BlocProvider(
-            create: (_) => GenreListCubit(aniimRepo)..getGenreList(),
-            lazy: true,
-          ),
-        ],
-        child: Builder(
-          builder: (context) {
-            /// Rebuilds whenever either of these state changes
-            final localeState = context.watch<LocaleCubit>().state;
-            final themeState = context.watch<ThemeCubit>().state;
-
-            return MaterialApp(
-              title: 'Flutter Demo',
-              theme: lightTheme,
-              darkTheme: darkTheme,
-              themeMode: themeState.themeMode,
-              localizationsDelegates: [
-                TR.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              locale: Locale(localeState.locale),
-              supportedLocales: TR.delegate.supportedLocales,
-              home: AppHome(),
-              onGenerateRoute: MyRouter(),
-            );
-          },
+        BlocProvider(
+          create: (_) => GetIt.I<AuthenticationBloc>(),
+          lazy: false,
         ),
+        BlocProvider(
+          create: (_) => GetIt.I<ThemeCubit>()..resolveTheme(),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => GetIt.I<LocaleCubit>()..resolveLocale(),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (context) {
+            final cubit = GetIt.I<UpdaterCubit>();
+            cubit.init().then((value) => cubit.checkForUpdate());
+            return cubit;
+          },
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (_) => GetIt.I<GenreListCubit>()..getGenreList(),
+          lazy: true,
+        ),
+        BlocProvider(
+          create: (_) => GetIt.I<SubscriptionListCubit>(),
+          lazy: false,
+        ),
+      ],
+      child: Builder(
+        builder: (context) {
+          /// Rebuilds whenever either of these state changes
+          final localeState = context.watch<LocaleCubit>().state;
+          final themeState = context.watch<ThemeCubit>().state;
+
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode: themeState.themeMode,
+            localizationsDelegates: [
+              TR.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            locale: Locale(localeState.locale),
+            supportedLocales: TR.delegate.supportedLocales,
+            home: AppHome(),
+            onGenerateRoute: MyRouter(),
+          );
+        },
       ),
     );
   }

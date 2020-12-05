@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:kayaya_flutter/layers/domain/entities/anime.dart';
 
 import 'app.dart';
-import 'codegen/graphql_api.graphql.dart';
-import 'features/login/presentation/view/login_page.dart';
-import 'features/search/presentation/view/search_page.dart';
-import 'screens/movie.dart';
-import 'screens/series.dart';
+import 'layers/presentation/detail/view/movie.dart';
+import 'layers/presentation/detail/view/series.dart';
+import 'layers/presentation/login/view/login_page.dart';
+import 'layers/presentation/search/view/search_page.dart';
 
 class Routes {
   static const homePage = '/';
@@ -63,7 +63,7 @@ class MyRouter {
     },
     Routes.movieOrSeries: (settings) {
       final args = settings.arguments as MediaArguments;
-      if (args.anime.animeType == AnimeType.movie) {
+      if (args.anime.isMovie) {
         return MyRouter().onGenerateRoute(
           settings.copyWith(name: Routes.moviePage),
         );
@@ -101,20 +101,22 @@ class MyRouter {
       // At minimum, id is needed
       if (!uri.queryParameters.containsKey('id')) return null;
 
-      var data = Map<String, dynamic>.from({
-        'id': uri.queryParameters['id'],
-      });
+      var anime = Anime(
+        id: uri.queryParameters['id'],
+      );
       if (uri.queryParameters['image'] != null) {
-        data['coverImage'] = {
-          'large': uri.queryParameters['image'],
-        };
+        anime = anime.copyWith(
+          coverImage: uri.queryParameters['image'],
+        );
       }
       if (uri.queryParameters['name'] != null) {
-        data['name'] = uri.queryParameters['name'];
+        anime = anime.copyWith(
+          name: uri.queryParameters['name'],
+        );
       }
 
       final args = MediaArguments(
-        AnimeItemModelGenerator$Query$Anime.fromJson(data),
+        anime,
         isMinimal: true,
       );
       return RouteSettings(name: routeName, arguments: args);
@@ -129,7 +131,7 @@ class MyRouter {
 }
 
 class MediaArguments {
-  final AnimeItemFieldsMixin anime;
+  final Anime anime;
   final bool isMinimal;
 
   MediaArguments(this.anime, {this.isMinimal = false});

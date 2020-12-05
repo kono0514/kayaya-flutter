@@ -10,13 +10,37 @@ fragment AnimeItemFields on Anime {
     bannerImage
 }
 
+fragment AnimeItemWithGenresFields on Anime {
+    id
+    name
+    animeType
+    rating
+    coverImage {
+        large
+    }
+    coverColor
+    bannerImage
+    genres {
+        ...GenreFields
+    }
+}
+
 fragment AnimeDetailsFields on Anime {
     id
-    genres {
-        id
-        name
-    }
     description
     anilist
-    subscribed
+    genres {
+        ...GenreFields
+    }
+}
+
+fragment GenreFields on Genre {
+    id
+    name
+}
+
+fragment AnimeGenres on Anime {
+    genres {
+        ...GenreFields
+    }
 }

@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kayaya_flutter/features/browse/browse.dart';
-import 'package:kayaya_flutter/features/search/presentation/view/search_page.dart';
-import 'package:kayaya_flutter/locale/generated/l10n.dart';
-import 'package:kayaya_flutter/router.dart';
-import 'package:kayaya_flutter/screens/tabs/featured/featured.dart';
-import 'package:kayaya_flutter/screens/tabs/library/library.dart';
-import 'package:kayaya_flutter/core/widgets/navigation_bar/material_tab_scaffold.dart';
+
+import '../../../layers/presentation/browse/view/browse_page.dart';
+import '../../../layers/presentation/featured/view/featured_page.dart';
+import '../../../layers/presentation/library/view/library.dart';
+import '../../../layers/presentation/search/view/search_page.dart';
+import '../../../locale/generated/l10n.dart';
+import '../../../router.dart';
+import 'material_tab_scaffold.dart';
 
 class NavigationTabScaffold extends StatefulWidget {
   @override

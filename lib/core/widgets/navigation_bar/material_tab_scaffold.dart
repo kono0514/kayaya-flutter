@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kayaya_flutter/features/browse/browse.dart';
-import 'package:kayaya_flutter/locale/generated/l10n.dart';
-import 'package:kayaya_flutter/router.dart';
-import 'package:kayaya_flutter/screens/tabs/featured/featured.dart';
-import 'package:kayaya_flutter/screens/tabs/library/library.dart';
-import 'package:kayaya_flutter/core/widgets/keep_alive_widget.dart';
+
+import '../../../layers/presentation/browse/view/browse_page.dart';
+import '../../../layers/presentation/featured/view/featured_page.dart';
+import '../../../layers/presentation/library/view/library.dart';
+import '../../../locale/generated/l10n.dart';
+import '../../../router.dart';
+import '../keep_alive_widget.dart';
 
 typedef TabNavigatorPageBuilder = Widget Function(
     ScrollController scrollController);

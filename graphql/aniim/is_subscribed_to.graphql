@@ -1,0 +1,3 @@
+query IsSubscribedTo($animeId: ID!) {
+    isUserSubscribedTo(animeId: $animeId)
+}

@@ -1,6 +1,5 @@
 query GetGenres {
     genres {
-        id
-        name
+        ...GenreFields
     }
 }

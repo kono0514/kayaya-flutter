@@ -7,11 +7,7 @@ query BrowseAnimes($first: Int, $page: Int, $orderBy: [AnimesOrderByOrderByClaus
             currentPage
         }
         data {
-            ...AnimeItemFields
-            genres {
-                id
-                name
-            }
+            ...AnimeItemWithGenresFields
         }
     }
 }
