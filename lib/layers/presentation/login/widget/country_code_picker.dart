@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import '../../../../core/widgets/glowless_scroll_behavior.dart';
 import '../../../../core/widgets/material_dialog.dart';
 import '../model/country_code.dart';
 import '../model/country_code_data.dart';
@@ -69,7 +70,7 @@ class _CountryCodePickerState extends State<CountryCodePicker> {
         final result = await showCustomMaterialSheet<CountryCode>(
           context: context,
           builder: (context) => CountryPickerDialog(codes: codes),
-          label: 'Country Picker',
+          labelBuilder: (_) => Text('Country Picker'),
         );
         if (result != null) {
           setState(() {
@@ -81,14 +82,6 @@ class _CountryCodePickerState extends State<CountryCodePicker> {
         }
       },
     );
-  }
-}
-
-class GlowlessScrollBehavior extends ScrollBehavior {
-  @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
-    return child;
   }
 }
 
@@ -137,23 +130,20 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
           Divider(height: 1.3, thickness: 1.3),
           Expanded(
             child: Material(
-              child: ScrollConfiguration(
-                behavior: GlowlessScrollBehavior(),
-                child: ListView.builder(
-                  controller: ModalScrollController.of(context),
-                  padding: EdgeInsets.zero,
-                  itemCount: _codesFiltered.length,
-                  clipBehavior: Clip.antiAlias,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(_codesFiltered[index].name),
-                      trailing: Text(_codesFiltered[index].dialCodeFull),
-                      onTap: () {
-                        Navigator.pop(context, _codesFiltered[index]);
-                      },
-                    );
-                  },
-                ),
+              child: ListView.builder(
+                controller: ModalScrollController.of(context),
+                padding: EdgeInsets.zero,
+                itemCount: _codesFiltered.length,
+                clipBehavior: Clip.antiAlias,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(_codesFiltered[index].name),
+                    trailing: Text(_codesFiltered[index].dialCodeFull),
+                    onTap: () {
+                      Navigator.pop(context, _codesFiltered[index]);
+                    },
+                  );
+                },
               ),
             ),
           ),

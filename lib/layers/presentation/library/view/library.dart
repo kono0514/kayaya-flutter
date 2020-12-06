@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/widgets/app_bar/custom_sliver_app_bar.dart';
 import '../../../../core/widgets/app_bar/sliver_button.dart';
 import '../../../../core/widgets/list_bottom_loader.dart';
+import '../../../../core/widgets/material_dialog.dart';
 import '../../../../locale/generated/l10n.dart';
 import '../../../../router.dart';
 import '../../settings/view/settings_dialog.dart';
@@ -53,16 +54,14 @@ class _LibraryPageState extends State<LibraryPage> {
                     ),
                   ),
                   onPressed: () {
-                    BuildContext mainContext = context;
-                    showModalBottomSheet(
+                    showCustomMaterialSheet(
                       context: context,
                       useRootNavigator: true,
-                      isScrollControlled: true,
-                      isDismissible: false,
+                      isDismissible: true,
                       enableDrag: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (context) =>
-                          SettingsDialog(mainContext: mainContext),
+                      height: 1.0,
+                      labelBuilder: (context) => Text(TR.of(context).settings),
+                      builder: (context) => SettingsDialog(),
                     );
                   },
                   collapsible: false,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kayaya_flutter/core/widgets/glowless_scroll_behavior.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 Future<T> showCustomMaterialSheet<T>({
@@ -11,7 +12,6 @@ Future<T> showCustomMaterialSheet<T>({
   Clip clipBehavior = Clip.hardEdge,
   Color barrierColor,
   bool bounce = false,
-  bool expand = false,
   AnimationController secondAnimation,
   Curve animationCurve,
   bool useRootNavigator = false,
@@ -19,9 +19,9 @@ Future<T> showCustomMaterialSheet<T>({
   bool enableDrag = true,
   Duration duration = const Duration(milliseconds: 250),
   double height = 0.85,
-  String label,
+  WidgetBuilder labelBuilder,
 }) async {
-  assert(height > 0 && height < 1);
+  assert(height > 0 && height <= 1);
   var _shape = shape;
   if (_shape == null) {
     _shape = RoundedRectangleBorder(
@@ -41,7 +41,7 @@ Future<T> showCustomMaterialSheet<T>({
     closeProgressThreshold: closeProgressThreshold,
     secondAnimationController: secondAnimation,
     bounce: bounce,
-    expanded: expand,
+    expanded: false,
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
     isDismissible: isDismissible,
     modalBarrierColor: _barrierColor,
@@ -50,19 +50,36 @@ Future<T> showCustomMaterialSheet<T>({
     duration: duration,
     containerBuilder: (_, animation, child) {
       final bottomSheetTheme = Theme.of(context).bottomSheetTheme;
-      return Material(
-        color: backgroundColor ??
-            bottomSheetTheme?.modalBackgroundColor ??
-            bottomSheetTheme?.backgroundColor,
-        elevation: elevation ?? bottomSheetTheme.elevation ?? 0.0,
-        shape: _shape ?? bottomSheetTheme.shape,
-        clipBehavior: clipBehavior ?? Clip.none,
-        child: child,
+      final orientation = MediaQuery.of(context).orientation;
+      final _width = orientation == Orientation.landscape
+          ? MediaQuery.of(context).size.width * 0.65
+          : MediaQuery.of(context).size.width;
+      final _height = MediaQuery.of(context).size.height * height;
+
+      return SafeArea(
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            width: _width,
+            height: _height,
+            child: Material(
+              color: backgroundColor ??
+                  bottomSheetTheme?.modalBackgroundColor ??
+                  bottomSheetTheme?.backgroundColor,
+              elevation: elevation ?? bottomSheetTheme.elevation ?? 0.0,
+              shape: _shape ?? bottomSheetTheme.shape,
+              clipBehavior: clipBehavior ?? Clip.none,
+              child: ScrollConfiguration(
+                behavior: GlowlessScrollBehavior(),
+                child: child,
+              ),
+            ),
+          ),
+        ),
       );
     },
-    builder: (context) => SizedBox(
-      height: MediaQuery.of(context).size.height * height,
-      child: (label != null)
+    builder: (context) {
+      return (labelBuilder != null)
           ? Column(
               children: [
                 SizedBox(height: 10),
@@ -77,17 +94,17 @@ Future<T> showCustomMaterialSheet<T>({
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Text(
-                    label,
+                  child: DefaultTextStyle.merge(
                     style: Theme.of(context).textTheme.headline6,
+                    child: labelBuilder(context),
                   ),
                 ),
                 Divider(height: 1.3, thickness: 1.3),
                 Expanded(child: builder(context)),
               ],
             )
-          : builder(context),
-    ),
+          : builder(context);
+    },
   ));
   return result;
 }

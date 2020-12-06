@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kayaya_flutter/core/widgets/material_dialog.dart';
 
 import '../../../../core/widgets/app_bar/sliver_button.dart';
 import '../../../../locale/generated/l10n.dart';
@@ -30,24 +31,21 @@ class _FilterButtonState extends State<FilterButton> {
             ),
           ),
           onPressed: () {
-            BuildContext mainContext = context;
             final browseFilterCubit = context.read<BrowseFilterCubit>();
             final genreListCubit = context.read<GenreListCubit>();
-            showModalBottomSheet(
+            showCustomMaterialSheet(
               context: context,
               useRootNavigator: true,
-              isScrollControlled: true,
-              isDismissible: false,
+              isDismissible: true,
               enableDrag: true,
-              backgroundColor: Colors.transparent,
+              height: 1.0,
+              labelBuilder: (context) => Text(TR.of(context).filter_and_sort),
               builder: (context) => MultiBlocProvider(
                 providers: [
                   BlocProvider.value(value: browseFilterCubit),
                   BlocProvider.value(value: genreListCubit),
                 ],
-                child: FilterDialog(
-                  mainContext: mainContext,
-                ),
+                child: FilterDialog(),
               ),
             );
           },
