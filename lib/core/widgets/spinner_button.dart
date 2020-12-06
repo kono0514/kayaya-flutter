@@ -63,6 +63,7 @@ class SpinnerButton extends StatelessWidget {
 
     var buttonStyle = style ?? ButtonStyle();
     buttonStyle = buttonStyle.copyWith(
+      animationDuration: Duration.zero,
       padding: icon == null
           ? null
           : MaterialStateProperty.all<EdgeInsetsGeometry>(

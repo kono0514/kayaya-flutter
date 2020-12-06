@@ -135,7 +135,7 @@ class SeriesSubscribeButton extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            Text label;
+            Text label = Text('...');
             Icon icon;
             Function onPressed = () {};
             bool loading = true;

@@ -84,7 +84,7 @@ class MoviePage extends StatelessWidget {
   Widget _buildPlayButton() {
     return BlocBuilder<EpisodesBloc, EpisodesState>(
       builder: (context, state) {
-        Text label;
+        Text label = Text('...');
         Icon icon;
         Function onPressed = () {};
         bool loading = true;
