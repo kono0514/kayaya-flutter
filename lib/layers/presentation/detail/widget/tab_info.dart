@@ -188,6 +188,7 @@ class _DistributionBarChart extends StatelessWidget {
             allowTouchBarBackDraw: true,
             touchTooltipData: BarTouchTooltipData(
               fitInsideHorizontally: true,
+              tooltipBottomMargin: 30.0,
               tooltipBgColor: Colors.blueGrey,
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 final distribution = distributions[group.x];
