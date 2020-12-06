@@ -10,6 +10,7 @@ import 'package:intent/intent.dart' as android_intent;
 import 'package:package_info/package_info.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../../core/widgets/material_dialog.dart';
 import '../util/helper.dart';
 import 'material_progress_bar.dart';
 import 'player_circle_button.dart';
@@ -21,7 +22,7 @@ class CustomMaterialControls extends StatefulWidget {
   const CustomMaterialControls({
     Key key,
     @required this.title,
-    @required this.subtitle,
+    this.subtitle,
   }) : super(key: key);
 
   @override
@@ -196,7 +197,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                     ),
                     SizedBox(height: 2.0),
                     Text(
-                      widget.subtitle,
+                      widget.subtitle ?? '',
                       style: TextStyle(
                         fontSize: 11.0,
                         fontWeight: FontWeight.w300,
@@ -573,9 +574,8 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
             _pause();
           }
 
-          final chosenSpeed = await showModalBottomSheet<double>(
+          final chosenSpeed = await showCustomMaterialSheet<double>(
             context: context,
-            isScrollControlled: true,
             useRootNavigator: true,
             builder: (context) => PlaybackSpeedDialog(
               speeds: chewieController.playbackSpeeds,

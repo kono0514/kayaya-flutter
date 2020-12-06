@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kayaya_flutter/core/widgets/glowless_scroll_behavior.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+import 'glowless_scroll_behavior.dart';
 
 Future<T> showCustomMaterialSheet<T>({
   @required BuildContext context,
@@ -18,10 +19,10 @@ Future<T> showCustomMaterialSheet<T>({
   bool isDismissible = true,
   bool enableDrag = true,
   Duration duration = const Duration(milliseconds: 250),
-  double height = 0.85,
+  double height,
   WidgetBuilder labelBuilder,
 }) async {
-  assert(height > 0 && height <= 1);
+  assert(height == null || (height > 0 && height <= 1));
   var _shape = shape;
   if (_shape == null) {
     _shape = RoundedRectangleBorder(
@@ -54,7 +55,8 @@ Future<T> showCustomMaterialSheet<T>({
       final _width = orientation == Orientation.landscape
           ? MediaQuery.of(context).size.width * 0.65
           : MediaQuery.of(context).size.width;
-      final _height = MediaQuery.of(context).size.height * height;
+      final _height =
+          height == null ? null : MediaQuery.of(context).size.height * height;
 
       return SafeArea(
         child: Align(

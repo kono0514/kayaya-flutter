@@ -3,9 +3,9 @@ import 'package:flutter/material.dart'
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../../../core/utils/launchers.dart';
 import '../../../../core/widgets/spinner_button.dart';
 import '../../../../locale/generated/l10n.dart';
+import '../../../../router.dart';
 import '../../../domain/entities/anime.dart';
 import '../../../domain/entities/release.dart';
 import '../../player/widget/source_chooser_dialog.dart';
@@ -104,11 +104,12 @@ class MoviePage extends StatelessWidget {
             );
 
             if (chosenRelease != null) {
-              launchPlayRelease(
-                context,
-                anime,
-                state.episodes.elements.first,
-                chosenRelease,
+              Navigator.of(context, rootNavigator: true).pushNamed(
+                Routes.moviePlayer,
+                arguments: MoviePlayerArguments(
+                  anime: anime,
+                  release: chosenRelease,
+                ),
               );
             }
           };

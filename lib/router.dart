@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:kayaya_flutter/layers/domain/entities/anime.dart';
 
 import 'app.dart';
+import 'layers/domain/entities/anime.dart';
+import 'layers/domain/entities/release.dart';
 import 'layers/presentation/detail/view/movie.dart';
 import 'layers/presentation/detail/view/series.dart';
 import 'layers/presentation/login/view/login_page.dart';
+import 'layers/presentation/player/view/movie_player.dart';
 import 'layers/presentation/search/view/search_page.dart';
 
 class Routes {
@@ -15,6 +17,8 @@ class Routes {
   static const searchPage = '/search';
   static const libraryPage = '/library';
   static const loginPage = '/login';
+  static const moviePlayer = '/play/movie';
+  static const seriesPlayer = '/play/series';
 
   static List<String> get values => [
         homePage,
@@ -23,7 +27,9 @@ class Routes {
         movieOrSeries,
         searchPage,
         libraryPage,
-        loginPage
+        loginPage,
+        moviePlayer,
+        seriesPlayer,
       ];
 }
 
@@ -86,6 +92,20 @@ class MyRouter {
         ),
       );
     },
+    Routes.moviePlayer: (settings) {
+      var args = settings.arguments as MoviePlayerArguments;
+      return MaterialPageRoute(
+        builder: (context) => MoviePlayer(
+          anime: args.anime,
+          release: args.release,
+        ),
+      );
+    },
+    Routes.seriesPlayer: (settings) {
+      return MaterialPageRoute(
+        builder: null,
+      );
+    }
   };
 
   @visibleForTesting
@@ -141,4 +161,14 @@ class LoginPageArguments {
   final bool disableAnonymous;
 
   LoginPageArguments({this.disableAnonymous = false});
+}
+
+class MoviePlayerArguments {
+  final Anime anime;
+  final Release release;
+
+  MoviePlayerArguments({
+    @required this.anime,
+    @required this.release,
+  });
 }
