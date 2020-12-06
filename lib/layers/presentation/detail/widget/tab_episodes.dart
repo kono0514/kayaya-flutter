@@ -6,10 +6,10 @@ import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../../../core/utils/launchers.dart';
 import '../../../../core/widgets/icon_popup_menu.dart';
 import '../../../../core/widgets/list_bottom_loader.dart';
 import '../../../../locale/generated/l10n.dart';
+import '../../../../router.dart';
 import '../../../domain/entities/anime.dart';
 import '../../../domain/entities/episode.dart';
 import '../../../domain/entities/release.dart';
@@ -188,11 +188,13 @@ class _EpisodeListItem extends StatelessWidget {
         );
 
         if (chosenRelease != null) {
-          launchPlayRelease(
-            context,
-            anime,
-            episode,
-            chosenRelease,
+          Navigator.of(context, rootNavigator: true).pushNamed(
+            Routes.seriesPlayer,
+            arguments: SeriesPlayerArguments(
+              anime: anime,
+              episode: episode,
+              release: chosenRelease,
+            ),
           );
         }
       },

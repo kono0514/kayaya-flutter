@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'app.dart';
 import 'layers/domain/entities/anime.dart';
+import 'layers/domain/entities/episode.dart';
 import 'layers/domain/entities/release.dart';
 import 'layers/presentation/detail/view/movie.dart';
 import 'layers/presentation/detail/view/series.dart';
 import 'layers/presentation/login/view/login_page.dart';
 import 'layers/presentation/player/view/movie_player.dart';
+import 'layers/presentation/player/view/series_player.dart';
 import 'layers/presentation/search/view/search_page.dart';
 
 class Routes {
@@ -94,16 +96,23 @@ class MyRouter {
     },
     Routes.moviePlayer: (settings) {
       var args = settings.arguments as MoviePlayerArguments;
-      return MaterialPageRoute(
-        builder: (context) => MoviePlayer(
+      return PageRouteBuilder(
+        pageBuilder: (_, __, ___) => MoviePlayer(
           anime: args.anime,
           release: args.release,
         ),
+        transitionDuration: Duration(seconds: 0),
       );
     },
     Routes.seriesPlayer: (settings) {
-      return MaterialPageRoute(
-        builder: null,
+      var args = settings.arguments as SeriesPlayerArguments;
+      return PageRouteBuilder(
+        pageBuilder: (_, __, ___) => SeriesPlayer(
+          anime: args.anime,
+          episode: args.episode,
+          release: args.release,
+        ),
+        transitionDuration: Duration(seconds: 0),
       );
     }
   };
@@ -169,6 +178,18 @@ class MoviePlayerArguments {
 
   MoviePlayerArguments({
     @required this.anime,
+    @required this.release,
+  });
+}
+
+class SeriesPlayerArguments {
+  final Anime anime;
+  final Episode episode;
+  final Release release;
+
+  SeriesPlayerArguments({
+    @required this.anime,
+    @required this.episode,
     @required this.release,
   });
 }
