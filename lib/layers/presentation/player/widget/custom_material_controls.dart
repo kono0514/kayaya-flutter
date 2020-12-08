@@ -14,15 +14,18 @@ import '../../../../core/widgets/material_dialog.dart';
 import '../util/helper.dart';
 import 'material_progress_bar.dart';
 import 'player_circle_button.dart';
+import 'player_ui_controller.dart';
 
 class CustomMaterialControls extends StatefulWidget {
   final String title;
   final String subtitle;
+  final PlayerUIController uiController;
 
   const CustomMaterialControls({
     Key key,
     @required this.title,
     this.subtitle,
+    @required this.uiController,
   }) : super(key: key);
 
   @override
@@ -61,12 +64,24 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   void initState() {
     super.initState();
     FlutterAutoPip.isPipSupported().then((value) {
-      if (value) {
+      if (value && mounted) {
         setState(() {
           _showPipButton = true;
         });
       }
     });
+    widget.uiController.addListener(_uiControllerListener);
+  }
+
+  void _uiControllerListener() {
+    if (widget.uiController.hideControls) {
+      setState(() {
+        _hideStuff = true;
+        _hideStuffAnimationDuration = Duration.zero;
+        _hideTimer?.cancel();
+      });
+      _hideStuffAnimationDuration = Duration(milliseconds: 300);
+    }
   }
 
   @override
@@ -138,12 +153,12 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   @override
   void dispose() {
     _dispose();
+    widget.uiController.removeListener(_uiControllerListener);
     super.dispose();
   }
 
   void _dispose() {
     controller.removeListener(_updateState);
-    chewieController.removeListener(_chewieListener);
     _hideTimer?.cancel();
     _initTimer?.cancel();
     _buttonSeekTimer?.cancel();
@@ -636,7 +651,6 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
 
   Future<Null> _initialize() async {
     controller.addListener(_updateState);
-    chewieController.addListener(_chewieListener);
 
     _updateState();
 
@@ -651,17 +665,6 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
           _hideStuff = false;
         });
       });
-    }
-  }
-
-  void _chewieListener() async {
-    if (chewieController.shouldHideControlsNow) {
-      setState(() {
-        _hideStuff = true;
-        _hideStuffAnimationDuration = Duration.zero;
-        _hideTimer?.cancel();
-      });
-      _hideStuffAnimationDuration = Duration(milliseconds: 300);
     }
   }
 

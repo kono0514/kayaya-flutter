@@ -8,6 +8,7 @@ import 'package:video_player/video_player.dart';
 import '../../../domain/entities/anime.dart';
 import '../../../domain/entities/release.dart';
 import '../widget/custom_material_controls.dart';
+import '../widget/player_ui_controller.dart';
 
 class MoviePlayer extends StatefulWidget {
   final Anime anime;
@@ -27,6 +28,7 @@ class _MoviePlayerState extends State<MoviePlayer> {
   VideoPlayerController _controller;
   ChewieController _chewieController;
   StreamSubscription onPipModeChangedSubscription;
+  PlayerUIController playerUIController = PlayerUIController();
 
   @override
   void initState() {
@@ -37,13 +39,14 @@ class _MoviePlayerState extends State<MoviePlayer> {
     onPipModeChangedSubscription =
         FlutterAutoPip.onPipModeChanged.listen((event) {
       if (event) {
-        _chewieController?.hideControls();
+        playerUIController.hide();
       }
     });
   }
 
   @override
   void dispose() {
+    playerUIController.dispose();
     FlutterAutoPip.autoPipModeDisable();
     _controller.dispose();
     _chewieController.dispose();
@@ -64,6 +67,7 @@ class _MoviePlayerState extends State<MoviePlayer> {
       allowPlaybackSpeedChanging: true,
       customControls: CustomMaterialControls(
         title: widget.anime.name,
+        uiController: playerUIController,
       ),
     );
   }
