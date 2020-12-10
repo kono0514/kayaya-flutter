@@ -29,6 +29,7 @@ type Query {
     """The offset from which elements are returned."""
     page: Int
   ): EpisodePaginator
+  episodePageLocator(episodeNumber: Int!, animeId: ID!, perPage: Int!): EpisodeLocator!
   genres(orderBy: [GenresOrderByOrderByClause!]): [Genre!]!
   genre(id: ID!): Genre
   scrapyJob(id: ID!): ScrapyJob
@@ -373,6 +374,11 @@ Allowed column names for the `orderBy` argument on the query `episodes`.
 """
 enum EpisodesOrderByColumn {
   NUMBER
+}
+
+type EpisodeLocator {
+  page: Int!
+  hasMorePages: Boolean!
 }
 
 """Order by clause for the `orderBy` argument on the query `genres`."""

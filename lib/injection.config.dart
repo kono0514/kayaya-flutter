@@ -39,6 +39,7 @@ import 'layers/presentation/genre/cubit/genre_list_cubit.dart';
 import 'layers/domain/usecases/anime/get_animes_usecase.dart';
 import 'layers/domain/usecases/detail/get_detail_usecase.dart';
 import 'layers/domain/usecases/detail/get_detail_with_anime_usecase.dart';
+import 'layers/domain/usecases/detail/get_episode_page_info.dart';
 import 'layers/domain/usecases/detail/get_episodes_usecase.dart';
 import 'layers/domain/usecases/anime/get_featured_usecase.dart';
 import 'layers/domain/usecases/anime/get_genres_usecase.dart';
@@ -57,6 +58,7 @@ import 'layers/domain/usecases/authentication/login_with_google_usecase.dart';
 import 'layers/domain/usecases/authentication/login_with_password_usecase.dart';
 import 'layers/domain/usecases/authentication/logout_usecase.dart';
 import 'core/services/notification_service.dart';
+import 'layers/presentation/player/bloc/player_episodes_bloc.dart';
 import 'core/services/preferences_service.dart';
 import 'injection.dart';
 import 'layers/presentation/detail/cubit/relations_cubit.dart';
@@ -93,10 +95,10 @@ Future<GetIt> $initGetIt(
   final gh = GetItHelper(get, environment, environmentFilter);
   final registerModule = _$RegisterModule();
   gh.lazySingleton<Algolia>(() => registerModule.algolia);
-  final box = await registerModule.preferencesBox;
-  gh.factory<Box<dynamic>>(() => box, instanceName: 'preferencesBox');
-  final box1 = await registerModule.animeBox;
-  gh.factory<Box<dynamic>>(() => box1, instanceName: 'animeBox');
+  final box = await registerModule.animeBox;
+  gh.factory<Box<dynamic>>(() => box, instanceName: 'animeBox');
+  final box1 = await registerModule.preferencesBox;
+  gh.factory<Box<dynamic>>(() => box1, instanceName: 'preferencesBox');
   gh.factory<BrowseFilterCubit>(() => BrowseFilterCubit());
   gh.factory<FacebookAuth>(() => registerModule.facebookAuth);
   gh.factory<FirebaseAuth>(() => registerModule.firebaseAuth);
@@ -152,6 +154,8 @@ Future<GetIt> $initGetIt(
       () => GetDetailUsecase(detailRepository: get<DetailRepository>()));
   gh.factory<GetDetailWithAnimeUsecase>(() =>
       GetDetailWithAnimeUsecase(detailRepository: get<DetailRepository>()));
+  gh.factory<GetEpisodePageInfoUsecase>(() =>
+      GetEpisodePageInfoUsecase(detailRepository: get<DetailRepository>()));
   gh.factory<GetEpisodesUsecase>(
       () => GetEpisodesUsecase(detailRepository: get<DetailRepository>()));
   gh.factory<GetFeaturedUsecase>(
@@ -181,6 +185,13 @@ Future<GetIt> $initGetIt(
       () => LoginWithPasswordUsecase(authRepo: get<AuthRepository>()));
   gh.factory<LogoutUsecase>(
       () => LogoutUsecase(authRepo: get<AuthRepository>()));
+  gh.factoryParam<PlayerEpisodesBloc, String, int>(
+      (id, startingEpisode) => PlayerEpisodesBloc(
+            getEpisodesUsecase: get<GetEpisodesUsecase>(),
+            getEpisodePageInfoUsecase: get<GetEpisodePageInfoUsecase>(),
+            id: id,
+            startingEpisode: startingEpisode,
+          ));
   gh.factory<RelationsCubit>(
       () => RelationsCubit(getRelationsUsecase: get<GetRelationsUsecase>()));
   gh.factory<SaveSearchHistoryUsecase>(

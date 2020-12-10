@@ -123,4 +123,29 @@ class DetailNetworkDatasourceKayayaImpl extends DetailNetworkDatasource {
       hasMorePages: _result.paginatorInfo.hasMorePages,
     );
   }
+
+  @override
+  Future<Tuple2<int, bool>> fetchEpisodePageInfo(String id, int number) async {
+    final args = gen.GetEpisodePageInfoArguments(
+      animeId: id,
+      episodeNumber: number,
+      perPage: 30,
+    );
+    final _options = QueryOptions(
+      document: gen.GetEpisodePageInfoQuery().document,
+      variables: args.toJson(),
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+    );
+
+    final result = await graphql.query(_options);
+
+    if (result.hasException) {
+      throw result.exception;
+    }
+
+    final _result =
+        gen.GetEpisodePageInfo$Query.fromJson(result.data).episodePageLocator;
+
+    return Tuple2(_result.page, _result.hasMorePages);
+  }
 }

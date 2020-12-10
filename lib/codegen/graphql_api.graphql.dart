@@ -591,6 +591,38 @@ class GetAnimeRelations$Query with EquatableMixin {
 }
 
 @JsonSerializable(explicitToJson: true)
+class GetEpisodePageInfo$Query$EpisodePageLocator with EquatableMixin {
+  GetEpisodePageInfo$Query$EpisodePageLocator();
+
+  factory GetEpisodePageInfo$Query$EpisodePageLocator.fromJson(
+          Map<String, dynamic> json) =>
+      _$GetEpisodePageInfo$Query$EpisodePageLocatorFromJson(json);
+
+  int page;
+
+  bool hasMorePages;
+
+  @override
+  List<Object> get props => [page, hasMorePages];
+  Map<String, dynamic> toJson() =>
+      _$GetEpisodePageInfo$Query$EpisodePageLocatorToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetEpisodePageInfo$Query with EquatableMixin {
+  GetEpisodePageInfo$Query();
+
+  factory GetEpisodePageInfo$Query.fromJson(Map<String, dynamic> json) =>
+      _$GetEpisodePageInfo$QueryFromJson(json);
+
+  GetEpisodePageInfo$Query$EpisodePageLocator episodePageLocator;
+
+  @override
+  List<Object> get props => [episodePageLocator];
+  Map<String, dynamic> toJson() => _$GetEpisodePageInfo$QueryToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
 class GetFeatured$Query with EquatableMixin {
   GetFeatured$Query();
 
@@ -716,6 +748,20 @@ class GetSubscriptions$Query with EquatableMixin {
 }
 
 @JsonSerializable(explicitToJson: true)
+class IsSubscribedTo$Query with EquatableMixin {
+  IsSubscribedTo$Query();
+
+  factory IsSubscribedTo$Query.fromJson(Map<String, dynamic> json) =>
+      _$IsSubscribedTo$QueryFromJson(json);
+
+  bool isUserSubscribedTo;
+
+  @override
+  List<Object> get props => [isUserSubscribedTo];
+  Map<String, dynamic> toJson() => _$IsSubscribedTo$QueryToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
 class AnimeItemModelGenerator$Query$Anime
     with EquatableMixin, AnimeItemFieldsMixin {
   AnimeItemModelGenerator$Query$Anime();
@@ -785,20 +831,6 @@ class UploadFcmToken$Mutation with EquatableMixin {
   @override
   List<Object> get props => [registerFcmToken];
   Map<String, dynamic> toJson() => _$UploadFcmToken$MutationToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class IsSubscribedTo$Query with EquatableMixin {
-  IsSubscribedTo$Query();
-
-  factory IsSubscribedTo$Query.fromJson(Map<String, dynamic> json) =>
-      _$IsSubscribedTo$QueryFromJson(json);
-
-  bool isUserSubscribedTo;
-
-  @override
-  List<Object> get props => [isUserSubscribedTo];
-  Map<String, dynamic> toJson() => _$IsSubscribedTo$QueryToJson(this);
 }
 
 enum AnimeType {
@@ -1809,6 +1841,105 @@ class GetAnimeRelationsQuery
       GetAnimeRelations$Query.fromJson(json);
 }
 
+@JsonSerializable(explicitToJson: true)
+class GetEpisodePageInfoArguments extends JsonSerializable with EquatableMixin {
+  GetEpisodePageInfoArguments(
+      {@required this.animeId,
+      @required this.perPage,
+      @required this.episodeNumber});
+
+  @override
+  factory GetEpisodePageInfoArguments.fromJson(Map<String, dynamic> json) =>
+      _$GetEpisodePageInfoArgumentsFromJson(json);
+
+  final String animeId;
+
+  final int perPage;
+
+  final int episodeNumber;
+
+  @override
+  List<Object> get props => [animeId, perPage, episodeNumber];
+  @override
+  Map<String, dynamic> toJson() => _$GetEpisodePageInfoArgumentsToJson(this);
+}
+
+class GetEpisodePageInfoQuery extends GraphQLQuery<GetEpisodePageInfo$Query,
+    GetEpisodePageInfoArguments> {
+  GetEpisodePageInfoQuery({this.variables});
+
+  @override
+  final DocumentNode document = DocumentNode(definitions: [
+    OperationDefinitionNode(
+        type: OperationType.query,
+        name: NameNode(value: 'GetEpisodePageInfo'),
+        variableDefinitions: [
+          VariableDefinitionNode(
+              variable: VariableNode(name: NameNode(value: 'animeId')),
+              type: NamedTypeNode(name: NameNode(value: 'ID'), isNonNull: true),
+              defaultValue: DefaultValueNode(value: null),
+              directives: []),
+          VariableDefinitionNode(
+              variable: VariableNode(name: NameNode(value: 'perPage')),
+              type:
+                  NamedTypeNode(name: NameNode(value: 'Int'), isNonNull: true),
+              defaultValue: DefaultValueNode(value: null),
+              directives: []),
+          VariableDefinitionNode(
+              variable: VariableNode(name: NameNode(value: 'episodeNumber')),
+              type:
+                  NamedTypeNode(name: NameNode(value: 'Int'), isNonNull: true),
+              defaultValue: DefaultValueNode(value: null),
+              directives: [])
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'episodePageLocator'),
+              alias: null,
+              arguments: [
+                ArgumentNode(
+                    name: NameNode(value: 'episodeNumber'),
+                    value:
+                        VariableNode(name: NameNode(value: 'episodeNumber'))),
+                ArgumentNode(
+                    name: NameNode(value: 'animeId'),
+                    value: VariableNode(name: NameNode(value: 'animeId'))),
+                ArgumentNode(
+                    name: NameNode(value: 'perPage'),
+                    value: VariableNode(name: NameNode(value: 'perPage')))
+              ],
+              directives: [],
+              selectionSet: SelectionSetNode(selections: [
+                FieldNode(
+                    name: NameNode(value: 'page'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null),
+                FieldNode(
+                    name: NameNode(value: 'hasMorePages'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null)
+              ]))
+        ]))
+  ]);
+
+  @override
+  final String operationName = 'GetEpisodePageInfo';
+
+  @override
+  final GetEpisodePageInfoArguments variables;
+
+  @override
+  List<Object> get props => [document, operationName, variables];
+  @override
+  GetEpisodePageInfo$Query parse(Map<String, dynamic> json) =>
+      GetEpisodePageInfo$Query.fromJson(json);
+}
+
 class GetFeaturedQuery
     extends GraphQLQuery<GetFeatured$Query, JsonSerializable> {
   GetFeaturedQuery();
@@ -2069,6 +2200,66 @@ class GetSubscriptionsQuery
   @override
   GetSubscriptions$Query parse(Map<String, dynamic> json) =>
       GetSubscriptions$Query.fromJson(json);
+}
+
+@JsonSerializable(explicitToJson: true)
+class IsSubscribedToArguments extends JsonSerializable with EquatableMixin {
+  IsSubscribedToArguments({@required this.animeId});
+
+  @override
+  factory IsSubscribedToArguments.fromJson(Map<String, dynamic> json) =>
+      _$IsSubscribedToArgumentsFromJson(json);
+
+  final String animeId;
+
+  @override
+  List<Object> get props => [animeId];
+  @override
+  Map<String, dynamic> toJson() => _$IsSubscribedToArgumentsToJson(this);
+}
+
+class IsSubscribedToQuery
+    extends GraphQLQuery<IsSubscribedTo$Query, IsSubscribedToArguments> {
+  IsSubscribedToQuery({this.variables});
+
+  @override
+  final DocumentNode document = DocumentNode(definitions: [
+    OperationDefinitionNode(
+        type: OperationType.query,
+        name: NameNode(value: 'IsSubscribedTo'),
+        variableDefinitions: [
+          VariableDefinitionNode(
+              variable: VariableNode(name: NameNode(value: 'animeId')),
+              type: NamedTypeNode(name: NameNode(value: 'ID'), isNonNull: true),
+              defaultValue: DefaultValueNode(value: null),
+              directives: [])
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'isUserSubscribedTo'),
+              alias: null,
+              arguments: [
+                ArgumentNode(
+                    name: NameNode(value: 'animeId'),
+                    value: VariableNode(name: NameNode(value: 'animeId')))
+              ],
+              directives: [],
+              selectionSet: null)
+        ]))
+  ]);
+
+  @override
+  final String operationName = 'IsSubscribedTo';
+
+  @override
+  final IsSubscribedToArguments variables;
+
+  @override
+  List<Object> get props => [document, operationName, variables];
+  @override
+  IsSubscribedTo$Query parse(Map<String, dynamic> json) =>
+      IsSubscribedTo$Query.fromJson(json);
 }
 
 class AnimeItemModelGeneratorQuery
@@ -2352,64 +2543,4 @@ class UploadFcmTokenMutation
   @override
   UploadFcmToken$Mutation parse(Map<String, dynamic> json) =>
       UploadFcmToken$Mutation.fromJson(json);
-}
-
-@JsonSerializable(explicitToJson: true)
-class IsSubscribedToArguments extends JsonSerializable with EquatableMixin {
-  IsSubscribedToArguments({@required this.animeId});
-
-  @override
-  factory IsSubscribedToArguments.fromJson(Map<String, dynamic> json) =>
-      _$IsSubscribedToArgumentsFromJson(json);
-
-  final String animeId;
-
-  @override
-  List<Object> get props => [animeId];
-  @override
-  Map<String, dynamic> toJson() => _$IsSubscribedToArgumentsToJson(this);
-}
-
-class IsSubscribedToQuery
-    extends GraphQLQuery<IsSubscribedTo$Query, IsSubscribedToArguments> {
-  IsSubscribedToQuery({this.variables});
-
-  @override
-  final DocumentNode document = DocumentNode(definitions: [
-    OperationDefinitionNode(
-        type: OperationType.query,
-        name: NameNode(value: 'IsSubscribedTo'),
-        variableDefinitions: [
-          VariableDefinitionNode(
-              variable: VariableNode(name: NameNode(value: 'animeId')),
-              type: NamedTypeNode(name: NameNode(value: 'ID'), isNonNull: true),
-              defaultValue: DefaultValueNode(value: null),
-              directives: [])
-        ],
-        directives: [],
-        selectionSet: SelectionSetNode(selections: [
-          FieldNode(
-              name: NameNode(value: 'isUserSubscribedTo'),
-              alias: null,
-              arguments: [
-                ArgumentNode(
-                    name: NameNode(value: 'animeId'),
-                    value: VariableNode(name: NameNode(value: 'animeId')))
-              ],
-              directives: [],
-              selectionSet: null)
-        ]))
-  ]);
-
-  @override
-  final String operationName = 'IsSubscribedTo';
-
-  @override
-  final IsSubscribedToArguments variables;
-
-  @override
-  List<Object> get props => [document, operationName, variables];
-  @override
-  IsSubscribedTo$Query parse(Map<String, dynamic> json) =>
-      IsSubscribedTo$Query.fromJson(json);
 }

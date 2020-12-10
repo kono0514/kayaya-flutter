@@ -12,4 +12,5 @@ abstract class DetailNetworkDatasource {
   Future<AnimeRelationModel> fetchRelations(String id);
   Future<PagedList<EpisodeModel>> fetchEpisodes(
       String id, int page, String sortOrder);
+  Future<Tuple2<int, bool>> fetchEpisodePageInfo(String id, int number);
 }

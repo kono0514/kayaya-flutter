@@ -127,7 +127,7 @@ class _BrowsePageState extends State<BrowsePage> {
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
                     return index >= state.animes.elements.length
-                        ? ListBottomLoader(error: state.error != null)
+                        ? ListLoader(error: state.error != null)
                         : BrowseListItem(
                             anime: state.animes.elements[index],
                             onPressed: () {

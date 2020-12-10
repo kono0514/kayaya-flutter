@@ -46,9 +46,7 @@ class DetailRepositoryImpl implements DetailRepository {
     try {
       final result = await networkDatasource.fetchDetailFull(id);
       return Right(result);
-    } catch (e, s) {
-      print(e);
-      print(s);
+    } catch (e) {
       return Left(e);
     }
   }
@@ -71,6 +69,17 @@ class DetailRepositoryImpl implements DetailRepository {
   }) async {
     try {
       final result = await networkDatasource.fetchEpisodes(id, page, sortOrder);
+      return Right(result);
+    } catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, Tuple2<int, bool>>> getEpisodePageInfo(
+      {String id, int number}) async {
+    try {
+      final result = await networkDatasource.fetchEpisodePageInfo(id, number);
       return Right(result);
     } catch (e) {
       return Left(e);

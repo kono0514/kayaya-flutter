@@ -17,4 +17,8 @@ abstract class DetailRepository {
     int page = 1,
     String sortOrder = 'asc',
   });
+  Future<Either<Failure, Tuple2<int, bool>>> getEpisodePageInfo({
+    @required String id,
+    @required int number,
+  });
 }

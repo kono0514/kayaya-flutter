@@ -25,8 +25,8 @@ class MoviePlayer extends StatefulWidget {
 }
 
 class _MoviePlayerState extends State<MoviePlayer> {
-  VideoPlayerController _controller;
-  ChewieController _chewieController;
+  VideoPlayerController playerController;
+  ChewieController chewieController;
   StreamSubscription onPipModeChangedSubscription;
   PlayerUIController playerUIController = PlayerUIController();
 
@@ -34,30 +34,24 @@ class _MoviePlayerState extends State<MoviePlayer> {
   void initState() {
     super.initState();
 
-    initializeVideo();
-    FlutterAutoPip.autoPipModeEnable();
-    onPipModeChangedSubscription =
-        FlutterAutoPip.onPipModeChanged.listen((event) {
-      if (event) {
-        playerUIController.hide();
-      }
-    });
+    setupVideo();
+    setupPIP();
   }
 
   @override
   void dispose() {
     playerUIController.dispose();
-    FlutterAutoPip.autoPipModeDisable();
-    _controller.dispose();
-    _chewieController.dispose();
     onPipModeChangedSubscription.cancel();
+    FlutterAutoPip.autoPipModeDisable();
+    playerController.dispose();
+    chewieController.dispose();
     super.dispose();
   }
 
-  void initializeVideo() {
-    _controller = VideoPlayerController.network(widget.release.url);
-    _chewieController = ChewieController(
-      videoPlayerController: _controller,
+  void setupVideo() {
+    playerController = VideoPlayerController.network(widget.release.url);
+    chewieController = ChewieController(
+      videoPlayerController: playerController,
       aspectRatio: 16 / 9,
       allowFullScreen: false,
       allowedScreenSleep: false,
@@ -72,10 +66,20 @@ class _MoviePlayerState extends State<MoviePlayer> {
     );
   }
 
+  void setupPIP() {
+    onPipModeChangedSubscription =
+        FlutterAutoPip.onPipModeChanged.listen((event) {
+      if (event) {
+        playerUIController.hide();
+      }
+    });
+    FlutterAutoPip.autoPipModeEnable();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChewieFS(
-      controller: _chewieController,
+      controller: chewieController,
     );
   }
 }

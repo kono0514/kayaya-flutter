@@ -144,7 +144,7 @@ class _LibraryPageState extends State<LibraryPage> {
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
                   if (index >= state.subscriptions.elements.length) {
-                    return ListBottomLoader(error: state.error != null);
+                    return ListLoader(error: state.error != null);
                   }
 
                   final anime = state.subscriptions.elements[index];

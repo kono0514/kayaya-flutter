@@ -142,7 +142,7 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
                     return index >= state.episodes.elements.length
-                        ? ListBottomLoader(error: state.error != null)
+                        ? ListLoader(error: state.error != null)
                         : _EpisodeListItem(
                             anime: widget.anime,
                             episode: state.episodes.elements[index],

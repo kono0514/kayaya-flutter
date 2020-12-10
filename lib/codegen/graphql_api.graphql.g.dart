@@ -705,6 +705,36 @@ Map<String, dynamic> _$GetAnimeRelations$QueryToJson(
       'anime': instance.anime?.toJson(),
     };
 
+GetEpisodePageInfo$Query$EpisodePageLocator
+    _$GetEpisodePageInfo$Query$EpisodePageLocatorFromJson(
+        Map<String, dynamic> json) {
+  return GetEpisodePageInfo$Query$EpisodePageLocator()
+    ..page = json['page'] as int
+    ..hasMorePages = json['hasMorePages'] as bool;
+}
+
+Map<String, dynamic> _$GetEpisodePageInfo$Query$EpisodePageLocatorToJson(
+        GetEpisodePageInfo$Query$EpisodePageLocator instance) =>
+    <String, dynamic>{
+      'page': instance.page,
+      'hasMorePages': instance.hasMorePages,
+    };
+
+GetEpisodePageInfo$Query _$GetEpisodePageInfo$QueryFromJson(
+    Map<String, dynamic> json) {
+  return GetEpisodePageInfo$Query()
+    ..episodePageLocator = json['episodePageLocator'] == null
+        ? null
+        : GetEpisodePageInfo$Query$EpisodePageLocator.fromJson(
+            json['episodePageLocator'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic> _$GetEpisodePageInfo$QueryToJson(
+        GetEpisodePageInfo$Query instance) =>
+    <String, dynamic>{
+      'episodePageLocator': instance.episodePageLocator?.toJson(),
+    };
+
 GetFeatured$Query _$GetFeatured$QueryFromJson(Map<String, dynamic> json) {
   return GetFeatured$Query()..featured = json['featured'] as String;
 }
@@ -844,6 +874,17 @@ Map<String, dynamic> _$GetSubscriptions$QueryToJson(
       'me': instance.me?.toJson(),
     };
 
+IsSubscribedTo$Query _$IsSubscribedTo$QueryFromJson(Map<String, dynamic> json) {
+  return IsSubscribedTo$Query()
+    ..isUserSubscribedTo = json['isUserSubscribedTo'] as bool;
+}
+
+Map<String, dynamic> _$IsSubscribedTo$QueryToJson(
+        IsSubscribedTo$Query instance) =>
+    <String, dynamic>{
+      'isUserSubscribedTo': instance.isUserSubscribedTo,
+    };
+
 AnimeItemModelGenerator$Query$Anime
     _$AnimeItemModelGenerator$Query$AnimeFromJson(Map<String, dynamic> json) {
   return AnimeItemModelGenerator$Query$Anime()
@@ -919,17 +960,6 @@ Map<String, dynamic> _$UploadFcmToken$MutationToJson(
         UploadFcmToken$Mutation instance) =>
     <String, dynamic>{
       'registerFcmToken': instance.registerFcmToken,
-    };
-
-IsSubscribedTo$Query _$IsSubscribedTo$QueryFromJson(Map<String, dynamic> json) {
-  return IsSubscribedTo$Query()
-    ..isUserSubscribedTo = json['isUserSubscribedTo'] as bool;
-}
-
-Map<String, dynamic> _$IsSubscribedTo$QueryToJson(
-        IsSubscribedTo$Query instance) =>
-    <String, dynamic>{
-      'isUserSubscribedTo': instance.isUserSubscribedTo,
     };
 
 BrowseAnimesArguments _$BrowseAnimesArgumentsFromJson(
@@ -1027,6 +1057,23 @@ Map<String, dynamic> _$GetAnimeRelationsArgumentsToJson(
       'id': instance.id,
     };
 
+GetEpisodePageInfoArguments _$GetEpisodePageInfoArgumentsFromJson(
+    Map<String, dynamic> json) {
+  return GetEpisodePageInfoArguments(
+    animeId: json['animeId'] as String,
+    perPage: json['perPage'] as int,
+    episodeNumber: json['episodeNumber'] as int,
+  );
+}
+
+Map<String, dynamic> _$GetEpisodePageInfoArgumentsToJson(
+        GetEpisodePageInfoArguments instance) =>
+    <String, dynamic>{
+      'animeId': instance.animeId,
+      'perPage': instance.perPage,
+      'episodeNumber': instance.episodeNumber,
+    };
+
 GetSubscriptionsArguments _$GetSubscriptionsArgumentsFromJson(
     Map<String, dynamic> json) {
   return GetSubscriptionsArguments(
@@ -1040,6 +1087,19 @@ Map<String, dynamic> _$GetSubscriptionsArgumentsToJson(
     <String, dynamic>{
       'first': instance.first,
       'page': instance.page,
+    };
+
+IsSubscribedToArguments _$IsSubscribedToArgumentsFromJson(
+    Map<String, dynamic> json) {
+  return IsSubscribedToArguments(
+    animeId: json['animeId'] as String,
+  );
+}
+
+Map<String, dynamic> _$IsSubscribedToArgumentsToJson(
+        IsSubscribedToArguments instance) =>
+    <String, dynamic>{
+      'animeId': instance.animeId,
     };
 
 SubscribeToArguments _$SubscribeToArgumentsFromJson(Map<String, dynamic> json) {
@@ -1080,17 +1140,4 @@ Map<String, dynamic> _$UploadFcmTokenArgumentsToJson(
     <String, dynamic>{
       'token': instance.token,
       'oldToken': instance.oldToken,
-    };
-
-IsSubscribedToArguments _$IsSubscribedToArgumentsFromJson(
-    Map<String, dynamic> json) {
-  return IsSubscribedToArguments(
-    animeId: json['animeId'] as String,
-  );
-}
-
-Map<String, dynamic> _$IsSubscribedToArgumentsToJson(
-        IsSubscribedToArguments instance) =>
-    <String, dynamic>{
-      'animeId': instance.animeId,
     };

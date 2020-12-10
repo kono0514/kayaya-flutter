@@ -1,0 +1,6 @@
+query GetEpisodePageInfo($animeId: ID!, $perPage: Int!, $episodeNumber: Int!) {
+    episodePageLocator(episodeNumber: $episodeNumber, animeId: $animeId, perPage: $perPage) {
+        page
+        hasMorePages
+    }
+}

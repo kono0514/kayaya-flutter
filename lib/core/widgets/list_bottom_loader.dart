@@ -1,31 +1,43 @@
 import 'package:flutter/material.dart';
 
-class ListBottomLoader extends StatelessWidget {
+class ListLoader extends StatelessWidget {
   /// Whether to render the error or not
   final bool error;
   final VoidCallback onRetry;
+  final EdgeInsetsGeometry padding;
+  final double spinnerSize;
 
-  const ListBottomLoader({
+  const ListLoader({
     Key key,
     @required this.error,
     this.onRetry,
+    this.padding = const EdgeInsets.only(
+      top: 20.0,
+      bottom: 40.0,
+    ),
+    this.spinnerSize,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.only(
-          top: 20.0,
-          bottom: 40.0,
-        ),
+        padding: this.padding,
         child: error == true ? _buildError() : _buildLoader(),
       ),
     );
   }
 
   Widget _buildLoader() {
-    return CircularProgressIndicator();
+    if (spinnerSize == null) {
+      return CircularProgressIndicator();
+    }
+
+    return SizedBox(
+      width: spinnerSize,
+      height: spinnerSize,
+      child: CircularProgressIndicator(),
+    );
   }
 
   Widget _buildError() {

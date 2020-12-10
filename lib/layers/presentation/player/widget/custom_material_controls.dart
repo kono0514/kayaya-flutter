@@ -315,7 +315,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   }
 
   Widget _buildPipButton() {
-    void _launchPipIntent() async {
+    void _launchPipPermissionIntent() async {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
       android_intent.Intent()
         ..setAction('android.settings.PICTURE_IN_PICTURE_SETTINGS')
@@ -345,7 +345,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                       label: 'PERMISSION',
                       onPressed: () async {
                         controller.pause();
-                        _launchPipIntent();
+                        _launchPipPermissionIntent();
                       },
                     ),
                   ),

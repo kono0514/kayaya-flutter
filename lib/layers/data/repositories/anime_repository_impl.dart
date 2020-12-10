@@ -44,9 +44,7 @@ class AnimeRepositoryImpl implements AnimeRepository {
     try {
       final result = await networkDatasource.fetchGenres();
       return Right(result);
-    } catch (e, s) {
-      print(e);
-      print(s);
+    } catch (e) {
       return Left(e);
     }
   }
@@ -59,9 +57,7 @@ class AnimeRepositoryImpl implements AnimeRepository {
     try {
       final result = await networkDatasource.fetchAnimes(page, filter);
       return Right(result);
-    } catch (e, s) {
-      print(e);
-      print(s);
+    } catch (e) {
       return Left(e);
     }
   }
