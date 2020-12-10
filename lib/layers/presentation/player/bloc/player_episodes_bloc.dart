@@ -114,12 +114,13 @@ class PlayerEpisodesBloc
       }
 
       if (event is PlayerEpisodesFetchPrevious) {
-        if (currentState is PlayerEpisodesLoaded &&
-            currentState.negativeEpisodes != null) {
+        if (currentState is PlayerEpisodesLoaded) {
           yield currentState.copyWith(
             negativeEpisodes: r.copyWith(
-              elements: currentState.negativeEpisodes.elements +
-                  r.elements.reversed.toList(),
+              elements: currentState.negativeEpisodes == null
+                  ? r.elements.reversed.toList()
+                  : currentState.negativeEpisodes.elements +
+                      r.elements.reversed.toList(),
             ),
           );
         } else {
@@ -131,12 +132,14 @@ class PlayerEpisodesBloc
           );
         }
       } else if (event is PlayerEpisodesFetchNext) {
-        if (currentState is PlayerEpisodesLoaded &&
-            currentState.positiveEpisodes != null) {
+        if (currentState is PlayerEpisodesLoaded) {
           yield currentState.copyWith(
-            positiveEpisodes: r.copyWith(
-              elements: currentState.positiveEpisodes.elements + r.elements,
-            ),
+            positiveEpisodes: currentState.positiveEpisodes == null
+                ? r.elements
+                : r.copyWith(
+                    elements:
+                        currentState.positiveEpisodes.elements + r.elements,
+                  ),
           );
         } else {
           yield PlayerEpisodesLoaded(
