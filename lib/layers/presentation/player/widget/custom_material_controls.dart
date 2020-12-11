@@ -70,7 +70,6 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
         });
       }
     });
-    widget.uiController.addListener(_uiControllerListener);
   }
 
   void _uiControllerListener() {
@@ -153,7 +152,6 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   @override
   void dispose() {
     _dispose();
-    widget.uiController.removeListener(_uiControllerListener);
     super.dispose();
   }
 
@@ -163,6 +161,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
     _initTimer?.cancel();
     _buttonSeekTimer?.cancel();
     _showAfterExpandCollapseTimer?.cancel();
+    widget.uiController.removeListener(_uiControllerListener);
   }
 
   @override
@@ -651,6 +650,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
 
   Future<Null> _initialize() async {
     controller.addListener(_updateState);
+    widget.uiController.addListener(_uiControllerListener);
 
     _updateState();
 

@@ -4,23 +4,27 @@ class PlaylistItem extends StatelessWidget {
   final String title;
   final String subtitle;
   final VoidCallback onTap;
+  final bool isActive;
 
-  const PlaylistItem({Key key, @required this.title, this.subtitle, this.onTap})
-      : super(key: key);
+  const PlaylistItem({
+    Key key,
+    @required this.title,
+    this.subtitle,
+    this.onTap,
+    this.isActive = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(
-        title,
-        style: TextStyle(color: Colors.red),
-      ),
+      title: Text(title),
       subtitle: Text(
         subtitle ?? '',
-        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
       ),
-      isThreeLine: true,
       onTap: onTap,
+      selected: isActive,
     );
   }
 }

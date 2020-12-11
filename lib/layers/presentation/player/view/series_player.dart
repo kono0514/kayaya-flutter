@@ -46,9 +46,12 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
 
   StreamSubscription onPipModeChangedSubscription;
   bool renderPipFriendlyView = false;
+  double playlistScrollPositionBeforePip;
 
   ScrollController playlistScrollController = ScrollController();
   bool scrolledToInitialEpisode = false;
+
+  Episode currentEpisode;
 
   @override
   void initState() {
@@ -57,7 +60,7 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
     // Lock orientation for this screen only
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    setupVideo();
+    setupVideo(widget.episode);
     setupPIP();
   }
 
@@ -77,8 +80,9 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
     super.dispose();
   }
 
-  void setupVideo() {
-    print(widget.release.url);
+  void setupVideo(Episode episode) {
+    isPlayingValue = false;
+    currentEpisode = episode;
     playerController = VideoPlayerController.network(
         'https://anikodcdn.net/static/media/mp4/479/1_480.mp4');
     chewieController = ChewieController(
@@ -93,7 +97,7 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
       allowPlaybackSpeedChanging: true,
       customControls: CustomMaterialControls(
         title: widget.anime.name,
-        subtitle: TR.current.episode_item(widget.episode.number),
+        subtitle: TR.current.episode_item(currentEpisode.number),
         uiController: playerUIController,
       ),
     );
@@ -112,18 +116,33 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
         // Don't need to do anything if player is already in fullscreen
         // since the only thing thats rendered is the video itself.
         if (!chewieController.isFullScreen) {
-          setState(() {
-            renderPipFriendlyView = true;
-          });
+          enterPipMode();
         }
         playerUIController.hide();
       } else {
         if (!chewieController.isFullScreen) {
-          setState(() {
-            renderPipFriendlyView = false;
-          });
+          exitPipMode();
         }
       }
+    });
+  }
+
+  void enterPipMode() {
+    setState(() {
+      playlistScrollPositionBeforePip =
+          playlistScrollController.position.pixels;
+      renderPipFriendlyView = true;
+    });
+  }
+
+  void exitPipMode() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (playlistScrollPositionBeforePip != null) {
+        playlistScrollController.jumpTo(playlistScrollPositionBeforePip);
+      }
+    });
+    setState(() {
+      renderPipFriendlyView = false;
     });
   }
 
@@ -164,6 +183,23 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
     }
   }
 
+  void changeVideo(Episode episode) async {
+    // First create and assign new controllers for video player and chewie.
+    // Then we dispose the old controllers after that. Disposing it this way (after)
+    // is safe because it is no longer used by anything (video player or chewie)
+    final oldPlayerController = playerController;
+    final oldChewieController = chewieController;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      oldPlayerController.removeListener(playerEventListener);
+      await oldPlayerController.dispose();
+      oldChewieController.removeListener(chewieEventListener);
+      oldChewieController.dispose();
+    });
+
+    setupVideo(episode);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final chewie = Chewie(controller: chewieController);
@@ -202,17 +238,8 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16.0, right: 16, top: 24),
-                    child: Text('Now playing:'),
-                  ),
-                  SizedBox(height: 12),
-                  Container(width: 40, height: 70, color: Colors.red),
-                  SizedBox(height: 12),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16.0, right: 16, top: 24),
-                    child: Text('Queue:'),
+                    padding: const EdgeInsets.all(16),
+                    child: Text('Episode List:'),
                   ),
                   Expanded(
                     child: _buildPlaylist(),
@@ -259,21 +286,28 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
     );
   }
 
+  ScrollDirection scrollDirection = ScrollDirection.reverse;
   Widget _buildPlaylistList(PlayerEpisodesLoaded state) {
     const Key centerKey = ValueKey('second-sliver-list');
 
     return Builder(
       builder: (context) => NotificationListener<ScrollNotification>(
         onNotification: (notification) {
+          if (notification is UserScrollNotification) {
+            scrollDirection = notification.direction;
+          }
           if (notification is ScrollEndNotification) {
             if (notification.depth != 0) return false;
             if (notification.metrics.maxScrollExtent == 0) return false;
 
-            // reach the pixels to loading more
-            if (notification.metrics.pixels >
-                notification.metrics.maxScrollExtent - 160) {
+            // reach the pixels to load more
+            final maxExtent = notification.metrics.maxScrollExtent - 160;
+            final minExtent = notification.metrics.minScrollExtent + 160;
+            if (scrollDirection == ScrollDirection.reverse &&
+                notification.metrics.pixels > maxExtent) {
               context.read<PlayerEpisodesBloc>().add(PlayerEpisodesFetchNext());
-            } else if (notification.metrics.pixels < 160) {
+            } else if (scrollDirection == ScrollDirection.forward &&
+                notification.metrics.pixels < minExtent) {
               context
                   .read<PlayerEpisodesBloc>()
                   .add(PlayerEpisodesFetchPrevious());
@@ -301,12 +335,14 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
               itemExtent: 80,
               delegate: SliverChildBuilderDelegate(
                 (context, index) => PlaylistItem(
-                  title:
-                      'Episode ${state.negativeEpisodes.elements[index].number}',
+                  title: TR.current.episode_item(
+                      state.negativeEpisodes.elements[index].number),
                   subtitle: state.negativeEpisodes.elements[index].title,
                   onTap: () {
-                    print(state.negativeEpisodes.elements[index].title);
+                    changeVideo(state.negativeEpisodes.elements[index]);
                   },
+                  isActive:
+                      currentEpisode == state.negativeEpisodes.elements[index],
                 ),
                 childCount: state.negativeEpisodes?.elements?.length ?? 0,
               ),
@@ -316,12 +352,14 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
               itemExtent: 80,
               delegate: SliverChildBuilderDelegate(
                 (context, index) => PlaylistItem(
-                  title:
-                      'Episode ${state.negativeEpisodes.elements[index].number}',
-                  subtitle: state.negativeEpisodes.elements[index].title,
+                  title: TR.current.episode_item(
+                      state.positiveEpisodes.elements[index].number),
+                  subtitle: state.positiveEpisodes.elements[index].title,
                   onTap: () {
-                    print(state.negativeEpisodes.elements[index].title);
+                    changeVideo(state.positiveEpisodes.elements[index]);
                   },
+                  isActive:
+                      currentEpisode == state.positiveEpisodes.elements[index],
                 ),
                 childCount: state.positiveEpisodes?.elements?.length ?? 0,
               ),
