@@ -35,11 +35,19 @@ class _DetailViewState extends State<DetailView>
       GlobalKey<NestedScrollViewState>();
 
   TabController tabController;
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: widget.tabs.length, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -51,6 +59,7 @@ class _DetailViewState extends State<DetailView>
         top: false,
         child: NestedScrollView(
           key: _key,
+          controller: scrollController,
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverAppBar(
@@ -106,6 +115,17 @@ class _DetailViewState extends State<DetailView>
                   indicatorSize: TabBarIndicatorSize.label,
                   isScrollable: true,
                   labelColor: Theme.of(context).textTheme.bodyText1.color,
+                  onTap: (index) {
+                    // Active tab clicked
+                    if (!tabController.indexIsChanging) {
+                      // Scroll to top without triggering any RefreshIndicator
+                      scrollController.animateTo(
+                        0.0,
+                        duration: const Duration(milliseconds: 100),
+                        curve: Curves.easeOut,
+                      );
+                    }
+                  },
                 ),
               ),
               Expanded(
