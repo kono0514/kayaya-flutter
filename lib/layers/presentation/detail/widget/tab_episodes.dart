@@ -129,20 +129,26 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
                       icon: Icon(Icons.sort),
                       initialValue: state.sortOrder,
                       onSelected: (value) {
-                        context.read<EpisodesBloc>().add(EpisodesRefreshed(
-                              widget.anime.id,
-                              sortOrder: value,
-                            ));
+                        context.read<EpisodesBloc>().add(
+                              EpisodesRefreshed(
+                                widget.anime.id,
+                                sortOrder: value,
+                              ),
+                            );
                       },
                     ),
                   ),
                 ),
               ),
-              SliverList(
+              SliverFixedExtentList(
+                itemExtent: 86,
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
                     return index >= state.episodes.elements.length
-                        ? ListLoader(error: state.error != null)
+                        ? ListLoader(
+                            error: state.error != null,
+                            spinnerSize: 24.0,
+                          )
                         : _EpisodeListItem(
                             anime: widget.anime,
                             episode: state.episodes.elements[index],
@@ -218,6 +224,7 @@ class _EpisodeListItem extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     TR.of(context).episode_item(episode.number),
