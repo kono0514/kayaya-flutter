@@ -358,14 +358,38 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                       value: 'open_external',
                       child: ConstrainedBox(
                         constraints: BoxConstraints(minWidth: 120.0),
-                        child: Text('Open with'),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.open_in_new_rounded,
+                              color: Theme.of(context)
+                                  .iconTheme
+                                  .color
+                                  .withOpacity(0.8),
+                            ),
+                            SizedBox(width: 10),
+                            Text('Open with'),
+                          ],
+                        ),
                       ),
                     ),
                     PopupMenuItem<String>(
                       value: 'copy_link',
                       child: ConstrainedBox(
                         constraints: BoxConstraints(minWidth: 120.0),
-                        child: Text('Copy Link'),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.copy_rounded,
+                              color: Theme.of(context)
+                                  .iconTheme
+                                  .color
+                                  .withOpacity(0.8),
+                            ),
+                            SizedBox(width: 10),
+                            Text('Copy Link'),
+                          ],
+                        ),
                       ),
                     ),
                   ];
