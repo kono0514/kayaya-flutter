@@ -264,6 +264,9 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
     _initTimer?.cancel();
     _buttonSeekTimer?.cancel();
     _showAfterExpandCollapseTimer?.cancel();
+    _rewindValue = 0;
+    _forwardValue = 0;
+    _seekUIVisible = false;
     widget.uiController.removeListener(_uiControllerListener);
   }
 
