@@ -15,6 +15,7 @@ import '../util/helper.dart';
 import 'material_progress_bar.dart';
 import 'player_circle_button.dart';
 import 'player_ui_controller.dart';
+import 'seek_rectangle_clipper.dart';
 
 class CustomMaterialControls extends StatefulWidget {
   final String title;
@@ -36,6 +37,7 @@ class CustomMaterialControls extends StatefulWidget {
 
 class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   VideoPlayerValue _latestValue;
+  Duration _latestPosition;
   double _latestVolume;
   bool _hideStuff = true;
   Duration _hideStuffAnimationDuration = Duration(milliseconds: 300);
@@ -49,11 +51,17 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   final marginSize = 5.0;
 
   int _rewindDuration = 10;
-  int _forwardDuration = 30;
+  int _forwardDuration = 10;
 
   int _rewindValue = 0;
   int _forwardValue = 0;
   Timer _buttonSeekTimer;
+  bool _seekUIVisible = false;
+  bool _wasPlayingBeforeSeek = false;
+  bool _wasControlsVisibleBeforeSeek = false;
+  bool get isSeekingForward => _forwardValue > 0;
+  bool get isSeekingBackward => _rewindValue > 0;
+  bool get isSeeking => isSeekingForward || isSeekingBackward;
 
   bool _showPipButton = false;
 
@@ -111,40 +119,129 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
       onHover: (_) {
         _cancelAndRestartTimer();
       },
-      child: GestureDetector(
-        onTap: () {
-          if (_latestValue?.isPlaying == true) {
-            _cancelAndRestartTimer();
-          } else {
-            _showStuff();
-          }
-        },
-        child: AbsorbPointer(
-          absorbing: _hideStuff,
-          child: Stack(
-            children: <Widget>[
-              Positioned.fill(child: _buildHitArea()),
-              Positioned.fill(
-                child: _latestValue != null &&
-                            !_latestValue.isPlaying &&
-                            _latestValue.duration == null ||
-                        _latestValue.isBuffering
-                    ? const Center(
-                        child: const CircularProgressIndicator(),
-                      )
-                    : _buildMiddleControls(),
-              ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: _buildTopBar(context),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: _buildBottomBar(context),
-              ),
-            ],
+      child: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            // Process click events when player UI isn't visible
+            child: GestureDetector(
+              onTap: () {
+                if (_latestValue?.isPlaying == true) {
+                  _cancelAndRestartTimer();
+                } else {
+                  _showStuff();
+                }
+              },
+              onDoubleTapDown: (detail) {
+                RenderBox getBox = context.findRenderObject();
+                if (!getBox.hasSize) return;
+
+                _showSeekUI();
+
+                setState(() {
+                  if (detail.localPosition.dx < getBox.size.width / 2) {
+                    _seekBackwardTick();
+                  } else {
+                    _seekForwardTick();
+                  }
+                  _cancelAndRestartButtonSeekTimer();
+                });
+              },
+              onDoubleTap: () {},
+            ),
           ),
-        ),
+          Positioned.fill(
+            child: IgnorePointer(
+              ignoring: _hideStuff,
+              child: Stack(
+                children: <Widget>[
+                  Positioned.fill(child: _buildHitArea()),
+                  Positioned.fill(
+                    child: _latestValue != null &&
+                                !_latestValue.isPlaying &&
+                                _latestValue.duration == null ||
+                            _latestValue.isBuffering ||
+                            isSeeking
+                        ? const Center(
+                            child: const CircularProgressIndicator(),
+                          )
+                        : _buildMiddleControls(),
+                  ),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: _buildTopBar(context),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: _buildBottomBar(context),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: IgnorePointer(
+              ignoring: !_seekUIVisible,
+              child: AnimatedOpacity(
+                opacity: _seekUIVisible ? 1.0 : 0.0,
+                duration: _hideStuffAnimationDuration,
+                child: Container(
+                  color: _hideStuff ? Colors.black54 : Colors.transparent,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Opacity(
+                          opacity: isSeekingBackward ? 1 : 0,
+                          child: ClipPath(
+                            clipper: SeekRectangleArcClipper(
+                                side: AxisDirection.right),
+                            child: Material(
+                              color: Colors.white.withAlpha(25),
+                              child: InkWell(
+                                onTap: () {},
+                                onTapDown: (_) {
+                                  _seekBackwardTick();
+                                  _cancelAndRestartButtonSeekTimer();
+                                },
+                                splashColor: Colors.white.withAlpha(50),
+                                child: Center(
+                                  child: Text('$_rewindValue seconds'),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Opacity(
+                          opacity: isSeekingForward ? 1 : 0,
+                          child: ClipPath(
+                            clipper: SeekRectangleArcClipper(
+                                side: AxisDirection.left),
+                            child: Material(
+                              color: Colors.white.withAlpha(25),
+                              child: InkWell(
+                                onTap: () {},
+                                onTapDown: (_) {
+                                  _seekForwardTick();
+                                  _cancelAndRestartButtonSeekTimer();
+                                },
+                                splashColor: Colors.white.withAlpha(50),
+                                splashFactory: InkSplash.splashFactory,
+                                child: Center(
+                                  child: Text('$_forwardValue seconds'),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -381,9 +478,9 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildRewindButton(),
+          // _buildRewindButton(),
           _buildPlayPause(),
-          _buildForwardButton(),
+          // _buildForwardButton(),
         ],
       ),
     );
@@ -486,7 +583,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   Widget _buildPlayPause() {
     bool _isFinished = false;
     if (_latestValue.duration != null) {
-      _isFinished = _latestValue.position >= _latestValue.duration;
+      _isFinished = _latestPosition >= _latestValue.duration;
     }
 
     return SizedBox(
@@ -525,8 +622,25 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
       }
     };
 
+    // Process click events when player UI is visible
     return GestureDetector(
       onTap: onTap,
+      onDoubleTapDown: (detail) {
+        RenderBox getBox = context.findRenderObject();
+        if (!getBox.hasSize) return;
+
+        _showSeekUI();
+
+        setState(() {
+          if (detail.localPosition.dx < getBox.size.width / 2) {
+            _seekBackwardTick();
+          } else {
+            _seekForwardTick();
+          }
+          _cancelAndRestartButtonSeekTimer();
+        });
+      },
+      onDoubleTap: () {},
       child: AnimatedOpacity(
         opacity: _hideStuff ? 0.0 : 1.0,
         duration: _hideStuffAnimationDuration,
@@ -610,9 +724,11 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   }
 
   Widget _buildPosition() {
-    final position = _latestValue != null && _latestValue.position != null
-        ? _latestValue.position
-        : Duration.zero;
+    var position = _latestPosition != null ? _latestPosition : Duration.zero;
+    if (isSeeking) {
+      final _seeked = isSeekingForward ? _forwardValue : -_rewindValue;
+      position = position + Duration(seconds: _seeked);
+    }
     final duration = _latestValue != null && _latestValue.duration != null
         ? _latestValue.duration
         : Duration.zero;
@@ -646,6 +762,46 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   void _cancelAndRestartButtonSeekTimer() {
     _buttonSeekTimer?.cancel();
     _startButtonSeekTimer();
+  }
+
+  void _showSeekUI() {
+    _wasControlsVisibleBeforeSeek = !_hideStuff;
+    _wasPlayingBeforeSeek = controller.value.isPlaying;
+    if (_wasPlayingBeforeSeek) {
+      controller.pause();
+    }
+    _showStuff();
+    setState(() {
+      _seekUIVisible = true;
+    });
+  }
+
+  void _hideSeekUI() {
+    if (_wasPlayingBeforeSeek) {
+      controller.play();
+    }
+    setState(() {
+      if (!_wasControlsVisibleBeforeSeek) {
+        _hideStuff = true;
+      }
+      _seekUIVisible = false;
+    });
+  }
+
+  void _seekBackwardTick() {
+    setState(() {
+      _forwardValue = 0;
+      _rewindValue += _rewindDuration;
+    });
+    _cancelAndRestartTimer();
+  }
+
+  void _seekForwardTick() {
+    setState(() {
+      _rewindValue = 0;
+      _forwardValue += _forwardDuration;
+    });
+    _cancelAndRestartTimer();
   }
 
   Future<Null> _initialize() async {
@@ -690,7 +846,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   }
 
   void _play() {
-    bool isFinished = _latestValue.position >= _latestValue.duration;
+    bool isFinished = _latestPosition >= _latestValue.duration;
 
     _cancelAndRestartTimer();
 
@@ -724,16 +880,18 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
 
   void _startButtonSeekTimer() {
     _buttonSeekTimer = Timer(
-      const Duration(seconds: 1),
-      () {
+      const Duration(milliseconds: 600),
+      () async {
+        _hideSeekUI();
+
         if (_forwardValue == 0 && _rewindValue == 0) return;
 
         if (_forwardValue > 0) {
-          controller
-              .seekTo(_latestValue.position + Duration(seconds: _forwardValue));
+          await controller
+              .seekTo(_latestPosition + Duration(seconds: _forwardValue));
         } else {
-          controller
-              .seekTo(_latestValue.position - Duration(seconds: _rewindValue));
+          await controller
+              .seekTo(_latestPosition - Duration(seconds: _rewindValue));
         }
 
         setState(() {
@@ -747,6 +905,10 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   void _updateState() {
     setState(() {
       _latestValue = controller.value;
+      if (_latestValue.position != null &&
+          _latestValue.position != _latestPosition) {
+        _latestPosition = _latestValue.position;
+      }
     });
   }
 
