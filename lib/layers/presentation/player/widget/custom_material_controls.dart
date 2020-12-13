@@ -204,7 +204,10 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                                 },
                                 splashColor: Colors.white.withAlpha(50),
                                 child: Center(
-                                  child: Text('$_rewindValue seconds'),
+                                  child: Text(
+                                    '$_rewindValue seconds',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ),
@@ -228,7 +231,10 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                                 splashColor: Colors.white.withAlpha(50),
                                 splashFactory: InkSplash.splashFactory,
                                 child: Center(
-                                  child: Text('$_forwardValue seconds'),
+                                  child: Text(
+                                    '$_forwardValue seconds',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ),
