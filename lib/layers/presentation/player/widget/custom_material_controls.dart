@@ -325,10 +325,11 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                 ),
               ),
             ),
+            _buildQualityButton(),
             if (_showPipButton) _buildPipButton(),
             PlayerCircleButton(
               child: PopupMenuButton<String>(
-                onSelected: (value) {
+                onSelected: (value) async {
                   if (value == 'copy_link') {
                     Clipboard.setData(
                         new ClipboardData(text: controller.dataSource));
@@ -352,6 +353,32 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                       ).catchError((e) {
                         print(e);
                       });
+                  } else if (value == 'change_speed') {
+                    final wasPlaying = _latestValue?.isPlaying ?? false;
+
+                    if (wasPlaying) {
+                      _pause();
+                    }
+
+                    final chosenSpeed = await showCustomMaterialSheet<double>(
+                      context: context,
+                      useRootNavigator: true,
+                      builder: (context) => PlayerChooserDialog<double>(
+                        values: {
+                          for (var v in chewieController.playbackSpeeds)
+                            v: v == 1.0 ? 'Normal' : v.toString()
+                        },
+                        selected: _latestValue.playbackSpeed,
+                      ),
+                    );
+
+                    if (chosenSpeed != null) {
+                      controller.setPlaybackSpeed(chosenSpeed);
+                    }
+
+                    if (wasPlaying) {
+                      _play();
+                    }
                   }
                 },
                 icon: Icon(
@@ -398,6 +425,26 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                         ),
                       ),
                     ),
+                    if (chewieController.allowPlaybackSpeedChanging)
+                      PopupMenuItem<String>(
+                        value: 'change_speed',
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(minWidth: 120.0),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.speed,
+                                color: Theme.of(context)
+                                    .iconTheme
+                                    .color
+                                    .withOpacity(0.8),
+                              ),
+                              SizedBox(width: 10),
+                              Text('Speed'),
+                            ],
+                          ),
+                        ),
+                      ),
                   ];
                 },
               ),
@@ -424,9 +471,6 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                   ? Expanded(child: const Text('LIVE'))
                   : _buildPosition(),
               chewieController.isLive ? const SizedBox() : _buildProgressBar(),
-              chewieController.allowPlaybackSpeedChanging
-                  ? _buildSpeedButton(controller)
-                  : Container(),
               chewieController.allowMuting
                   ? _buildMuteButton(controller)
                   : Container(),
@@ -479,6 +523,38 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
             } else {
               rethrow;
             }
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildQualityButton() {
+    return PlayerCircleButton(
+      child: IconButton(
+        icon: Icon(Icons.high_quality),
+        color: Colors.white,
+        tooltip: 'Quality',
+        onPressed: () async {
+          if (_latestValue?.isPlaying ?? false) {
+            _pause();
+          }
+
+          final chosenQuality = await showCustomMaterialSheet<int>(
+            context: context,
+            useRootNavigator: true,
+            builder: (context) => PlayerChooserDialog<int>(
+              values: {
+                480: '480p',
+                720: '720p',
+                1080: '1080p',
+              },
+              selected: 720,
+            ),
+          );
+
+          if (chosenQuality != null) {
+            // TODO
           }
         },
       ),
@@ -703,50 +779,6 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
           } else {
             _latestVolume = controller.value.volume;
             controller.setVolume(0.0);
-          }
-        },
-      ),
-    );
-  }
-
-  Widget _buildSpeedButton(
-    VideoPlayerController controller,
-  ) {
-    return PlayerCircleButton(
-      child: IconButton(
-        icon: AutoSizeText(
-          '${_latestValue.playbackSpeed}x',
-          maxLines: 1,
-          minFontSize: 8,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-            color: Colors.white,
-          ),
-        ),
-        tooltip: 'Speed',
-        onPressed: () async {
-          final wasPlaying = _latestValue?.isPlaying ?? false;
-
-          if (wasPlaying) {
-            _pause();
-          }
-
-          final chosenSpeed = await showCustomMaterialSheet<double>(
-            context: context,
-            useRootNavigator: true,
-            builder: (context) => PlaybackSpeedDialog(
-              speeds: chewieController.playbackSpeeds,
-              selected: _latestValue.playbackSpeed,
-            ),
-          );
-
-          if (chosenSpeed != null) {
-            controller.setPlaybackSpeed(chosenSpeed);
-          }
-
-          if (wasPlaying) {
-            _play();
           }
         },
       ),
@@ -987,17 +1019,15 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   }
 }
 
-class PlaybackSpeedDialog extends StatelessWidget {
-  const PlaybackSpeedDialog({
+class PlayerChooserDialog<T> extends StatelessWidget {
+  const PlayerChooserDialog({
     Key key,
-    @required List<double> speeds,
-    @required double selected,
-  })  : _speeds = speeds,
-        _selected = selected,
-        super(key: key);
+    this.values,
+    this.selected,
+  }) : super(key: key);
 
-  final List<double> _speeds;
-  final double _selected;
+  final Map<T, String> values;
+  final T selected;
 
   @override
   Widget build(BuildContext context) {
@@ -1010,12 +1040,13 @@ class PlaybackSpeedDialog extends StatelessWidget {
       shrinkWrap: true,
       physics: ScrollPhysics(),
       itemBuilder: (context, index) {
-        final _speed = _speeds[index];
+        final _key = values.keys.elementAt(index);
+        final _value = values[_key];
         return ListTile(
           dense: true,
           title: Row(
             children: [
-              _speed == _selected
+              _key == selected
                   ? Icon(
                       Icons.check,
                       size: 20.0,
@@ -1023,16 +1054,16 @@ class PlaybackSpeedDialog extends StatelessWidget {
                     )
                   : Container(width: 20.0),
               SizedBox(width: 16.0),
-              Text(_speed == 1.0 ? 'Normal' : '${_speed}x'),
+              Text(_value),
             ],
           ),
-          selected: _speed == _selected,
+          selected: _key == selected,
           onTap: () {
-            Navigator.of(context).pop(_speed);
+            Navigator.of(context).pop(_key);
           },
         );
       },
-      itemCount: _speeds.length,
+      itemCount: values.length,
     );
   }
 }
