@@ -11,6 +11,8 @@ class MaterialVideoProgressBar extends StatefulWidget {
     this.onDragEnd,
     this.onDragStart,
     this.onDragUpdate,
+    this.rewindValue,
+    this.forwardValue,
   }) : colors = colors ?? ChewieProgressColors();
 
   final VideoPlayerController controller;
@@ -18,6 +20,8 @@ class MaterialVideoProgressBar extends StatefulWidget {
   final Function() onDragStart;
   final Function() onDragEnd;
   final Function() onDragUpdate;
+  final int rewindValue;
+  final int forwardValue;
 
   @override
   _VideoProgressBarState createState() {
@@ -69,6 +73,8 @@ class _VideoProgressBarState extends State<MaterialVideoProgressBar> {
             painter: _ProgressBarPainter(
               controller.value,
               widget.colors,
+              widget.rewindValue,
+              widget.forwardValue,
             ),
           ),
         ),
@@ -116,10 +122,13 @@ class _VideoProgressBarState extends State<MaterialVideoProgressBar> {
 }
 
 class _ProgressBarPainter extends CustomPainter {
-  _ProgressBarPainter(this.value, this.colors);
+  _ProgressBarPainter(
+      this.value, this.colors, this.rewindValue, this.forwardValue);
 
   VideoPlayerValue value;
   ChewieProgressColors colors;
+  int rewindValue;
+  int forwardValue;
 
   @override
   bool shouldRepaint(CustomPainter painter) {
@@ -143,8 +152,13 @@ class _ProgressBarPainter extends CustomPainter {
     if (!value.initialized) {
       return;
     }
+    var position = value.position;
+    if (rewindValue > 0 || forwardValue > 0) {
+      final _seeked = forwardValue > 0 ? forwardValue : -rewindValue;
+      position = position + Duration(seconds: _seeked);
+    }
     final double playedPartPercent =
-        value.position.inMilliseconds / value.duration.inMilliseconds;
+        position.inMilliseconds / value.duration.inMilliseconds;
     final double playedPart =
         playedPartPercent > 1 ? size.width : playedPartPercent * size.width;
     for (DurationRange range in value.buffered) {

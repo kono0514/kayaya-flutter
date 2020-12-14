@@ -184,65 +184,62 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
               child: AnimatedOpacity(
                 opacity: _seekUIVisible ? 1.0 : 0.0,
                 duration: _hideStuffAnimationDuration,
-                child: Container(
-                  color: _hideStuff ? Colors.black54 : Colors.transparent,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Opacity(
-                          opacity: isSeekingBackward ? 1 : 0,
-                          child: ClipPath(
-                            clipper: SeekRectangleArcClipper(
-                                side: AxisDirection.right),
-                            child: Material(
-                              color: Colors.white.withAlpha(25),
-                              child: InkWell(
-                                onTap: () {},
-                                onTapDown: (_) {
-                                  _seekBackwardTick();
-                                  _cancelAndRestartButtonSeekTimer();
-                                },
-                                splashColor: Colors.white.withAlpha(50),
-                                child: Center(
-                                  child: Text(
-                                    '$_rewindValue seconds',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Opacity(
+                        opacity: isSeekingBackward ? 1 : 0,
+                        child: ClipPath(
+                          clipper: SeekRectangleArcClipper(
+                              side: AxisDirection.right),
+                          child: Material(
+                            color: Colors.white.withAlpha(25),
+                            child: InkWell(
+                              onTap: () {},
+                              onTapDown: (_) {
+                                _seekBackwardTick();
+                                _cancelAndRestartButtonSeekTimer();
+                              },
+                              splashColor: Colors.white.withAlpha(50),
+                              child: Center(
+                                child: Text(
+                                  '$_rewindValue seconds',
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                      Expanded(
-                        child: Opacity(
-                          opacity: isSeekingForward ? 1 : 0,
-                          child: ClipPath(
-                            clipper: SeekRectangleArcClipper(
-                                side: AxisDirection.left),
-                            child: Material(
-                              color: Colors.white.withAlpha(25),
-                              child: InkWell(
-                                onTap: () {},
-                                onTapDown: (_) {
-                                  _seekForwardTick();
-                                  _cancelAndRestartButtonSeekTimer();
-                                },
-                                splashColor: Colors.white.withAlpha(50),
-                                splashFactory: InkSplash.splashFactory,
-                                child: Center(
-                                  child: Text(
-                                    '$_forwardValue seconds',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
+                    ),
+                    Expanded(
+                      child: Opacity(
+                        opacity: isSeekingForward ? 1 : 0,
+                        child: ClipPath(
+                          clipper:
+                              SeekRectangleArcClipper(side: AxisDirection.left),
+                          child: Material(
+                            color: Colors.white.withAlpha(25),
+                            child: InkWell(
+                              onTap: () {},
+                              onTapDown: (_) {
+                                _seekForwardTick();
+                                _cancelAndRestartButtonSeekTimer();
+                              },
+                              splashColor: Colors.white.withAlpha(50),
+                              splashFactory: InkSplash.splashFactory,
+                              child: Center(
+                                child: Text(
+                                  '$_forwardValue seconds',
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -814,7 +811,8 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
       controller.play();
     }
     setState(() {
-      if (!_wasControlsVisibleBeforeSeek) {
+      if (_wasPlayingBeforeSeek || !_wasControlsVisibleBeforeSeek) {
+        _hideTimer?.cancel();
         _hideStuff = true;
       }
       _seekUIVisible = false;
@@ -826,7 +824,12 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
       _forwardValue = 0;
       _rewindValue += _rewindDuration;
     });
-    _cancelAndRestartTimer();
+
+    if (_wasPlayingBeforeSeek) {
+      _cancelAndRestartTimer();
+    } else {
+      _showStuff();
+    }
   }
 
   void _seekForwardTick() {
@@ -834,7 +837,12 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
       _rewindValue = 0;
       _forwardValue += _forwardDuration;
     });
-    _cancelAndRestartTimer();
+
+    if (_wasPlayingBeforeSeek) {
+      _cancelAndRestartTimer();
+    } else {
+      _showStuff();
+    }
   }
 
   Future<Null> _initialize() async {
@@ -951,6 +959,8 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
         padding: EdgeInsets.only(left: 18.0, right: 18.0),
         child: MaterialVideoProgressBar(
           controller,
+          rewindValue: _rewindValue,
+          forwardValue: _forwardValue,
           onDragStart: () {
             setState(() {
               _dragging = true;
