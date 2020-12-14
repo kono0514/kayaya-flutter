@@ -18,6 +18,8 @@ ThemeData lightTheme = ThemeData(
   ),
   snackBarTheme: SnackBarThemeData(
     behavior: SnackBarBehavior.floating,
+    backgroundColor: Colors.grey.shade800,
+    contentTextStyle: TextStyle(color: Colors.white),
   ),
   typography: Typography.material2018(platform: defaultTargetPlatform),
   splashFactory: InkRipple.splashFactory,
@@ -27,10 +29,12 @@ ThemeData lightTheme = ThemeData(
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: Colors.grey[900],
+    backgroundColor: Colors.grey.shade900,
   ),
   snackBarTheme: SnackBarThemeData(
     behavior: SnackBarBehavior.floating,
+    backgroundColor: Colors.grey.shade800,
+    contentTextStyle: TextStyle(color: Colors.white),
   ),
   typography: Typography.material2018(platform: defaultTargetPlatform),
   splashFactory: InkRipple.splashFactory,
