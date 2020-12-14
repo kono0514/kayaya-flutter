@@ -46,7 +46,7 @@ class AnimeInfo extends StatelessWidget {
             spreadRadius: 2.0,
             color: _isDark
                 ? Colors.white.withOpacity(0.8)
-                : Colors.grey[400].withOpacity(0.8),
+                : Colors.grey.shade400.withOpacity(0.8),
           ),
         ),
         if (anime.rating != null)
@@ -55,7 +55,7 @@ class AnimeInfo extends StatelessWidget {
             child: RatingBar(
               rating: anime.rating,
               size: 16,
-              color: _isDark ? Colors.yellow : Colors.yellow[800],
+              color: _isDark ? Colors.yellow : Colors.yellow.shade800,
             ),
           ),
       ],
@@ -87,9 +87,10 @@ class AnimeInfo extends StatelessWidget {
               builder: (context, state) {
                 if (state is DetailsInitial) {
                   return Shimmer.fromColors(
-                    baseColor: _isDark ? Colors.grey[700] : Colors.grey[300],
+                    baseColor:
+                        _isDark ? Colors.grey.shade700 : Colors.grey.shade300,
                     highlightColor:
-                        _isDark ? Colors.grey[500] : Colors.grey[100],
+                        _isDark ? Colors.grey.shade500 : Colors.grey.shade100,
                     child: Row(
                       children: [
                         Container(width: 35, height: 5, color: Colors.white),

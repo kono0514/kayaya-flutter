@@ -78,7 +78,7 @@ class _FilterDialogState extends State<FilterDialog> {
   @override
   Widget build(BuildContext context) {
     final bool _isDark = Theme.of(context).brightness == Brightness.dark;
-    final _labelColor = _isDark ? Colors.grey[400] : Colors.grey[600];
+    final _labelColor = _isDark ? Colors.grey.shade400 : Colors.grey.shade600;
     final _labelStyle =
         Theme.of(context).textTheme.bodyText1.apply(color: _labelColor);
     final _orientation = MediaQuery.of(context).orientation;
@@ -165,10 +165,12 @@ class _FilterDialogState extends State<FilterDialog> {
                       }
 
                       return Shimmer.fromColors(
-                        baseColor:
-                            _isDark ? Colors.grey[700] : Colors.grey[300],
-                        highlightColor:
-                            _isDark ? Colors.grey[500] : Colors.grey[100],
+                        baseColor: _isDark
+                            ? Colors.grey.shade700
+                            : Colors.grey.shade300,
+                        highlightColor: _isDark
+                            ? Colors.grey.shade500
+                            : Colors.grey.shade100,
                         child: Wrap(
                           children: List.generate(
                             10,
@@ -266,8 +268,9 @@ class _FilterDialogState extends State<FilterDialog> {
         padding: const EdgeInsets.only(right: 8.0, bottom: 16.0),
         child: FilterChip(
           showCheckmark: false,
-          backgroundColor: _isDark ? Colors.grey[800] : Colors.grey[200],
-          selectedColor: _isDark ? Colors.blue[600] : Colors.blue[100],
+          backgroundColor:
+              _isDark ? Colors.grey.shade800 : Colors.grey.shade200,
+          selectedColor: _isDark ? Colors.blue.shade600 : Colors.blue.shade100,
           label: Text(genre.name),
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           selected: _selectedGenres.contains(genre.id),

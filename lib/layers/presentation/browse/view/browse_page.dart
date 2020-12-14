@@ -167,7 +167,7 @@ class _BrowseError extends StatelessWidget {
           Text(
             error,
             style: TextStyle(
-              color: Colors.red[400],
+              color: Colors.red.shade400,
             ),
           ),
           TextButton(
