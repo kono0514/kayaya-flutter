@@ -190,7 +190,6 @@ type Episode {
 type Release {
   id: ID!
   url: String!
-  type: String!
   resolution: Int
   group: String!
   groupUrl: String
@@ -530,13 +529,7 @@ input AddReleaseInputItem {
 
 input AddReleaseInputItemMedia {
   resolution: Int
-  mediaType: ReleaseMediaType!
   url: String!
-}
-
-enum ReleaseMediaType {
-  EMBED
-  DIRECT
 }
 
 input ChangeReleaseStatusInput {

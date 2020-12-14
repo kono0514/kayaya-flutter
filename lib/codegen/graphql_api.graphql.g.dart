@@ -395,7 +395,6 @@ GetAnimeEpisodes$Query$Episodes$Data$Releases
   return GetAnimeEpisodes$Query$Episodes$Data$Releases()
     ..id = json['id'] as String
     ..url = json['url'] as String
-    ..type = json['type'] as String
     ..resolution = json['resolution'] as int
     ..group = json['group'] as String;
 }
@@ -405,7 +404,6 @@ Map<String, dynamic> _$GetAnimeEpisodes$Query$Episodes$Data$ReleasesToJson(
     <String, dynamic>{
       'id': instance.id,
       'url': instance.url,
-      'type': instance.type,
       'resolution': instance.resolution,
       'group': instance.group,
     };

@@ -321,14 +321,12 @@ class GetAnimeEpisodes$Query$Episodes$Data$Releases with EquatableMixin {
 
   String url;
 
-  String type;
-
   int resolution;
 
   String group;
 
   @override
-  List<Object> get props => [id, url, type, resolution, group];
+  List<Object> get props => [id, url, resolution, group];
   Map<String, dynamic> toJson() =>
       _$GetAnimeEpisodes$Query$Episodes$Data$ReleasesToJson(this);
 }
@@ -1598,12 +1596,6 @@ class GetAnimeEpisodesQuery
                                 selectionSet: null),
                             FieldNode(
                                 name: NameNode(value: 'url'),
-                                alias: null,
-                                arguments: [],
-                                directives: [],
-                                selectionSet: null),
-                            FieldNode(
-                                name: NameNode(value: 'type'),
                                 alias: null,
                                 arguments: [],
                                 directives: [],

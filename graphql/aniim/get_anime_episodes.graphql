@@ -12,7 +12,6 @@ query GetAnimeEpisodes($hasAnime: EpisodesHasAnimeWhereConditions!, $orderBy: [E
             releases {
                 id
                 url
-                type
                 resolution
                 group
             }

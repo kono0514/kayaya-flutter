@@ -124,8 +124,9 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                           children: [
                             Icon(
                               Icons.star,
-                              color:
-                                  _isDark ? Colors.yellow : Colors.yellow.shade800,
+                              color: _isDark
+                                  ? Colors.yellow
+                                  : Colors.yellow.shade800,
                               size: 16,
                             ),
                             SizedBox(width: 6),

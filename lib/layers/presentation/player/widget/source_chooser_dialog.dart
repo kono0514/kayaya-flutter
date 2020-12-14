@@ -20,24 +20,16 @@ class SourceChooserDialog extends StatelessWidget {
   }
 
   Widget _buildDialogOption(BuildContext context, Release release) {
-    bool withTooltip = false;
-
     String text = release.group.toUpperCase();
     if (release.resolution != null) {
       text += ' ${release.resolution}p';
-    }
-
-    final domain = Uri.parse(release.url).host;
-    if (release.isEmbed) {
-      text += ' ($domain)';
-      withTooltip = true;
     }
 
     final dialog = SimpleDialogOption(
       child: Row(
         children: <Widget>[
           Icon(
-            release.isDirect ? Icons.ondemand_video : Icons.public,
+            Icons.ondemand_video,
           ),
           SizedBox(width: 10.0),
           Expanded(
@@ -58,13 +50,6 @@ class SourceChooserDialog extends StatelessWidget {
         horizontal: 24.0,
       ),
     );
-
-    if (withTooltip) {
-      return Tooltip(
-        message: domain,
-        child: dialog,
-      );
-    }
 
     return dialog;
   }
