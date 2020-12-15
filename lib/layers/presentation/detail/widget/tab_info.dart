@@ -44,36 +44,39 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                 child: Builder(
                   builder: (context) {
                     final items = <Widget>[];
-                    items.addAll([
-                      Text(
-                        TR.of(context).genre,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        (state.details.genres ?? [])
-                            .map((e) => e.name)
-                            .join(', '),
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                    ]);
 
-                    items.addAll([
-                      SizedBox(height: 30),
-                      Text(
-                        TR.of(context).synopsis,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      SizedBox(height: 10),
-                      HtmlWidget(
-                        state.details.description,
-                        textStyle: Theme.of(context).textTheme.caption,
-                      ),
-                    ]);
+                    if ((state.details.genres ?? []).length > 0) {
+                      items.addAll([
+                        Text(
+                          TR.of(context).genre,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          state.details.genres.map((e) => e.name).join(', '),
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        SizedBox(height: 30),
+                      ]);
+                    }
+
+                    if (state.details.description != null) {
+                      items.addAll([
+                        Text(
+                          TR.of(context).synopsis,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        SizedBox(height: 10),
+                        HtmlWidget(
+                          state.details.description,
+                          textStyle: Theme.of(context).textTheme.caption,
+                        ),
+                        SizedBox(height: 30),
+                      ]);
+                    }
 
                     if (state.details.trailer != null) {
                       items.addAll([
-                        SizedBox(height: 30),
                         Text(
                           TR.of(context).trailer,
                           style: Theme.of(context).textTheme.bodyText1,
@@ -114,12 +117,12 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                             ],
                           ),
                         ),
+                        SizedBox(height: 30),
                       ]);
                     }
 
                     if (state.details.scoreDistribution != null) {
                       items.addAll([
-                        SizedBox(height: 30),
                         Row(
                           children: [
                             Icon(
