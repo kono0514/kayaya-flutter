@@ -53,7 +53,7 @@ class _LoginPhoneAuthPageState extends State<LoginPhoneAuthPage> {
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
                   SnackBar(
-                    content: Text(state.exception ?? 'SMS send failure'),
+                    content: Text(state.error ?? 'SMS send failure'),
                     behavior: SnackBarBehavior.floating,
                     margin: EdgeInsets.fromLTRB(36.0, 5.0, 36.0, 10.0),
                   ),

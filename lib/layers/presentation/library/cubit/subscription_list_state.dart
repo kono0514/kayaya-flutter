@@ -11,7 +11,7 @@ class SubscriptionListInitial extends SubscriptionListState {}
 
 class SubscriptionListLoaded extends SubscriptionListState {
   final PagedList<Anime> subscriptions;
-  final Exception error;
+  final String error;
 
   const SubscriptionListLoaded({
     this.subscriptions,
@@ -20,7 +20,7 @@ class SubscriptionListLoaded extends SubscriptionListState {
 
   SubscriptionListLoaded copyWith({
     PagedList<Anime> subscriptions,
-    Optional<Exception> error,
+    Optional<String> error,
   }) {
     return SubscriptionListLoaded(
       subscriptions: subscriptions ?? this.subscriptions,
@@ -33,12 +33,12 @@ class SubscriptionListLoaded extends SubscriptionListState {
 }
 
 class SubscriptionListError extends SubscriptionListState {
-  final Exception exception;
+  final String error;
 
-  const SubscriptionListError(this.exception);
+  const SubscriptionListError(this.error);
 
   @override
-  List<Object> get props => [exception];
+  List<Object> get props => [error];
 }
 
 class SubscriptionListEmpty extends SubscriptionListState {

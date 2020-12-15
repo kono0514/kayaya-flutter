@@ -4,33 +4,33 @@ class LoginPhoneState extends Equatable {
   final String phoneNumber;
   final String otpCode;
   final LoginPhoneStatus status;
-  final String exception;
+  final String error;
   final String verificationId;
 
   const LoginPhoneState({
     this.phoneNumber = '',
     this.otpCode = '',
     this.status = LoginPhoneStatus.initial,
-    this.exception,
+    this.error,
     this.verificationId = '',
   });
 
   @override
   List<Object> get props =>
-      [phoneNumber, otpCode, status, exception, verificationId];
+      [phoneNumber, otpCode, status, error, verificationId];
 
   LoginPhoneState copyWith({
     String phoneNumber,
     String otpCode,
     LoginPhoneStatus status,
-    Optional<String> exception,
+    Optional<String> error,
     String verificationId,
   }) {
     return LoginPhoneState(
       phoneNumber: phoneNumber ?? this.phoneNumber,
       otpCode: otpCode ?? this.otpCode,
       status: status ?? this.status,
-      exception: exception != null ? exception.orNull : this.exception,
+      error: error != null ? error.orNull : this.error,
       verificationId: verificationId ?? this.verificationId,
     );
   }

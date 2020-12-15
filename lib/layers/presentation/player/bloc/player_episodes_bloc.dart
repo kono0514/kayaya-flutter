@@ -51,8 +51,8 @@ class PlayerEpisodesBloc
     if (startingPage == null) {
       try {
         await resolvePageNumberForEpisode();
-      } catch (e) {
-        yield PlayerEpisodesError(e);
+      } on Exception catch (e) {
+        yield PlayerEpisodesError(e.toString());
         return;
       }
     }
@@ -98,14 +98,14 @@ class PlayerEpisodesBloc
       if (currentState is PlayerEpisodesLoaded) {
         yield currentState.copyWith(
           negativeError: event is PlayerEpisodesFetchPrevious
-              ? Optional.of(l)
+              ? Optional.of(l.message)
               : currentState.negativeError,
           positiveError: event is PlayerEpisodesFetchNext
-              ? Optional.of(l)
+              ? Optional.of(l.message)
               : currentState.positiveError,
         );
       } else {
-        yield PlayerEpisodesError(l);
+        yield PlayerEpisodesError(l.message);
       }
     }, (r) async* {
       if (r.total == 0) {

@@ -88,7 +88,7 @@ class _LibraryPageState extends State<LibraryPage> {
           },
           builder: (context, state) {
             if (state is SubscriptionListError) {
-              return _LibraryError(error: state.exception.toString());
+              return _LibraryError(error: state.error);
             }
 
             if (state is SubscriptionListEmpty) {

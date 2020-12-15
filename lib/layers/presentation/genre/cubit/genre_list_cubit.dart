@@ -20,7 +20,7 @@ class GenreListCubit extends Cubit<GenreListState> {
     if (currentState is! GenreListLoaded) {
       final result = await getGenresUsecase(NoParams());
       result.fold(
-        (l) => emit(GenreListError(l)),
+        (l) => emit(GenreListError(l.message)),
         (r) => emit(GenreListLoaded(r)),
       );
     }

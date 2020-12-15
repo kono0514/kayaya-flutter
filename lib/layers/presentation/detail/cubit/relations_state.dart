@@ -20,10 +20,10 @@ class RelationsLoaded extends RelationsState {
 }
 
 class RelationsError extends RelationsState {
-  final Exception exception;
+  final String error;
 
-  const RelationsError(this.exception);
+  const RelationsError(this.error);
 
   @override
-  List<Object> get props => [exception];
+  List<Object> get props => [error];
 }

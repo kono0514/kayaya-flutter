@@ -3,7 +3,9 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/error.dart';
+import '../../../core/exception.dart';
 import '../../../core/paged_list.dart';
+import '../../../core/utils/logger.dart';
 import '../../domain/entities/anime.dart';
 import '../../domain/entities/anime_filter.dart';
 import '../../domain/entities/genre.dart';
@@ -24,18 +26,35 @@ class AnimeRepositoryImpl implements AnimeRepository {
   @override
   Future<Either<Failure, String>> getFeatured() async {
     try {
+      var cache;
+      try {
+        cache = await localDatasource.fetchFeatured();
+      } on CacheException catch (e, s) {
+        errorLog(e.innerException, s);
+      }
+
       var result;
-      var cache = await localDatasource.fetchFeatured();
       if (cache == null) {
         result = await networkDatasource.fetchFeatured();
-        localDatasource.cacheFeatured(result);
+        try {
+          localDatasource.cacheFeatured(result);
+        } on CacheException catch (e, s) {
+          errorLog(e.innerException, s);
+        }
       } else {
         result = cache;
       }
 
       return Right(result);
-    } catch (e) {
-      return Left(e);
+    } on ServerException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(ServerFailure());
+    } on CacheException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(CacheFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 
@@ -44,8 +63,12 @@ class AnimeRepositoryImpl implements AnimeRepository {
     try {
       final result = await networkDatasource.fetchGenres();
       return Right(result);
-    } catch (e) {
-      return Left(e);
+    } on ServerException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(ServerFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 
@@ -57,8 +80,12 @@ class AnimeRepositoryImpl implements AnimeRepository {
     try {
       final result = await networkDatasource.fetchAnimes(page, filter);
       return Right(result);
-    } catch (e) {
-      return Left(e);
+    } on ServerException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(ServerFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 }

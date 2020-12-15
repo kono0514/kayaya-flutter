@@ -20,7 +20,7 @@ class RelationsCubit extends Cubit<RelationsState> {
 
     final result = await getRelationsUsecase(GetRelationsUsecaseParams(id: id));
     result.fold(
-      (l) => emit(RelationsError(l)),
+      (l) => emit(RelationsError(l.message)),
       (r) => emit(RelationsLoaded(
         r.related,
         r.recommendations,

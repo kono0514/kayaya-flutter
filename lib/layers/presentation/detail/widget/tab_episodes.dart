@@ -63,7 +63,7 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
             if (state is EpisodesError) {
               return _EpisodesError(
                 animeId: widget.anime.id,
-                error: state.exception.toString(),
+                error: state.error,
               );
             }
 

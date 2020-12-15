@@ -49,7 +49,7 @@ class EpisodesBloc extends Bloc<EpisodesEvent, EpisodesState> {
       ));
       yield* result.fold(
         (l) async* {
-          yield EpisodesError(l);
+          yield EpisodesError(l.message);
         },
         (r) async* {
           if (r.total == 0) {
@@ -88,10 +88,10 @@ class EpisodesBloc extends Bloc<EpisodesEvent, EpisodesState> {
       yield* result.fold((l) async* {
         if (currentState is EpisodesLoaded) {
           yield currentState.copyWith(
-            error: Optional.of(l),
+            error: Optional.of(l.message),
           );
         } else {
-          yield EpisodesError(l);
+          yield EpisodesError(l.message);
         }
       }, (r) async* {
         if (r.total == 0) {

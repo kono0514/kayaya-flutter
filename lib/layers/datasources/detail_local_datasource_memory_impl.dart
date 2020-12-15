@@ -1,7 +1,8 @@
 import 'package:injectable/injectable.dart';
-import 'package:kayaya_flutter/core/in_memory_cache.dart';
 import 'package:meta/meta.dart';
 
+import '../../core/exception.dart';
+import '../../core/in_memory_cache.dart';
 import '../data/datasources/detail_local_datasource.dart';
 import '../data/models/detail_model.dart';
 
@@ -16,10 +17,19 @@ class DetailLocalDatasourceMemoryImpl extends DetailLocalDatasource {
     DetailModel detail, {
     Duration duration = const Duration(seconds: 60),
   }) async {
-    memoryCache.cache<DetailModel>(detail.id, detail, duration: duration);
+    try {
+      memoryCache.cache<DetailModel>(detail.id, detail, duration: duration);
+    } catch (e) {
+      throw CacheException(e);
+    }
   }
 
   @override
-  Future<DetailModel> fetchDetail(String id) =>
-      Future.value(memoryCache.read<DetailModel>(id));
+  Future<DetailModel> fetchDetail(String id) {
+    try {
+      return Future.value(memoryCache.read<DetailModel>(id));
+    } catch (e) {
+      throw CacheException(e);
+    }
+  }
 }

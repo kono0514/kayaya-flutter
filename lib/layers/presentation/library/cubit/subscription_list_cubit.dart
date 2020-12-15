@@ -40,10 +40,10 @@ class SubscriptionListCubit extends Cubit<SubscriptionListState> {
     result.fold((l) {
       if (currentState is SubscriptionListLoaded) {
         emit(currentState.copyWith(
-          error: Optional.of(l),
+          error: Optional.of(l.message),
         ));
       } else {
-        emit(SubscriptionListError(l));
+        emit(SubscriptionListError(l.message));
       }
     }, (r) {
       if (r.total == 0) {
@@ -71,7 +71,7 @@ class SubscriptionListCubit extends Cubit<SubscriptionListState> {
     final result =
         await getSubscriptionsUsecase(GetSubscriptionsUsecaseParams(1));
     result.fold(
-      (l) => emit(SubscriptionListError(l)),
+      (l) => emit(SubscriptionListError(l.message)),
       (r) {
         if (r.total == 0) {
           emit(SubscriptionListEmpty());

@@ -71,7 +71,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
         GetAnimesUsecaseParams(page: 1, filter: filter),
       );
       yield* result.fold((l) async* {
-        yield BrowseError(l);
+        yield BrowseError(l.message);
       }, (r) async* {
         if (r.total == 0) {
           yield BrowseEmpty();
@@ -107,11 +107,11 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
         (l) async* {
           if (currentState is BrowseLoaded) {
             yield currentState.copyWith(
-              error: Optional.of(l),
+              error: Optional.of(l.message),
               timestamp: DateTime.now().toString(),
             );
           } else {
-            yield BrowseError(l);
+            yield BrowseError(l.message);
           }
         },
         (r) async* {

@@ -3,6 +3,8 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/error.dart';
+import '../../../core/exception.dart';
+import '../../../core/utils/logger.dart';
 import '../../domain/entities/search_result.dart';
 import '../../domain/repositories/search_repository.dart';
 import '../datasources/search_local_datasource.dart';
@@ -23,8 +25,12 @@ class SearchRepositoryImpl extends SearchRepository {
     try {
       final _result = await networkDatasource.search(text);
       return Right(_result);
-    } catch (e) {
-      return Left(e);
+    } on ServerException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(ServerFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 
@@ -33,8 +39,12 @@ class SearchRepositoryImpl extends SearchRepository {
     try {
       final _result = await localDatasource.getHistory();
       return Right(_result);
-    } catch (e) {
-      return Left(e);
+    } on CacheException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(CacheFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 
@@ -43,8 +53,12 @@ class SearchRepositoryImpl extends SearchRepository {
     try {
       await localDatasource.cacheQuery(text);
       return Right(unit);
-    } catch (e) {
-      return Left(e);
+    } on CacheException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(CacheFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 
@@ -53,8 +67,12 @@ class SearchRepositoryImpl extends SearchRepository {
     try {
       await localDatasource.clear();
       return Right(unit);
-    } catch (e) {
-      return Left(e);
+    } on CacheException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(CacheFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 }

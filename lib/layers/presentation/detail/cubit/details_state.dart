@@ -23,10 +23,10 @@ class DetailsLoaded extends DetailsState {
 }
 
 class DetailsError extends DetailsState {
-  final Exception exception;
+  final String error;
 
-  const DetailsError(this.exception);
+  const DetailsError(this.error);
 
   @override
-  List<Object> get props => [exception];
+  List<Object> get props => [error];
 }

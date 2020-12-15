@@ -14,8 +14,8 @@ class PlayerEpisodesInitial extends PlayerEpisodesState {
 class PlayerEpisodesLoaded extends PlayerEpisodesState {
   final PagedList<Episode> negativeEpisodes;
   final PagedList<Episode> positiveEpisodes;
-  final Exception negativeError;
-  final Exception positiveError;
+  final String negativeError;
+  final String positiveError;
   final int startingPage;
 
   const PlayerEpisodesLoaded({
@@ -37,8 +37,8 @@ class PlayerEpisodesLoaded extends PlayerEpisodesState {
   PlayerEpisodesLoaded copyWith({
     PagedList<Episode> negativeEpisodes,
     PagedList<Episode> positiveEpisodes,
-    Optional<Exception> negativeError,
-    Optional<Exception> positiveError,
+    Optional<String> negativeError,
+    Optional<String> positiveError,
     int startingPage,
   }) {
     return PlayerEpisodesLoaded(
@@ -58,12 +58,12 @@ class PlayerEpisodesLoaded extends PlayerEpisodesState {
 }
 
 class PlayerEpisodesError extends PlayerEpisodesState {
-  final Exception exception;
+  final String error;
 
-  const PlayerEpisodesError(this.exception);
+  const PlayerEpisodesError(this.error);
 
   @override
-  List<Object> get props => [exception];
+  List<Object> get props => [error];
 }
 
 class PlayerEpisodesEmpty extends PlayerEpisodesState {

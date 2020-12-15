@@ -1,9 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart' hide ServerException;
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../codegen/graphql_api.graphql.dart' as gen;
+import '../../core/exception.dart';
 import '../../core/paged_list.dart';
 import '../data/datasources/detail_network_datasource.dart';
 import '../data/models/anime_model.dart';
@@ -29,7 +30,7 @@ class DetailNetworkDatasourceKayayaImpl extends DetailNetworkDatasource {
     final result = await graphql.query(_options);
 
     if (result.hasException) {
-      throw result.exception;
+      throw ServerException(result.exception);
     }
 
     final _result = gen.GetAnimeDetails$Query.fromJson(result.data).anime;
@@ -48,7 +49,7 @@ class DetailNetworkDatasourceKayayaImpl extends DetailNetworkDatasource {
     final result = await graphql.query(_options);
 
     if (result.hasException) {
-      throw result.exception;
+      throw ServerException(result.exception);
     }
 
     final _result = gen.GetAnimeDetailsFull$Query.fromJson(result.data).anime;
@@ -72,7 +73,7 @@ class DetailNetworkDatasourceKayayaImpl extends DetailNetworkDatasource {
     final result = await graphql.query(_options);
 
     if (result.hasException) {
-      throw result.exception;
+      throw ServerException(result.exception);
     }
 
     return AnimeRelationModel.fromGraphQL(
@@ -109,7 +110,7 @@ class DetailNetworkDatasourceKayayaImpl extends DetailNetworkDatasource {
     final result = await graphql.query(_options);
 
     if (result.hasException) {
-      throw result.exception;
+      throw ServerException(result.exception);
     }
 
     final _result = gen.GetAnimeEpisodes$Query.fromJson(result.data).episodes;
@@ -140,7 +141,7 @@ class DetailNetworkDatasourceKayayaImpl extends DetailNetworkDatasource {
     final result = await graphql.query(_options);
 
     if (result.hasException) {
-      throw result.exception;
+      throw ServerException(result.exception);
     }
 
     final _result =

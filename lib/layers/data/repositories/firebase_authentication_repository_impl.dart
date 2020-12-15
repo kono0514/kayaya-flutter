@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/error.dart';
+import '../../../core/utils/logger.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/authentication_repository.dart';
 import '../models/user_model.dart';
@@ -43,8 +44,9 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
       return Right(UserModel.fromFirebaseUser(_userCred.user));
     } on firebase_auth.FirebaseAuthException catch (e) {
       return Left(SignInAnonymouslyFailure(message: e.shortMessage));
-    } catch (e) {
-      return Left(e);
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(SignInAnonymouslyFailure());
     }
   }
 
@@ -61,8 +63,9 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
       return Right(UserModel.fromFirebaseUser(_userCred.user));
     } on firebase_auth.FirebaseAuthException catch (e) {
       return Left(SignInWithPasswordFailure(message: e.shortMessage));
-    } catch (e) {
-      return Left(e);
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(SignInWithPasswordFailure());
     }
   }
 
@@ -77,8 +80,9 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
         return Left(SignInWithFacebookFailure(message: 'Aborted'));
       }
       return Left(SignInWithFacebookFailure());
-    } catch (e) {
-      return Left(e);
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(SignInWithFacebookFailure());
     }
 
     // Create a credential from the access token
@@ -90,8 +94,9 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
       return Right(UserModel.fromFirebaseUser(_userCred.user));
     } on firebase_auth.FirebaseAuthException catch (e) {
       return Left(SignInWithFacebookFailure(message: e.shortMessage));
-    } catch (e) {
-      return Left(e);
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(SignInWithFacebookFailure());
     }
   }
 
@@ -125,8 +130,9 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
       return Right(UserModel.fromFirebaseUser(_userCred.user));
     } on firebase_auth.FirebaseAuthException catch (e) {
       return Left(SignInWithGoogleFailure(message: e.shortMessage));
-    } catch (e) {
-      return Left(e);
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(SignInWithGoogleFailure());
     }
   }
 
@@ -148,8 +154,9 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
           } on firebase_auth.FirebaseAuthException catch (e) {
             _completer.completeError(
                 Left(SignInWithPhoneNumberFailure(message: e.shortMessage)));
-          } catch (e) {
-            _completer.completeError(Left(e));
+          } catch (e, s) {
+            errorLog(e, s);
+            _completer.completeError(Left(SignInWithPhoneNumberFailure()));
           }
         },
         verificationFailed: (_) => {},
@@ -160,7 +167,7 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
     } on firebase_auth.FirebaseAuthException catch (e) {
       return Left(SignInWithPhoneNumberFailure(message: e.shortMessage));
     } catch (e) {
-      return Left(e);
+      return Left(SignInWithPhoneNumberFailure());
     }
 
     return _completer.future;
@@ -184,8 +191,9 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
       return Right(UserModel.fromFirebaseUser(_userCred.user));
     } on firebase_auth.FirebaseAuthException catch (e) {
       return Left(SignInWithPhoneNumberFailure(message: e.shortMessage));
-    } catch (e) {
-      return Left(e);
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(SignInWithPhoneNumberFailure());
     }
   }
 
@@ -205,7 +213,8 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
       await firebaseAuth.signOut();
 
       return Right(unit);
-    } catch (e) {
+    } catch (e, s) {
+      errorLog(e, s);
       return Left(SignOutFailure());
     }
   }
@@ -218,8 +227,9 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
     try {
       final _token = await firebaseAuth.currentUser?.getIdToken();
       return Right(_token);
-    } catch (e) {
-      return Left(e);
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(ServerFailure());
     }
   }
 

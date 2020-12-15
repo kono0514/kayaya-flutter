@@ -3,7 +3,9 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/error.dart';
+import '../../../core/exception.dart';
 import '../../../core/paged_list.dart';
+import '../../../core/utils/logger.dart';
 import '../../domain/entities/anime.dart';
 import '../../domain/entities/anime_relation.dart';
 import '../../domain/entities/detail.dart';
@@ -25,18 +27,35 @@ class DetailRepositoryImpl implements DetailRepository {
   @override
   Future<Either<Failure, Detail>> getDetail(String id) async {
     try {
+      var cache;
+      try {
+        cache = await localDatasource.fetchDetail(id);
+      } on CacheException catch (e, s) {
+        errorLog(e.innerException, s);
+      }
+
       var result;
-      var cache = await localDatasource.fetchDetail(id);
       if (cache == null) {
         result = await networkDatasource.fetchDetail(id);
-        localDatasource.cacheDetail(result);
+        try {
+          localDatasource.cacheDetail(result);
+        } on CacheException catch (e, s) {
+          errorLog(e.innerException, s);
+        }
       } else {
         result = cache;
       }
 
       return Right(result);
-    } catch (e) {
-      return Left(e);
+    } on ServerException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(ServerFailure());
+    } on CacheException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(CacheFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 
@@ -46,8 +65,12 @@ class DetailRepositoryImpl implements DetailRepository {
     try {
       final result = await networkDatasource.fetchDetailFull(id);
       return Right(result);
-    } catch (e) {
-      return Left(e);
+    } on ServerException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(ServerFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 
@@ -56,8 +79,12 @@ class DetailRepositoryImpl implements DetailRepository {
     try {
       final result = await networkDatasource.fetchRelations(id);
       return Right(result);
-    } catch (e) {
-      return Left(e);
+    } on ServerException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(ServerFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 
@@ -70,8 +97,12 @@ class DetailRepositoryImpl implements DetailRepository {
     try {
       final result = await networkDatasource.fetchEpisodes(id, page, sortOrder);
       return Right(result);
-    } catch (e) {
-      return Left(e);
+    } on ServerException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(ServerFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 
@@ -81,8 +112,12 @@ class DetailRepositoryImpl implements DetailRepository {
     try {
       final result = await networkDatasource.fetchEpisodePageInfo(id, number);
       return Right(result);
-    } catch (e) {
-      return Left(e);
+    } on ServerException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(ServerFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 }

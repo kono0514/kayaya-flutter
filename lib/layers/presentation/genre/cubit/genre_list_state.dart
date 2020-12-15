@@ -28,10 +28,10 @@ class GenreListLoaded extends GenreListState {
 }
 
 class GenreListError extends GenreListState {
-  final Exception exception;
+  final String error;
 
-  GenreListError(this.exception);
+  GenreListError(this.error);
 
   @override
-  List<Object> get props => [exception];
+  List<Object> get props => [error];
 }

@@ -1,8 +1,9 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart' hide ServerException;
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../codegen/graphql_api.graphql.dart' as gen;
+import '../../core/exception.dart';
 import '../../core/paged_list.dart';
 import '../data/datasources/subscription_network_datasource.dart';
 import '../data/models/anime_model.dart';
@@ -29,7 +30,7 @@ class SubscriptionNetworkDatasourceKayayaImpl
     final result = await graphql.query(_options);
 
     if (result.hasException) {
-      throw result.exception;
+      throw ServerException(result.exception);
     }
 
     final _result =
@@ -54,7 +55,7 @@ class SubscriptionNetworkDatasourceKayayaImpl
     );
 
     if (result.hasException) {
-      throw result.exception;
+      throw ServerException(result.exception);
     }
 
     return gen.SubscribeTo$Mutation.fromJson(result.data).subscribeTo;
@@ -71,7 +72,7 @@ class SubscriptionNetworkDatasourceKayayaImpl
     );
 
     if (result.hasException) {
-      throw result.exception;
+      throw ServerException(result.exception);
     }
 
     return gen.UnsubscribeFrom$Mutation.fromJson(result.data).unsubscribeFrom;
@@ -89,7 +90,7 @@ class SubscriptionNetworkDatasourceKayayaImpl
     final result = await graphql.query(_options);
 
     if (result.hasException) {
-      throw result.exception;
+      throw ServerException(result.exception);
     }
 
     return gen.IsSubscribedTo$Query.fromJson(result.data).isUserSubscribedTo;

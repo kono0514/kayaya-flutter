@@ -155,7 +155,7 @@ class RelatedTabViewItem extends StatelessWidget {
           hasScrollBody: false,
           child: Center(
             child: Text(
-              state.exception.toString(),
+              state.error,
               style: TextStyle(
                 color: Colors.red.shade400,
               ),

@@ -11,7 +11,7 @@ class BrowseInitial extends BrowseState {}
 
 class BrowseLoaded extends BrowseState {
   final PagedList<Anime> animes;
-  final Exception error;
+  final String error;
   final String timestamp;
 
   const BrowseLoaded({
@@ -22,7 +22,7 @@ class BrowseLoaded extends BrowseState {
 
   BrowseLoaded copyWith({
     PagedList<Anime> animes,
-    Optional<Exception> error,
+    Optional<String> error,
     String timestamp,
   }) {
     return BrowseLoaded(
@@ -38,12 +38,12 @@ class BrowseLoaded extends BrowseState {
 
 // Initial list fetch error
 class BrowseError extends BrowseState {
-  final Exception exception;
+  final String error;
 
-  const BrowseError(this.exception);
+  const BrowseError(this.error);
 
   @override
-  List<Object> get props => [exception];
+  List<Object> get props => [error];
 }
 
 class BrowseEmpty extends BrowseState {

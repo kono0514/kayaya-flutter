@@ -25,7 +25,7 @@ class DetailsCubit extends Cubit<DetailsState> {
 
     final result = await getDetailUsecase(GetDetailUsecaseParams(id: id));
     result.fold(
-      (l) => emit(DetailsError(l)),
+      (l) => emit(DetailsError(l.message)),
       (r) => emit(DetailsLoaded(details: r, hasListData: false)),
     );
   }
@@ -36,7 +36,7 @@ class DetailsCubit extends Cubit<DetailsState> {
     final result = await getDetailWithAnimeUsecase(
         GetDetailWithAnimeUsecaseParams(id: id));
     result.fold(
-      (l) => emit(DetailsError(l)),
+      (l) => emit(DetailsError(l.message)),
       (r) => emit(DetailsLoaded(
         details: r.value2,
         animeListData: r.value1,

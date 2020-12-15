@@ -2,6 +2,7 @@ import 'package:algolia/algolia.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
+import '../../core/exception.dart';
 import '../../core/services/preferences_service.dart';
 import '../data/datasources/search_network_datasource.dart';
 import '../data/models/search_result_model.dart';
@@ -19,7 +20,13 @@ class SearchNetworkDatasourceAlgoliaImpl extends SearchNetworkDatasource {
   @override
   Future<List<SearchResultModel>> search(String text) async {
     final _query = algolia.index('animes').setHitsPerPage(20).search(text);
-    final _results = await _query.getObjects();
+    var _results;
+    try {
+      _results = await _query.getObjects();
+    } catch (e) {
+      throw ServerException(e);
+    }
+
     final _hits = <SearchResultModel>[];
     _results.hits.forEach((h) {
       _hits.add(SearchResultModel.fromJson({

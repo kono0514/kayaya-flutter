@@ -78,7 +78,7 @@ class _BrowsePageState extends State<BrowsePage> {
             },
             builder: (context, state) {
               if (state is BrowseError) {
-                return _BrowseError(error: state.exception.toString());
+                return _BrowseError(error: state.error);
               }
 
               if (state is BrowseEmpty) {

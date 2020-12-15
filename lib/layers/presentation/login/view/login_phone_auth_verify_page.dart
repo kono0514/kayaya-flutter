@@ -35,7 +35,7 @@ class _LoginPhoneAuthVerifyPageState extends State<LoginPhoneAuthVerifyPage> {
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
-                  content: Text(state.exception ?? 'Wrong code?'),
+                  content: Text(state.error ?? 'Wrong code?'),
                   behavior: SnackBarBehavior.floating,
                   margin: EdgeInsets.fromLTRB(36.0, 5.0, 36.0, 10.0),
                 ),

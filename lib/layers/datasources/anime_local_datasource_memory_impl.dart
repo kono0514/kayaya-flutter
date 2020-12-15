@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:kayaya_flutter/core/exception.dart';
 import 'package:kayaya_flutter/core/in_memory_cache.dart';
 import 'package:meta/meta.dart';
 
@@ -15,10 +16,19 @@ class AnimeLocalDatasourceMemoryImpl extends AnimeLocalDatasource {
     String data, {
     Duration duration = const Duration(seconds: 10),
   }) async {
-    memoryCache.cache<String>('featured', data, duration: duration);
+    try {
+      memoryCache.cache<String>('featured', data, duration: duration);
+    } catch (e) {
+      throw CacheException(e);
+    }
   }
 
   @override
-  Future<String> fetchFeatured() =>
-      Future.value(memoryCache.read<String>('featured'));
+  Future<String> fetchFeatured() {
+    try {
+      return Future.value(memoryCache.read<String>('featured'));
+    } catch (e) {
+      throw CacheException(e);
+    }
+  }
 }

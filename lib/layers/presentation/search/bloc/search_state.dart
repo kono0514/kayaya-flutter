@@ -42,10 +42,10 @@ class SearchLoaded extends SearchState {
 }
 
 class SearchError extends SearchState {
-  final Exception exception;
+  final String error;
 
-  const SearchError(this.exception);
+  const SearchError(this.error);
 
   @override
-  List<Object> get props => [exception];
+  List<Object> get props => [error];
 }

@@ -32,7 +32,7 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
         builder: (context, state) {
           if (state is DetailsError) {
             return Center(
-              child: Text(state.exception.toString()),
+              child: Text(state.error),
             );
           }
 

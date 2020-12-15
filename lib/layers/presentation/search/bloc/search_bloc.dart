@@ -45,7 +45,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       if (event.query.trim() == '') {
         final _history = await getSearchHistoryUsecase(NoParams());
         yield* _history.fold((l) async* {
-          yield SearchError(l);
+          yield SearchError(l.message);
         }, (r) async* {
           yield SearchHistoryLoaded(result: r);
         });
@@ -68,7 +68,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
       yield* result.fold(
         (l) async* {
-          yield SearchError(l);
+          yield SearchError(l.message);
         },
         (r) async* {
           yield SearchLoaded(

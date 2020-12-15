@@ -12,7 +12,7 @@ class EpisodesInitial extends EpisodesState {}
 class EpisodesLoaded extends EpisodesState {
   final PagedList<Episode> episodes;
   final String sortOrder;
-  final Exception error;
+  final String error;
 
   const EpisodesLoaded({
     this.episodes,
@@ -23,7 +23,7 @@ class EpisodesLoaded extends EpisodesState {
   EpisodesLoaded copyWith({
     PagedList<Episode> episodes,
     String sortOrder,
-    Optional<Exception> error,
+    Optional<String> error,
   }) {
     return EpisodesLoaded(
       episodes: episodes ?? this.episodes,
@@ -38,12 +38,12 @@ class EpisodesLoaded extends EpisodesState {
 
 // Initial list fetch error
 class EpisodesError extends EpisodesState {
-  final Exception exception;
+  final String error;
 
-  const EpisodesError(this.exception);
+  const EpisodesError(this.error);
 
   @override
-  List<Object> get props => [exception];
+  List<Object> get props => [error];
 }
 
 class EpisodesEmpty extends EpisodesState {

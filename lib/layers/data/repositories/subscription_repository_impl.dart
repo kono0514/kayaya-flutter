@@ -3,7 +3,9 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/error.dart';
+import '../../../core/exception.dart';
 import '../../../core/paged_list.dart';
+import '../../../core/utils/logger.dart';
 import '../../domain/entities/anime.dart';
 import '../../domain/repositories/subscription_repository.dart';
 import '../datasources/subscription_network_datasource.dart';
@@ -20,8 +22,12 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
     try {
       final _result = await networkDatasource.fetchSubscriptions(page);
       return Right(_result);
-    } catch (e) {
-      return Left(e);
+    } on ServerException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(ServerFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 
@@ -30,8 +36,12 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
     try {
       await networkDatasource.subscribe(id);
       return Right(unit);
-    } catch (e) {
-      return Left(e);
+    } on ServerException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(ServerFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 
@@ -40,8 +50,12 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
     try {
       await networkDatasource.unsubscribe(id);
       return Right(unit);
-    } catch (e) {
-      return Left(e);
+    } on ServerException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(ServerFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 
@@ -50,8 +64,12 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
     try {
       final result = await networkDatasource.fetchIsSubscribed(id);
       return Right(result);
-    } catch (e) {
-      return Left(e);
+    } on ServerException catch (e, s) {
+      errorLog(e.innerException, s);
+      return Left(ServerFailure());
+    } catch (e, s) {
+      errorLog(e, s);
+      return Left(DataFailure());
     }
   }
 }

@@ -1,8 +1,9 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart' hide ServerException;
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../codegen/graphql_api.graphql.dart' as gen;
+import '../../core/exception.dart';
 import '../../core/paged_list.dart';
 import '../data/datasources/anime_network_datasource.dart';
 import '../data/models/anime_model.dart';
@@ -25,7 +26,7 @@ class AnimeNetworkDatasourceKayayaImpl extends AnimeNetworkDatasource {
     );
 
     if (result.hasException) {
-      throw result.exception;
+      throw ServerException(result.exception);
     }
 
     return gen.GetFeatured$Query.fromJson(result.data).featured;
@@ -40,7 +41,7 @@ class AnimeNetworkDatasourceKayayaImpl extends AnimeNetworkDatasource {
     final result = await graphql.query(_options);
 
     if (result.hasException) {
-      throw result.exception;
+      throw ServerException(result.exception);
     }
 
     return gen.GetGenres$Query.fromJson(result.data)
@@ -75,7 +76,7 @@ class AnimeNetworkDatasourceKayayaImpl extends AnimeNetworkDatasource {
     final result = await graphql.query(_options);
 
     if (result.hasException) {
-      throw result.exception;
+      throw ServerException(result.exception);
     }
 
     final _result = gen.BrowseAnimes$Query.fromJson(result.data).animes;
