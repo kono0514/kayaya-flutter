@@ -119,14 +119,20 @@ class SubscriptionListCubit extends Cubit<SubscriptionListState> {
 
     final currentState = state as SubscriptionListLoaded;
 
-    emit(
-      currentState.copyWith(
-        subscriptions: currentState.subscriptions.copyWith(
-          elements: currentState.subscriptions.elements
-              .where((e) => e.id != anime.id)
-              .toList(),
+    final filteredElements = currentState.subscriptions.elements
+        .where((e) => e.id != anime.id)
+        .toList();
+
+    if (filteredElements.length == 0) {
+      emit(SubscriptionListEmpty());
+    } else {
+      emit(
+        currentState.copyWith(
+          subscriptions: currentState.subscriptions.copyWith(
+            elements: filteredElements,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
