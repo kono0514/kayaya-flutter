@@ -52,6 +52,7 @@ import 'core/in_memory_cache.dart';
 import 'layers/domain/usecases/authentication/is_logged_in_usecase.dart';
 import 'layers/presentation/locale/cubit/locale_cubit.dart';
 import 'layers/presentation/login/cubit/login_cubit.dart';
+import 'layers/presentation/login/cubit/login_phone_cubit.dart';
 import 'layers/domain/usecases/authentication/login_with_anonymous_usecase.dart';
 import 'layers/domain/usecases/authentication/login_with_facebook_usecase.dart';
 import 'layers/domain/usecases/authentication/login_with_google_usecase.dart';
@@ -232,6 +233,9 @@ Future<GetIt> $initGetIt(
         loginWithFacebookUsecase: get<LoginWithFacebookUsecase>(),
         loginWithAnonymousUsecase: get<LoginWithAnonymousUsecase>(),
       ));
+  gh.factory<LoginPhoneCubit>(() => LoginPhoneCubit(
+      sendPhoneCodeUsecase: get<SendPhoneCodeUsecase>(),
+      verifyPhoneCodeUsecase: get<VerifyPhoneCodeUsecase>()));
   gh.factory<SearchBloc>(() => SearchBloc(
         searchByTextUsecase: get<SearchByTextUsecase>(),
         getSearchHistoryUsecase: get<GetSearchHistoryUsecase>(),

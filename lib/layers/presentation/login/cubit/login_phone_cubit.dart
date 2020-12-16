@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:quiver/core.dart';
 
@@ -8,6 +9,7 @@ import '../../../domain/usecases/authentication/verify_phone_code_usecase.dart';
 
 part 'login_phone_state.dart';
 
+@Injectable()
 class LoginPhoneCubit extends Cubit<LoginPhoneState> {
   final SendPhoneCodeUsecase sendPhoneCodeUsecase;
   final VerifyPhoneCodeUsecase verifyPhoneCodeUsecase;
