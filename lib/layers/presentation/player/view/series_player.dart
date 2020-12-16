@@ -83,8 +83,7 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
   void setupVideo(Episode episode) {
     isPlayingValue = false;
     currentEpisode = episode;
-    playerController = VideoPlayerController.network(
-        'https://anikodcdn.net/static/media/mp4/479/1_480.mp4');
+    playerController = VideoPlayerController.network(widget.release.url);
     chewieController = ChewieController(
       videoPlayerController: playerController,
       deviceOrientationsAfterFullScreen: [DeviceOrientation.portraitUp],
