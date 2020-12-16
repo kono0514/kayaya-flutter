@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../core/widgets/spinner_button.dart';
+import '../../../../locale/generated/l10n.dart';
 import '../cubit/login_cubit.dart';
 import '../widget/sign_in_button.dart';
 import 'login_phone_auth_page.dart';
@@ -71,7 +72,7 @@ class _AnonymousButton extends StatelessWidget {
         width: 46,
         height: 46,
         child: SpinnerButton(
-          label: Text('Continue without signing in'),
+          label: Text(TR.of(context).sign_in_anonymous),
           spinnerColor: Theme.of(context).buttonColor,
           disabled: state is LoginSubmitting,
           loading:
@@ -104,7 +105,7 @@ class _FacebookButton extends StatelessWidget {
               height: 30,
             ),
           ),
-          label: Text('Sign in with Facebook'),
+          label: Text(TR.of(context).sign_in_facebook),
           color: Color.fromRGBO(23, 120, 242, 1),
           disabled: state is LoginSubmitting,
           loading:
@@ -133,7 +134,7 @@ class _GoogleButton extends StatelessWidget {
             width: 40,
             height: 40,
           ),
-          label: Text('Sign in with Google'),
+          label: Text(TR.of(context).sign_in_google),
           color: Color.fromRGBO(219, 68, 55, 1),
           disabled: state is LoginSubmitting,
           loading:
@@ -161,7 +162,7 @@ class _NumberButton extends StatelessWidget {
             padding: const EdgeInsets.only(left: 6.0),
             child: Icon(Icons.phone, size: 28),
           ),
-          label: Text('Sign in with Number'),
+          label: Text(TR.of(context).sign_in_number),
           color: Colors.grey.shade700,
           disabled: state is LoginSubmitting,
           onPressed: () {

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../core/widgets/spinner_button.dart';
+import '../../../../locale/generated/l10n.dart';
 import '../cubit/login_phone_cubit.dart';
 
 class LoginPhoneAuthVerifyPage extends StatefulWidget {
@@ -51,7 +52,7 @@ class _LoginPhoneAuthVerifyPageState extends State<LoginPhoneAuthVerifyPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Verify SMS code',
+                  TR.of(context).phone_auth_verify_header_text,
                   style: _theme.textTheme.headline4.apply(
                     color: _theme.textTheme.bodyText1.color,
                   ),
@@ -61,7 +62,7 @@ class _LoginPhoneAuthVerifyPageState extends State<LoginPhoneAuthVerifyPage> {
                   final _number = context.select(
                       (LoginPhoneCubit cubit) => cubit.state.phoneNumber);
                   return Text(
-                    '$_number дугаарт явуулсан 6 оронтой кодыг оруулна уу',
+                    TR.of(context).phone_auth_sent_success(6, _number),
                   );
                 }),
                 SizedBox(height: 30),
@@ -71,7 +72,7 @@ class _LoginPhoneAuthVerifyPageState extends State<LoginPhoneAuthVerifyPage> {
                   formKey: _formKey,
                 ),
                 TextButton(
-                  child: Text('Change number'),
+                  child: Text(TR.of(context).phone_auth_change_number),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -96,7 +97,7 @@ class _VerifyButton extends StatelessWidget {
         context.select((LoginPhoneCubit cubit) => cubit.state.status);
 
     return SpinnerButton(
-      label: Text('Verify'),
+      label: Text(TR.of(context).phone_auth_verify),
       loading: status == LoginPhoneStatus.verifying,
       onPressed: () {
         if (formKey.currentState.validate()) {

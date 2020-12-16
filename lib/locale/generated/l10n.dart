@@ -65,6 +65,16 @@ class TR {
     );
   }
 
+  /// `Check for Update`
+  String get check_for_update {
+    return Intl.message(
+      'Check for Update',
+      name: 'check_for_update',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Clear search history`
   String get clear_search_history {
     return Intl.message(
@@ -325,6 +335,66 @@ class TR {
     );
   }
 
+  /// `Change number`
+  String get phone_auth_change_number {
+    return Intl.message(
+      'Change number',
+      name: 'phone_auth_change_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign in using your phone number`
+  String get phone_auth_header_text {
+    return Intl.message(
+      'Sign in using your phone number',
+      name: 'phone_auth_header_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send SMS code`
+  String get phone_auth_send_sms {
+    return Intl.message(
+      'Send SMS code',
+      name: 'phone_auth_send_sms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the {digit}-digit code that was sent to {number} via SMS`
+  String phone_auth_sent_success(Object digit, Object number) {
+    return Intl.message(
+      'Enter the $digit-digit code that was sent to $number via SMS',
+      name: 'phone_auth_sent_success',
+      desc: '',
+      args: [digit, number],
+    );
+  }
+
+  /// `Verify`
+  String get phone_auth_verify {
+    return Intl.message(
+      'Verify',
+      name: 'phone_auth_verify',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify SMS code`
+  String get phone_auth_verify_header_text {
+    return Intl.message(
+      'Verify SMS code',
+      name: 'phone_auth_verify_header_text',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Play`
   String get play {
     return Intl.message(
@@ -415,6 +485,56 @@ class TR {
     );
   }
 
+  /// `Continue without signing in`
+  String get sign_in_anonymous {
+    return Intl.message(
+      'Continue without signing in',
+      name: 'sign_in_anonymous',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign in with Facebook`
+  String get sign_in_facebook {
+    return Intl.message(
+      'Sign in with Facebook',
+      name: 'sign_in_facebook',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign in with Google`
+  String get sign_in_google {
+    return Intl.message(
+      'Sign in with Google',
+      name: 'sign_in_google',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign in with Phone`
+  String get sign_in_number {
+    return Intl.message(
+      'Sign in with Phone',
+      name: 'sign_in_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Signout`
+  String get signout {
+    return Intl.message(
+      'Signout',
+      name: 'signout',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Sort by`
   String get sort {
     return Intl.message(
@@ -475,10 +595,10 @@ class TR {
     );
   }
 
-  /// `Subscribed. You'll receive a notification when new episode gets added.`
+  /// `Subscribed. You'll get notified when a new episode is added.`
   String get subscribe_success {
     return Intl.message(
-      'Subscribed. You\'ll receive a notification when new episode gets added.',
+      'Subscribed. You\'ll get notified when a new episode is added.',
       name: 'subscribe_success',
       desc: '',
       args: [],

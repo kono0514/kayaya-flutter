@@ -25,11 +25,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m2(number) => "${number}-р анги";
 
+  static m3(digit, number) => "${number} дугаарт явуулсан ${digit} оронтой кодыг оруулна уу";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "about" : MessageLookupByLibrary.simpleMessage("Тухай"),
     "all" : MessageLookupByLibrary.simpleMessage("Бүгд"),
     "apply" : MessageLookupByLibrary.simpleMessage("Apply"),
+    "check_for_update" : MessageLookupByLibrary.simpleMessage("Шинэчлэх"),
     "clear_search_history" : MessageLookupByLibrary.simpleMessage("Хайлтын түүх устгах"),
     "clear_search_history_success" : MessageLookupByLibrary.simpleMessage("Амжилттай устгагдлаа."),
     "credits" : MessageLookupByLibrary.simpleMessage("Credits"),
@@ -51,11 +54,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "genre" : MessageLookupByLibrary.simpleMessage("Жанр"),
     "info" : MessageLookupByLibrary.simpleMessage("Мэдээлэл"),
     "language" : MessageLookupByLibrary.simpleMessage("Хэл"),
-    "language_updated" : MessageLookupByLibrary.simpleMessage("Хэл солигдлоо. Апп-ыг гаргаад оруулахад өөрчлөлт орно."),
+    "language_updated" : MessageLookupByLibrary.simpleMessage("Хэл солигдлоо. Апп-ыг гаргаад оруулахад өөрчлөлт бүрэн орно."),
     "movie" : MessageLookupByLibrary.simpleMessage("Кино"),
     "newly_added" : MessageLookupByLibrary.simpleMessage("Шинээр нэмэгдсэн"),
     "no_episodes" : MessageLookupByLibrary.simpleMessage("Одоогоор анги нэмэгдээгүй байна"),
-    "no_subscriptions" : MessageLookupByLibrary.simpleMessage("Subscribe хийсэн аниим байхгүй байна. Цуврал аниймд subscribe хийснээр шинэ анги нэмэгдэх сонордуулгыг цаг алдалгүй авах боломжтой."),
+    "no_subscriptions" : MessageLookupByLibrary.simpleMessage("Цувралуудад subscribe хийснээр шинэ анги нэмэгдэхэд сонордуулга авах боломжтой."),
+    "phone_auth_change_number" : MessageLookupByLibrary.simpleMessage("Өөр дугаар"),
+    "phone_auth_header_text" : MessageLookupByLibrary.simpleMessage("Утасны дугаараа ашиглан нэврэх"),
+    "phone_auth_send_sms" : MessageLookupByLibrary.simpleMessage("Мэссэж илгээ"),
+    "phone_auth_sent_success" : m3,
+    "phone_auth_verify" : MessageLookupByLibrary.simpleMessage("Баталгаажуулах"),
+    "phone_auth_verify_header_text" : MessageLookupByLibrary.simpleMessage("Код баталгаажуулах"),
     "play" : MessageLookupByLibrary.simpleMessage("Тоглуулах"),
     "recommended" : MessageLookupByLibrary.simpleMessage("Санал болгох"),
     "related" : MessageLookupByLibrary.simpleMessage("Ижил төстэй"),
@@ -65,6 +74,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "series" : MessageLookupByLibrary.simpleMessage("Цуврал"),
     "settings" : MessageLookupByLibrary.simpleMessage("Тохиргоо"),
     "share" : MessageLookupByLibrary.simpleMessage("Хуваалцах"),
+    "sign_in_anonymous" : MessageLookupByLibrary.simpleMessage("Дараад нь нээе"),
+    "sign_in_facebook" : MessageLookupByLibrary.simpleMessage("Facebook-ээр нэвтрэх"),
+    "sign_in_google" : MessageLookupByLibrary.simpleMessage("Google-ээр нэвтрэх"),
+    "sign_in_number" : MessageLookupByLibrary.simpleMessage("Дугаараар нэвтрэх"),
+    "signout" : MessageLookupByLibrary.simpleMessage("Гарах"),
     "sort" : MessageLookupByLibrary.simpleMessage("Эрэмбэлэх"),
     "sort_asc" : MessageLookupByLibrary.simpleMessage("Өсөх"),
     "sort_desc" : MessageLookupByLibrary.simpleMessage("Буурах"),

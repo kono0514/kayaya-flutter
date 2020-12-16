@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../core/widgets/spinner_button.dart';
+import '../../../../locale/generated/l10n.dart';
 import '../cubit/login_phone_cubit.dart';
 import '../widget/country_code_picker.dart';
 import 'login_phone_auth_verify_page.dart';
@@ -69,7 +70,7 @@ class _LoginPhoneAuthPageState extends State<LoginPhoneAuthPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Sign in using your phone number',
+                    TR.of(context).phone_auth_header_text,
                     style: _theme.textTheme.headline4.apply(
                       color: _theme.textTheme.bodyText1.color,
                     ),
@@ -116,7 +117,7 @@ class _SendSMSButton extends StatelessWidget {
         context.select((LoginPhoneCubit cubit) => cubit.state.status);
 
     return SpinnerButton(
-      label: Text('Send SMS code'),
+      label: Text(TR.of(context).phone_auth_send_sms),
       loading: status == LoginPhoneStatus.sending,
       onPressed: () {
         if (formKey.currentState.validate()) {

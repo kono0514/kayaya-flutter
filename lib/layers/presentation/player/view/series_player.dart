@@ -239,7 +239,7 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(16),
-                    child: Text('Episode List:'),
+                    child: Text('${TR.of(context).episodes}:'),
                   ),
                   Expanded(
                     child: _buildPlaylist(),

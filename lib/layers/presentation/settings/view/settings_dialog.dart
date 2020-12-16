@@ -143,7 +143,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                       },
                     ),
                     SettingsTile(
-                      title: 'Check for Update',
+                      title: TR.of(context).check_for_update,
                       leading: Icon(Icons.cloud_download),
                       onTap: () {
                         BlocProvider.of<UpdaterCubit>(context).checkForUpdate();
@@ -257,7 +257,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
 
   Widget _buildLogoutSettingsTile() {
     return SettingsTile(
-      title: 'Logout',
+      title: TR.of(context).signout,
       leading: Icon(Icons.logout),
       onTap: () async {
         final state = context.read<AuthenticationBloc>().state;
@@ -283,7 +283,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                   },
                 ),
                 TextButton(
-                  child: Text('Logout'),
+                  child: Text('OK'),
                   onPressed: () {
                     Navigator.pop(context, true);
                   },
