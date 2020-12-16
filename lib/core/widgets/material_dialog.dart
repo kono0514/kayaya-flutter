@@ -49,7 +49,33 @@ Future<T> showCustomMaterialSheet<T>({
     enableDrag: enableDrag,
     animationCurve: animationCurve,
     duration: duration,
-    containerBuilder: (_, animation, child) {
+    builder: (context) {
+      final child = (labelBuilder != null)
+          ? Column(
+              children: [
+                SizedBox(height: 10),
+                Container(
+                  height: 3,
+                  width: 18,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.transparent),
+                    borderRadius: BorderRadius.circular(5),
+                    color: Theme.of(context).disabledColor,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: DefaultTextStyle.merge(
+                    style: Theme.of(context).textTheme.headline6,
+                    child: labelBuilder(context),
+                  ),
+                ),
+                Divider(height: 1.3, thickness: 1.3),
+                Expanded(child: builder(context)),
+              ],
+            )
+          : builder(context);
+
       final bottomSheetTheme = Theme.of(context).bottomSheetTheme;
       final orientation = MediaQuery.of(context).orientation;
       final _width = orientation == Orientation.landscape
@@ -79,33 +105,6 @@ Future<T> showCustomMaterialSheet<T>({
           ),
         ),
       );
-    },
-    builder: (context) {
-      return (labelBuilder != null)
-          ? Column(
-              children: [
-                SizedBox(height: 10),
-                Container(
-                  height: 3,
-                  width: 18,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.transparent),
-                    borderRadius: BorderRadius.circular(5),
-                    color: Theme.of(context).disabledColor,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: DefaultTextStyle.merge(
-                    style: Theme.of(context).textTheme.headline6,
-                    child: labelBuilder(context),
-                  ),
-                ),
-                Divider(height: 1.3, thickness: 1.3),
-                Expanded(child: builder(context)),
-              ],
-            )
-          : builder(context);
     },
   ));
   return result;
