@@ -54,7 +54,6 @@ class RelatedTabViewItem extends StatelessWidget {
                           Container(
                             height: 163,
                             child: ListView.builder(
-                              physics: BouncingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
@@ -96,7 +95,6 @@ class RelatedTabViewItem extends StatelessWidget {
                           Container(
                             height: 163,
                             child: ListView.builder(
-                              physics: BouncingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
