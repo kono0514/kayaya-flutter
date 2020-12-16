@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:settings_ui/src/abstract_section.dart';
 import 'package:settings_ui/src/cupertino_settings_section.dart';
@@ -50,139 +51,143 @@ class _SettingsDialogState extends State<SettingsDialog> {
     final themeMode = context.watch<ThemeCubit>().state;
     final locale = context.watch<LocaleCubit>().state;
 
-    return Builder(
-      builder: (context) => BlocListener<UpdaterCubit, UpdaterState>(
-        listener: (context, state) {
-          if (state is UpdaterError) {
-            Scaffold.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(content: Text(state.message['message'])),
-              );
-          }
-        },
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              CustomSettingsSection(
-                title: TR.of(context).general,
-                tiles: [
-                  SettingsTile(
-                    title: TR.of(context).language,
-                    subtitle: languageCodeLabel(locale.locale),
-                    leading: Icon(Icons.translate),
-                    onTap: () async {
-                      final result = await showDialog<String>(
-                        context: context,
-                        builder: (context) => SimpleDialog(
-                          title: Text(TR.of(context).language),
-                          children: <Widget>[
-                            buildSimpleDialogItem('English', 'en'),
-                            buildSimpleDialogItem('Монгол', 'mn'),
-                          ],
-                        ),
-                      );
-                      if (result != null) {
-                        BlocProvider.of<LocaleCubit>(context)
-                            .changeLocale(result);
-                      }
-                    },
-                  ),
-                  SettingsTile(
-                    title: TR.of(context).theme,
-                    subtitle: themeMode.themeMode.toString(),
-                    leading: Icon(Icons.brightness_medium),
-                    onTap: () async {
-                      final result = await showDialog<int>(
-                        context: context,
-                        builder: (context) => SimpleDialog(
-                          title: Text(TR.of(context).theme),
-                          children: <Widget>[
-                            buildSimpleDialogItem(TR.of(context).theme_dark, 1),
-                            buildSimpleDialogItem(
-                                TR.of(context).theme_light, 2),
-                            buildSimpleDialogItem(
-                                TR.of(context).theme_system, 0),
-                          ],
-                        ),
-                      );
-
-                      if (result == null) return;
-
-                      if (result == 1) {
-                        BlocProvider.of<ThemeCubit>(context)
-                            .changeTheme(ThemeMode.dark);
-                      } else if (result == 2) {
-                        BlocProvider.of<ThemeCubit>(context)
-                            .changeTheme(ThemeMode.light);
-                      } else if (result == 0) {
-                        BlocProvider.of<ThemeCubit>(context)
-                            .changeTheme(ThemeMode.system);
-                      }
-
-                      setState(() {});
-                    },
-                  ),
-                  SettingsTile(
-                    title: TR.of(context).clear_search_history,
-                    leading: Icon(Icons.history),
-                    onTap: () {
-                      GetIt.I<ClearSearchHistoryUsecase>().call(NoParams());
-                      Scaffold.of(context)
-                        ..hideCurrentSnackBar()
-                        ..showSnackBar(
-                          SnackBar(
-                            content: Text(
-                                TR.of(context).clear_search_history_success),
+    return Scaffold(
+      body: Builder(
+        builder: (context) => BlocListener<UpdaterCubit, UpdaterState>(
+          listener: (context, state) {
+            if (state is UpdaterError) {
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(content: Text(state.message['message'])),
+                );
+            }
+          },
+          child: SingleChildScrollView(
+            controller: ModalScrollController.of(context),
+            child: Column(
+              children: [
+                CustomSettingsSection(
+                  title: TR.of(context).general,
+                  tiles: [
+                    SettingsTile(
+                      title: TR.of(context).language,
+                      subtitle: languageCodeLabel(locale.locale),
+                      leading: Icon(Icons.translate),
+                      onTap: () async {
+                        final result = await showDialog<String>(
+                          context: context,
+                          builder: (context) => SimpleDialog(
+                            title: Text(TR.of(context).language),
+                            children: <Widget>[
+                              buildSimpleDialogItem('English', 'en'),
+                              buildSimpleDialogItem('Монгол', 'mn'),
+                            ],
                           ),
                         );
-                    },
-                  ),
-                  SettingsTile(
-                    title: 'Check for Update',
-                    leading: Icon(Icons.cloud_download),
-                    onTap: () {
-                      BlocProvider.of<UpdaterCubit>(context).checkForUpdate();
-                    },
-                  ),
-                ],
-              ),
-              CustomSettingsSection(
-                title: 'Account',
-                tiles: [
-                  _buildAuthSettingsTile(),
-                  _buildCreateAccountSettingsTile(),
-                  _buildLogoutSettingsTile(),
-                ],
-              ),
-              CustomSettingsSection(
-                title: TR.of(context).about,
-                tiles: [
-                  SettingsTile(
-                    title: TR.of(context).source_code,
-                    subtitle: sourceUrl,
-                    onTap: () async {
-                      if (await canLaunch(sourceUrl)) {
-                        await launch(sourceUrl);
-                      }
-                    },
-                  ),
-                ],
-              ),
-              CustomSettingsSection(
-                title: TR.of(context).credits,
-                tiles: [
-                  SettingsTile(
-                    title: 'Search powered by Algolia',
-                    onTap: () async {
-                      if (await canLaunch('https://algolia.com')) {
-                        await launch('https://algolia.com');
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ],
+                        if (result != null) {
+                          BlocProvider.of<LocaleCubit>(context)
+                              .changeLocale(result);
+                        }
+                      },
+                    ),
+                    SettingsTile(
+                      title: TR.of(context).theme,
+                      subtitle: themeMode.themeMode.toString(),
+                      leading: Icon(Icons.brightness_medium),
+                      onTap: () async {
+                        final result = await showDialog<int>(
+                          context: context,
+                          builder: (context) => SimpleDialog(
+                            title: Text(TR.of(context).theme),
+                            children: <Widget>[
+                              buildSimpleDialogItem(
+                                  TR.of(context).theme_dark, 1),
+                              buildSimpleDialogItem(
+                                  TR.of(context).theme_light, 2),
+                              buildSimpleDialogItem(
+                                  TR.of(context).theme_system, 0),
+                            ],
+                          ),
+                        );
+
+                        if (result == null) return;
+
+                        if (result == 1) {
+                          BlocProvider.of<ThemeCubit>(context)
+                              .changeTheme(ThemeMode.dark);
+                        } else if (result == 2) {
+                          BlocProvider.of<ThemeCubit>(context)
+                              .changeTheme(ThemeMode.light);
+                        } else if (result == 0) {
+                          BlocProvider.of<ThemeCubit>(context)
+                              .changeTheme(ThemeMode.system);
+                        }
+
+                        setState(() {});
+                      },
+                    ),
+                    SettingsTile(
+                      title: TR.of(context).clear_search_history,
+                      leading: Icon(Icons.history),
+                      onTap: () {
+                        GetIt.I<ClearSearchHistoryUsecase>().call(NoParams());
+                        Scaffold.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  TR.of(context).clear_search_history_success),
+                            ),
+                          );
+                      },
+                    ),
+                    SettingsTile(
+                      title: 'Check for Update',
+                      leading: Icon(Icons.cloud_download),
+                      onTap: () {
+                        BlocProvider.of<UpdaterCubit>(context).checkForUpdate();
+                      },
+                    ),
+                  ],
+                ),
+                CustomSettingsSection(
+                  title: 'Account',
+                  tiles: [
+                    _buildAuthSettingsTile(),
+                    _buildCreateAccountSettingsTile(),
+                    _buildLogoutSettingsTile(),
+                  ],
+                ),
+                CustomSettingsSection(
+                  title: TR.of(context).about,
+                  tiles: [
+                    SettingsTile(
+                      title: TR.of(context).source_code,
+                      subtitle: sourceUrl,
+                      onTap: () async {
+                        if (await canLaunch(sourceUrl)) {
+                          await launch(sourceUrl);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+                CustomSettingsSection(
+                  title: TR.of(context).credits,
+                  tiles: [
+                    SettingsTile(
+                      title: 'Search powered by Algolia',
+                      onTap: () async {
+                        if (await canLaunch('https://algolia.com')) {
+                          await launch('https://algolia.com');
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
