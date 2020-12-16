@@ -26,25 +26,26 @@ class AnimeRepositoryImpl implements AnimeRepository {
   @override
   Future<Either<Failure, String>> getFeatured() async {
     try {
-      var cache;
-      try {
-        cache = await localDatasource.fetchFeatured();
-      } on CacheException catch (e, s) {
-        errorLog(e.innerException, s);
-      }
+      // var cache;
+      // try {
+      //   cache = await localDatasource.fetchFeatured();
+      // } on CacheException catch (e, s) {
+      //   errorLog(e.innerException, s);
+      // }
 
-      var result;
-      if (cache == null) {
-        result = await networkDatasource.fetchFeatured();
-        try {
-          localDatasource.cacheFeatured(result);
-        } on CacheException catch (e, s) {
-          errorLog(e.innerException, s);
-        }
-      } else {
-        result = cache;
-      }
+      // var result;
+      // if (cache == null) {
+      //   result = await networkDatasource.fetchFeatured();
+      //   try {
+      //     localDatasource.cacheFeatured(result);
+      //   } on CacheException catch (e, s) {
+      //     errorLog(e.innerException, s);
+      //   }
+      // } else {
+      //   result = cache;
+      // }
 
+      final result = await networkDatasource.fetchFeatured();
       return Right(result);
     } on ServerException catch (e, s) {
       errorLog(e.innerException, s);
