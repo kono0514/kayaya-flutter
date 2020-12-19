@@ -12,7 +12,7 @@ abstract class AuthRepository {
   Future<Either<Failure, User>> signInWithGoogle();
   Future<Either<Failure, User>> signInWithFacebook();
   Future<Either<Failure, User>> signInAnonymously();
-  Future<Either<Failure, Either<User, String>>> signInWithPhoneNumberSend({
+  Future<Either<Failure, String>> signInWithPhoneNumberSend({
     @required String number,
   });
   Future<Either<Failure, User>> signInWithPhoneNumberVerify({

@@ -46,14 +46,11 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
         error: Optional.of(l.message),
       )),
       (r) {
-        r.fold(
-          (l) => emit(LoginPhoneState()),
-          (r) => emit(state.copyWith(
-            status: LoginPhoneStatus.sent,
-            verificationId: r,
-            error: Optional.absent(),
-          )),
-        );
+        emit(state.copyWith(
+          status: LoginPhoneStatus.sent,
+          verificationId: r,
+          error: Optional.absent(),
+        ));
       },
     );
   }

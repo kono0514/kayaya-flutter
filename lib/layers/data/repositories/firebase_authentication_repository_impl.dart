@@ -137,10 +137,10 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, Either<User, String>>> signInWithPhoneNumberSend({
+  Future<Either<Failure, String>> signInWithPhoneNumberSend({
     String number,
   }) async {
-    final _completer = Completer<Either<Failure, Either<User, String>>>();
+    final _completer = Completer<Either<Failure, String>>();
 
     try {
       firebaseAuth.verifyPhoneNumber(
@@ -148,20 +148,14 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
         verificationCompleted:
             (firebase_auth.PhoneAuthCredential credential) async {
           try {
-            final _userCred = await _linkWithAnonymousOrLoginUsing(credential);
-            _completer.complete(
-                Right(Left(UserModel.fromFirebaseUser(_userCred.user))));
-          } on firebase_auth.FirebaseAuthException catch (e) {
-            _completer.completeError(
-                Left(SignInWithPhoneNumberFailure(message: e.shortMessage)));
+            await _linkWithAnonymousOrLoginUsing(credential);
           } catch (e, s) {
             errorLog(e, s);
-            _completer.completeError(Left(SignInWithPhoneNumberFailure()));
           }
         },
         verificationFailed: (_) => {},
         codeSent: (verificationId, forceResendingToken) =>
-            _completer.complete(Right(Right(verificationId))),
+            _completer.complete(Right(verificationId)),
         codeAutoRetrievalTimeout: (_) => {},
       );
     } on firebase_auth.FirebaseAuthException catch (e) {
