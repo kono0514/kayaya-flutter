@@ -153,7 +153,8 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
             errorLog(e, s);
           }
         },
-        verificationFailed: (_) => {},
+        verificationFailed: (e) => _completer.complete(
+            Left(SignInWithPhoneNumberFailure(message: e.shortMessage))),
         codeSent: (verificationId, forceResendingToken) =>
             _completer.complete(Right(verificationId)),
         codeAutoRetrievalTimeout: (_) => {},
