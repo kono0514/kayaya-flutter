@@ -47,13 +47,13 @@ class PreferencesService {
       dataSource.write(_PrefKeys.themeMode, themeMode);
 
   String get themeMode =>
-      dataSource.read(_PrefKeys.themeMode, defaultValue: 'system');
+      dataSource.read(_PrefKeys.themeMode, defaultValue: 'dark');
 
   Future<void> setLanguage(String languageCode) =>
       dataSource.write(_PrefKeys.languageCode, languageCode);
 
   String get languageCode =>
-      dataSource.read(_PrefKeys.languageCode, defaultValue: 'en');
+      dataSource.read(_PrefKeys.languageCode, defaultValue: 'mn');
 
   Future<void> addSearchHistory(String query) async {
     List<String> _history =

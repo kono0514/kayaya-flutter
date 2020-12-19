@@ -25,7 +25,7 @@ class ThemeCubit extends Cubit<ThemeState> {
         emit(ThemeState(ThemeMode.dark));
         break;
       default:
-        emit(ThemeState(ThemeMode.light));
+        emit(ThemeState(ThemeMode.dark));
         break;
     }
   }

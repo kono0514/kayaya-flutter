@@ -11,7 +11,7 @@ part 'locale_state.dart';
 class LocaleCubit extends Cubit<LocaleState> {
   final PreferencesService pref;
 
-  LocaleCubit({@required this.pref}) : super(LocaleState('en'));
+  LocaleCubit({@required this.pref}) : super(LocaleState('mn'));
 
   void resolveLocale() async {
     String languageCode = pref.languageCode;
