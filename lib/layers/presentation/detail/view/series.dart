@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart' show Right;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart'
@@ -6,6 +7,7 @@ import 'package:kayaya_flutter/layers/presentation/library/cubit/subscription_li
 
 import '../../../../core/widgets/spinner_button.dart';
 import '../../../../locale/generated/l10n.dart';
+import '../../../../router.dart';
 import '../../../domain/entities/anime.dart';
 import '../cubit/details_cubit.dart';
 import '../cubit/subscription_cubit.dart';
@@ -63,7 +65,13 @@ class SeriesPage extends StatelessWidget {
                 ? state.animeListData
                 : anime,
             actions: [
-              SeriesSubscribeButton(
+              Expanded(
+                child: _SeriesPlayButton(
+                  anime: anime,
+                ),
+              ),
+              SizedBox(width: 10),
+              _SeriesSubscribeButton(
                 anime: anime,
                 isMinimal: isMinimal,
               ),
@@ -85,11 +93,47 @@ class SeriesPage extends StatelessWidget {
   }
 }
 
-class SeriesSubscribeButton extends StatelessWidget {
+class _SeriesPlayButton extends StatelessWidget {
+  final Anime anime;
+
+  const _SeriesPlayButton({
+    Key key,
+    @required this.anime,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      child: SpinnerButton(
+        label: Text(TR.of(context).play.toUpperCase()),
+        loading: false,
+        icon: Icon(Icons.play_circle_outline),
+        onPressed: () {
+          Navigator.of(context, rootNavigator: true).pushNamed(
+            Routes.seriesPlayer,
+            arguments: SeriesPlayerArguments(
+              anime: anime,
+              episode: Right(1),
+            ),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SeriesSubscribeButton extends StatelessWidget {
   final Anime anime;
   final bool isMinimal;
 
-  const SeriesSubscribeButton({
+  const _SeriesSubscribeButton({
     Key key,
     @required this.anime,
     @required this.isMinimal,
@@ -118,37 +162,23 @@ class SeriesSubscribeButton extends StatelessWidget {
             }
           }
         },
-        child: BlocConsumer<SubscriptionCubit, SubscriptionState>(
-          listener: (context, state) {
-            if (state is SubscriptionLoaded) {
-              if (state.isDirty) {
-                Scaffold.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(
-                      content: Text(state.subscribed
-                          ? TR.of(context).subscribe_success
-                          : TR.of(context).unsubscribe_success),
-                    ),
-                  );
-              }
-            }
-          },
+        child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
           builder: (context, state) {
-            Text label = Text('...');
             Icon icon;
             Function onPressed = () {};
             bool loading = true;
+            Color buttonColor;
+            String tooltip = '';
 
             if (state is SubscriptionLoaded) {
               loading = false;
-              label = Text((state.subscribed
-                      ? TR.of(context).unsubscribe
-                      : TR.of(context).subscribe)
-                  .toUpperCase());
               icon = Icon(state.subscribed
                   ? Icons.notifications_active
                   : Icons.notifications_none);
+              buttonColor = state.subscribed ? Colors.red : null;
+              tooltip = state.subscribed
+                  ? TR.of(context).unsubscribe
+                  : TR.of(context).subscribe;
               onPressed = () {
                 final cubit = context.read<SubscriptionCubit>();
                 if (state.subscribed) {
@@ -160,14 +190,24 @@ class SeriesSubscribeButton extends StatelessWidget {
             }
 
             return SizedBox(
-              width: 180,
-              child: SpinnerButton(
-                label: label,
-                icon: icon,
-                loading: loading,
-                onPressed: onPressed,
-                style: ButtonStyle(
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              height: 50,
+              child: Tooltip(
+                message: tooltip,
+                preferBelow: false,
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                margin: EdgeInsets.only(bottom: 10.0),
+                child: SpinnerButton(
+                  loading: loading,
+                  icon: icon,
+                  onPressed: onPressed,
+                  style: ElevatedButton.styleFrom(
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    primary: buttonColor,
+                    padding: EdgeInsets.all(0),
+                  ),
                 ),
               ),
             );

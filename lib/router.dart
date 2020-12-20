@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
 import 'app.dart';
@@ -184,12 +185,12 @@ class MoviePlayerArguments {
 
 class SeriesPlayerArguments {
   final Anime anime;
-  final Episode episode;
+  final Either<Episode, int> episode;
   final Release release;
 
   SeriesPlayerArguments({
     @required this.anime,
     @required this.episode,
-    @required this.release,
+    this.release,
   });
 }

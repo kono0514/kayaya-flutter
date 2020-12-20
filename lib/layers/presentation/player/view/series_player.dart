@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:chewie/chewie.dart';
+import 'package:dartz/dartz.dart' show Either;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
@@ -23,14 +24,14 @@ import '../widget/playlist_item.dart';
 
 class SeriesPlayer extends StatefulWidget {
   final Anime anime;
-  final Episode episode;
+  final Either<Episode, int> episode;
   final Release release;
 
   const SeriesPlayer({
     Key key,
     @required this.anime,
     @required this.episode,
-    @required this.release,
+    this.release,
   }) : super(key: key);
 
   @override
@@ -53,6 +54,11 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
 
   Episode currentEpisode;
 
+  int get startingEpisode =>
+      widget.episode.fold((l) => l.number, (r) => r) ?? 1;
+  bool get isLazyLoadInitialEpisode => widget.episode.isRight();
+  bool lazyLoadedInitialEpisode = false;
+
   @override
   void initState() {
     super.initState();
@@ -60,7 +66,12 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
     // Lock orientation for this screen only
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    setupVideo(widget.episode);
+    if (widget.episode.isLeft()) {
+      setupVideo(
+        widget.episode.fold<Episode>((l) => l, (_) => null),
+        release: widget.release,
+      );
+    }
     setupPIP();
   }
 
@@ -70,20 +81,21 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
     playerUIController.dispose();
     onPipModeChangedSubscription.cancel();
     FlutterAutoPip.autoPipModeDisable();
-    playerController
-      ..removeListener(playerEventListener)
-      ..dispose();
-    chewieController
-      ..removeListener(chewieEventListener)
-      ..dispose();
+    playerController?.removeListener(playerEventListener);
+    playerController?.dispose();
+    chewieController?.removeListener(chewieEventListener);
+    chewieController?.dispose();
     SystemChrome.setPreferredOrientations([]);
     super.dispose();
   }
 
-  void setupVideo(Episode episode) {
+  void setupVideo(Episode episode, {Release release}) {
     isPlayingValue = false;
     currentEpisode = episode;
-    playerController = VideoPlayerController.network(widget.release.url);
+    if (release == null) {
+      release = episode.releases.first;
+    }
+    playerController = VideoPlayerController.network(release.url);
     chewieController = ChewieController(
       videoPlayerController: playerController,
       deviceOrientationsAfterFullScreen: [DeviceOrientation.portraitUp],
@@ -190,10 +202,10 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
     final oldPlayerController = playerController;
     final oldChewieController = chewieController;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      oldPlayerController.removeListener(playerEventListener);
-      await oldPlayerController.dispose();
-      oldChewieController.removeListener(chewieEventListener);
-      oldChewieController.dispose();
+      oldPlayerController?.removeListener(playerEventListener);
+      await oldPlayerController?.dispose();
+      oldChewieController?.removeListener(chewieEventListener);
+      oldChewieController?.dispose();
     });
 
     setupVideo(episode);
@@ -202,32 +214,35 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    final chewie = Chewie(controller: chewieController);
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: BlocProvider(
           create: (context) => GetIt.I<PlayerEpisodesBloc>(
             param1: widget.anime.id,
-            param2: widget.episode.number,
+            param2: startingEpisode,
           )..add(PlayerEpisodesFetchNext()),
-          child: _buildLayout(chewie),
+          child: _buildLayout(),
         ),
       ),
     );
   }
 
-  Widget _buildLayout(Chewie chewie) {
+  Widget _buildLayout() {
     return Column(
       children: [
-        ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height,
-          ),
-          child: AspectRatio(
-            aspectRatio: 16 / 9,
-            child: chewie,
+        Container(
+          color: Colors.black,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height,
+            ),
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: isLazyLoadInitialEpisode && !lazyLoadedInitialEpisode
+                  ? Center(child: CircularProgressIndicator())
+                  : Chewie(controller: chewieController),
+            ),
           ),
         ),
         if (!renderPipFriendlyView)
@@ -255,13 +270,25 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
   Widget _buildPlaylist() {
     return BlocConsumer<PlayerEpisodesBloc, PlayerEpisodesState>(
       listener: (context, state) {
+        if (state is PlayerEpisodesLoaded &&
+            isLazyLoadInitialEpisode &&
+            !lazyLoadedInitialEpisode) {
+          lazyLoadedInitialEpisode = true;
+          var e = state.positiveEpisodes.elements.firstWhere(
+              (episode) => episode.number == startingEpisode,
+              orElse: () => null);
+          if (e != null) {
+            changeVideo(e);
+          }
+        }
+
         // Scroll to the initially selected episode
         // when the list loads first time
         if (state is PlayerEpisodesLoaded && !scrolledToInitialEpisode) {
           scrolledToInitialEpisode = true;
           SchedulerBinding.instance.addPostFrameCallback((_) {
             final initialIndex = state.positiveEpisodes.elements.indexWhere(
-              (episode) => episode.number == widget.episode.number,
+              (episode) => episode.number == startingEpisode,
             );
             playlistScrollController.jumpTo(
               min(
