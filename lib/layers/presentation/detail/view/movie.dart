@@ -68,7 +68,7 @@ class MoviePage extends StatelessWidget {
                 ? state.animeListData
                 : anime,
             actions: [
-              _buildPlayButton(),
+              Expanded(child: _buildPlayButton()),
             ],
             tabs: [TR.of(context).info, TR.of(context).related],
             tabViews: [
@@ -121,13 +121,19 @@ class MoviePage extends StatelessWidget {
           label = Text('Not available');
         }
 
-        return SpinnerButton(
-          label: label,
-          loading: loading,
-          icon: icon,
-          onPressed: onPressed,
-          style: ButtonStyle(
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        return SizedBox(
+          height: 50,
+          child: SpinnerButton(
+            label: label,
+            loading: loading,
+            icon: icon,
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
           ),
         );
       },

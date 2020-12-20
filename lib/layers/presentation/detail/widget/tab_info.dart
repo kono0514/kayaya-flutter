@@ -146,6 +146,8 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                       ]);
                     }
 
+                    items.add(SizedBox(height: 60));
+
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: items,

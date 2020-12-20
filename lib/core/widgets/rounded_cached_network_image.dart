@@ -10,19 +10,21 @@ class RoundedCachedNetworkImage extends StatelessWidget {
   final BoxShadow boxShadow;
   final Widget child;
   final Clip childClipBehavior;
+  final Border border;
 
   /// TODO: Assert Can't specify both adaptiveColor = true and placeholderColor
-  const RoundedCachedNetworkImage(
-      {Key key,
-      @required this.url,
-      this.width,
-      this.height,
-      this.child,
-      this.placeholderColor,
-      this.adaptiveColor = false,
-      this.boxShadow,
-      this.childClipBehavior = Clip.none})
-      : super(key: key);
+  const RoundedCachedNetworkImage({
+    Key key,
+    @required this.url,
+    this.width,
+    this.height,
+    this.child,
+    this.placeholderColor,
+    this.adaptiveColor = false,
+    this.boxShadow,
+    this.childClipBehavior = Clip.none,
+    this.border,
+  }) : super(key: key);
 
   Widget _generatePlaceholder(BuildContext context) {
     Color color = Colors.black;
@@ -62,6 +64,7 @@ class RoundedCachedNetworkImage extends StatelessWidget {
             image: imageProvider,
             fit: BoxFit.cover,
           ),
+          border: border,
           boxShadow: boxShadow == null ? null : [boxShadow],
         ),
         child: child,

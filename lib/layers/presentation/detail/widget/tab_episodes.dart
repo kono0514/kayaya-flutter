@@ -114,19 +114,22 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
                 sliver: SliverToBoxAdapter(
                   child: UnconstrainedBox(
                     alignment: Alignment.centerLeft,
-                    child: IconPopupMenu(
+                    child: IconPopupMenu<String>(
                       items: [
-                        PopupMenuItem(
+                        PopupMenuItem<String>(
                           child: Text(TR.of(context).sort_asc),
                           value: 'asc',
                         ),
-                        PopupMenuItem(
+                        PopupMenuItem<String>(
                           child: Text(TR.of(context).sort_desc),
                           value: 'desc',
                         ),
                       ],
-                      title: TR.of(context).sort,
+                      title: Text(TR.of(context).sort),
                       icon: Icon(Icons.sort),
+                      iconColor: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white70
+                          : Colors.grey.shade700,
                       initialValue: state.sortOrder,
                       onSelected: (value) {
                         context.read<EpisodesBloc>().add(

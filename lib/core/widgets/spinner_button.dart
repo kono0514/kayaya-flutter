@@ -52,10 +52,10 @@ class SpinnerButton extends StatelessWidget {
           children: <Widget>[
             if (icon != null)
               Padding(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: EdgeInsets.only(right: label == null ? 0.0 : 8.0),
                 child: icon,
               ),
-            label,
+            if (label != null) label,
           ],
         );
       }
@@ -64,10 +64,11 @@ class SpinnerButton extends StatelessWidget {
     var buttonStyle = style ?? ButtonStyle();
     buttonStyle = buttonStyle.copyWith(
       animationDuration: Duration.zero,
-      padding: icon == null
-          ? null
-          : MaterialStateProperty.all<EdgeInsetsGeometry>(
-              EdgeInsets.only(left: 12.0, right: 16.0)),
+      padding: buttonStyle.padding ??
+          (icon == null
+              ? null
+              : MaterialStateProperty.all<EdgeInsetsGeometry>(
+                  EdgeInsets.only(left: 12.0, right: 16.0))),
       tapTargetSize: buttonStyle.tapTargetSize ?? MaterialTapTargetSize.padded,
     );
 

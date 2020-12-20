@@ -121,6 +121,7 @@ class RelatedTabViewItem extends StatelessWidget {
                           ),
                         ],
                       ),
+                    SizedBox(height: 80),
                   ],
                 ),
               );
