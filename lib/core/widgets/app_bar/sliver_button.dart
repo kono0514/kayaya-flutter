@@ -82,7 +82,7 @@ class _SliverButtonState extends State<SliverButton>
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             primary: widget.backgroundColor ??
-                (_isDark ? Colors.grey[850] : Colors.white),
+                (_isDark ? Colors.grey[800] : Colors.white),
             onPrimary: widget.color ?? (_isDark ? Colors.white : Colors.black),
           ),
           child: Row(

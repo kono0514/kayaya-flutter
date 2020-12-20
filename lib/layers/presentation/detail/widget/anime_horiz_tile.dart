@@ -27,7 +27,7 @@ class AnimeHorizTile extends StatelessWidget {
         ),
         childClipBehavior: Clip.hardEdge,
         child: Align(
-          alignment: Alignment.bottomLeft,
+          alignment: Alignment.bottomCenter,
           child: SizedBox(
             width: double.infinity,
             child: ClipRect(

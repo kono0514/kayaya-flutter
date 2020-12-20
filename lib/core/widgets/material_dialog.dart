@@ -85,21 +85,24 @@ Future<T> showCustomMaterialSheet<T>({
           height == null ? null : MediaQuery.of(context).size.height * height;
 
       return SafeArea(
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: SizedBox(
-            width: _width,
-            height: _height,
-            child: Material(
-              color: backgroundColor ??
-                  bottomSheetTheme?.modalBackgroundColor ??
-                  bottomSheetTheme?.backgroundColor,
-              elevation: elevation ?? bottomSheetTheme.elevation ?? 0.0,
-              shape: _shape ?? bottomSheetTheme.shape,
-              clipBehavior: clipBehavior ?? Clip.none,
-              child: ScrollConfiguration(
-                behavior: GlowlessScrollBehavior(),
-                child: child,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+              width: _width,
+              height: _height,
+              child: Material(
+                color: backgroundColor ??
+                    bottomSheetTheme?.modalBackgroundColor ??
+                    bottomSheetTheme?.backgroundColor,
+                elevation: elevation ?? bottomSheetTheme.elevation ?? 0.0,
+                shape: _shape ?? bottomSheetTheme.shape,
+                clipBehavior: clipBehavior ?? Clip.none,
+                child: ScrollConfiguration(
+                  behavior: GlowlessScrollBehavior(),
+                  child: child,
+                ),
               ),
             ),
           ),
