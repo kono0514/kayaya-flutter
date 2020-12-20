@@ -59,6 +59,7 @@ class _MoviePlayerState extends State<MoviePlayer> {
       autoPlay: true,
       allowMuting: false,
       allowPlaybackSpeedChanging: true,
+      showControlsOnInitialize: false,
       customControls: CustomMaterialControls(
         title: widget.anime.name,
         uiController: playerUIController,

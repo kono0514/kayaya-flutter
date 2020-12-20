@@ -94,6 +94,7 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
       autoPlay: true,
       allowMuting: false,
       allowPlaybackSpeedChanging: true,
+      showControlsOnInitialize: false,
       customControls: CustomMaterialControls(
         title: widget.anime.name,
         subtitle: TR.current.episode_item(currentEpisode.number),
