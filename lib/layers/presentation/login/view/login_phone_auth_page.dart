@@ -31,7 +31,7 @@ class _LoginPhoneAuthPageState extends State<LoginPhoneAuthPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       body: BlocProvider(
         create: (context) => GetIt.I<LoginPhoneCubit>(),
         child: BlocListener<LoginPhoneCubit, LoginPhoneState>(
@@ -62,7 +62,7 @@ class _LoginPhoneAuthPageState extends State<LoginPhoneAuthPage> {
             }
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 60.0),
+            padding: EdgeInsets.only(left: 36.0, right: 36.0, bottom: 60.0),
             child: Form(
               key: _formKey,
               child: Column(

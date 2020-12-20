@@ -19,7 +19,22 @@ class SignInButton extends SpinnerButton {
           loading: loading,
           disabled: disabled,
           onPressed: onPressed,
-          style: ElevatedButton.styleFrom(primary: color),
+          style: ElevatedButton.styleFrom(
+            primary: color,
+            onSurface: color,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          ).copyWith(
+            backgroundColor: MaterialStateProperty.resolveWith<Color>(
+              (Set<MaterialState> states) {
+                if (states.contains(MaterialState.disabled)) {
+                  return color.withOpacity(0.2);
+                }
+                return color;
+              },
+            ),
+          ),
           spinnerColor: spinnerColor,
           childBuilder: (context, spinner) {
             return Row(

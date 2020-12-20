@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../../../core/widgets/icon_popup_menu.dart';
 import '../../../../core/widgets/spinner_button.dart';
 import '../../../../locale/generated/l10n.dart';
+import '../../locale/cubit/locale_cubit.dart';
 import '../cubit/login_cubit.dart';
 import '../widget/sign_in_button.dart';
 import 'login_phone_auth_page.dart';
@@ -18,6 +20,9 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _isDark = Theme.of(context).brightness == Brightness.dark;
+    final locale = context.watch<LocaleCubit>().state;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -35,26 +40,125 @@ class LoginPage extends StatelessWidget {
                   SnackBar(
                     content: Text(state.message ?? 'Authentication Failure'),
                     behavior: SnackBarBehavior.floating,
-                    margin: EdgeInsets.fromLTRB(36.0, 5.0, 36.0, 10.0),
+                    margin: EdgeInsets.fromLTRB(46.0, 5.0, 46.0, 10.0),
                   ),
                 );
             }
           },
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 60.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _NumberButton(),
-                SizedBox(height: 8),
-                _GoogleButton(),
-                SizedBox(height: 8),
-                _FacebookButton(),
-                SizedBox(height: 8),
-                if (!disableAnonymous) _AnonymousButton(),
-              ],
-            ),
+          child: Stack(
+            children: [
+              Container(
+                decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                    image: new AssetImage('assets/aots4.jpg'),
+                    fit: BoxFit.cover,
+                    colorFilter: _isDark
+                        ? ColorFilter.mode(
+                            Colors.blue.withOpacity(0.7),
+                            BlendMode.darken,
+                          )
+                        : ColorFilter.mode(
+                            Colors.amber.withOpacity(0.7),
+                            BlendMode.darken,
+                          ),
+                  ),
+                ),
+              ),
+              Container(
+                decoration: new BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: FractionalOffset.topCenter,
+                    end: FractionalOffset.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Color(0xFF00326c).withOpacity(0.4),
+                      Color(0xFF02001d),
+                    ],
+                    stops: [0.0, 0.3, 0.8],
+                  ),
+                ),
+              ),
+              SafeArea(
+                child: Padding(
+                  padding:
+                      EdgeInsets.only(left: 46.0, right: 46.0, bottom: 30.0),
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: UnconstrainedBox(
+                          child: IconPopupMenu<String>(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 12),
+                            items: [
+                              PopupMenuItem<String>(
+                                child: Text('English'),
+                                value: 'en',
+                              ),
+                              PopupMenuItem<String>(
+                                child: Text('Монгол'),
+                                value: 'mn',
+                              ),
+                            ],
+                            title: Text(
+                              locale.locale.toUpperCase(),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            icon: Icon(Icons.language),
+                            iconColor: Colors.white,
+                            initialValue: locale.locale,
+                            onSelected: (value) {
+                              BlocProvider.of<LocaleCubit>(context)
+                                  .changeLocale(value);
+                            },
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      'Brand Logo',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline3
+                                          .apply(color: Colors.white),
+                                    ),
+                                  ),
+                                  SizedBox(height: 9),
+                                  Center(
+                                    child: Text(
+                                      'Short paragraph lorem lorem lorem lorem lorem',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            _NumberButton(),
+                            SizedBox(height: 10),
+                            _GoogleButton(),
+                            SizedBox(height: 10),
+                            _FacebookButton(),
+                            SizedBox(height: 10),
+                            if (!disableAnonymous) _AnonymousButton(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -106,7 +210,7 @@ class _FacebookButton extends StatelessWidget {
             ),
           ),
           label: Text(TR.of(context).sign_in_facebook),
-          color: Color.fromRGBO(23, 120, 242, 1),
+          color: Color.fromRGBO(23, 120, 242, 0.9),
           disabled: state is LoginSubmitting,
           loading:
               state is LoginSubmitting && state.method == LoginMethod.facebook,
@@ -135,7 +239,7 @@ class _GoogleButton extends StatelessWidget {
             height: 40,
           ),
           label: Text(TR.of(context).sign_in_google),
-          color: Color.fromRGBO(219, 68, 55, 1),
+          color: Color.fromRGBO(219, 68, 55, 0.9),
           disabled: state is LoginSubmitting,
           loading:
               state is LoginSubmitting && state.method == LoginMethod.google,
@@ -163,7 +267,7 @@ class _NumberButton extends StatelessWidget {
             child: Icon(Icons.phone, size: 28),
           ),
           label: Text(TR.of(context).sign_in_number),
-          color: Colors.grey.shade700,
+          color: Colors.blueGrey,
           disabled: state is LoginSubmitting,
           onPressed: () {
             Navigator.push(

@@ -27,7 +27,7 @@ class _LoginPhoneAuthVerifyPageState extends State<LoginPhoneAuthVerifyPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       body: BlocListener<LoginPhoneCubit, LoginPhoneState>(
         listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
@@ -44,7 +44,7 @@ class _LoginPhoneAuthVerifyPageState extends State<LoginPhoneAuthVerifyPage> {
           }
         },
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 60.0),
+          padding: EdgeInsets.only(left: 36.0, right: 36.0, bottom: 60.0),
           child: Form(
             key: _formKey,
             child: Column(

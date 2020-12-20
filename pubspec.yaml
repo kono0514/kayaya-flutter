@@ -112,6 +112,7 @@ flutter:
     - assets/logos/google_dark.png
     - assets/logos/google_light.png
     - assets/logos/facebook.png
+    - assets/aots4.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
