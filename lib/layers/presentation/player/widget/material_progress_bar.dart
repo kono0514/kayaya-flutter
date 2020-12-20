@@ -11,6 +11,7 @@ class MaterialVideoProgressBar extends StatefulWidget {
     this.onDragEnd,
     this.onDragStart,
     this.onDragUpdate,
+    this.onTap,
     this.rewindValue,
     this.forwardValue,
   }) : colors = colors ?? ChewieProgressColors();
@@ -20,6 +21,7 @@ class MaterialVideoProgressBar extends StatefulWidget {
   final Function() onDragStart;
   final Function() onDragEnd;
   final Function() onDragUpdate;
+  final Function() onTap;
   final int rewindValue;
   final int forwardValue;
 
@@ -116,6 +118,10 @@ class _VideoProgressBarState extends State<MaterialVideoProgressBar> {
           return;
         }
         seekToRelativePosition(details.globalPosition);
+
+        if (widget.onTap != null) {
+          widget.onTap();
+        }
       },
     );
   }

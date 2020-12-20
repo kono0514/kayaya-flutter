@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -44,8 +43,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   Timer _hideTimer;
   Timer _initTimer;
   Timer _showAfterExpandCollapseTimer;
-  bool _dragging = false;
-  bool _displayTapped = false;
+  // bool _dragging = false;
 
   final barHeight = 48.0;
   final marginSize = 5.0;
@@ -125,6 +123,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
             // Process click events when player UI isn't visible
             child: GestureDetector(
               onTap: () {
+                print('#1 GestureDetector');
                 if (_latestValue?.isPlaying == true) {
                   _cancelAndRestartTimer();
                 } else {
@@ -284,8 +283,6 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   AnimatedOpacity _buildTopBar(
     BuildContext context,
   ) {
-    final iconColor = Theme.of(context).textTheme.button.color;
-
     return AnimatedOpacity(
       opacity: _hideStuff ? 0.0 : 1.0,
       duration: _hideStuffAnimationDuration,
@@ -713,24 +710,13 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   }
 
   Widget _buildHitArea() {
-    Function onTap = () {
-      if (_latestValue?.isPlaying == true) {
-        if (_displayTapped) {
-          setState(() {
-            _hideStuff = true;
-          });
-        } else
-          _cancelAndRestartTimer();
-      } else {
+    // Process click events when player UI is visible
+    return GestureDetector(
+      onTap: () {
         setState(() {
           _hideStuff = true;
         });
-      }
-    };
-
-    // Process click events when player UI is visible
-    return GestureDetector(
-      onTap: onTap,
+      },
       onDoubleTapDown: (detail) {
         RenderBox getBox = context.findRenderObject();
         if (!getBox.hasSize) return;
@@ -817,7 +803,6 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   void _showStuff() {
     setState(() {
       _hideStuff = false;
-      _displayTapped = true;
     });
   }
 
@@ -994,18 +979,21 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
           rewindValue: _rewindValue,
           forwardValue: _forwardValue,
           onDragStart: () {
-            setState(() {
-              _dragging = true;
-            });
+            // setState(() {
+            //   _dragging = true;
+            // });
 
             _hideTimer?.cancel();
           },
           onDragEnd: () {
-            setState(() {
-              _dragging = false;
-            });
+            // setState(() {
+            //   _dragging = false;
+            // });
 
             _startHideTimer();
+          },
+          onTap: () {
+            _cancelAndRestartTimer();
           },
           colors: chewieController.materialProgressColors ??
               ChewieProgressColors(
