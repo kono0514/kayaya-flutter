@@ -43,6 +43,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   Timer _hideTimer;
   Timer _initTimer;
   Timer _showAfterExpandCollapseTimer;
+
   // bool _dragging = false;
 
   final barHeight = 48.0;
@@ -57,8 +58,11 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   bool _seekUIVisible = false;
   bool _wasPlayingBeforeSeek = false;
   bool _wasControlsVisibleBeforeSeek = false;
+
   bool get isSeekingForward => _forwardValue > 0;
+
   bool get isSeekingBackward => _rewindValue > 0;
+
   bool get isSeeking => isSeekingForward || isSeekingBackward;
 
   bool _showPipButton = false;
@@ -113,6 +117,14 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
             );
     }
 
+    Function onTap = () {
+      if (_latestValue?.isPlaying == true) {
+        _cancelAndRestartTimer();
+      } else {
+        _showStuff();
+      }
+    };
+
     return MouseRegion(
       onHover: (_) {
         _cancelAndRestartTimer();
@@ -121,31 +133,37 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
         children: <Widget>[
           Positioned.fill(
             // Process click events when player UI isn't visible
-            child: GestureDetector(
-              onTap: () {
-                print('#1 GestureDetector');
-                if (_latestValue?.isPlaying == true) {
-                  _cancelAndRestartTimer();
-                } else {
-                  _showStuff();
-                }
-              },
-              onDoubleTapDown: (detail) {
-                RenderBox getBox = context.findRenderObject();
-                if (!getBox.hasSize) return;
-
-                _showSeekUI();
-
-                setState(() {
-                  if (detail.localPosition.dx < getBox.size.width / 2) {
-                    _seekBackwardTick();
-                  } else {
-                    _seekForwardTick();
-                  }
-                  _cancelAndRestartButtonSeekTimer();
-                });
-              },
-              onDoubleTap: () {},
+            child: Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: onTap,
+                    onDoubleTapDown: (_) {
+                      _showSeekUI();
+                      _seekBackwardTick();
+                      _cancelAndRestartButtonSeekTimer();
+                    },
+                    onDoubleTap: () {},
+                  ),
+                ),
+                SizedBox(
+                  width: 80.0,
+                  child: GestureDetector(
+                    onTap: onTap,
+                  ),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: onTap,
+                    onDoubleTapDown: (_) {
+                      _showSeekUI();
+                      _seekForwardTick();
+                      _cancelAndRestartButtonSeekTimer();
+                    },
+                    onDoubleTap: () {},
+                  ),
+                ),
+              ],
             ),
           ),
           Positioned.fill(
@@ -709,37 +727,60 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
     );
   }
 
+  // Process click events when player UI is visible
   Widget _buildHitArea() {
-    // Process click events when player UI is visible
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _hideStuff = true;
-        });
-      },
-      onDoubleTapDown: (detail) {
-        RenderBox getBox = context.findRenderObject();
-        if (!getBox.hasSize) return;
+    Function onTap = () {
+      setState(() {
+        _hideStuff = true;
+      });
+    };
 
-        _showSeekUI();
-
-        setState(() {
-          if (detail.localPosition.dx < getBox.size.width / 2) {
-            _seekBackwardTick();
-          } else {
-            _seekForwardTick();
-          }
-          _cancelAndRestartButtonSeekTimer();
-        });
-      },
-      onDoubleTap: () {},
-      child: AnimatedOpacity(
-        opacity: _hideStuff ? 0.0 : 1.0,
-        duration: _hideStuffAnimationDuration,
-        child: Container(
-          color: Colors.black54,
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: AnimatedOpacity(
+            opacity: _hideStuff ? 0.0 : 1.0,
+            duration: _hideStuffAnimationDuration,
+            child: Container(
+              color: Colors.black54,
+            ),
+          ),
         ),
-      ),
+        Positioned.fill(
+          child: Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: onTap,
+                  onDoubleTapDown: (_) {
+                    _showSeekUI();
+                    _seekBackwardTick();
+                    _cancelAndRestartButtonSeekTimer();
+                  },
+                  onDoubleTap: () {},
+                ),
+              ),
+              SizedBox(
+                width: 80.0,
+                child: GestureDetector(
+                  onTap: onTap,
+                ),
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: onTap,
+                  onDoubleTapDown: (_) {
+                    _showSeekUI();
+                    _seekForwardTick();
+                    _cancelAndRestartButtonSeekTimer();
+                  },
+                  onDoubleTap: () {},
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
