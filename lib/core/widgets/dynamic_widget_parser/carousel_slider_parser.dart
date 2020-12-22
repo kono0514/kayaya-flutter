@@ -50,7 +50,8 @@ class _CarouselSliderWithIndicatorState
               height: map["height"],
               enlargeCenterPage: map["enlargeCenterPage"] ?? true,
               aspectRatio: map["aspectRatio"] ?? 16 / 9,
-              autoPlay: map["autoPlay"] ?? false,
+              autoPlay: false,
+              // autoPlay: map["autoPlay"] ?? false,
               autoPlayAnimationDuration:
                   map["autoPlayAnimationDuration"] != null
                       ? Duration(milliseconds: map["autoPlayAnimationDuration"])

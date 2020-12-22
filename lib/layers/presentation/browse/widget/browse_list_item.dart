@@ -7,6 +7,7 @@ import '../../../../core/utils/hex_color.dart';
 import '../../../../core/widgets/rounded_cached_network_image.dart';
 import '../../../../locale/generated/l10n.dart';
 import '../../../domain/entities/anime.dart';
+import '../../../domain/entities/genre.dart';
 import '../cubit/browse_filter_cubit.dart';
 
 class BrowseListItem extends StatelessWidget {
@@ -15,50 +16,6 @@ class BrowseListItem extends StatelessWidget {
 
   const BrowseListItem({Key key, this.anime, @required this.onPressed})
       : super(key: key);
-
-  List<Widget> _buildGenres(BuildContext context) {
-    final _isDark = Theme.of(context).brightness == Brightness.dark;
-
-    List<Widget> _items = [];
-    for (var i = 0; i < min(5, this.anime.genres.length); i++) {
-      final genre = this.anime.genres[i];
-      _items.add(
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: ButtonTheme(
-            minWidth: 50,
-            height: 26,
-            child: TextButton(
-              onPressed: () {
-                final _filterCubit = context.read<BrowseFilterCubit>();
-                _filterCubit.changeFilter(
-                    _filterCubit.state.filter.copyWith(genres: [genre.id]));
-              },
-              child: Text(
-                genre.name,
-                style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 12,
-                ),
-              ),
-              style: TextButton.styleFrom(
-                backgroundColor:
-                    _isDark ? Colors.grey.shade800 : Colors.grey.shade200,
-                primary: _isDark ? Colors.white : Colors.black87,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                minimumSize: Size(60, 26),
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-    return _items;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +85,11 @@ class BrowseListItem extends StatelessWidget {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                          children: _buildGenres(context),
+                          children: List.generate(
+                            min(3, anime.genres.length),
+                            (index) =>
+                                _GenreChipButton(genre: anime.genres[index]),
+                          ),
                         ),
                       ),
                     ),
@@ -137,6 +98,53 @@ class BrowseListItem extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _GenreChipButton extends StatelessWidget {
+  final Genre genre;
+
+  const _GenreChipButton({
+    Key key,
+    @required this.genre,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: ButtonTheme(
+        minWidth: 50,
+        height: 26,
+        child: TextButton(
+          onPressed: () {
+            final _filterCubit = context.read<BrowseFilterCubit>();
+            _filterCubit.changeFilter(
+                _filterCubit.state.filter.copyWith(genres: [genre.id]));
+          },
+          child: Text(
+            genre.name,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 12,
+            ),
+          ),
+          style: TextButton.styleFrom(
+            backgroundColor:
+                _isDark ? Colors.grey.shade800 : Colors.grey.shade200,
+            primary: _isDark ? Colors.white : Colors.black87,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            minimumSize: Size(60, 26),
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
         ),
       ),
     );

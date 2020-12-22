@@ -1,14 +1,14 @@
 import 'package:dartz/dartz.dart' show Right;
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart'
     hide NestedScrollView, NestedScrollViewState;
-import 'package:kayaya_flutter/layers/presentation/library/cubit/subscription_list_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../../core/widgets/spinner_button.dart';
 import '../../../../locale/generated/l10n.dart';
 import '../../../../router.dart';
 import '../../../domain/entities/anime.dart';
+import '../../library/cubit/subscription_list_cubit.dart';
 import '../cubit/details_cubit.dart';
 import '../cubit/subscription_cubit.dart';
 import '../widget/detail_view.dart';
@@ -59,6 +59,8 @@ class SeriesPage extends StatelessWidget {
             Navigator.pop(context);
           }
         },
+        buildWhen: (_, __) =>
+            isMinimal, // buildWhen is bypassed on initial state (that means builder method is always called)
         builder: (context, state) {
           return DetailView(
             anime: (state is DetailsLoaded && state.hasListData)

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../layers/presentation/browse/view/browse_page.dart';
 import '../../../layers/presentation/featured/view/featured_page.dart';
@@ -6,6 +7,19 @@ import '../../../layers/presentation/library/view/library.dart';
 import '../../../locale/generated/l10n.dart';
 import '../../../router.dart';
 import '../keep_alive_widget.dart';
+
+class CurrentNavigationTabModel extends ChangeNotifier {
+  int _index;
+
+  int get index => _index;
+
+  CurrentNavigationTabModel({int defaultIndex = 0}) : _index = defaultIndex;
+
+  void changeIndex(int index) {
+    this._index = index;
+    notifyListeners();
+  }
+}
 
 typedef TabNavigatorPageBuilder = Widget Function(
     ScrollController scrollController);
@@ -17,13 +31,13 @@ class TabNavigatorItem {
   final TabNavigatorPageBuilder pageBuilder;
   final ScrollController scrollController;
 
-  TabNavigatorItem(
-      {@required this.navbarItem,
-      this.route,
-      this.navigatorKey,
-      this.pageBuilder,
-      this.scrollController})
-      : assert(route != null || pageBuilder != null);
+  TabNavigatorItem({
+    @required this.navbarItem,
+    this.route,
+    this.navigatorKey,
+    this.pageBuilder,
+    this.scrollController,
+  }) : assert(route != null || pageBuilder != null);
 }
 
 class MaterialTabScaffold extends StatefulWidget {
@@ -32,7 +46,7 @@ class MaterialTabScaffold extends StatefulWidget {
 }
 
 class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
-  int _currentTabIndex = 0;
+  final int _defaultTabIndex = 0;
   PageController _pageController;
 
   final List<TabNavigatorItem> items = [
@@ -79,7 +93,7 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: _currentTabIndex);
+    _pageController = PageController(initialPage: _defaultTabIndex);
   }
 
   @override
@@ -90,102 +104,114 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Builder(
-        builder: (context) => WillPopScope(
-          onWillPop: () async {
-            // Pop from the current tab's route stack, if possible.
-            var tabNavigatorPopped = await _currentTabNavigatorItem
-                .navigatorKey.currentState
-                .maybePop();
+    return ChangeNotifierProvider<CurrentNavigationTabModel>(
+      create: (context) =>
+          CurrentNavigationTabModel(defaultIndex: _defaultTabIndex),
+      child: Scaffold(
+        body: Builder(
+          builder: (context) => WillPopScope(
+            onWillPop: () async {
+              final _currentTabNavigatorItem =
+                  items[context.read<CurrentNavigationTabModel>().index];
 
-            // Nothing was popped. This means we're on a tab's root route and user pressed back button.
-            if (!tabNavigatorPopped) {
-              if (_currentTabIndex == 0) return await shouldPopAppRoot(context);
+              // Pop from the current tab's route stack, if possible.
+              var tabNavigatorPopped = await _currentTabNavigatorItem
+                  .navigatorKey.currentState
+                  .maybePop();
 
-              _changeTab(0);
+              // Nothing was popped. This means we're on a tab's root route and user pressed back button.
+              if (!tabNavigatorPopped) {
+                if (context.read<CurrentNavigationTabModel>().index == 0)
+                  return await shouldPopAppRoot(context);
+
+                _changeTab(0);
+                return false;
+              }
+
               return false;
-            }
-
-            return false;
-          },
-          child: PageView.builder(
-            controller: _pageController,
-            physics: NeverScrollableScrollPhysics(),
-            onPageChanged: (index) {
-              setState(() {
-                _currentTabIndex = index;
-              });
             },
-            itemBuilder: (context, index) {
-              final TabNavigatorItem item = items[index];
+            child: PageView.builder(
+              controller: _pageController,
+              physics: NeverScrollableScrollPhysics(),
+              onPageChanged: (index) {
+                context.read<CurrentNavigationTabModel>().changeIndex(index);
+              },
+              itemBuilder: (context, index) {
+                final TabNavigatorItem item = items[index];
 
-              return CustomMaterialTabView(
-                navigatorKey: item.navigatorKey,
-                onGenerateRoute: MyRouter(),
-                builder: (context) {
-                  return KeepAliveWidget(
-                    child: item.pageBuilder(item.scrollController),
-                  );
-                },
-              );
-            },
-          ),
-        ),
-      ),
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          highlightColor: Colors.transparent,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Color(0x29000000)
-                    : Color(0x4C000000),
-                width: 0.0, // One physical pixel.
-                style: BorderStyle.solid,
-              ),
+                return CustomMaterialTabView(
+                  navigatorKey: item.navigatorKey,
+                  onGenerateRoute: MyRouter(),
+                  builder: (context) {
+                    print('CustomMaterialTabView builder');
+                    return KeepAliveWidget(
+                      child: item.pageBuilder(item.scrollController),
+                    );
+                  },
+                );
+              },
             ),
           ),
-          child: BottomNavigationBar(
-            elevation: 0.0,
-            type: BottomNavigationBarType.fixed,
-            unselectedFontSize: 12.0,
-            selectedFontSize: 12.0,
-            showUnselectedLabels: false,
-            items: items.map((e) => e.navbarItem()).toList(),
-            currentIndex: _currentTabIndex,
-            onTap: (index) {
-              // Same tab clicked. Pop or scroll to top
-              if (_currentTabIndex == index) {
-                var canPop = _currentTabNavigatorItem.navigatorKey.currentState
-                    ?.canPop();
+        ),
+        bottomNavigationBar: Theme(
+          data: Theme.of(context).copyWith(
+            highlightColor: Colors.transparent,
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Color(0x29000000)
+                      : Color(0x4C000000),
+                  width: 0.0, // One physical pixel.
+                  style: BorderStyle.solid,
+                ),
+              ),
+            ),
+            child: Consumer<CurrentNavigationTabModel>(
+              builder: (context, tabModel, child) => BottomNavigationBar(
+                elevation: 0.0,
+                type: BottomNavigationBarType.fixed,
+                unselectedFontSize: 12.0,
+                selectedFontSize: 12.0,
+                showUnselectedLabels: false,
+                items: items.map((e) => e.navbarItem()).toList(),
+                currentIndex: tabModel.index,
+                onTap: (index) {
+                  // Same tab clicked. Pop or scroll to top
+                  if (tabModel.index == index) {
+                    final _currentTabNavigatorItem = items[tabModel.index];
 
-                if (canPop == null) return;
+                    var canPop = _currentTabNavigatorItem
+                        .navigatorKey.currentState
+                        ?.canPop();
 
-                if (canPop) {
-                  _currentTabNavigatorItem.navigatorKey.currentState
-                      ?.popUntil((route) => route.isFirst);
-                  return;
-                }
+                    if (canPop == null) return;
 
-                if (_currentTabNavigatorItem.scrollController.hasClients) {
-                  _currentTabNavigatorItem.scrollController.animateTo(0.0,
-                      duration: const Duration(milliseconds: 250),
-                      curve: Curves.linear);
-                }
-              }
+                    if (canPop) {
+                      _currentTabNavigatorItem.navigatorKey.currentState
+                          ?.popUntil((route) => route.isFirst);
+                      return;
+                    }
 
-              // "Fake" tab item that opens a new root route on click
-              if (items[index].route != null) {
-                Navigator.of(context, rootNavigator: true)
-                    .pushNamed(items[index].route);
-              } else {
-                _changeTab(index);
-              }
-            },
+                    if (_currentTabNavigatorItem.scrollController.hasClients) {
+                      _currentTabNavigatorItem.scrollController.animateTo(0.0,
+                          duration: const Duration(milliseconds: 250),
+                          curve: Curves.linear);
+                    }
+                  }
+
+                  // "Fake" tab item that opens a new root route on click
+                  if (items[index].route != null) {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed(items[index].route);
+                  } else {
+                    _changeTab(index);
+                  }
+                },
+              ),
+            ),
           ),
         ),
       ),
@@ -195,8 +221,6 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
   void _changeTab(int index) {
     _pageController.jumpToPage(index);
   }
-
-  TabNavigatorItem get _currentTabNavigatorItem => items[_currentTabIndex];
 
   Future<bool> shouldPopAppRoot(BuildContext context) async {
     final snackbarVisibleDuration = Duration(seconds: 2);

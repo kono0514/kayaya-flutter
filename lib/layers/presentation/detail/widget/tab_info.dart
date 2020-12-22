@@ -140,8 +140,10 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                           ],
                         ),
                         SizedBox(height: 16),
-                        _DistributionBarChart(
-                          scoreDistribution: state.details.scoreDistribution,
+                        RepaintBoundary(
+                          child: _DistributionBarChart(
+                            scoreDistribution: state.details.scoreDistribution,
+                          ),
                         ),
                       ]);
                     }
@@ -165,15 +167,23 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
   }
 }
 
-class _DistributionBarChart extends StatelessWidget {
+class _DistributionBarChart extends StatefulWidget {
   final List<ScoreDistribution> scoreDistribution;
 
   const _DistributionBarChart({Key key, @required this.scoreDistribution})
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final distributions = List.of(scoreDistribution);
+  __DistributionBarChartState createState() => __DistributionBarChartState();
+}
+
+class __DistributionBarChartState extends State<_DistributionBarChart> {
+  List<ScoreDistribution> distributions;
+
+  @override
+  void initState() {
+    super.initState();
+    distributions = List.of(widget.scoreDistribution);
     // Fill missing items
     for (var i = 10; i <= 100; i += 10) {
       if (distributions.firstWhere((element) => element.score == i,
@@ -185,7 +195,10 @@ class _DistributionBarChart extends StatelessWidget {
       }
     }
     distributions.sort((a, b) => a.score.compareTo(b.score));
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       child: BarChart(

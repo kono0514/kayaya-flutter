@@ -87,10 +87,7 @@ class _DetailViewState extends State<DetailView>
                           ),
                           Align(
                             alignment: Alignment.bottomCenter,
-                            child: AnimeInfo(
-                              anime: widget.anime,
-                              actions: widget.actions ?? [],
-                            ),
+                            child: AnimeInfo(anime: widget.anime),
                           ),
                         ],
                       ),
@@ -142,38 +139,10 @@ class _DetailViewState extends State<DetailView>
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: AnimatedBuilder(
-                animation: tabController.animation,
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: widget.actions ?? [],
-                  ),
-                ),
-                builder: (context, child) {
-                  var opacity = 1.0;
-
-                  // Hide buttons in 2nd tab (Series page - Episodes tab)
-                  if (widget.anime.isSeries) {
-                    final aniVal = tabController.animation.value;
-
-                    if (tabController.indexIsChanging) {
-                      // Do no animation when change was triggered by clicking on a TabBar tab
-                      opacity = tabController.index == 1 ? 0.0 : 1.0;
-                    } else {
-                      // Animate opacity otherwise (user is dragging across tabs)
-                      if (aniVal > 0 && aniVal < 2) {
-                        opacity = (1 - aniVal).abs();
-                      }
-                    }
-                  }
-
-                  return Opacity(
-                    opacity: opacity,
-                    child: child,
-                  );
-                },
+              child: _ActionButtons(
+                anime: widget.anime,
+                tabController: tabController,
+                actions: widget.actions,
               ),
             ),
           ],
@@ -205,14 +174,16 @@ class _DetailViewState extends State<DetailView>
           Border.all(width: 0, color: _isDark ? Colors.black : Colors.white),
     );
 
-    return Container(
-      foregroundDecoration: decoration,
-      child: widget.anime.bannerImage == null
-          ? null
-          : CachedNetworkImage(
-              imageUrl: widget.anime.bannerImage,
-              fit: BoxFit.cover,
-            ),
+    return RepaintBoundary(
+      child: Container(
+        foregroundDecoration: decoration,
+        child: widget.anime.bannerImage == null
+            ? null
+            : CachedNetworkImage(
+                imageUrl: widget.anime.bannerImage,
+                fit: BoxFit.cover,
+              ),
+      ),
     );
   }
 }
@@ -250,6 +221,98 @@ class _SliverAppBarTitle extends StatelessWidget {
       opacity: _opacity,
       duration: const Duration(milliseconds: 200),
       child: title,
+    );
+  }
+}
+
+class _ActionButtons extends StatefulWidget {
+  final Anime anime;
+  final TabController tabController;
+  final List<Widget> actions;
+
+  const _ActionButtons({
+    Key key,
+    @required this.anime,
+    @required this.tabController,
+    this.actions = const [],
+  }) : super(key: key);
+
+  @override
+  __ActionButtonsState createState() => __ActionButtonsState();
+}
+
+class __ActionButtonsState extends State<_ActionButtons>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation<Offset> _slideInAnimation;
+  Animation<double> _fadeInAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _slideInAnimation = Tween<Offset>(
+      begin: const Offset(0.0, 1.0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutCubic,
+    ));
+    _fadeInAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _controller.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SlideTransition(
+      position: _slideInAnimation,
+      child: FadeTransition(
+        opacity: _fadeInAnimation,
+        child: AnimatedBuilder(
+          animation: widget.tabController.animation,
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: widget.actions ?? [],
+            ),
+          ),
+          builder: (context, child) {
+            var opacity = 1.0;
+
+            // Hide buttons in 2nd tab (Series page - Episodes tab)
+            if (widget.anime.isSeries) {
+              final aniVal = widget.tabController.animation.value;
+
+              if (widget.tabController.indexIsChanging) {
+                // Do no animation when change was triggered by clicking on a TabBar tab
+                opacity = widget.tabController.index == 1 ? 0.0 : 1.0;
+              } else {
+                // Animate opacity otherwise (user is dragging across tabs)
+                if (aniVal > 0 && aniVal < 2) {
+                  opacity = (1 - aniVal).abs();
+                }
+              }
+            }
+
+            return Opacity(
+              opacity: opacity,
+              child: child,
+            );
+          },
+        ),
+      ),
     );
   }
 }

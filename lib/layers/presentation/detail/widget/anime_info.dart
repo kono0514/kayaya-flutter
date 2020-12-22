@@ -12,10 +12,8 @@ import '../cubit/details_cubit.dart';
 
 class AnimeInfo extends StatelessWidget {
   final Anime anime;
-  final List<Widget> actions;
 
-  const AnimeInfo({Key key, @required this.anime, this.actions})
-      : super(key: key);
+  const AnimeInfo({Key key, @required this.anime}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
