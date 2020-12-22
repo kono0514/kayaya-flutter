@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
-import 'package:kayaya_flutter/core/exception.dart';
-import 'package:kayaya_flutter/core/in_memory_cache.dart';
 import 'package:meta/meta.dart';
 
+import '../../core/exception.dart';
+import '../../core/in_memory_cache.dart';
 import '../data/datasources/anime_local_datasource.dart';
 
 @Injectable(as: AnimeLocalDatasource)

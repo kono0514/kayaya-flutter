@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:kayaya_flutter/layers/presentation/browse/cubit/browse_filter_cubit.dart';
 
 import '../../../../core/widgets/app_bar/custom_sliver_app_bar.dart';
 import '../../../../core/widgets/list_bottom_loader.dart';
 import '../../../../locale/generated/l10n.dart';
 import '../../../../router.dart';
 import '../bloc/browse_bloc.dart';
+import '../cubit/browse_filter_cubit.dart';
 import '../widget/browse_list_item.dart';
 import '../widget/filter_button.dart';
 

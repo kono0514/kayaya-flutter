@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
-import 'package:kayaya_flutter/layers/presentation/library/cubit/subscription_list_cubit.dart';
 
 import 'core/services/notification_service.dart';
 import 'core/widgets/navigation_bar/material_tab_scaffold.dart';
 import 'layers/presentation/authentication/bloc/authentication_bloc.dart';
 import 'layers/presentation/genre/cubit/genre_list_cubit.dart';
+import 'layers/presentation/library/cubit/subscription_list_cubit.dart';
 import 'layers/presentation/locale/cubit/locale_cubit.dart';
 import 'layers/presentation/login/view/login_page.dart';
 import 'layers/presentation/splash/view/splash_page.dart';

@@ -1,7 +1,6 @@
-import 'package:kayaya_flutter/codegen/graphql_anilist_api.graphql.dart'
-    as gen_anilist;
 import 'package:meta/meta.dart';
 
+import '../../../codegen/graphql_anilist_api.graphql.dart' as gen_anilist;
 import '../../../codegen/graphql_api.graphql.dart' as gen;
 import '../../domain/entities/detail.dart';
 import 'genre_model.dart';

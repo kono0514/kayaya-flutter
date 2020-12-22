@@ -1,6 +1,7 @@
 import 'package:dynamic_widget/dynamic_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:kayaya_flutter/core/widgets/scale_down_on_tap.dart';
+
+import '../scale_down_on_tap.dart';
 
 class ScaleDownOnTapWidgetParser extends WidgetParser {
   @override

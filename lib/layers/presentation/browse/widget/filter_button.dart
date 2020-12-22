@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kayaya_flutter/core/widgets/material_dialog.dart';
 
 import '../../../../core/widgets/app_bar/sliver_button.dart';
+import '../../../../core/widgets/material_dialog.dart';
 import '../../../../locale/generated/l10n.dart';
 import '../../genre/cubit/genre_list_cubit.dart';
 import '../cubit/browse_filter_cubit.dart';

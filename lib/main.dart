@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kayaya_flutter/core/utils/utils.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'app.dart';
 import 'core/utils/simple_bloc_observer.dart';
+import 'core/utils/utils.dart';
 import 'injection.dart';
 
 void main() async {

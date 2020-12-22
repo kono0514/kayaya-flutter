@@ -2,7 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dynamic_widget/dynamic_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:kayaya_flutter/core/widgets/dynamic_widget_parser/utils.dart';
+
+import 'utils.dart';
 
 class CarouselSliderWidgetParser extends WidgetParser {
   @override

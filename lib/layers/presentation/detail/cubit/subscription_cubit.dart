@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kayaya_flutter/layers/domain/usecases/subscription/check_subscription_usecase.dart';
 import 'package:meta/meta.dart';
 
 import '../../../domain/entities/anime.dart';
+import '../../../domain/usecases/subscription/check_subscription_usecase.dart';
 import '../../../domain/usecases/subscription/subscribe_to_series_usecase.dart';
 import '../../../domain/usecases/subscription/unsubscribe_from_series_usecase.dart';
 import '../../library/cubit/subscription_list_cubit.dart';
