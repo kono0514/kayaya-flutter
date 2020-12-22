@@ -68,7 +68,7 @@ class MoviePage extends StatelessWidget {
                 ? state.animeListData
                 : anime,
             actions: [
-              Expanded(child: _buildPlayButton()),
+              Expanded(child: _MoviePlayButton(anime: anime)),
             ],
             tabs: [TR.of(context).info, TR.of(context).related],
             tabViews: [
@@ -80,8 +80,18 @@ class MoviePage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildPlayButton() {
+class _MoviePlayButton extends StatelessWidget {
+  final Anime anime;
+
+  const _MoviePlayButton({
+    Key key,
+    @required this.anime,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<EpisodesBloc, EpisodesState>(
       builder: (context, state) {
         Text label = Text('...');
