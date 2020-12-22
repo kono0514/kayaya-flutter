@@ -10,7 +10,7 @@ Future<T> showCustomMaterialSheet<T>({
   Color backgroundColor,
   double elevation,
   ShapeBorder shape,
-  Clip clipBehavior = Clip.hardEdge,
+  Clip clipBehavior = Clip.none,
   Color barrierColor,
   bool bounce = false,
   AnimationController secondAnimation,
@@ -87,24 +87,36 @@ Future<T> showCustomMaterialSheet<T>({
       return SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: Align(
-            alignment: Alignment.bottomCenter,
-            child: SizedBox(
-              width: _width,
-              height: _height,
-              child: Material(
-                color: backgroundColor ??
-                    bottomSheetTheme?.modalBackgroundColor ??
-                    bottomSheetTheme?.backgroundColor,
-                elevation: elevation ?? bottomSheetTheme.elevation ?? 0.0,
-                shape: _shape ?? bottomSheetTheme.shape,
-                clipBehavior: clipBehavior ?? Clip.none,
-                child: ScrollConfiguration(
-                  behavior: GlowlessScrollBehavior(),
-                  child: child,
+          body: Stack(
+            children: [
+              if (isDismissible)
+                Positioned.fill(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  width: _width,
+                  height: _height,
+                  child: Material(
+                    color: backgroundColor ??
+                        bottomSheetTheme?.modalBackgroundColor ??
+                        bottomSheetTheme?.backgroundColor,
+                    elevation: elevation ?? bottomSheetTheme.elevation ?? 0.0,
+                    shape: _shape ?? bottomSheetTheme.shape,
+                    clipBehavior: clipBehavior,
+                    child: ScrollConfiguration(
+                      behavior: GlowlessScrollBehavior(),
+                      child: child,
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       );
