@@ -9,7 +9,7 @@ import '../widget/search_suggestion_item.dart';
 
 typedef GetSearchSuggestions = Future<List<String>> Function();
 
-class Search<T> extends SearchDelegate {
+class Search extends SearchDelegate<String> {
   final SearchBloc searchBloc;
 
   Search(this.searchBloc);

@@ -25,7 +25,7 @@ class _SearchPageState extends State<SearchPage> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       final result = await showSearch<String>(
         context: context.findRootAncestorStateOfType<NavigatorState>().context,
-        delegate: Search<String>(searchBloc) as SearchDelegate<String>,
+        delegate: Search(searchBloc),
       );
 
       if (result == null) {
