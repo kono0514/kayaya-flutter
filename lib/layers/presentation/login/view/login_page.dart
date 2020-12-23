@@ -40,7 +40,7 @@ class LoginPage extends StatelessWidget {
                   SnackBar(
                     content: Text(state.message ?? 'Authentication Failure'),
                     behavior: SnackBarBehavior.floating,
-                    margin: EdgeInsets.fromLTRB(46.0, 5.0, 46.0, 10.0),
+                    margin: const EdgeInsets.fromLTRB(46.0, 5.0, 46.0, 10.0),
                   ),
                 );
             }
@@ -48,9 +48,9 @@ class LoginPage extends StatelessWidget {
           child: Stack(
             children: [
               Container(
-                decoration: new BoxDecoration(
-                  image: new DecorationImage(
-                    image: new AssetImage('assets/aots4.jpg'),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: const AssetImage('assets/aots4.jpg'),
                     fit: BoxFit.cover,
                     colorFilter: _isDark
                         ? ColorFilter.mode(
@@ -65,23 +65,23 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               Container(
-                decoration: new BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: FractionalOffset.topCenter,
                     end: FractionalOffset.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      Color(0xFF00326c).withOpacity(0.4),
-                      Color(0xFF02001d),
+                      const Color(0xFF00326c).withOpacity(0.4),
+                      const Color(0xFF02001d),
                     ],
-                    stops: [0.0, 0.3, 0.8],
+                    stops: const [0.0, 0.3, 0.8],
                   ),
                 ),
               ),
               SafeArea(
                 child: Padding(
-                  padding:
-                      EdgeInsets.only(left: 46.0, right: 46.0, bottom: 30.0),
+                  padding: const EdgeInsets.only(
+                      left: 46.0, right: 46.0, bottom: 30.0),
                   child: Stack(
                     children: [
                       Align(
@@ -90,21 +90,21 @@ class LoginPage extends StatelessWidget {
                           child: IconPopupMenu<String>(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 6, vertical: 12),
-                            items: [
+                            items: const [
                               PopupMenuItem<String>(
-                                child: Text('English'),
                                 value: 'en',
+                                child: Text('English'),
                               ),
                               PopupMenuItem<String>(
-                                child: Text('Монгол'),
                                 value: 'mn',
+                                child: Text('Монгол'),
                               ),
                             ],
                             title: Text(
                               locale.locale.toUpperCase(),
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
-                            icon: Icon(Icons.language),
+                            icon: const Icon(Icons.language),
                             iconColor: Colors.white,
                             initialValue: locale.locale,
                             onSelected: (value) {
@@ -122,7 +122,6 @@ class LoginPage extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Center(
@@ -134,8 +133,8 @@ class LoginPage extends StatelessWidget {
                                           .apply(color: Colors.white),
                                     ),
                                   ),
-                                  SizedBox(height: 9),
-                                  Center(
+                                  const SizedBox(height: 9),
+                                  const Center(
                                     child: Text(
                                       'Short paragraph lorem lorem lorem lorem lorem',
                                       style: TextStyle(color: Colors.white),
@@ -144,13 +143,13 @@ class LoginPage extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            _NumberButton(),
-                            SizedBox(height: 10),
-                            _GoogleButton(),
-                            SizedBox(height: 10),
-                            _FacebookButton(),
-                            SizedBox(height: 10),
-                            if (!disableAnonymous) _AnonymousButton(),
+                            const _NumberButton(),
+                            const SizedBox(height: 10),
+                            const _GoogleButton(),
+                            const SizedBox(height: 10),
+                            const _FacebookButton(),
+                            const SizedBox(height: 10),
+                            if (!disableAnonymous) const _AnonymousButton(),
                           ],
                         ),
                       ),
@@ -210,7 +209,7 @@ class _FacebookButton extends StatelessWidget {
             ),
           ),
           label: Text(TR.of(context).sign_in_facebook),
-          color: Color.fromRGBO(23, 120, 242, 0.9),
+          color: const Color.fromRGBO(23, 120, 242, 0.9),
           disabled: state is LoginSubmitting,
           loading:
               state is LoginSubmitting && state.method == LoginMethod.facebook,
@@ -239,7 +238,7 @@ class _GoogleButton extends StatelessWidget {
             height: 40,
           ),
           label: Text(TR.of(context).sign_in_google),
-          color: Color.fromRGBO(219, 68, 55, 0.9),
+          color: const Color.fromRGBO(219, 68, 55, 0.9),
           disabled: state is LoginSubmitting,
           loading:
               state is LoginSubmitting && state.method == LoginMethod.google,
@@ -262,8 +261,8 @@ class _NumberButton extends StatelessWidget {
         width: 46,
         height: 46,
         child: SignInButton(
-          icon: Padding(
-            padding: const EdgeInsets.only(left: 6.0),
+          icon: const Padding(
+            padding: EdgeInsets.only(left: 6.0),
             child: Icon(Icons.phone, size: 28),
           ),
           label: Text(TR.of(context).sign_in_number),
@@ -273,7 +272,7 @@ class _NumberButton extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => LoginPhoneAuthPage(),
+                builder: (context) => const LoginPhoneAuthPage(),
               ),
             );
           },

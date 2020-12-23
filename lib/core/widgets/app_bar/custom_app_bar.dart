@@ -39,7 +39,6 @@ class CustomStaticAppBar extends StatelessWidget
                 height: kToolbarHeight,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: actions,
                 ),
               ),
@@ -51,5 +50,5 @@ class CustomStaticAppBar extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(44.0 + 52.0);
+  Size get preferredSize => const Size.fromHeight(44.0 + 52.0);
 }

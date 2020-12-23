@@ -7,7 +7,7 @@ class Release extends Equatable {
   final String resolution;
   final String group;
 
-  Release({
+  const Release({
     @required this.id,
     @required this.url,
     this.resolution,

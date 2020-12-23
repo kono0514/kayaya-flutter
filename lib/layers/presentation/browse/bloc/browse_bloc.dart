@@ -29,7 +29,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
     filterCubit.listen((filterState) {
       logger.wtf(
           'BrowseBloc: BrowseFilterModified emitted. Will now trigger BrowseRefreshed');
-      add(BrowseRefreshed());
+      add(const BrowseRefreshed());
     });
   }
 
@@ -49,7 +49,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
 
     final debounceStream = events
         .where((event) => event is BrowseFetched)
-        .debounceTime(Duration(milliseconds: 300));
+        .debounceTime(const Duration(milliseconds: 300));
 
     return super.transformEvents(
         MergeStream([forwardStream, debounceStream]), transitionFn);
@@ -65,7 +65,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
       // if (currentState is! BrowseLoaded) {
       yield BrowseInitial();
       // }
-      Filter filter = _getCurrentFilterFromState(filterCubit.state);
+      final Filter filter = _getCurrentFilterFromState(filterCubit.state);
 
       final result = await getAnimesUsecase(
         GetAnimesUsecaseParams(page: 1, filter: filter),
@@ -74,7 +74,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
         yield BrowseError(l.message);
       }, (r) async* {
         if (r.total == 0) {
-          yield BrowseEmpty();
+          yield const BrowseEmpty();
         } else {
           yield BrowseLoaded(
             animes: r,
@@ -88,14 +88,14 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
 
         if (currentState.error != null) {
           yield currentState.copyWith(
-            error: Optional.absent(),
+            error: const Optional.absent(),
             timestamp: DateTime.now().toString(),
           );
         }
       }
 
       int page = 1;
-      Filter filter = _getCurrentFilterFromState(filterCubit.state);
+      final Filter filter = _getCurrentFilterFromState(filterCubit.state);
       if (currentState is BrowseLoaded) {
         page = currentState.animes.currentPage + 1;
       }
@@ -116,7 +116,7 @@ class BrowseBloc extends Bloc<BrowseEvent, BrowseState> {
         },
         (r) async* {
           if (r.total == 0) {
-            yield BrowseEmpty();
+            yield const BrowseEmpty();
             return;
           }
 

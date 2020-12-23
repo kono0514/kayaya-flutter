@@ -7,24 +7,20 @@ abstract class BrowseFilterState extends Equatable {
 }
 
 class BrowseFilterInitial extends BrowseFilterState {
-  final Filter filter;
-
   const BrowseFilterInitial({
-    this.filter = const Filter(
+    Filter filter = const Filter(
       orderBy: FilterOrderBy.recent,
       type: FilterType.all,
       genres: <String>[],
     ),
-  }) : super(null);
+  }) : super(filter);
 
   @override
   List<Object> get props => [filter];
 }
 
 class BrowseFilterModified extends BrowseFilterState {
-  final Filter filter;
-
-  const BrowseFilterModified(this.filter) : super(null);
+  const BrowseFilterModified(Filter filter) : super(filter);
 
   @override
   List<Object> get props => [filter];

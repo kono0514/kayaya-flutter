@@ -17,7 +17,7 @@ class SubscriptionListCubit extends Cubit<SubscriptionListState> {
   SubscriptionListCubit({@required this.getSubscriptionsUsecase})
       : super(SubscriptionListInitial());
 
-  void loadSubscriptions() async {
+  Future<void> loadSubscriptions() async {
     final currentState = state;
 
     if (currentState is SubscriptionListLoaded) {
@@ -25,7 +25,7 @@ class SubscriptionListCubit extends Cubit<SubscriptionListState> {
 
       if (currentState.error != null) {
         emit(currentState.copyWith(
-          error: Optional.absent(),
+          error: const Optional.absent(),
         ));
       }
     }
@@ -47,7 +47,7 @@ class SubscriptionListCubit extends Cubit<SubscriptionListState> {
       }
     }, (r) {
       if (r.total == 0) {
-        emit(SubscriptionListEmpty());
+        emit(const SubscriptionListEmpty());
         return;
       }
 
@@ -65,7 +65,7 @@ class SubscriptionListCubit extends Cubit<SubscriptionListState> {
     });
   }
 
-  void refreshSubscriptions() async {
+  Future<void> refreshSubscriptions() async {
     emit(SubscriptionListInitial());
 
     final result =
@@ -74,7 +74,7 @@ class SubscriptionListCubit extends Cubit<SubscriptionListState> {
       (l) => emit(SubscriptionListError(l.message)),
       (r) {
         if (r.total == 0) {
-          emit(SubscriptionListEmpty());
+          emit(const SubscriptionListEmpty());
         } else {
           emit(SubscriptionListLoaded(subscriptions: r));
         }
@@ -123,8 +123,8 @@ class SubscriptionListCubit extends Cubit<SubscriptionListState> {
         .where((e) => e.id != anime.id)
         .toList();
 
-    if (filteredElements.length == 0) {
-      emit(SubscriptionListEmpty());
+    if (filteredElements.isEmpty) {
+      emit(const SubscriptionListEmpty());
     } else {
       emit(
         currentState.copyWith(

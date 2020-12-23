@@ -10,13 +10,13 @@ class SpinnerButton extends StatelessWidget {
   final Widget label;
   final bool loading;
   final bool disabled;
-  final Function onPressed;
+  final VoidCallback onPressed;
   final ButtonStyle style;
   final Type buttonType;
   final SpinnerButtonChildBuilder childBuilder;
   final Color spinnerColor;
 
-  SpinnerButton({
+  const SpinnerButton({
     Key key,
     this.icon,
     this.label,
@@ -61,29 +61,30 @@ class SpinnerButton extends StatelessWidget {
       }
     }
 
-    var buttonStyle = style ?? ButtonStyle();
+    var buttonStyle = style ?? const ButtonStyle();
     buttonStyle = buttonStyle.copyWith(
       animationDuration: Duration.zero,
       padding: buttonStyle.padding ??
           (icon == null
               ? null
               : MaterialStateProperty.all<EdgeInsetsGeometry>(
-                  EdgeInsets.only(left: 12.0, right: 16.0))),
+                  const EdgeInsets.only(left: 12.0, right: 16.0),
+                )),
       tapTargetSize: buttonStyle.tapTargetSize ?? MaterialTapTargetSize.padded,
     );
 
-    var button;
+    Widget button;
     if (buttonType == TextButton) {
       button = TextButton(
         onPressed: disabled || loading ? null : onPressed,
-        child: child,
         style: buttonStyle,
+        child: child,
       );
     } else {
       button = ElevatedButton(
         onPressed: disabled || loading ? null : onPressed,
-        child: child,
         style: buttonStyle,
+        child: child,
       );
     }
 

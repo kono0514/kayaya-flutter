@@ -19,7 +19,7 @@ class SubscriptionLoaded extends SubscriptionState {
   final bool subscribed;
   final bool isDirty;
 
-  const SubscriptionLoaded(this.subscribed, this.isDirty);
+  const SubscriptionLoaded({this.subscribed, this.isDirty});
 
   @override
   List<Object> get props => [subscribed, isDirty];

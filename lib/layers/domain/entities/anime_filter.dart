@@ -2,10 +2,10 @@ import 'package:equatable/equatable.dart';
 
 enum FilterOrderBy {
   recent,
-  alpha_asc,
-  alpha_desc,
-  rating_asc,
-  rating_desc,
+  alphaAsc,
+  alphaDesc,
+  ratingAsc,
+  ratingDesc,
 }
 
 enum FilterType {

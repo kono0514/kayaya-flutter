@@ -38,7 +38,7 @@ class AnimeHorizTile extends StatelessWidget {
                       vertical: 8.0, horizontal: 10.0),
                   child: Text(
                     anime.name,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 12,
                       fontWeight: FontWeight.w500,

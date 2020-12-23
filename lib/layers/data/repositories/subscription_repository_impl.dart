@@ -35,7 +35,7 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
   Future<Either<Failure, Unit>> subscribe(String id) async {
     try {
       await networkDatasource.subscribe(id);
-      return Right(unit);
+      return const Right(unit);
     } on ServerException catch (e, s) {
       errorLog(e.innerException, s);
       return Left(ServerFailure());
@@ -49,7 +49,7 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
   Future<Either<Failure, Unit>> unsubscribe(String id) async {
     try {
       await networkDatasource.unsubscribe(id);
-      return Right(unit);
+      return const Right(unit);
     } on ServerException catch (e, s) {
       errorLog(e.innerException, s);
       return Left(ServerFailure());

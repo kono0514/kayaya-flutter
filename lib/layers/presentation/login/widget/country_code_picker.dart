@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../../../core/widgets/glowless_scroll_behavior.dart';
 import '../../../../core/widgets/material_dialog.dart';
 import '../model/country_code.dart';
 import '../model/country_code_data.dart';
@@ -11,7 +10,7 @@ class CountryCodePicker extends StatefulWidget {
   final List<String> favorites;
   final ValueChanged<String> onChanged;
 
-  CountryCodePicker({
+  const CountryCodePicker({
     Key key,
     this.defaultSelection = 'MN',
     this.favorites = const [],
@@ -31,15 +30,15 @@ class _CountryCodePickerState extends State<CountryCodePicker> {
     super.initState();
     codes = countryCodes.map((e) => CountryCode.fromJson(e)).toList();
     // Show favorites first in list
-    if (widget.favorites.length > 0) {
-      var _favs = codes
+    if (widget.favorites.isNotEmpty) {
+      final _favs = codes
           .where(
             (e) => widget.favorites
                 .map((e) => e.toLowerCase())
                 .contains(e.countryCode),
           )
           .toList();
-      for (var _fav in _favs.reversed) {
+      for (final _fav in _favs.reversed) {
         codes.remove(_fav);
         codes.insert(0, _fav);
       }
@@ -65,12 +64,11 @@ class _CountryCodePickerState extends State<CountryCodePicker> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      child: Text(selectedCode.dialCodeFull),
       onPressed: () async {
         final result = await showCustomMaterialSheet<CountryCode>(
           context: context,
           builder: (context) => CountryPickerDialog(codes: codes),
-          labelBuilder: (_) => Text('Country Picker'),
+          labelBuilder: (_) => const Text('Country Picker'),
         );
         if (result != null) {
           setState(() {
@@ -81,6 +79,7 @@ class _CountryCodePickerState extends State<CountryCodePicker> {
           }
         }
       },
+      child: Text(selectedCode.dialCodeFull),
     );
   }
 }
@@ -95,7 +94,7 @@ class CountryPickerDialog extends StatefulWidget {
 }
 
 class _CountryPickerDialogState extends State<CountryPickerDialog> {
-  List<CountryCode> _codesFiltered = [];
+  final List<CountryCode> _codesFiltered = [];
 
   @override
   void initState() {
@@ -110,24 +109,23 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Column(
-        mainAxisSize: MainAxisSize.max,
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Search',
                 isDense: true,
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 height: 1.3,
                 fontSize: 18.0,
               ),
               onChanged: _filterResults,
             ),
           ),
-          Divider(height: 1.3, thickness: 1.3),
+          const Divider(height: 1.3, thickness: 1.3),
           Expanded(
             child: Material(
               child: ListView.builder(
@@ -153,7 +151,7 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
   }
 
   void _filterResults(String query) {
-    String _query = query.toLowerCase();
+    final _query = query.toLowerCase();
     if (_query.isEmpty) {
       setState(() {
         _codesFiltered.clear();

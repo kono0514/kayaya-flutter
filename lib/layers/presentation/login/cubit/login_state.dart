@@ -12,7 +12,7 @@ class LoginInitial extends LoginState {}
 class LoginSubmitting extends LoginState {
   final LoginMethod method;
 
-  LoginSubmitting(this.method);
+  const LoginSubmitting(this.method);
 
   @override
   List<Object> get props => [method];
@@ -21,7 +21,7 @@ class LoginSubmitting extends LoginState {
 class LoginError extends LoginState {
   final String message;
 
-  LoginError(this.message);
+  const LoginError(this.message);
 
   @override
   List<Object> get props => [message];

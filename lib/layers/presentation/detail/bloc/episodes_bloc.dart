@@ -27,7 +27,7 @@ class EpisodesBloc extends Bloc<EpisodesEvent, EpisodesState> {
 
     final debounceStream = events
         .where((event) => event is EpisodesFetched)
-        .debounceTime(Duration(milliseconds: 300));
+        .debounceTime(const Duration(milliseconds: 300));
 
     return super.transformEvents(
         MergeStream([forwardStream, debounceStream]), transitionFn);
@@ -53,7 +53,7 @@ class EpisodesBloc extends Bloc<EpisodesEvent, EpisodesState> {
         },
         (r) async* {
           if (r.total == 0) {
-            yield EpisodesEmpty();
+            yield const EpisodesEmpty();
           } else {
             yield EpisodesLoaded(
               episodes: r,
@@ -68,7 +68,7 @@ class EpisodesBloc extends Bloc<EpisodesEvent, EpisodesState> {
 
         if (currentState.error != null) {
           yield currentState.copyWith(
-            error: Optional.absent(),
+            error: const Optional.absent(),
           );
         }
       }
@@ -95,7 +95,7 @@ class EpisodesBloc extends Bloc<EpisodesEvent, EpisodesState> {
         }
       }, (r) async* {
         if (r.total == 0) {
-          yield EpisodesEmpty();
+          yield const EpisodesEmpty();
           return;
         }
 

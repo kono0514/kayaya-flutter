@@ -5,7 +5,7 @@ import '../../domain/entities/episode.dart';
 import 'release_model.dart';
 
 class EpisodeModel extends Episode {
-  EpisodeModel({
+  const EpisodeModel({
     @required String id,
     @required String title,
     @required int number,

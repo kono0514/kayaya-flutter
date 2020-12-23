@@ -64,7 +64,7 @@ class AppWrapper extends StatelessWidget {
             theme: lightTheme,
             darkTheme: darkTheme,
             themeMode: themeState.themeMode,
-            localizationsDelegates: [
+            localizationsDelegates: const [
               TR.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
@@ -72,8 +72,10 @@ class AppWrapper extends StatelessWidget {
             ],
             locale: Locale(localeState.locale),
             supportedLocales: TR.delegate.supportedLocales,
-            home: AppHome(),
+            home: const AppHome(),
             onGenerateRoute: MyRouter(),
+            // checkerboardRasterCacheImages: true,
+            // checkerboardOffscreenLayers: true,
           );
         },
       ),
@@ -82,7 +84,7 @@ class AppWrapper extends StatelessWidget {
 }
 
 class AppHome extends StatefulWidget {
-  AppHome({Key key}) : super(key: key);
+  const AppHome({Key key}) : super(key: key);
 
   @override
   _AppHomeState createState() => _AppHomeState();
@@ -109,15 +111,15 @@ class _AppHomeState extends State<AppHome> {
         }
 
         if (state is Unauthenticated) {
-          return LoginPage();
+          return const LoginPage();
         }
 
-        return SplashPage();
+        return const SplashPage();
       },
     );
   }
 
-  _configureNotification() {
+  void _configureNotification() {
     GetIt.I<NotificationService>().configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");

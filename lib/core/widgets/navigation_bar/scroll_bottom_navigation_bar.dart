@@ -9,9 +9,9 @@ class ScrollBottomNavigationBar extends StatelessWidget {
   final ValueNotifier<double> heightNotifier;
   final ValueNotifier<double> snapNotifier;
   final Widget child;
-  final _kTabBarHeight = 50.0;
+  double get _kTabBarHeight => 50.0;
 
-  ScrollBottomNavigationBar({
+  const ScrollBottomNavigationBar({
     Key key,
     @required this.heightNotifier,
     @required this.snapNotifier,
@@ -42,9 +42,11 @@ class ScrollBottomNavigationBar extends StatelessWidget {
           return null;
         }
 
-        ScrollMetrics position = notification.metrics;
-        double pixels = notification.metrics.pixels;
-        _delta = (_delta + pixels - _oldOffset).clamp(0.0, _kTabBarHeight);
+        final ScrollMetrics position = notification.metrics;
+        final double pixels = notification.metrics.pixels;
+        _delta = (_delta + pixels - _oldOffset)
+            .clamp(0.0, _kTabBarHeight)
+            .toDouble();
         _oldOffset = pixels;
 
         if (position.axisDirection == AxisDirection.down &&
@@ -62,10 +64,13 @@ class ScrollBottomNavigationBar extends StatelessWidget {
         }
 
         if ((_delta == 0.0 && heightNotifier.value == 0.0) ||
-            (_delta == _kTabBarHeight && heightNotifier.value == 1.0))
+            (_delta == _kTabBarHeight && heightNotifier.value == 1.0)) {
           return null;
+        }
 
         heightNotifier.value = 1.0 - (_delta / _kTabBarHeight);
+
+        return null;
       },
       child: child,
     );

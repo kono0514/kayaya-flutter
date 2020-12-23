@@ -62,12 +62,12 @@ class _FeaturedPageState extends State<FeaturedPage> {
                     children: [
                       Text(
                         state.errorMessage,
-                        style: TextStyle(color: Colors.red),
+                        style: const TextStyle(color: Colors.red),
                       ),
                       TextButton(
                         onPressed: () async =>
                             context.read<FeaturedCubit>().fetch(),
-                        child: Text('Retry'),
+                        child: const Text('Retry'),
                       ),
                     ],
                   ),
@@ -80,12 +80,12 @@ class _FeaturedPageState extends State<FeaturedPage> {
                   child: DynamicWidgetBuilder.build(
                     state.data,
                     context,
-                    new DefaultClickListener(context: context),
+                    DefaultClickListener(context: context),
                   ),
                 );
               }
 
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             },
           ),
         ),
@@ -101,7 +101,7 @@ class DefaultClickListener implements ClickListener {
 
   @override
   void onClicked(String event) {
-    print("Receive click event: " + event);
+    print("Receive click event: $event");
     if (event.trim().isEmpty) return;
 
     final uri = Uri.parse(event.trim());

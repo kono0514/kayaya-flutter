@@ -8,14 +8,14 @@ abstract class BrowseEvent extends Equatable {
 }
 
 class BrowseFetched extends BrowseEvent {
-  BrowseFetched();
+  const BrowseFetched();
 
   @override
   String toString() => 'BrowseFetched';
 }
 
 class BrowseRefreshed extends BrowseEvent {
-  BrowseRefreshed();
+  const BrowseRefreshed();
 
   @override
   String toString() => 'BrowseRefreshed';

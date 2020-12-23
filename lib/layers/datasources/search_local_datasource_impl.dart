@@ -15,7 +15,7 @@ class SearchLocalDatasourceImpl extends SearchLocalDatasource {
   Future<void> cacheQuery(String text) async {
     try {
       pref.addSearchHistory(text);
-    } catch (e) {
+    } on Exception catch (e) {
       throw CacheException(e);
     }
   }
@@ -24,7 +24,7 @@ class SearchLocalDatasourceImpl extends SearchLocalDatasource {
   Future<List<String>> getHistory() {
     try {
       return Future.value(pref.searchHistory);
-    } catch (e) {
+    } on Exception catch (e) {
       throw CacheException(e);
     }
   }
@@ -33,7 +33,7 @@ class SearchLocalDatasourceImpl extends SearchLocalDatasource {
   Future<void> clear() async {
     try {
       Future.value(pref.clearSearchHistory());
-    } catch (e) {
+    } on Exception catch (e) {
       throw CacheException(e);
     }
   }

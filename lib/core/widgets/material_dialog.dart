@@ -23,19 +23,14 @@ Future<T> showCustomMaterialSheet<T>({
   WidgetBuilder labelBuilder,
 }) async {
   assert(height == null || (height > 0 && height <= 1));
-  var _shape = shape;
-  if (_shape == null) {
-    _shape = RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20.0),
-        topRight: Radius.circular(20.0),
-      ),
-    );
-  }
-  var _barrierColor = barrierColor;
-  if (_barrierColor == null) {
-    _barrierColor = Colors.black.withOpacity(0.5);
-  }
+  final _shape = shape ??
+      const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.0),
+          topRight: Radius.circular(20.0),
+        ),
+      );
+  final _barrierColor = barrierColor ?? Colors.black.withOpacity(0.5);
 
   final result = await Navigator.of(context, rootNavigator: useRootNavigator)
       .push(ModalBottomSheetRoute<T>(
@@ -53,7 +48,7 @@ Future<T> showCustomMaterialSheet<T>({
       final child = (labelBuilder != null)
           ? Column(
               children: [
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
                   height: 3,
                   width: 18,
@@ -70,7 +65,7 @@ Future<T> showCustomMaterialSheet<T>({
                     child: labelBuilder(context),
                   ),
                 ),
-                Divider(height: 1.3, thickness: 1.3),
+                const Divider(height: 1.3, thickness: 1.3),
                 Expanded(child: builder(context)),
               ],
             )

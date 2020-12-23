@@ -21,7 +21,7 @@ class MoviePage extends StatelessWidget {
   final Anime anime;
   final bool isMinimal;
 
-  MoviePage(this.anime, {this.isMinimal = false});
+  const MoviePage(this.anime, {this.isMinimal = false});
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +72,8 @@ class MoviePage extends StatelessWidget {
             ],
             tabs: [TR.of(context).info, TR.of(context).related],
             tabViews: [
-              InfoTabViewItem(tabKey: Key('Tab0')),
-              RelatedTabViewItem(tabKey: Key('Tab1'), id: anime.id),
+              const InfoTabViewItem(tabKey: Key('Tab0')),
+              RelatedTabViewItem(tabKey: const Key('Tab1'), id: anime.id),
             ],
           );
         },
@@ -94,17 +94,17 @@ class _MoviePlayButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EpisodesBloc, EpisodesState>(
       builder: (context, state) {
-        Text label = Text('...');
+        Text label = const Text('...');
         Icon icon;
-        Function onPressed = () {};
+        VoidCallback onPressed = () {};
         bool loading = true;
 
         if (state is EpisodesLoaded) {
           loading = false;
-          icon = Icon(Icons.play_circle_outline);
+          icon = const Icon(Icons.play_circle_outline);
           label = Text(TR.of(context).play.toUpperCase());
           onPressed = () async {
-            if (state.episodes.elements.length == 0) return;
+            if (state.episodes.elements.isEmpty) return;
 
             final chosenRelease = await showDialog<Release>(
               context: context,
@@ -127,8 +127,8 @@ class _MoviePlayButton extends StatelessWidget {
           loading = true;
         } else {
           loading = false;
-          icon = Icon(Icons.warning);
-          label = Text('Not available');
+          icon = const Icon(Icons.warning);
+          label = const Text('Not available');
         }
 
         return SizedBox(

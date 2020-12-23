@@ -22,7 +22,7 @@ class ListLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: this.padding,
+        padding: padding,
         child: error == true ? _buildError() : _buildLoader(),
       ),
     );
@@ -30,20 +30,20 @@ class ListLoader extends StatelessWidget {
 
   Widget _buildLoader() {
     if (spinnerSize == null) {
-      return CircularProgressIndicator();
+      return const CircularProgressIndicator();
     }
 
     return SizedBox(
       width: spinnerSize,
       height: spinnerSize,
-      child: CircularProgressIndicator(),
+      child: const CircularProgressIndicator(),
     );
   }
 
   Widget _buildError() {
     return Column(
       children: <Widget>[
-        Text(
+        const Text(
           'Error fetching data',
           style: TextStyle(color: Colors.red),
         ),
@@ -52,7 +52,7 @@ class ListLoader extends StatelessWidget {
             padding: const EdgeInsets.only(top: 10.0),
             child: TextButton(
               onPressed: onRetry,
-              child: Text('Retry'),
+              child: const Text('Retry'),
             ),
           ),
       ],

@@ -4,7 +4,7 @@ import '../../../codegen/graphql_api.graphql.dart' as gen;
 import '../../domain/entities/release.dart';
 
 class ReleaseModel extends Release {
-  ReleaseModel({
+  const ReleaseModel({
     @required String id,
     @required String url,
     String resolution,

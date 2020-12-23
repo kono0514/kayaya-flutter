@@ -10,7 +10,7 @@ class Episode extends Equatable {
   final List<Release> releases;
   final String thumbnail;
 
-  Episode({
+  const Episode({
     @required this.id,
     @required this.title,
     @required this.number,

@@ -44,7 +44,7 @@ class _BrowsePageState extends State<BrowsePage> {
         BlocProvider(
           create: (context) => GetIt.I<BrowseBloc>(
             param1: context.read<BrowseFilterCubit>(),
-          )..add(BrowseFetched()),
+          )..add(const BrowseFetched()),
         ),
       ],
       child: Scaffold(
@@ -82,14 +82,14 @@ class _BrowsePageState extends State<BrowsePage> {
               }
 
               if (state is BrowseEmpty) {
-                return _BrowseEmpty();
+                return const _BrowseEmpty();
               }
 
               if (state is BrowseLoaded) {
                 return buildListWidget(state);
               }
 
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             },
@@ -112,13 +112,13 @@ class _BrowsePageState extends State<BrowsePage> {
               notification.metrics.pixels >
                   notification.metrics.maxScrollExtent - 200) {
             disableInfiniteScroll = true;
-            context.read<BrowseBloc>().add(BrowseFetched());
+            context.read<BrowseBloc>().add(const BrowseFetched());
           }
           return false;
         },
         child: RefreshIndicator(
           onRefresh: () {
-            context.read<BrowseBloc>().add(BrowseRefreshed());
+            context.read<BrowseBloc>().add(const BrowseRefreshed());
             return refreshCompleter.future;
           },
           child: CustomScrollView(
@@ -172,9 +172,9 @@ class _BrowseError extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              context.read<BrowseBloc>().add(BrowseRefreshed());
+              context.read<BrowseBloc>().add(const BrowseRefreshed());
             },
-            child: Text('Retry'),
+            child: const Text('Retry'),
           ),
         ],
       ),
@@ -191,14 +191,14 @@ class _BrowseEmpty extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(
+          const Text(
             'No items found. Adjust filter and try again.',
           ),
           TextButton(
             onPressed: () {
-              context.read<BrowseBloc>().add(BrowseRefreshed());
+              context.read<BrowseBloc>().add(const BrowseRefreshed());
             },
-            child: Text('Retry'),
+            child: const Text('Retry'),
           ),
         ],
       ),

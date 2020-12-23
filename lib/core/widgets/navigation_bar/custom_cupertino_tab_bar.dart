@@ -23,7 +23,6 @@ class CustomCupertinoTabBar extends CupertinoTabBar {
           darkColor: Color(0x29000000),
         ),
         width: 0.0, // One physical pixel.
-        style: BorderStyle.solid,
       ),
     ),
     @required this.valueListenable,
@@ -40,12 +39,12 @@ class CustomCupertinoTabBar extends CupertinoTabBar {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<double>(
       valueListenable: valueListenable,
       builder: (context, value, child) => Align(
         heightFactor: value,
+        alignment: const Alignment(0, -1),
         child: super.build(context),
-        alignment: Alignment(0, -1),
       ),
     );
   }

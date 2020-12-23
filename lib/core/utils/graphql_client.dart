@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:graphql/client.dart';
 import 'package:meta/meta.dart';
 
-import '../usecase.dart';
 import '../../layers/domain/usecases/authentication/get_id_token_usecase.dart';
+import '../usecase.dart';
 
 GraphQLClient getGraphQLClient({
   @required String Function() getLocale,
@@ -19,13 +19,13 @@ GraphQLClient getGraphQLClient({
   final authLink = AuthLink(
     getToken: () async {
       final _result = await getIdTokenUsecase(NoParams());
-      var token;
+      String token;
       _result.fold((l) => token = '', (r) => token = r);
       return 'Bearer $token';
     },
   );
   final localeLink = LocaleLink(getLocale: getLocale);
-  Link links = Link.from([
+  final links = Link.from([
     localeLink,
     authLink,
     httpLink,

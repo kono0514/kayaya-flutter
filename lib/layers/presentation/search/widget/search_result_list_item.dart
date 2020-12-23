@@ -32,7 +32,7 @@ class SearchResultListItem extends StatelessWidget {
                 color: HexColor(item.color ?? '#000000'),
               ),
             ),
-            SizedBox(width: 20.0),
+            const SizedBox(width: 20.0),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +43,7 @@ class SearchResultListItem extends StatelessWidget {
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
                       if (item.year != null)

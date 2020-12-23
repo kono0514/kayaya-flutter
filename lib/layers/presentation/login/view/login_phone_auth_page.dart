@@ -9,7 +9,7 @@ import '../widget/country_code_picker.dart';
 import 'login_phone_auth_verify_page.dart';
 
 class LoginPhoneAuthPage extends StatefulWidget {
-  LoginPhoneAuthPage({Key key}) : super(key: key);
+  const LoginPhoneAuthPage({Key key}) : super(key: key);
 
   @override
   _LoginPhoneAuthPageState createState() => _LoginPhoneAuthPageState();
@@ -31,7 +31,6 @@ class _LoginPhoneAuthPageState extends State<LoginPhoneAuthPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      extendBodyBehindAppBar: false,
       body: BlocProvider(
         create: (context) => GetIt.I<LoginPhoneCubit>(),
         child: BlocListener<LoginPhoneCubit, LoginPhoneState>(
@@ -44,7 +43,7 @@ class _LoginPhoneAuthPageState extends State<LoginPhoneAuthPage> {
                 MaterialPageRoute(
                   builder: (context) => BlocProvider.value(
                     value: _cubit,
-                    child: LoginPhoneAuthVerifyPage(),
+                    child: const LoginPhoneAuthVerifyPage(),
                   ),
                 ),
               );
@@ -56,13 +55,14 @@ class _LoginPhoneAuthPageState extends State<LoginPhoneAuthPage> {
                   SnackBar(
                     content: Text(state.error ?? 'SMS send failure'),
                     behavior: SnackBarBehavior.floating,
-                    margin: EdgeInsets.fromLTRB(36.0, 5.0, 36.0, 10.0),
+                    margin: const EdgeInsets.fromLTRB(36.0, 5.0, 36.0, 10.0),
                   ),
                 );
             }
           },
           child: Container(
-            padding: EdgeInsets.only(left: 36.0, right: 36.0, bottom: 60.0),
+            padding:
+                const EdgeInsets.only(left: 36.0, right: 36.0, bottom: 60.0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -75,26 +75,26 @@ class _LoginPhoneAuthPageState extends State<LoginPhoneAuthPage> {
                       color: _theme.textTheme.bodyText1.color,
                     ),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CountryCodePicker(
                         defaultSelection: 'MN',
-                        favorites: ['MN', 'US'],
+                        favorites: const ['MN', 'US'],
                         onChanged: (value) {
                           setState(() {
                             _dialCode = value;
                           });
                         },
                       ),
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: _PhoneNumberInput(dialCode: _dialCode),
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   _SendSMSButton(formKey: _formKey),
                 ],
               ),

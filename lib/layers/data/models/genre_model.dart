@@ -4,7 +4,7 @@ import '../../../codegen/graphql_api.graphql.dart' as gen;
 import '../../domain/entities/genre.dart';
 
 class GenreModel extends Genre {
-  GenreModel({
+  const GenreModel({
     @required String id,
     @required String name,
   }) : super(id: id, name: name);

@@ -19,7 +19,7 @@ class BrowseListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextTheme textTheme = Theme.of(context).textTheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return InkWell(
       onTap: onPressed,
@@ -48,9 +48,8 @@ class BrowseListItem extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.headline6,
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
                           anime.isMovie
@@ -58,17 +57,16 @@ class BrowseListItem extends StatelessWidget {
                               : TR.of(context).series,
                           style: textTheme.caption.copyWith(fontSize: 13),
                         ),
-                        SizedBox(width: 12),
+                        const SizedBox(width: 12),
                         if (anime.rating != null)
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              Icon(
+                              const Icon(
                                 Icons.star,
                                 color: Colors.amber,
                                 size: 14.0,
                               ),
-                              SizedBox(width: 2),
+                              const SizedBox(width: 2),
                               Text(
                                 '${anime.rating / 10}',
                                 style: textTheme.caption.copyWith(fontSize: 13),
@@ -77,7 +75,7 @@ class BrowseListItem extends StatelessWidget {
                           )
                       ],
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     ScrollConfiguration(
                       behavior: const ScrollBehavior()
                         ..buildViewportChrome(
@@ -127,22 +125,22 @@ class _GenreChipButton extends StatelessWidget {
             _filterCubit.changeFilter(
                 _filterCubit.state.filter.copyWith(genres: [genre.id]));
           },
-          child: Text(
-            genre.name,
-            style: TextStyle(
-              fontWeight: FontWeight.normal,
-              fontSize: 12,
-            ),
-          ),
           style: TextButton.styleFrom(
             backgroundColor:
                 _isDark ? Colors.grey.shade800 : Colors.grey.shade200,
             primary: _isDark ? Colors.white : Colors.black87,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            minimumSize: Size(60, 26),
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            minimumSize: const Size(60, 26),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
+            ),
+          ),
+          child: Text(
+            genre.name,
+            style: const TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 12,
             ),
           ),
         ),

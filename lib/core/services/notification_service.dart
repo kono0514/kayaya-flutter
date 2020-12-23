@@ -20,10 +20,10 @@ class NotificationService {
 
   void configure({
     MessageHandler onMessage,
-    Function(String) onSelectNotification,
+    Future<dynamic> Function(String) onSelectNotification,
   }) {
     _localNotification.initialize(
-      InitializationSettings(
+      const InitializationSettings(
         AndroidInitializationSettings('@mipmap/ic_launcher'),
         IOSInitializationSettings(),
       ),
@@ -36,7 +36,7 @@ class NotificationService {
       onBackgroundMessage: backgroundMessageHandler,
     );
     _firebaseMessaging.onTokenRefresh.listen((newToken) async {
-      IsLoggedInUsecase isLoggedIn = GetIt.I();
+      final IsLoggedInUsecase isLoggedIn = GetIt.I();
       final _result = await isLoggedIn(NoParams());
       if (_result.isRight() && _result.getOrElse(() => false)) {
         uploadCurrentFcmToken(token: newToken);
@@ -44,11 +44,11 @@ class NotificationService {
     });
   }
 
-  void uploadCurrentFcmToken({String token}) async {
-    PreferencesService pref = GetIt.I();
-    GraphQLClient graphql = GetIt.I();
+  Future<void> uploadCurrentFcmToken({String token}) async {
+    final PreferencesService pref = GetIt.I();
+    final GraphQLClient graphql = GetIt.I();
 
-    var newToken = token ?? await _firebaseMessaging.getToken();
+    final newToken = token ?? await _firebaseMessaging.getToken();
     final oldToken = pref.currentSavedFcmToken;
     if (oldToken != newToken) {
       print('Uploading firebase messaging token: $newToken');
@@ -68,8 +68,8 @@ class NotificationService {
     }
   }
 
-  void showSubscriptionNotification(Notification notification) async {
-    var largeIconPath;
+  Future<void> showSubscriptionNotification(Notification notification) async {
+    String largeIconPath;
 
     if (notification.image != null) {
       try {
@@ -88,10 +88,10 @@ class NotificationService {
           'Subscriptions',
           'When a new episode is released',
           largeIcon: FilePathAndroidBitmap(largeIconPath),
-          styleInformation: MediaStyleInformation(),
+          styleInformation: const MediaStyleInformation(),
           importance: Importance.High,
         ),
-        IOSNotificationDetails(),
+        const IOSNotificationDetails(),
       ),
       payload: notification.route,
     );
@@ -102,11 +102,11 @@ class NotificationService {
       5,
       notification.title,
       notification.body,
-      NotificationDetails(
+      const NotificationDetails(
         AndroidNotificationDetails(
           '2',
           'New update',
-          'When there\'s a new update available',
+          "When there's a new update available",
           importance: Importance.High,
         ),
         IOSNotificationDetails(),
@@ -119,7 +119,7 @@ class NotificationService {
       notification.id,
       notification.title,
       notification.body,
-      NotificationDetails(
+      const NotificationDetails(
         AndroidNotificationDetails(
             'fcm_fallback_notification_channel', 'Miscellaneous', ''),
         IOSNotificationDetails(),
@@ -141,18 +141,18 @@ class NotificationService {
           notification.channel.description ?? '',
           importance: Importance(notification.channel.importance),
         ),
-        IOSNotificationDetails(),
+        const IOSNotificationDetails(),
       ),
     );
   }
 }
 
 Future<dynamic> backgroundMessageHandler(Map<String, dynamic> message) async {
-  NotificationService _service = NotificationService();
+  final NotificationService _service = NotificationService();
 
   if (!message.containsKey('data')) return;
   final Notification notification =
-      Notification.fromJson(Map.from(message['data']));
+      Notification.fromJson(message['data'] as Map<String, dynamic>);
 
   if (notification.type == NotificationType.subscription) {
     _service.showSubscriptionNotification(notification);
@@ -195,7 +195,9 @@ class Notification {
         image = json['image'] as String,
         channel = json['channel'] == null
             ? null
-            : NotificationChannel.fromJson(json['channel']),
+            : NotificationChannel.fromJson(
+                json['channel'] as Map<String, dynamic>,
+              ),
         type = _$enumDecodeNullable(
           _$NotificationTypeEnumMap,
           json['type'],

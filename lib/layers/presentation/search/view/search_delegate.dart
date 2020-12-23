@@ -9,7 +9,7 @@ import '../widget/search_suggestion_item.dart';
 
 typedef GetSearchSuggestions = Future<List<String>> Function();
 
-class Search extends SearchDelegate {
+class Search<T> extends SearchDelegate {
   final SearchBloc searchBloc;
 
   Search(this.searchBloc);
@@ -34,7 +34,7 @@ class Search extends SearchDelegate {
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
       IconButton(
-        icon: Icon(Icons.close),
+        icon: const Icon(Icons.close),
         onPressed: () {
           query = "";
         },
@@ -45,7 +45,7 @@ class Search extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back),
       onPressed: () {
         close(context, null);
       },
@@ -54,7 +54,7 @@ class Search extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return SizedBox.shrink();
+    return const SizedBox.shrink();
   }
 
   @override
@@ -68,7 +68,7 @@ class Search extends SearchDelegate {
       cubit: searchBloc,
       builder: (context, state) {
         if (state is SearchError) {
-          return Center(child: Text('Something went wrong...'));
+          return const Center(child: Text('Something went wrong...'));
         }
 
         if (state is SearchHistoryLoaded) {
@@ -86,7 +86,9 @@ class Search extends SearchDelegate {
         if (state is SearchLoaded) {
           return Stack(
             children: <Widget>[
-              state.isLoading ? LinearProgressIndicator() : SizedBox.shrink(),
+              state.isLoading
+                  ? const LinearProgressIndicator()
+                  : const SizedBox.shrink(),
               ListView.builder(
                 itemCount: state.result.length,
                 itemBuilder: (context, index) => SearchResultListItem(
@@ -99,7 +101,7 @@ class Search extends SearchDelegate {
                     close(context, query);
                     Navigator.of(context).pop();
 
-                    var anime = Anime(
+                    final anime = Anime(
                       id: item.id,
                       coverImage: item.image,
                       name: item.name,
@@ -121,7 +123,7 @@ class Search extends SearchDelegate {
           );
         }
 
-        return LinearProgressIndicator();
+        return const LinearProgressIndicator();
       },
     );
   }

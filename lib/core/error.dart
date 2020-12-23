@@ -10,15 +10,15 @@ abstract class Failure extends Equatable {
 }
 
 class ServerFailure extends Failure {
-  ServerFailure() : super(message: 'Server Failure');
+  const ServerFailure() : super(message: 'Server Failure');
 }
 
 class CacheFailure extends Failure {
-  CacheFailure() : super(message: 'Cache Failure');
+  const CacheFailure() : super(message: 'Cache Failure');
 }
 
 class DataFailure extends Failure {
-  DataFailure() : super(message: 'Failed to fetch data');
+  const DataFailure() : super(message: 'Failed to fetch data');
 }
 
 class SignInWithGoogleFailure extends Failure {

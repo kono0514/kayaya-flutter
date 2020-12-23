@@ -8,7 +8,7 @@ import 'core/utils/simple_bloc_observer.dart';
 import 'core/utils/utils.dart';
 import 'injection.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await SentryFlutter.init(
@@ -26,7 +26,7 @@ void main() async {
 
       Bloc.observer = SimpleBlocObserver();
 
-      runApp(AppWrapper());
+      runApp(const AppWrapper());
     },
   );
 }

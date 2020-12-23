@@ -18,7 +18,7 @@ class AnimeInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: 20,
         right: 20,
         bottom: 30,
@@ -27,7 +27,7 @@ class AnimeInfo extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           Expanded(child: _buildInfoWidget(context)),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           _buildPosterWidget(context),
         ],
       ),
@@ -54,12 +54,12 @@ class AnimeInfo extends StatelessWidget {
   }
 
   Widget _buildInfoWidget(BuildContext context) {
-    final separator = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+    const separator = Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12.0),
       child: Text('•'),
     );
-    TextTheme textTheme = Theme.of(context).textTheme;
-    final bool _isDark = Theme.of(context).brightness == Brightness.dark;
+    final textTheme = Theme.of(context).textTheme;
+    final _isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -71,7 +71,7 @@ class AnimeInfo extends StatelessWidget {
               .apply(color: _isDark ? Colors.white : Colors.black),
           maxLines: 3,
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         BlocBuilder<DetailsCubit, DetailsState>(
           builder: (context, state) {
             if (state is DetailsInitial) {
@@ -126,7 +126,7 @@ class AnimeInfo extends StatelessWidget {
             return Row();
           },
         ),
-        SizedBox(height: 21),
+        const SizedBox(height: 21),
         BlocBuilder<DetailsCubit, DetailsState>(
           builder: (context, state) {
             if (anime.rating != null) {
@@ -146,7 +146,7 @@ class AnimeInfo extends StatelessWidget {
                 child: Row(
                   children: [
                     Container(width: 80, height: 5, color: Colors.white),
-                    SizedBox(width: 6),
+                    const SizedBox(width: 6),
                     Container(width: 20, height: 5, color: Colors.white),
                   ],
                 ),

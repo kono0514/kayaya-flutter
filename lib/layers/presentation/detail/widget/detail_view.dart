@@ -73,13 +73,12 @@ class _DetailViewState extends State<DetailView>
                     ),
                     actions: <Widget>[
                       IconButton(
-                        icon: Icon(Icons.share),
+                        icon: const Icon(Icons.share),
                         onPressed: () => {},
                         tooltip: TR.of(context).share,
                       ),
                     ],
                     flexibleSpace: FlexibleSpaceBar(
-                      collapseMode: CollapseMode.parallax,
                       background: Stack(
                         children: [
                           Positioned.fill(
@@ -281,13 +280,6 @@ class __ActionButtonsState extends State<_ActionButtons>
         opacity: _fadeInAnimation,
         child: AnimatedBuilder(
           animation: widget.tabController.animation,
-          child: Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: widget.actions ?? [],
-            ),
-          ),
           builder: (context, child) {
             var opacity = 1.0;
 
@@ -311,6 +303,12 @@ class __ActionButtonsState extends State<_ActionButtons>
               child: child,
             );
           },
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: widget.actions ?? [],
+            ),
+          ),
         ),
       ),
     );

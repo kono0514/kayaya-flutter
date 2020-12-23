@@ -9,7 +9,7 @@ class SearchResult extends Equatable {
   final int year;
   final String type;
 
-  SearchResult({
+  const SearchResult({
     @required this.id,
     @required this.name,
     @required this.image,

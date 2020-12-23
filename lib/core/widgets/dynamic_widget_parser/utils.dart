@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 
 ScrollPhysics parseScrollPhysics(String scrollPhysics) {
   if (scrollPhysics == 'AlwaysScrollableScrollPhysics') {
-    return AlwaysScrollableScrollPhysics();
+    return const AlwaysScrollableScrollPhysics();
   } else if (scrollPhysics == 'BouncingScrollPhysics') {
-    return BouncingScrollPhysics();
+    return const BouncingScrollPhysics();
   } else if (scrollPhysics == 'ClampingScrollPhysics') {
-    return ClampingScrollPhysics();
+    return const ClampingScrollPhysics();
   } else if (scrollPhysics == 'FixedExtentScrollPhysics') {
-    return FixedExtentScrollPhysics();
+    return const FixedExtentScrollPhysics();
   } else if (scrollPhysics == 'NeverScrollableScrollPhysics') {
-    return NeverScrollableScrollPhysics();
+    return const NeverScrollableScrollPhysics();
   } else if (scrollPhysics == 'PageScrollPhysics') {
-    return PageScrollPhysics();
+    return const PageScrollPhysics();
   } else if (scrollPhysics == 'RangeMaintainingScrollPhysics') {
-    return RangeMaintainingScrollPhysics();
+    return const RangeMaintainingScrollPhysics();
   }
   return null;
 }

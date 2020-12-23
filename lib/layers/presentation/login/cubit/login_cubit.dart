@@ -22,9 +22,9 @@ class LoginCubit extends Cubit<LoginState> {
     @required this.loginWithAnonymousUsecase,
   }) : super(LoginInitial());
 
-  void signInWithGoogle() async {
-    final method = LoginMethod.google;
-    emit(LoginSubmitting(method));
+  Future<void> signInWithGoogle() async {
+    const method = LoginMethod.google;
+    emit(const LoginSubmitting(method));
     final result = await loginWithGoogleUsecase(NoParams());
     result.fold(
       (l) => emit(LoginError(l.message)),
@@ -32,9 +32,9 @@ class LoginCubit extends Cubit<LoginState> {
     );
   }
 
-  void signInWithFacebook() async {
-    final method = LoginMethod.facebook;
-    emit(LoginSubmitting(method));
+  Future<void> signInWithFacebook() async {
+    const method = LoginMethod.facebook;
+    emit(const LoginSubmitting(method));
     final result = await loginWithFacebookUsecase(NoParams());
     result.fold(
       (l) => emit(LoginError(l.message)),
@@ -42,9 +42,9 @@ class LoginCubit extends Cubit<LoginState> {
     );
   }
 
-  void signInAnonymously() async {
-    final method = LoginMethod.anonymous;
-    emit(LoginSubmitting(method));
+  Future<void> signInAnonymously() async {
+    const method = LoginMethod.anonymous;
+    emit(const LoginSubmitting(method));
     final result = await loginWithAnonymousUsecase(NoParams());
     result.fold(
       (l) => emit(LoginError(l.message)),

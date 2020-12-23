@@ -11,7 +11,7 @@ class EpisodesFetched extends EpisodesEvent {
   final String id;
   final String sortOrder;
 
-  EpisodesFetched(this.id, {this.sortOrder});
+  const EpisodesFetched(this.id, {this.sortOrder});
 
   @override
   String toString() => 'EpisodesFetched';
@@ -21,7 +21,7 @@ class EpisodesRefreshed extends EpisodesEvent {
   final String id;
   final String sortOrder;
 
-  EpisodesRefreshed(this.id, {this.sortOrder});
+  const EpisodesRefreshed(this.id, {this.sortOrder});
 
   @override
   String toString() => 'EpisodesRefreshed';

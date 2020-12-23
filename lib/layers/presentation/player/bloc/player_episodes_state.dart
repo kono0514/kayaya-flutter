@@ -8,7 +8,7 @@ abstract class PlayerEpisodesState extends Equatable {
 }
 
 class PlayerEpisodesInitial extends PlayerEpisodesState {
-  PlayerEpisodesInitial();
+  const PlayerEpisodesInitial();
 }
 
 class PlayerEpisodesLoaded extends PlayerEpisodesState {

@@ -6,8 +6,8 @@ class ChildlessSizedBoxWidgetParser extends WidgetParser {
   Widget parse(Map<String, dynamic> map, BuildContext buildContext,
       ClickListener listener) {
     return SizedBox(
-      width: map["width"],
-      height: map["height"],
+      width: map["width"] as double,
+      height: map["height"] as double,
     );
   }
 

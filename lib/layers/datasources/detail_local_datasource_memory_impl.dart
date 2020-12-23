@@ -19,7 +19,7 @@ class DetailLocalDatasourceMemoryImpl extends DetailLocalDatasource {
   }) async {
     try {
       memoryCache.cache<DetailModel>(detail.id, detail, duration: duration);
-    } catch (e) {
+    } on Exception catch (e) {
       throw CacheException(e);
     }
   }
@@ -28,7 +28,7 @@ class DetailLocalDatasourceMemoryImpl extends DetailLocalDatasource {
   Future<DetailModel> fetchDetail(String id) {
     try {
       return Future.value(memoryCache.read<DetailModel>(id));
-    } catch (e) {
+    } on Exception catch (e) {
       throw CacheException(e);
     }
   }

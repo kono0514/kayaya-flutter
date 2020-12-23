@@ -18,7 +18,7 @@ class CustomSliverAppBar extends StatelessWidget {
         children: <Widget>[
           FlexibleSpaceBar(
             title: title,
-            titlePadding: EdgeInsetsDirectional.only(
+            titlePadding: const EdgeInsetsDirectional.only(
               start: 16,
               bottom: 16,
             ),
@@ -31,7 +31,6 @@ class CustomSliverAppBar extends StatelessWidget {
                 height: kToolbarHeight,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: actions,
                 ),
               ),

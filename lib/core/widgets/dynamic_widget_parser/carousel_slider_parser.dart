@@ -48,57 +48,57 @@ class _CarouselSliderWithIndicatorState
       children: [
         CarouselSlider(
           options: CarouselOptions(
-              height: map["height"],
-              enlargeCenterPage: map["enlargeCenterPage"] ?? true,
-              aspectRatio: map["aspectRatio"] ?? 16 / 9,
+              height: map["height"] as double,
+              enlargeCenterPage: map["enlargeCenterPage"] as bool ?? true,
+              aspectRatio: map["aspectRatio"] as double ?? 16 / 9,
               autoPlay: false,
               // autoPlay: map["autoPlay"] ?? false,
               autoPlayAnimationDuration:
                   map["autoPlayAnimationDuration"] != null
-                      ? Duration(milliseconds: map["autoPlayAnimationDuration"])
+                      ? Duration(
+                          milliseconds: map["autoPlayAnimationDuration"] as int)
                       : const Duration(milliseconds: 800),
               autoPlayInterval: map["autoPlayInterval"] != null
-                  ? Duration(milliseconds: map["autoPlayInterval"])
+                  ? Duration(milliseconds: map["autoPlayInterval"] as int)
                   : const Duration(seconds: 4),
-              disableCenter: map["disableCenter"] ?? false,
-              enableInfiniteScroll: map["enableInfiniteScroll"] ?? true,
+              disableCenter: map["disableCenter"] as bool ?? false,
+              enableInfiniteScroll: map["enableInfiniteScroll"] as bool ?? true,
               enlargeStrategy: parseEnlargeStrategy(
-                map["enlargeStrategy"],
+                map["enlargeStrategy"] as String,
                 defaultValue: CenterPageEnlargeStrategy.scale,
               ),
-              initialPage: map["initialPage"] ?? 0,
+              initialPage: map["initialPage"] as int ?? 0,
               pauseAutoPlayInFiniteScroll:
-                  map["pauseAutoPlayInFiniteScroll"] ?? false,
+                  map["pauseAutoPlayInFiniteScroll"] as bool ?? false,
               pauseAutoPlayOnManualNavigate:
-                  map["pauseAutoPlayOnManualNavigate"] ?? true,
-              pauseAutoPlayOnTouch: map["pauseAutoPlayOnTouch"] ?? true,
-              reverse: map["reverse"] ?? false,
+                  map["pauseAutoPlayOnManualNavigate"] as bool ?? true,
+              pauseAutoPlayOnTouch: map["pauseAutoPlayOnTouch"] as bool ?? true,
+              reverse: map["reverse"] as bool ?? false,
               scrollDirection: parseScrollDirection(
-                map["scrollDirection"],
+                map["scrollDirection"] as String,
                 defaultValue: Axis.horizontal,
               ),
-              scrollPhysics: parseScrollPhysics(map["scrollPhysics"]),
-              viewportFraction: map["viewportFraction"] ?? 0.8,
+              scrollPhysics: parseScrollPhysics(map["scrollPhysics"] as String),
+              viewportFraction: map["viewportFraction"] as double ?? 0.8,
               onPageChanged: (index, reason) {
-                if (map["showIndicator"] ?? false) {
+                if (map["showIndicator"] as bool ?? false) {
                   setState(() {
                     _current = index;
                   });
                 }
               }),
           items: DynamicWidgetBuilder.buildWidgets(
-              map["items"], context, widget.listener),
+              map["items"] as List, context, widget.listener),
         ),
-        if (map["showIndicator"] ?? false)
+        if (map["showIndicator"] as bool ?? false)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: map["items"].map<Widget>((item) {
-              int index = map["items"].indexOf(item);
+            children: (map["items"] as List).map<Widget>((item) {
+              final index = (map["items"] as List).indexOf(item);
               return Container(
                 width: 8.0,
                 height: 8.0,
-                margin: EdgeInsets.only(
-                    left: 3.0, right: 3.0, top: 16.0, bottom: 0.0),
+                margin: const EdgeInsets.only(left: 3.0, right: 3.0, top: 16.0),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: _current == index

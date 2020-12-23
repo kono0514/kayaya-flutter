@@ -67,8 +67,8 @@ class RoundedCachedNetworkImage extends StatelessWidget {
           border: border,
           boxShadow: boxShadow == null ? null : [boxShadow],
         ),
-        child: child,
         clipBehavior: childClipBehavior,
+        child: child,
       ),
     );
   }

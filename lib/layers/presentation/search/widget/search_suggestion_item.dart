@@ -18,8 +18,8 @@ class SearchSuggestionItem extends StatelessWidget {
       },
       title: Row(
         children: [
-          Icon(Icons.history),
-          SizedBox(width: 24),
+          const Icon(Icons.history),
+          const SizedBox(width: 24),
           Text(query),
         ],
       ),

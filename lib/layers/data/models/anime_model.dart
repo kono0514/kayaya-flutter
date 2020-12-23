@@ -5,7 +5,7 @@ import '../../domain/entities/anime.dart';
 import 'genre_model.dart';
 
 class AnimeModel extends Anime {
-  AnimeModel({
+  const AnimeModel({
     @required String id,
     String name,
     AnimeType type,
@@ -81,7 +81,7 @@ class AnimeModel extends Anime {
       coverImage: coverImage ?? this.coverImage,
       coverColor: coverColor ?? this.coverColor,
       bannerImage: bannerImage ?? this.bannerImage,
-      genres: genres ?? this.genres,
+      genres: genres ?? this.genres as List<GenreModel>,
     );
   }
 }

@@ -12,7 +12,7 @@ class FeaturedInitial extends FeaturedState {}
 class FeaturedLoaded extends FeaturedState {
   final String data;
 
-  FeaturedLoaded(this.data);
+  const FeaturedLoaded(this.data);
 
   @override
   List<Object> get props => [data];
@@ -21,7 +21,7 @@ class FeaturedLoaded extends FeaturedState {
 class FeaturedError extends FeaturedState {
   final String errorMessage;
 
-  FeaturedError(this.errorMessage);
+  const FeaturedError(this.errorMessage);
 
   @override
   List<Object> get props => [errorMessage];

@@ -13,10 +13,10 @@ class RatingBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double _fiveStarRating = min(rating ?? 0, 100) / 20;
-    int _wholeStars = _fiveStarRating.floor();
-    bool _withHalfStar = _fiveStarRating.remainder(1) > 0;
-    List<Widget> items = [];
+    final double _fiveStarRating = min(rating ?? 0, 100) / 20;
+    final int _wholeStars = _fiveStarRating.floor();
+    final bool _withHalfStar = _fiveStarRating.remainder(1) > 0;
+    final items = <Widget>[];
 
     items.addAll(
       List.generate(
@@ -38,7 +38,7 @@ class RatingBar extends StatelessWidget {
     }
 
     items.addAll([
-      SizedBox(width: 6),
+      const SizedBox(width: 6),
       Text('${rating / 10}',
           style: Theme.of(context).textTheme.caption.copyWith(fontSize: 13)),
     ]);

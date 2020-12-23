@@ -6,7 +6,7 @@ class PagedList<T> extends Equatable {
   final int currentPage;
   final bool hasMorePages;
 
-  PagedList({
+  const PagedList({
     this.elements,
     this.total,
     this.currentPage,

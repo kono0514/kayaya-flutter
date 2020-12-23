@@ -30,16 +30,15 @@ class RelatedTabViewItem extends StatelessWidget {
             }
 
             if (state is RelationsLoaded) {
-              if (state.relations.length == 0 &&
-                  state.recommendations.length == 0) {
+              if (state.relations.isEmpty && state.recommendations.isEmpty) {
                 return buildEmptyWidget();
               }
 
               return SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(height: 30),
-                    if (state.relations.length > 0)
+                    const SizedBox(height: 30),
+                    if (state.relations.isNotEmpty)
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -50,8 +49,8 @@ class RelatedTabViewItem extends StatelessWidget {
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ),
-                          SizedBox(height: 10),
-                          Container(
+                          const SizedBox(height: 10),
+                          SizedBox(
                             height: 163,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
@@ -77,10 +76,10 @@ class RelatedTabViewItem extends StatelessWidget {
                               itemCount: state.relations.length,
                             ),
                           ),
-                          SizedBox(height: 30),
+                          const SizedBox(height: 30),
                         ],
                       ),
-                    if (state.recommendations.length > 0)
+                    if (state.recommendations.isNotEmpty)
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -91,8 +90,8 @@ class RelatedTabViewItem extends StatelessWidget {
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ),
-                          SizedBox(height: 10),
-                          Container(
+                          const SizedBox(height: 10),
+                          SizedBox(
                             height: 163,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
@@ -121,13 +120,13 @@ class RelatedTabViewItem extends StatelessWidget {
                           ),
                         ],
                       ),
-                    SizedBox(height: 80),
+                    const SizedBox(height: 80),
                   ],
                 ),
               );
             }
 
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           },
         ),
       ),
@@ -135,7 +134,7 @@ class RelatedTabViewItem extends StatelessWidget {
   }
 
   Widget buildEmptyWidget() {
-    return CustomScrollView(
+    return const CustomScrollView(
       slivers: <Widget>[
         SliverFillRemaining(
           hasScrollBody: false,

@@ -23,13 +23,13 @@ class _SearchPageState extends State<SearchPage> {
     searchBloc = GetIt.I<SearchBloc>();
 
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      final result = await showSearch(
+      final result = await showSearch<String>(
         context: context.findRootAncestorStateOfType<NavigatorState>().context,
-        delegate: Search(searchBloc),
+        delegate: Search<String>(searchBloc) as SearchDelegate<String>,
       );
 
-      // Close "SearchPage" on back button press from "showSearch"
       if (result == null) {
+        // Close "SearchPage" on back button press from "showSearch"
         Navigator.of(context).pop();
       } else {
         searchBloc.saveSearchHistoryUsecase(
@@ -46,6 +46,6 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.shrink();
+    return const SizedBox.shrink();
   }
 }

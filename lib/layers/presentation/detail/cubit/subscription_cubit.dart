@@ -24,50 +24,58 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     @required this.unsubscribeFromSeriesUsecase,
     @required this.checkSubscriptionUsecase,
     @factoryParam @required this.subscriptionListCubit,
-  }) : super(SubscriptionInitial());
+  }) : super(const SubscriptionInitial());
 
   void loadData(Anime anime) {
     this.anime = anime;
-    emit(SubscriptionInitialized());
+    emit(const SubscriptionInitialized());
   }
 
-  void check() async {
+  Future<void> check() async {
     if (state is SubscriptionInitial) return;
 
-    emit(SubscriptionChanging());
+    emit(const SubscriptionChanging());
     final result = await checkSubscriptionUsecase(
         CheckSubscriptionUsecaseParams(anime.id));
-    result.fold((l) => () {}, (r) => emit(SubscriptionLoaded(r, false)));
+    result.fold(
+      (l) => () {},
+      (r) => emit(
+        SubscriptionLoaded(
+          subscribed: r,
+          isDirty: false,
+        ),
+      ),
+    );
   }
 
-  void subscribe() async {
+  Future<void> subscribe() async {
     final currentState = state;
 
     if (currentState is SubscriptionLoaded) {
-      emit(SubscriptionChanging());
+      emit(const SubscriptionChanging());
       final result = await subscribeToSeriesUsecase(
           SubscribeToSeriesUsecaseParams(anime.id));
       result.fold(
         (l) => () {},
         (r) {
-          emit(SubscriptionLoaded(true, true));
+          emit(const SubscriptionLoaded(subscribed: true, isDirty: true));
           subscriptionListCubit.addSubscriptionItem(anime);
         },
       );
     }
   }
 
-  void unsubscribe() async {
+  Future<void> unsubscribe() async {
     final currentState = state;
 
     if (currentState is SubscriptionLoaded) {
-      emit(SubscriptionChanging());
+      emit(const SubscriptionChanging());
       final result = await unsubscribeFromSeriesUsecase(
           UnsubscribeFromSeriesUsecaseParams(anime.id));
       result.fold(
         (l) => () {},
         (r) {
-          emit(SubscriptionLoaded(false, true));
+          emit(const SubscriptionLoaded(subscribed: false, isDirty: true));
           subscriptionListCubit.removeSubscriptionItem(anime);
         },
       );

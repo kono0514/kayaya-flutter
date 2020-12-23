@@ -8,10 +8,10 @@ class AutoSizeTextWidgetParser extends WidgetParser {
   Widget parse(Map<String, dynamic> map, BuildContext buildContext,
       ClickListener listener) {
     return AutoSizeText(
-      map["data"],
-      maxLines: map["maxLines"] ?? 2,
+      map["data"] as String,
+      maxLines: map["maxLines"] as int ?? 2,
       overflow: TextOverflow.ellipsis,
-      textAlign: parseTextAlign(map["textAlign"]),
+      textAlign: parseTextAlign(map["textAlign"] as String),
     );
   }
 

@@ -14,6 +14,6 @@ class LogoutUsecase implements Usecase<Unit, NoParams> {
 
   @override
   Future<Either<Failure, Unit>> call(NoParams _) async {
-    return await authRepo.signOut();
+    return authRepo.signOut();
   }
 }

@@ -49,7 +49,7 @@ class _LibraryPageState extends State<LibraryPage> {
                 SliverButton(
                   text: Text(
                     TR.of(context).settings.toUpperCase(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -61,11 +61,11 @@ class _LibraryPageState extends State<LibraryPage> {
                       enableDrag: true,
                       height: 1.0,
                       labelBuilder: (context) => Text(TR.of(context).settings),
-                      builder: (context) => SettingsDialog(),
+                      builder: (context) => const SettingsDialog(),
                     );
                   },
                   collapsible: false,
-                  icon: Icon(Icons.settings),
+                  icon: const Icon(Icons.settings),
                 ),
               ],
             ),
@@ -99,7 +99,7 @@ class _LibraryPageState extends State<LibraryPage> {
               return buildListWidget(state);
             }
 
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           },
@@ -132,11 +132,12 @@ class _LibraryPageState extends State<LibraryPage> {
         child: CustomScrollView(
           slivers: <Widget>[
             SliverPadding(
-              padding: EdgeInsets.only(left: 16, top: 30, bottom: 14),
+              padding: const EdgeInsets.only(left: 16, top: 30, bottom: 14),
               sliver: SliverToBoxAdapter(
                 child: Text(
                   TR.of(context).subscriptions,
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+                  style: const TextStyle(
+                      fontSize: 20.0, fontWeight: FontWeight.w500),
                 ),
               ),
             ),
@@ -153,8 +154,8 @@ class _LibraryPageState extends State<LibraryPage> {
                       imageUrl: anime.coverImage,
                       width: 40,
                     ),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
                     title: Text(anime.name),
                     onTap: () {
                       Navigator.of(context, rootNavigator: true).pushNamed(
@@ -197,7 +198,7 @@ class _LibraryError extends StatelessWidget {
             onPressed: () {
               context.read<SubscriptionListCubit>().refreshSubscriptions();
             },
-            child: Text('Retry'),
+            child: const Text('Retry'),
           ),
         ],
       ),
@@ -221,7 +222,7 @@ class _LibraryEmpty extends StatelessWidget {
               onPressed: () {
                 context.read<SubscriptionListCubit>().refreshSubscriptions();
               },
-              child: Text('Retry'),
+              child: const Text('Retry'),
             ),
           ],
         ),

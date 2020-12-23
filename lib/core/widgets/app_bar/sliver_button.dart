@@ -85,6 +85,7 @@ class _SliverButtonState extends State<SliverButton>
                 (_isDark ? Colors.grey[800] : Colors.white),
             onPrimary: widget.color ?? (_isDark ? Colors.white : Colors.black),
           ),
+          onPressed: widget.onPressed,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -94,7 +95,6 @@ class _SliverButtonState extends State<SliverButton>
                 builder: (context, child) => FadeTransition(
                   opacity: _fadeAnimation,
                   child: Align(
-                    alignment: Alignment.center,
                     heightFactor: 1.0,
                     widthFactor: max(_collapseAnimation.value, 0.0),
                     child: Padding(
@@ -108,7 +108,6 @@ class _SliverButtonState extends State<SliverButton>
               )
             ],
           ),
-          onPressed: widget.onPressed,
         ),
       );
     });

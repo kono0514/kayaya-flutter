@@ -13,7 +13,7 @@ class Anime extends Equatable {
   final String bannerImage;
   final List<Genre> genres;
 
-  Anime({
+  const Anime({
     @required this.id,
     this.name,
     this.type,

@@ -12,6 +12,7 @@ import 'layers/presentation/player/view/movie_player.dart';
 import 'layers/presentation/player/view/series_player.dart';
 import 'layers/presentation/search/view/search_page.dart';
 
+// ignore: avoid_classes_with_only_static_members
 class Routes {
   static const homePage = '/';
   static const seriesPage = '/series';
@@ -83,7 +84,7 @@ class MyRouter {
     },
     Routes.searchPage: (_) {
       return MaterialPageRoute(
-        builder: (context) => SearchPage(),
+        builder: (context) => const SearchPage(),
       );
     },
     Routes.loginPage: (settings) {
@@ -96,24 +97,24 @@ class MyRouter {
       );
     },
     Routes.moviePlayer: (settings) {
-      var args = settings.arguments as MoviePlayerArguments;
+      final args = settings.arguments as MoviePlayerArguments;
       return PageRouteBuilder(
         pageBuilder: (_, __, ___) => MoviePlayer(
           anime: args.anime,
           release: args.release,
         ),
-        transitionDuration: Duration(seconds: 0),
+        transitionDuration: const Duration(),
       );
     },
     Routes.seriesPlayer: (settings) {
-      var args = settings.arguments as SeriesPlayerArguments;
+      final args = settings.arguments as SeriesPlayerArguments;
       return PageRouteBuilder(
         pageBuilder: (_, __, ___) => SeriesPlayer(
           anime: args.anime,
           episode: args.episode,
           release: args.release,
         ),
-        transitionDuration: Duration(seconds: 0),
+        transitionDuration: const Duration(),
       );
     }
   };

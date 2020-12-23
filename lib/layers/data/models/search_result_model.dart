@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 import '../../domain/entities/search_result.dart';
 
 class SearchResultModel extends SearchResult {
-  SearchResultModel({
+  const SearchResultModel({
     @required String id,
     @required String name,
     @required String image,

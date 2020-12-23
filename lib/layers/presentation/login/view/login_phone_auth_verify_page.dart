@@ -27,7 +27,6 @@ class _LoginPhoneAuthVerifyPageState extends State<LoginPhoneAuthVerifyPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      extendBodyBehindAppBar: false,
       body: BlocListener<LoginPhoneCubit, LoginPhoneState>(
         listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
@@ -38,13 +37,13 @@ class _LoginPhoneAuthVerifyPageState extends State<LoginPhoneAuthVerifyPage> {
                 SnackBar(
                   content: Text(state.error ?? 'Wrong code?'),
                   behavior: SnackBarBehavior.floating,
-                  margin: EdgeInsets.fromLTRB(36.0, 5.0, 36.0, 10.0),
+                  margin: const EdgeInsets.fromLTRB(36.0, 5.0, 36.0, 10.0),
                 ),
               );
           }
         },
         child: Container(
-          padding: EdgeInsets.only(left: 36.0, right: 36.0, bottom: 60.0),
+          padding: const EdgeInsets.only(left: 36.0, right: 36.0, bottom: 60.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -57,7 +56,7 @@ class _LoginPhoneAuthVerifyPageState extends State<LoginPhoneAuthVerifyPage> {
                     color: _theme.textTheme.bodyText1.color,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Builder(builder: (context) {
                   final _number = context.select(
                       (LoginPhoneCubit cubit) => cubit.state.phoneNumber);
@@ -65,17 +64,17 @@ class _LoginPhoneAuthVerifyPageState extends State<LoginPhoneAuthVerifyPage> {
                     TR.of(context).phone_auth_sent_success(6, _number),
                   );
                 }),
-                SizedBox(height: 30),
-                _PinInput(),
-                SizedBox(height: 20),
+                const SizedBox(height: 30),
+                const _PinInput(),
+                const SizedBox(height: 20),
                 _VerifyButton(
                   formKey: _formKey,
                 ),
                 TextButton(
-                  child: Text(TR.of(context).phone_auth_change_number),
                   onPressed: () {
                     Navigator.pop(context);
                   },
+                  child: Text(TR.of(context).phone_auth_change_number),
                 ),
               ],
             ),

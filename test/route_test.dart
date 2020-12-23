@@ -8,8 +8,8 @@ class MockBuildContext extends Mock implements BuildContext {}
 void main() {
   group('Route parser', () {
     test('Series route should be correctly parsed from URI string', () {
-      var seriesUri = Uri.parse('route://series?id=33');
-      var routeSettings = MyRouter.parseRouteFromURI(seriesUri);
+      final seriesUri = Uri.parse('route://series?id=33');
+      final routeSettings = MyRouter.parseRouteFromURI(seriesUri);
       expect(routeSettings.name, Routes.seriesPage);
       expect(routeSettings.arguments, isA<MediaArguments>());
       expect((routeSettings.arguments as MediaArguments).anime.id, '33');

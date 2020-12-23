@@ -84,7 +84,7 @@ class DetailNetworkDatasourceKayayaImpl extends DetailNetworkDatasource {
   @override
   Future<PagedList<EpisodeModel>> fetchEpisodes(
       String id, int page, String order) async {
-    var _order = order == 'asc' ? gen.SortOrder.asc : gen.SortOrder.desc;
+    final _order = order == 'asc' ? gen.SortOrder.asc : gen.SortOrder.desc;
 
     final args = gen.GetAnimeEpisodesArguments(
       hasAnime: gen.EpisodesHasAnimeWhereConditions(
@@ -93,7 +93,7 @@ class DetailNetworkDatasourceKayayaImpl extends DetailNetworkDatasource {
         kw$operator: gen.SQLOperator.eq,
       ),
       page: page,
-      first: 30,
+      first: 10,
       orderBy: <gen.EpisodesOrderByOrderByClause>[
         gen.EpisodesOrderByOrderByClause(
           field: gen.EpisodesOrderByColumn.number,

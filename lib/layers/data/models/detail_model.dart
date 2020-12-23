@@ -6,7 +6,7 @@ import '../../domain/entities/detail.dart';
 import 'genre_model.dart';
 
 class DetailModel extends Detail {
-  DetailModel({
+  const DetailModel({
     @required String id,
     @required String description,
     DateTime startDate,
@@ -27,7 +27,7 @@ class DetailModel extends Detail {
         );
 
   factory DetailModel.fromGraphQL(gen.AnimeDetailsFieldsMixin graphql) {
-    var _date;
+    DateTime _date;
     if (graphql.anilist.startDate != null) {
       _date = DateTime(
         graphql.anilist.startDate.year,
@@ -61,7 +61,7 @@ class DetailModel extends Detail {
 }
 
 class YoutubeTrailerModel extends YoutubeTrailer {
-  YoutubeTrailerModel(
+  const YoutubeTrailerModel(
     String url,
     String thumbnail,
   ) : super(url, thumbnail);
@@ -78,7 +78,7 @@ class YoutubeTrailerModel extends YoutubeTrailer {
 }
 
 class ScoreDistributionModel extends ScoreDistribution {
-  ScoreDistributionModel(int score, int amount) : super(score, amount);
+  const ScoreDistributionModel(int score, int amount) : super(score, amount);
 
   factory ScoreDistributionModel.fromGraphQL(
       gen_anilist.GraphqlAnilistApi$Query$Media$MediaStats$ScoreDistribution

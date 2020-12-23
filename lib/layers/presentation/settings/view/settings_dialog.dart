@@ -58,7 +58,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
             Scaffold.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
-                SnackBar(content: Text(state.message['message'])),
+                SnackBar(content: Text(state.message['message'] as String)),
               );
           }
         },
@@ -72,7 +72,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                   SettingsTile(
                     title: TR.of(context).language,
                     subtitle: languageCodeLabel(locale.locale),
-                    leading: Icon(Icons.translate),
+                    leading: const Icon(Icons.translate),
                     onTap: () async {
                       final result = await showDialog<String>(
                         context: context,
@@ -93,7 +93,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                   SettingsTile(
                     title: TR.of(context).theme,
                     subtitle: themeMode.themeMode.toString(),
-                    leading: Icon(Icons.brightness_medium),
+                    leading: const Icon(Icons.brightness_medium),
                     onTap: () async {
                       final result = await showDialog<int>(
                         context: context,
@@ -127,7 +127,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                   ),
                   SettingsTile(
                     title: TR.of(context).clear_search_history,
-                    leading: Icon(Icons.history),
+                    leading: const Icon(Icons.history),
                     onTap: () {
                       GetIt.I<ClearSearchHistoryUsecase>().call(NoParams());
                       Scaffold.of(context)
@@ -142,7 +142,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                   ),
                   SettingsTile(
                     title: TR.of(context).check_for_update,
-                    leading: Icon(Icons.cloud_download),
+                    leading: const Icon(Icons.cloud_download),
                     onTap: () {
                       BlocProvider.of<UpdaterCubit>(context).checkForUpdate();
                     },
@@ -196,11 +196,11 @@ class _SettingsDialogState extends State<SettingsDialog> {
       onPressed: () {
         Navigator.pop(context, value);
       },
-      child: Text(text),
       padding: const EdgeInsets.symmetric(
         vertical: 16.0,
         horizontal: 24.0,
       ),
+      child: Text(text),
     );
   }
 
@@ -218,7 +218,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
         }
 
         return SettingsTile(
-          leading: Icon(Icons.person),
+          leading: const Icon(Icons.person),
           title: 'Logged in using',
           subtitle: loggedInWith,
           enabled: false,
@@ -234,7 +234,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
 
         if (state is Authenticated && state.user.isAnonymous) {
           return SettingsTile(
-            leading: Icon(Icons.merge_type),
+            leading: const Icon(Icons.merge_type),
             title: 'Create/Link Account',
             subtitle: 'Your anonymous account data will persist',
             onTap: () async {
@@ -255,7 +255,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
   Widget _buildLogoutSettingsTile() {
     return SettingsTile(
       title: TR.of(context).signout,
-      leading: Icon(Icons.logout),
+      leading: const Icon(Icons.logout),
       onTap: () async {
         final state = context.read<AuthenticationBloc>().state;
         var _confirm = true;
@@ -264,8 +264,8 @@ class _SettingsDialogState extends State<SettingsDialog> {
           _confirm = await showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('Are you sure?'),
-              content: SingleChildScrollView(
+              title: const Text('Are you sure?'),
+              content: const SingleChildScrollView(
                 child: Text(
                   'You are currently using an anonymous account. '
                   'If you logout now, you will lose all your data. '
@@ -274,16 +274,16 @@ class _SettingsDialogState extends State<SettingsDialog> {
               ),
               actions: [
                 TextButton(
-                  child: Text('Cancel'),
                   onPressed: () {
                     Navigator.pop(context, false);
                   },
+                  child: const Text('Cancel'),
                 ),
                 TextButton(
-                  child: Text('OK'),
                   onPressed: () {
                     Navigator.pop(context, true);
                   },
+                  child: const Text('OK'),
                 ),
               ],
             ),
@@ -345,16 +345,16 @@ class CustomSettingsSection extends AbstractSection {
               ),
             ),
       ListView.separated(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: tiles.length,
         separatorBuilder: (BuildContext context, int index) =>
-            Divider(height: 1),
+            const Divider(height: 1),
         itemBuilder: (BuildContext context, int index) {
           return tiles[index];
         },
       ),
-      if (showBottomDivider) Divider(height: 1)
+      if (showBottomDivider) const Divider(height: 1)
     ]);
   }
 }

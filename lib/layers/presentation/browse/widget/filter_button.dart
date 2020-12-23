@@ -23,10 +23,10 @@ class _FilterButtonState extends State<FilterButton> {
         return SliverButton(
           backgroundColor: _hasFilter ? Colors.blue : null,
           color: _hasFilter ? Colors.white : null,
-          icon: Icon(Icons.tune),
+          icon: const Icon(Icons.tune),
           text: Text(
             TR.of(context).filter.toUpperCase(),
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -45,7 +45,7 @@ class _FilterButtonState extends State<FilterButton> {
                   BlocProvider.value(value: browseFilterCubit),
                   BlocProvider.value(value: genreListCubit),
                 ],
-                child: FilterDialog(),
+                child: const FilterDialog(),
               ),
             );
           },

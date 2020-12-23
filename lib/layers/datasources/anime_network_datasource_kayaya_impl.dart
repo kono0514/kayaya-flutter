@@ -88,8 +88,12 @@ class AnimeNetworkDatasourceKayayaImpl extends AnimeNetworkDatasource {
       animes = animes.map<AnimeModel>((anime) {
         return anime.modelCopyWith(
           genres: [
-            ...anime.genres.where((genre) => genres.indexOf(genre.id) > -1),
-            ...anime.genres.where((genre) => genres.indexOf(genre.id) == -1),
+            ...anime.genres
+                .where((genre) => genres.contains(genre.id))
+                .map((e) => e as GenreModel),
+            ...anime.genres
+                .where((genre) => !genres.contains(genre.id))
+                .map((e) => e as GenreModel),
           ],
         );
       }).toList();
@@ -119,13 +123,13 @@ List<gen.AnimesOrderByOrderByClause> _mapFilterOrderByToGraphQL(
   switch (filterOrderBy) {
     case FilterOrderBy.recent:
       return _wrap(gen.AnimeOrderColumns.id, gen.SortOrder.desc);
-    case FilterOrderBy.alpha_asc:
+    case FilterOrderBy.alphaAsc:
       return _wrap(gen.AnimeOrderColumns.name, gen.SortOrder.asc);
-    case FilterOrderBy.alpha_desc:
+    case FilterOrderBy.alphaDesc:
       return _wrap(gen.AnimeOrderColumns.name, gen.SortOrder.desc);
-    case FilterOrderBy.rating_asc:
+    case FilterOrderBy.ratingAsc:
       return _wrap(gen.AnimeOrderColumns.rating, gen.SortOrder.asc);
-    case FilterOrderBy.rating_desc:
+    case FilterOrderBy.ratingDesc:
       return _wrap(gen.AnimeOrderColumns.rating, gen.SortOrder.desc);
   }
 
@@ -144,11 +148,11 @@ List<gen.AnimeType> _mapFilterTypeToGraphQL(FilterType filterType) {
 }
 
 gen.AnimesHasGenresWhereConditions _mapGenresToGraphQL(List<String> genres) {
-  if (genres.length == 0) {
+  if (genres.isEmpty) {
     return null;
   }
 
-  var uniqueIds = genres.toSet().toList();
+  final uniqueIds = genres.toSet().toList();
   return gen.AnimesHasGenresWhereConditions(
     or: uniqueIds
         .map((e) => gen.AnimesHasGenresWhereConditions(

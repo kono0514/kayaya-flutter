@@ -19,17 +19,16 @@ class FilterDialog extends StatefulWidget {
 
 class _FilterDialogState extends State<FilterDialog> {
   BrowseFilterCubit _filterCubit;
-  Function _unorderedEq = DeepCollectionEquality.unordered().equals;
 
-  Map<FilterOrderBy, String> _sortMap = {
+  final Map<FilterOrderBy, String> _sortMap = {
     FilterOrderBy.recent: TR.current.filter_sort_recent,
-    FilterOrderBy.alpha_asc: TR.current.filter_sort_alpha_asc,
-    FilterOrderBy.alpha_desc: TR.current.filter_sort_alpha_desc,
-    FilterOrderBy.rating_desc: TR.current.filter_sort_rating_high,
-    FilterOrderBy.rating_asc: TR.current.filter_sort_rating_low,
+    FilterOrderBy.alphaAsc: TR.current.filter_sort_alpha_asc,
+    FilterOrderBy.alphaDesc: TR.current.filter_sort_alpha_desc,
+    FilterOrderBy.ratingDesc: TR.current.filter_sort_rating_high,
+    FilterOrderBy.ratingAsc: TR.current.filter_sort_rating_low,
   };
 
-  Map<FilterType, String> _typeMap = {
+  final Map<FilterType, String> _typeMap = {
     FilterType.all: TR.current.all,
     FilterType.movie: TR.current.movie,
     FilterType.series: TR.current.series,
@@ -69,11 +68,12 @@ class _FilterDialogState extends State<FilterDialog> {
     context.read<GenreListCubit>().getGenreList();
   }
 
-  // If filters are in default
+  // If filters are in default state
   bool get isDefault =>
       _selectedSort == _defaultSort &&
       _selectedType == _defaultType &&
-      _unorderedEq(_selectedGenres, _defaultGenres);
+      DeepCollectionEquality.unordered()
+          .equals(_selectedGenres, _defaultGenres);
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,7 @@ class _FilterDialogState extends State<FilterDialog> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Table(
-                    columnWidths: {0: FixedColumnWidth(140.0)},
+                    columnWidths: const {0: FixedColumnWidth(140.0)},
                     defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                     children: [
                       TableRow(
@@ -102,7 +102,7 @@ class _FilterDialogState extends State<FilterDialog> {
                             '${TR.of(context).sort.toUpperCase()}:',
                             style: _labelStyle,
                           ),
-                          DropdownButtonFormField(
+                          DropdownButtonFormField<FilterOrderBy>(
                             items: _sortMap.entries
                                 .map(
                                   (e) => DropdownMenuItem(
@@ -119,7 +119,7 @@ class _FilterDialogState extends State<FilterDialog> {
                             value: _selectedSort,
                             isDense: false,
                             decoration:
-                                InputDecoration.collapsed(hintText: null),
+                                const InputDecoration.collapsed(hintText: null),
                           ),
                         ],
                       ),
@@ -129,7 +129,7 @@ class _FilterDialogState extends State<FilterDialog> {
                             '${TR.of(context).type.toUpperCase()}:',
                             style: _labelStyle,
                           ),
-                          DropdownButtonFormField(
+                          DropdownButtonFormField<FilterType>(
                             items: _typeMap.entries
                                 .map(
                                   (e) => DropdownMenuItem(
@@ -146,18 +146,18 @@ class _FilterDialogState extends State<FilterDialog> {
                             value: _selectedType,
                             isDense: false,
                             decoration:
-                                InputDecoration.collapsed(hintText: null),
+                                const InputDecoration.collapsed(hintText: null),
                           ),
                         ],
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     '${TR.of(context).genre.toUpperCase()}:',
                     style: _labelStyle,
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   BlocBuilder<GenreListCubit, GenreListState>(
                     builder: (context, state) {
                       if (state is GenreListLoaded) {
@@ -208,14 +208,14 @@ class _FilterDialogState extends State<FilterDialog> {
                         setState(() {
                           _selectedSort = _defaultSort;
                           _selectedType = _defaultType;
-                          _selectedGenres = []..addAll(_defaultGenres);
+                          _selectedGenres = [..._defaultGenres];
                         });
                       },
-                child: Text(TR.of(context).reset),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.grey.shade300,
                   onPrimary: Colors.grey.shade800,
                 ),
+                child: Text(TR.of(context).reset),
               );
               final applyButton = ElevatedButton(
                 onPressed: () {
@@ -225,7 +225,7 @@ class _FilterDialogState extends State<FilterDialog> {
                     context.read<BrowseFilterCubit>().changeFilter(Filter(
                           orderBy: _selectedSort,
                           type: _selectedType,
-                          genres: []..addAll(_selectedGenres),
+                          genres: [..._selectedGenres],
                         ));
                   }
                   Navigator.pop(context);
@@ -240,7 +240,7 @@ class _FilterDialogState extends State<FilterDialog> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Expanded(child: resetButton),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Expanded(child: applyButton),
                     ]);
               }
@@ -262,8 +262,8 @@ class _FilterDialogState extends State<FilterDialog> {
   Widget _buildGenreChipsWidget(List<Genre> genres) {
     final bool _isDark = Theme.of(context).brightness == Brightness.dark;
 
-    List<Widget> _list = [];
-    genres.forEach((genre) {
+    final _list = <Widget>[];
+    for (final genre in genres) {
       _list.add(Padding(
         padding: const EdgeInsets.only(right: 8.0, bottom: 16.0),
         child: FilterChip(
@@ -285,7 +285,7 @@ class _FilterDialogState extends State<FilterDialog> {
           },
         ),
       ));
-    });
+    }
     return Wrap(
       children: _list,
     );

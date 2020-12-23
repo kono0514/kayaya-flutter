@@ -18,10 +18,10 @@ class DetailsCubit extends Cubit<DetailsState> {
   DetailsCubit({
     @required this.getDetailUsecase,
     @required this.getDetailWithAnimeUsecase,
-  }) : super(DetailsInitial());
+  }) : super(const DetailsInitial());
 
-  void loadDetails(String id) async {
-    emit(DetailsInitial());
+  Future<void> loadDetails(String id) async {
+    emit(const DetailsInitial());
 
     final result = await getDetailUsecase(GetDetailUsecaseParams(id: id));
     result.fold(
@@ -30,8 +30,8 @@ class DetailsCubit extends Cubit<DetailsState> {
     );
   }
 
-  void loadDetailsFull(String id) async {
-    emit(DetailsInitial());
+  Future<void> loadDetailsFull(String id) async {
+    emit(const DetailsInitial());
 
     final result = await getDetailWithAnimeUsecase(
         GetDetailWithAnimeUsecaseParams(id: id));

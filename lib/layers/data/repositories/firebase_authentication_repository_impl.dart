@@ -46,7 +46,7 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
       return Left(SignInAnonymouslyFailure(message: e.shortMessage));
     } catch (e, s) {
       errorLog(e, s);
-      return Left(SignInAnonymouslyFailure());
+      return const Left(SignInAnonymouslyFailure());
     }
   }
 
@@ -65,7 +65,7 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
       return Left(SignInWithPasswordFailure(message: e.shortMessage));
     } catch (e, s) {
       errorLog(e, s);
-      return Left(SignInWithPasswordFailure());
+      return const Left(SignInWithPasswordFailure());
     }
   }
 
@@ -77,16 +77,16 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
       accessToken = await facebookAuth.login();
     } on FacebookAuthException catch (e) {
       if (e.errorCode == FacebookAuthErrorCode.CANCELLED) {
-        return Left(SignInWithFacebookFailure(message: 'Aborted'));
+        return const Left(SignInWithFacebookFailure(message: 'Aborted'));
       }
-      return Left(SignInWithFacebookFailure());
+      return const Left(SignInWithFacebookFailure());
     } catch (e, s) {
       errorLog(e, s);
-      return Left(SignInWithFacebookFailure());
+      return const Left(SignInWithFacebookFailure());
     }
 
     // Create a credential from the access token
-    final firebase_auth.FacebookAuthCredential credential =
+    final firebase_auth.OAuthCredential credential =
         firebase_auth.FacebookAuthProvider.credential(accessToken.token);
 
     try {
@@ -96,7 +96,7 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
       return Left(SignInWithFacebookFailure(message: e.shortMessage));
     } catch (e, s) {
       errorLog(e, s);
-      return Left(SignInWithFacebookFailure());
+      return const Left(SignInWithFacebookFailure());
     }
   }
 
@@ -107,7 +107,7 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
 
     // Aborted
     if (googleUser == null) {
-      return Left(SignInWithGoogleFailure(message: 'Aborted'));
+      return const Left(SignInWithGoogleFailure(message: 'Aborted'));
     }
 
     // Obtain the auth details from the request
@@ -115,11 +115,11 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
     try {
       _googleAuth = await googleUser.authentication;
     } catch (e) {
-      return Left(SignInWithGoogleFailure());
+      return const Left(SignInWithGoogleFailure());
     }
 
     // Create a new credential
-    final firebase_auth.GoogleAuthCredential credential =
+    final firebase_auth.OAuthCredential credential =
         firebase_auth.GoogleAuthProvider.credential(
       accessToken: _googleAuth.accessToken,
       idToken: _googleAuth.idToken,
@@ -132,7 +132,7 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
       return Left(SignInWithGoogleFailure(message: e.shortMessage));
     } catch (e, s) {
       errorLog(e, s);
-      return Left(SignInWithGoogleFailure());
+      return const Left(SignInWithGoogleFailure());
     }
   }
 
@@ -162,7 +162,7 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
     } on firebase_auth.FirebaseAuthException catch (e) {
       return Left(SignInWithPhoneNumberFailure(message: e.shortMessage));
     } catch (e) {
-      return Left(SignInWithPhoneNumberFailure());
+      return const Left(SignInWithPhoneNumberFailure());
     }
 
     return _completer.future;
@@ -174,7 +174,7 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
     String code,
   }) async {
     // Create a PhoneAuthCredential with the code
-    firebase_auth.PhoneAuthCredential phoneAuthCredential =
+    final firebase_auth.AuthCredential phoneAuthCredential =
         firebase_auth.PhoneAuthProvider.credential(
       verificationId: verificationId,
       smsCode: code,
@@ -188,29 +188,29 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
       return Left(SignInWithPhoneNumberFailure(message: e.shortMessage));
     } catch (e, s) {
       errorLog(e, s);
-      return Left(SignInWithPhoneNumberFailure());
+      return const Left(SignInWithPhoneNumberFailure());
     }
   }
 
   @override
   Future<Either<Failure, Unit>> signOut() async {
     try {
-      bool _googleSignedIn = await googleAuth.isSignedIn();
+      final _googleSignedIn = await googleAuth.isSignedIn();
       if (_googleSignedIn) {
         await googleAuth.signOut();
       }
 
-      bool _facebookSignedIn = (await facebookAuth.isLogged) != null;
+      final _facebookSignedIn = (await facebookAuth.isLogged) != null;
       if (_facebookSignedIn) {
         await facebookAuth.logOut();
       }
 
       await firebaseAuth.signOut();
 
-      return Right(unit);
+      return const Right(unit);
     } catch (e, s) {
       errorLog(e, s);
-      return Left(SignOutFailure());
+      return const Left(SignOutFailure());
     }
   }
 
@@ -238,7 +238,7 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
       userStream.add(UserModel.fromFirebaseUser(firebaseAuth.currentUser));
       return _userCred;
     } else {
-      return await firebaseAuth.signInWithCredential(credential);
+      return firebaseAuth.signInWithCredential(credential);
     }
   }
 
@@ -250,11 +250,11 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
 
 extension ShortErrorMessage on firebase_auth.FirebaseAuthException {
   String get shortMessage {
-    if (this.code == 'credential-already-in-use') {
+    if (code == 'credential-already-in-use') {
       return 'Account already exists. Please logout first and try logging in again.';
     }
     return toBeginningOfSentenceCase(
-      this.code.replaceAll('-', ' '),
+      code.replaceAll('-', ' '),
     );
   }
 }

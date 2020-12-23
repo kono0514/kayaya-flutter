@@ -16,7 +16,7 @@ class FeaturedCubit extends Cubit<FeaturedState> {
     @required this.getFeatured,
   }) : super(FeaturedInitial());
 
-  void fetch() async {
+  Future<void> fetch() async {
     emit(FeaturedInitial());
     final featured = await getFeatured(NoParams());
     featured.fold(

@@ -17,7 +17,7 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
   LoginPhoneCubit({
     @required this.sendPhoneCodeUsecase,
     @required this.verifyPhoneCodeUsecase,
-  }) : super(LoginPhoneState());
+  }) : super(const LoginPhoneState());
 
   void numberChanged(String value) {
     emit(state.copyWith(
@@ -31,12 +31,12 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
     ));
   }
 
-  void sendSMSCode() async {
+  Future<void> sendSMSCode() async {
     emit(state.copyWith(
       status: LoginPhoneStatus.sending,
       otpCode: '',
       verificationId: '',
-      error: Optional.absent(),
+      error: const Optional.absent(),
     ));
     final result = await sendPhoneCodeUsecase(
         SendPhoneCodeUsecaseParams(number: state.phoneNumber));
@@ -49,16 +49,16 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
         emit(state.copyWith(
           status: LoginPhoneStatus.sent,
           verificationId: r,
-          error: Optional.absent(),
+          error: const Optional.absent(),
         ));
       },
     );
   }
 
-  void verifySMSCode() async {
+  Future<void> verifySMSCode() async {
     emit(state.copyWith(
       status: LoginPhoneStatus.verifying,
-      error: Optional.absent(),
+      error: const Optional.absent(),
     ));
     final result = await verifyPhoneCodeUsecase(VerifyPhoneCodeUsecaseParams(
       verificationId: state.verificationId,
@@ -69,7 +69,7 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
         status: LoginPhoneStatus.verifyError,
         error: Optional.of(l.message),
       )),
-      (r) => LoginPhoneState(),
+      (r) => const LoginPhoneState(),
     );
   }
 }

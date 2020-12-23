@@ -15,7 +15,7 @@ class RelationsCubit extends Cubit<RelationsState> {
   RelationsCubit({@required this.getRelationsUsecase})
       : super(RelationsInitial());
 
-  void loadRelations(String id) async {
+  Future<void> loadRelations(String id) async {
     emit(RelationsInitial());
 
     final result = await getRelationsUsecase(GetRelationsUsecaseParams(id: id));

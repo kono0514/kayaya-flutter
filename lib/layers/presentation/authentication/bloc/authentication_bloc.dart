@@ -6,8 +6,8 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../../core/usecase.dart';
 import '../../../../core/services/notification_service.dart';
+import '../../../../core/usecase.dart';
 import '../../../domain/entities/user.dart';
 import '../../../domain/usecases/authentication/get_user_stream_usecase.dart';
 import '../../../domain/usecases/authentication/logout_usecase.dart';
@@ -30,7 +30,7 @@ class AuthenticationBloc
     listenUserChanges();
   }
 
-  void listenUserChanges() async {
+  Future<void> listenUserChanges() async {
     final result = await getUserStreamUsecase(NoParams());
     result.fold((l) => () {}, (stream) {
       _userSubscription = stream.listen(

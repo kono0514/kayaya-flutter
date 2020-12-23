@@ -13,6 +13,7 @@ import '../../domain/entities/episode.dart';
 import '../../domain/repositories/detail_repository.dart';
 import '../datasources/detail_local_datasource.dart';
 import '../datasources/detail_network_datasource.dart';
+import '../models/detail_model.dart';
 
 @Injectable(as: DetailRepository)
 class DetailRepositoryImpl implements DetailRepository {
@@ -27,14 +28,14 @@ class DetailRepositoryImpl implements DetailRepository {
   @override
   Future<Either<Failure, Detail>> getDetail(String id) async {
     try {
-      var cache;
+      DetailModel cache;
       try {
         cache = await localDatasource.fetchDetail(id);
       } on CacheException catch (e, s) {
         errorLog(e.innerException, s);
       }
 
-      var result;
+      DetailModel result;
       if (cache == null) {
         result = await networkDatasource.fetchDetail(id);
         try {

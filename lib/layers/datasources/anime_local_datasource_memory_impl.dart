@@ -18,7 +18,7 @@ class AnimeLocalDatasourceMemoryImpl extends AnimeLocalDatasource {
   }) async {
     try {
       memoryCache.cache<String>('featured', data, duration: duration);
-    } catch (e) {
+    } on Exception catch (e) {
       throw CacheException(e);
     }
   }
@@ -27,7 +27,7 @@ class AnimeLocalDatasourceMemoryImpl extends AnimeLocalDatasource {
   Future<String> fetchFeatured() {
     try {
       return Future.value(memoryCache.read<String>('featured'));
-    } catch (e) {
+    } on Exception catch (e) {
       throw CacheException(e);
     }
   }

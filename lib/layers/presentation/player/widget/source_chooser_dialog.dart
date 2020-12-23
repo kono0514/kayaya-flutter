@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/entities/release.dart';
 import '../../../../locale/generated/l10n.dart';
+import '../../../domain/entities/release.dart';
 
 class SourceChooserDialog extends StatelessWidget {
   final List<Release> releases;
@@ -26,12 +26,19 @@ class SourceChooserDialog extends StatelessWidget {
     }
 
     final dialog = SimpleDialogOption(
+      onPressed: () {
+        Navigator.pop(context, release);
+      },
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+        horizontal: 24.0,
+      ),
       child: Row(
         children: <Widget>[
-          Icon(
+          const Icon(
             Icons.ondemand_video,
           ),
-          SizedBox(width: 10.0),
+          const SizedBox(width: 10.0),
           Expanded(
             child: Text(
               text,
@@ -41,13 +48,6 @@ class SourceChooserDialog extends StatelessWidget {
             ),
           ),
         ],
-      ),
-      onPressed: () {
-        Navigator.pop(context, release);
-      },
-      padding: const EdgeInsets.symmetric(
-        vertical: 16.0,
-        horizontal: 24.0,
       ),
     );
 

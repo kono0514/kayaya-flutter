@@ -29,7 +29,7 @@ class PlayerEpisodesBloc
     @required this.getEpisodePageInfoUsecase,
     @factoryParam @required this.id,
     @factoryParam @required this.startingEpisode,
-  }) : super(PlayerEpisodesInitial());
+  }) : super(const PlayerEpisodesInitial());
 
   @override
   Stream<Transition<PlayerEpisodesEvent, PlayerEpisodesState>> transformEvents(
@@ -82,8 +82,8 @@ class PlayerEpisodesBloc
       if (currentState.negativeError != null ||
           currentState.positiveError != null) {
         yield currentState.copyWith(
-          negativeError: Optional.absent(),
-          positiveError: Optional.absent(),
+          negativeError: const Optional.absent(),
+          positiveError: const Optional.absent(),
         );
       }
     }
@@ -99,17 +99,16 @@ class PlayerEpisodesBloc
         yield currentState.copyWith(
           negativeError: event is PlayerEpisodesFetchPrevious
               ? Optional.of(l.message)
-              : currentState.negativeError,
-          positiveError: event is PlayerEpisodesFetchNext
-              ? Optional.of(l.message)
-              : currentState.positiveError,
+              : null,
+          positiveError:
+              event is PlayerEpisodesFetchNext ? Optional.of(l.message) : null,
         );
       } else {
         yield PlayerEpisodesError(l.message);
       }
     }, (r) async* {
       if (r.total == 0) {
-        yield PlayerEpisodesEmpty();
+        yield const PlayerEpisodesEmpty();
         return;
       }
 
@@ -134,12 +133,11 @@ class PlayerEpisodesBloc
       } else if (event is PlayerEpisodesFetchNext) {
         if (currentState is PlayerEpisodesLoaded) {
           yield currentState.copyWith(
-            positiveEpisodes: currentState.positiveEpisodes == null
-                ? r.elements
-                : r.copyWith(
-                    elements:
-                        currentState.positiveEpisodes.elements + r.elements,
-                  ),
+            positiveEpisodes: r.copyWith(
+              elements: currentState.positiveEpisodes == null
+                  ? r.elements
+                  : currentState.positiveEpisodes.elements + r.elements,
+            ),
           );
         } else {
           yield PlayerEpisodesLoaded(

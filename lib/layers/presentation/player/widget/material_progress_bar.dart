@@ -66,21 +66,6 @@ class _VideoProgressBarState extends State<MaterialVideoProgressBar> {
     }
 
     return GestureDetector(
-      child: Center(
-        child: Container(
-          height: MediaQuery.of(context).size.height / 2,
-          width: MediaQuery.of(context).size.width,
-          color: Colors.transparent,
-          child: CustomPaint(
-            painter: _ProgressBarPainter(
-              controller.value,
-              widget.colors,
-              widget.rewindValue,
-              widget.forwardValue,
-            ),
-          ),
-        ),
-      ),
       onHorizontalDragStart: (DragStartDetails details) {
         if (!controller.value.initialized) {
           return;
@@ -123,6 +108,21 @@ class _VideoProgressBarState extends State<MaterialVideoProgressBar> {
           widget.onTap();
         }
       },
+      child: Center(
+        child: Container(
+          height: MediaQuery.of(context).size.height / 2,
+          width: MediaQuery.of(context).size.width,
+          color: Colors.transparent,
+          child: CustomPaint(
+            painter: _ProgressBarPainter(
+              controller.value,
+              widget.colors,
+              widget.rewindValue,
+              widget.forwardValue,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -143,7 +143,7 @@ class _ProgressBarPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final height = 2.0;
+    const height = 2.0;
 
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -151,7 +151,7 @@ class _ProgressBarPainter extends CustomPainter {
           Offset(0.0, size.height / 2),
           Offset(size.width, size.height / 2 + height),
         ),
-        Radius.circular(4.0),
+        const Radius.circular(4.0),
       ),
       colors.backgroundPaint,
     );
@@ -167,7 +167,7 @@ class _ProgressBarPainter extends CustomPainter {
         position.inMilliseconds / value.duration.inMilliseconds;
     final double playedPart =
         playedPartPercent > 1 ? size.width : playedPartPercent * size.width;
-    for (DurationRange range in value.buffered) {
+    for (final range in value.buffered) {
       final double start = range.startFraction(value.duration) * size.width;
       final double end = range.endFraction(value.duration) * size.width;
       canvas.drawRRect(
@@ -176,7 +176,7 @@ class _ProgressBarPainter extends CustomPainter {
             Offset(start, size.height / 2),
             Offset(end, size.height / 2 + height),
           ),
-          Radius.circular(4.0),
+          const Radius.circular(4.0),
         ),
         colors.bufferedPaint,
       );
@@ -187,7 +187,7 @@ class _ProgressBarPainter extends CustomPainter {
           Offset(0.0, size.height / 2),
           Offset(playedPart, size.height / 2 + height),
         ),
-        Radius.circular(4.0),
+        const Radius.circular(4.0),
       ),
       colors.playedPaint,
     );

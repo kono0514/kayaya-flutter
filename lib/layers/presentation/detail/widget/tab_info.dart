@@ -45,18 +45,18 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                   builder: (context) {
                     final items = <Widget>[];
 
-                    if ((state.details.genres ?? []).length > 0) {
+                    if ((state.details.genres ?? []).isNotEmpty) {
                       items.addAll([
                         Text(
                           TR.of(context).genre,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text(
                           state.details.genres.map((e) => e.name).join(', '),
                           style: Theme.of(context).textTheme.caption,
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                       ]);
                     }
 
@@ -66,12 +66,12 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                           TR.of(context).synopsis,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         HtmlWidget(
                           state.details.description,
                           textStyle: Theme.of(context).textTheme.caption,
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                       ]);
                     }
 
@@ -81,7 +81,7 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                           TR.of(context).trailer,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         InkWell(
                           onTap: () async {
                             final url = state.details.trailer.url;
@@ -100,15 +100,14 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                                 ),
                               ),
                               Container(
-                                decoration: new BoxDecoration(
+                                decoration: BoxDecoration(
                                   color: Colors.black54, // border color
-                                  border:
-                                      Border.all(width: 1, color: Colors.white),
+                                  border: Border.all(color: Colors.white),
                                   shape: BoxShape.circle,
                                 ),
                                 width: 54.0,
                                 height: 54.0,
-                                child: Icon(
+                                child: const Icon(
                                   Icons.play_arrow,
                                   size: 36.0,
                                   color: Colors.white,
@@ -117,7 +116,7 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                       ]);
                     }
 
@@ -132,14 +131,14 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                                   : Colors.yellow.shade800,
                               size: 16,
                             ),
-                            SizedBox(width: 6),
+                            const SizedBox(width: 6),
                             Text(
                               'Score Distribution',
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ],
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         RepaintBoundary(
                           child: _DistributionBarChart(
                             scoreDistribution: state.details.scoreDistribution,
@@ -148,7 +147,7 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
                       ]);
                     }
 
-                    items.add(SizedBox(height: 60));
+                    items.add(const SizedBox(height: 60));
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,7 +159,7 @@ class _InfoTabViewItemState extends State<InfoTabViewItem> {
             );
           }
 
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );
@@ -199,7 +198,7 @@ class __DistributionBarChartState extends State<_DistributionBarChart> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: BarChart(
         BarChartData(
@@ -212,10 +211,8 @@ class __DistributionBarChartState extends State<_DistributionBarChart> {
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 final distribution = distributions[group.x];
                 return BarTooltipItem(
-                  distribution.amount.toString() +
-                      '\n' +
-                      (distribution.score / 10).toString(),
-                  TextStyle(color: Colors.yellow),
+                  '${distribution.amount}\n${distribution.score / 10}',
+                  const TextStyle(color: Colors.yellow),
                 );
               },
             ),

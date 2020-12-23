@@ -21,7 +21,7 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
   final List<TabNavigatorItem> items = [
     TabNavigatorItem(
       navbarItem: () => BottomNavigationBarItem(
-        icon: Icon(Icons.donut_small),
+        icon: const Icon(Icons.donut_small),
         label: TR.current.tabs_discover,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
@@ -31,7 +31,7 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
     ),
     TabNavigatorItem(
       navbarItem: () => BottomNavigationBarItem(
-        icon: Icon(Icons.local_movies),
+        icon: const Icon(Icons.local_movies),
         label: TR.current.tabs_browse,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
@@ -41,7 +41,7 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
     ),
     TabNavigatorItem(
       navbarItem: () => BottomNavigationBarItem(
-        icon: Icon(Icons.library_add),
+        icon: const Icon(Icons.library_add),
         label: TR.current.tabs_library,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
@@ -51,12 +51,12 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
     ),
     TabNavigatorItem(
       navbarItem: () => BottomNavigationBarItem(
-        icon: Icon(Icons.search),
+        icon: const Icon(Icons.search),
         label: TR.current.tabs_search,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
       scrollController: ScrollController(),
-      pageBuilder: (_) => SearchPage(),
+      pageBuilder: (_) => const SearchPage(),
     ),
   ];
   // final ValueNotifier<double> heightNotifier = ValueNotifier<double>(1.0);
@@ -82,13 +82,13 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
         builder: (context) => WillPopScope(
           onWillPop: () async {
             // Pop from the current tab's route stack, if possible.
-            var tabNavigatorPopped = await _currentTabNavigatorItem
+            final tabNavigatorPopped = await _currentTabNavigatorItem
                 .navigatorKey.currentState
                 .maybePop();
 
             // Nothing was popped. This means we're on a tab's root route and user pressed back button.
             if (!tabNavigatorPopped) {
-              if (_tabController.index == 0) return await shouldPopAppRoot();
+              if (_tabController.index == 0) return shouldPopAppRoot();
 
               _tabController.index = 0;
               _previousTabIndex = 0;
@@ -106,7 +106,7 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
               onTap: (index) {
                 // Same tab clicked. Pop or scroll to top
                 if (_previousTabIndex == index) {
-                  var canPop = _currentTabNavigatorItem
+                  final canPop = _currentTabNavigatorItem
                       .navigatorKey.currentState
                       ?.canPop();
 
@@ -194,7 +194,7 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
   TabNavigatorItem get _currentTabNavigatorItem => items[_tabController.index];
 
   Future<bool> shouldPopAppRoot() async {
-    final snackbarVisibleDuration = Duration(seconds: 2);
+    const snackbarVisibleDuration = Duration(seconds: 2);
     final now = DateTime.now();
     final difference = now.difference(_lastBackPressTime ?? now);
 
@@ -211,7 +211,7 @@ class _NavigationTabScaffoldState extends State<NavigationTabScaffold> {
       Scaffold.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Press back again to exit'),
             duration: snackbarVisibleDuration,
           ),

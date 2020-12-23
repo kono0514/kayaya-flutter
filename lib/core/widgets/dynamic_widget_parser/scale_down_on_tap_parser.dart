@@ -9,7 +9,7 @@ class ScaleDownOnTapWidgetParser extends WidgetParser {
       ClickListener listener) {
     return ScaleDownOnTap(
       child: DynamicWidgetBuilder.buildFromMap(
-        map["child"],
+        map["child"] as Map<String, dynamic>,
         buildContext,
         listener,
       ),

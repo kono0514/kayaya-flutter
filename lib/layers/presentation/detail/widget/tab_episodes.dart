@@ -76,7 +76,7 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
               return buildListWidget(state);
             }
 
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           },
         ),
       ),
@@ -118,16 +118,16 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
                     child: IconPopupMenu<String>(
                       items: [
                         PopupMenuItem<String>(
-                          child: Text(TR.of(context).sort_asc),
                           value: 'asc',
+                          child: Text(TR.of(context).sort_asc),
                         ),
                         PopupMenuItem<String>(
-                          child: Text(TR.of(context).sort_desc),
                           value: 'desc',
+                          child: Text(TR.of(context).sort_desc),
                         ),
                       ],
                       title: Text(TR.of(context).sort),
-                      icon: Icon(Icons.sort),
+                      icon: const Icon(Icons.sort),
                       iconColor: Theme.of(context).brightness == Brightness.dark
                           ? Colors.white70
                           : Colors.grey.shade700,
@@ -211,7 +211,6 @@ class _EpisodeListItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             episode.thumbnail != null
                 ? CachedNetworkImage(
@@ -224,7 +223,7 @@ class _EpisodeListItem extends StatelessWidget {
                     height: 120 / 16 * 9,
                     color: Colors.black,
                   ),
-            SizedBox(width: 16.0),
+            const SizedBox(width: 16.0),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,7 +233,7 @@ class _EpisodeListItem extends StatelessWidget {
                     TR.of(context).episode_item(episode.number),
                     style: _textTheme.subtitle1,
                   ),
-                  SizedBox(height: 4.0),
+                  const SizedBox(height: 4.0),
                   Text(
                     episode.title ?? '',
                     maxLines: 2,
@@ -277,7 +276,7 @@ class _EpisodesError extends StatelessWidget {
                 onPressed: () {
                   context.read<EpisodesBloc>().add(EpisodesRefreshed(animeId));
                 },
-                child: Text('Retry'),
+                child: const Text('Retry'),
               ),
             ],
           ),
@@ -306,7 +305,7 @@ class _EpisodesEmpty extends StatelessWidget {
                 onPressed: () {
                   context.read<EpisodesBloc>().add(EpisodesRefreshed(animeId));
                 },
-                child: Text('Retry'),
+                child: const Text('Retry'),
               ),
             ],
           ),

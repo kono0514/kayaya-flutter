@@ -8,13 +8,13 @@ part 'browse_filter_state.dart';
 
 @Injectable()
 class BrowseFilterCubit extends Cubit<BrowseFilterState> {
-  BrowseFilterCubit() : super(BrowseFilterInitial());
+  BrowseFilterCubit() : super(const BrowseFilterInitial());
 
   void changeFilter(Filter filter) {
     emit(BrowseFilterModified(filter));
   }
 
   void resetFilter() {
-    emit(BrowseFilterInitial());
+    emit(const BrowseFilterInitial());
   }
 }

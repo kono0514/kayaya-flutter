@@ -52,7 +52,7 @@ class SearchRepositoryImpl extends SearchRepository {
   Future<Either<Failure, Unit>> saveHistory(String text) async {
     try {
       await localDatasource.cacheQuery(text);
-      return Right(unit);
+      return const Right(unit);
     } on CacheException catch (e, s) {
       errorLog(e.innerException, s);
       return Left(CacheFailure());
@@ -66,7 +66,7 @@ class SearchRepositoryImpl extends SearchRepository {
   Future<Either<Failure, Unit>> clearHistory() async {
     try {
       await localDatasource.clear();
-      return Right(unit);
+      return const Right(unit);
     } on CacheException catch (e, s) {
       errorLog(e.innerException, s);
       return Left(CacheFailure());

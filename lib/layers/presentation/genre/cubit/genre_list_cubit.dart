@@ -12,9 +12,9 @@ part 'genre_list_state.dart';
 class GenreListCubit extends Cubit<GenreListState> {
   final GetGenresUsecase getGenresUsecase;
 
-  GenreListCubit(this.getGenresUsecase) : super(GenreListInitial());
+  GenreListCubit(this.getGenresUsecase) : super(const GenreListInitial());
 
-  void getGenreList() async {
+  Future<void> getGenreList() async {
     final currentState = state;
 
     if (currentState is! GenreListLoaded) {

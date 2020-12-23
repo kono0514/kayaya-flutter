@@ -13,7 +13,7 @@ class Detail extends Equatable {
   final List<ScoreDistribution> scoreDistribution;
   final List<Genre> genres;
 
-  Detail({
+  const Detail({
     @required this.id,
     @required this.description,
     this.startDate,
@@ -41,7 +41,7 @@ class YoutubeTrailer extends Equatable {
   final String url;
   final String thumbnail;
 
-  YoutubeTrailer(this.url, this.thumbnail);
+  const YoutubeTrailer(this.url, this.thumbnail);
 
   @override
   List<Object> get props => [url, thumbnail];
@@ -51,7 +51,7 @@ class ScoreDistribution extends Equatable {
   final int score;
   final int amount;
 
-  ScoreDistribution(this.score, this.amount);
+  const ScoreDistribution(this.score, this.amount);
 
   @override
   List<Object> get props => [score, amount];

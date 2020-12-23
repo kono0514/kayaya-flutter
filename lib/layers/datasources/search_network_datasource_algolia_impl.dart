@@ -20,22 +20,23 @@ class SearchNetworkDatasourceAlgoliaImpl extends SearchNetworkDatasource {
   @override
   Future<List<SearchResultModel>> search(String text) async {
     final _query = algolia.index('animes').setHitsPerPage(20).search(text);
-    var _results;
+    AlgoliaQuerySnapshot _results;
     try {
       _results = await _query.getObjects();
-    } catch (e) {
+    } on Exception catch (e) {
       throw ServerException(e);
     }
 
     final _hits = <SearchResultModel>[];
-    _results.hits.forEach((h) {
+    for (final hit in _results.hits) {
       _hits.add(SearchResultModel.fromJson({
-        'id': h.objectID.split('::').last,
-        'name':
-            pref.languageCode == 'en' ? h.data['name_en'] : h.data['name_mn'],
-        ...h.data,
+        'id': hit.objectID.split('::').last,
+        'name': pref.languageCode == 'en'
+            ? hit.data['name_en']
+            : hit.data['name_mn'],
+        ...hit.data,
       }));
-    });
+    }
     return _hits;
   }
 }

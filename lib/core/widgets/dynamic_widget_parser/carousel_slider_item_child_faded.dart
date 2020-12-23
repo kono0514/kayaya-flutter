@@ -13,14 +13,14 @@ class CarouselSliderItemFadedChildWidgetParser extends WidgetParser {
         gradient: EasingLinearGradient.generate(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
-          fromColor: Color.fromRGBO(0, 0, 0, 0.85),
-          toColor: Color.fromRGBO(0, 0, 0, 0),
+          fromColor: const Color.fromRGBO(0, 0, 0, 0.85),
+          toColor: const Color.fromRGBO(0, 0, 0, 0),
         ),
         border: Border.all(width: 0, color: Colors.transparent),
       ),
       child: map["child"] != null
           ? DynamicWidgetBuilder.buildFromMap(
-              map["child"], buildContext, listener)
+              map["child"] as Map<String, dynamic>, buildContext, listener)
           : null,
     );
   }

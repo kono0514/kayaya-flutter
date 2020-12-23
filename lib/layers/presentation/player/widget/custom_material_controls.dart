@@ -39,7 +39,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   Duration _latestPosition;
   double _latestVolume;
   bool _hideStuff = true;
-  Duration _hideStuffAnimationDuration = Duration(milliseconds: 300);
+  Duration _hideStuffAnimationDuration = const Duration(milliseconds: 300);
   Timer _hideTimer;
   Timer _initTimer;
   Timer _showAfterExpandCollapseTimer;
@@ -49,8 +49,8 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   final barHeight = 48.0;
   final marginSize = 5.0;
 
-  int _rewindDuration = 10;
-  int _forwardDuration = 10;
+  final _rewindDuration = 10;
+  final _forwardDuration = 10;
 
   int _rewindValue = 0;
   int _forwardValue = 0;
@@ -89,7 +89,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
         _hideStuffAnimationDuration = Duration.zero;
         _hideTimer?.cancel();
       });
-      _hideStuffAnimationDuration = Duration(milliseconds: 300);
+      _hideStuffAnimationDuration = const Duration(milliseconds: 300);
     }
   }
 
@@ -105,19 +105,19 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.error,
                     color: Colors.white,
                     size: 42,
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(_latestValue.errorDescription),
                 ],
               ),
             );
     }
 
-    Function onTap = () {
+    GestureTapCallback onTap = () {
       if (_latestValue?.isPlaying == true) {
         _cancelAndRestartTimer();
       } else {
@@ -179,7 +179,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                             _latestValue.isBuffering ||
                             isSeeking
                         ? const Center(
-                            child: const CircularProgressIndicator(),
+                            child: CircularProgressIndicator(),
                           )
                         : _buildMiddleControls(),
                   ),
@@ -221,7 +221,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                               child: Center(
                                 child: Text(
                                   '$_rewindValue seconds',
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                               ),
                             ),
@@ -248,7 +248,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                               child: Center(
                                 child: Text(
                                   '$_forwardValue seconds',
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                               ),
                             ),
@@ -304,10 +304,9 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
     return AnimatedOpacity(
       opacity: _hideStuff ? 0.0 : 1.0,
       duration: _hideStuffAnimationDuration,
-      child: Container(
+      child: SizedBox(
         height: 58,
         child: Row(
-          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
@@ -321,16 +320,16 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                       widget.title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
                         color: Colors.white,
                       ),
                     ),
-                    SizedBox(height: 2.0),
+                    const SizedBox(height: 2.0),
                     Text(
                       widget.subtitle ?? '',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 11.0,
                         fontWeight: FontWeight.w300,
                         color: Colors.white,
@@ -347,13 +346,13 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                 onSelected: (value) async {
                   if (value == 'copy_link') {
                     Clipboard.setData(
-                        new ClipboardData(text: controller.dataSource));
+                        ClipboardData(text: controller.dataSource));
                     Scaffold.of(context)
                       ..hideCurrentSnackBar()
                       ..showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text('URL copied to clipboard'),
-                          duration: const Duration(seconds: 2),
+                          duration: Duration(seconds: 2),
                         ),
                       );
                   } else if (value == 'open_external') {
@@ -396,7 +395,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                     }
                   }
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.more_vert,
                   color: Colors.white,
                 ),
@@ -405,7 +404,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                     PopupMenuItem<String>(
                       value: 'open_external',
                       child: ConstrainedBox(
-                        constraints: BoxConstraints(minWidth: 120.0),
+                        constraints: const BoxConstraints(minWidth: 120.0),
                         child: Row(
                           children: [
                             Icon(
@@ -415,8 +414,8 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                                   .color
                                   .withOpacity(0.8),
                             ),
-                            SizedBox(width: 10),
-                            Text('Open with'),
+                            const SizedBox(width: 10),
+                            const Text('Open with'),
                           ],
                         ),
                       ),
@@ -424,7 +423,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                     PopupMenuItem<String>(
                       value: 'copy_link',
                       child: ConstrainedBox(
-                        constraints: BoxConstraints(minWidth: 120.0),
+                        constraints: const BoxConstraints(minWidth: 120.0),
                         child: Row(
                           children: [
                             Icon(
@@ -434,8 +433,8 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                                   .color
                                   .withOpacity(0.8),
                             ),
-                            SizedBox(width: 10),
-                            Text('Copy Link'),
+                            const SizedBox(width: 10),
+                            const Text('Copy Link'),
                           ],
                         ),
                       ),
@@ -444,7 +443,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                       PopupMenuItem<String>(
                         value: 'change_speed',
                         child: ConstrainedBox(
-                          constraints: BoxConstraints(minWidth: 120.0),
+                          constraints: const BoxConstraints(minWidth: 120.0),
                           child: Row(
                             children: [
                               Icon(
@@ -454,8 +453,8 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                                     .color
                                     .withOpacity(0.8),
                               ),
-                              SizedBox(width: 10),
-                              Text('Speed'),
+                              const SizedBox(width: 10),
+                              const Text('Speed'),
                             ],
                           ),
                         ),
@@ -476,14 +475,14 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
     return AnimatedOpacity(
       opacity: _hideStuff ? 0.0 : 1.0,
       duration: _hideStuffAnimationDuration,
-      child: Container(
+      child: SizedBox(
         height: barHeight,
         child: Padding(
           padding: const EdgeInsets.only(left: 14.0, right: 14.0),
           child: Row(
             children: <Widget>[
               chewieController.isLive
-                  ? Expanded(child: const Text('LIVE'))
+                  ? const Expanded(child: Text('LIVE'))
                   : _buildPosition(),
               chewieController.isLive ? const SizedBox() : _buildProgressBar(),
               chewieController.allowMuting
@@ -500,8 +499,8 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   }
 
   Widget _buildPipButton() {
-    void _launchPipPermissionIntent() async {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    Future<void> _launchPipPermissionIntent() async {
+      final PackageInfo packageInfo = await PackageInfo.fromPlatform();
       android_intent.Intent()
         ..setAction('android.settings.PICTURE_IN_PICTURE_SETTINGS')
         ..setData(Uri.parse("package:${packageInfo.packageName}"))
@@ -512,7 +511,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
 
     return PlayerCircleButton(
       child: IconButton(
-        icon: Icon(Icons.picture_in_picture_alt),
+        icon: const Icon(Icons.picture_in_picture_alt),
         color: Colors.white,
         tooltip: 'Picture-in-Picture',
         onPressed: () async {
@@ -547,7 +546,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   Widget _buildQualityButton() {
     return PlayerCircleButton(
       child: IconButton(
-        icon: Icon(Icons.high_quality),
+        icon: const Icon(Icons.high_quality),
         color: Colors.white,
         tooltip: 'Quality',
         onPressed: () async {
@@ -558,7 +557,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
           final chosenQuality = await showCustomMaterialSheet<int>(
             context: context,
             useRootNavigator: true,
-            builder: (context) => PlayerChooserDialog<int>(
+            builder: (context) => const PlayerChooserDialog<int>(
               values: {
                 480: '480p',
                 720: '720p',
@@ -597,7 +596,6 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
       duration: _hideStuffAnimationDuration,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // _buildRewindButton(),
           _buildPlayPause(),
@@ -617,7 +615,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
             top: -26,
             child: Text(
               '- ${formatDuration(Duration(seconds: _rewindValue))}s',
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         SizedBox(
@@ -664,7 +662,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
             top: -26,
             child: Text(
               '+ ${formatDuration(Duration(seconds: _forwardValue))}s',
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         SizedBox(
@@ -729,7 +727,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
 
   // Process click events when player UI is visible
   Widget _buildHitArea() {
-    Function onTap = () {
+    GestureTapCallback onTap = () {
       setState(() {
         _hideStuff = true;
       });
@@ -813,7 +811,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   }
 
   Widget _buildPosition() {
-    var position = _latestPosition != null ? _latestPosition : Duration.zero;
+    var position = _latestPosition ?? Duration.zero;
     if (isSeeking) {
       final _seeked = isSeekingForward ? _forwardValue : -_rewindValue;
       position = position + Duration(seconds: _seeked);
@@ -823,10 +821,10 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
         : Duration.zero;
 
     return Padding(
-      padding: EdgeInsets.only(top: 3.0),
+      padding: const EdgeInsets.only(top: 3.0),
       child: Text(
         '${formatDuration(position)} / ${formatDuration(duration)}',
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 12.0,
           color: Colors.white,
         ),
@@ -903,7 +901,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
     }
   }
 
-  Future<Null> _initialize() async {
+  Future<void> _initialize() async {
     controller.addListener(_updateState);
     widget.uiController.addListener(_uiControllerListener);
 
@@ -915,7 +913,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
     }
 
     if (chewieController.showControlsOnInitialize) {
-      _initTimer = Timer(Duration(milliseconds: 200), () {
+      _initTimer = Timer(const Duration(milliseconds: 200), () {
         setState(() {
           _hideStuff = false;
         });
@@ -928,7 +926,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
       _hideStuff = true;
 
       chewieController.toggleFullScreen();
-      _showAfterExpandCollapseTimer = Timer(Duration(milliseconds: 300), () {
+      _showAfterExpandCollapseTimer = Timer(const Duration(milliseconds: 300), () {
         setState(() {
           _cancelAndRestartTimer();
         });
@@ -945,7 +943,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   }
 
   void _play() {
-    bool isFinished = _latestPosition >= _latestValue.duration;
+    final isFinished = _latestPosition >= _latestValue.duration;
 
     _cancelAndRestartTimer();
 
@@ -955,7 +953,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
       });
     } else {
       if (isFinished) {
-        controller.seekTo(Duration(seconds: 0));
+        controller.seekTo(const Duration());
       }
       controller.play();
     }
@@ -1014,7 +1012,7 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
   Widget _buildProgressBar() {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.only(left: 18.0, right: 18.0),
+        padding: const EdgeInsets.only(left: 18.0, right: 18.0),
         child: MaterialVideoProgressBar(
           controller,
           rewindValue: _rewindValue,
@@ -1067,7 +1065,7 @@ class PlayerChooserDialog<T> extends StatelessWidget {
 
     return ListView.builder(
       shrinkWrap: true,
-      physics: ScrollPhysics(),
+      physics: const ScrollPhysics(),
       itemBuilder: (context, index) {
         final _key = values.keys.elementAt(index);
         final _value = values[_key];
@@ -1082,7 +1080,7 @@ class PlayerChooserDialog<T> extends StatelessWidget {
                       color: selectedColor,
                     )
                   : Container(width: 20.0),
-              SizedBox(width: 16.0),
+              const SizedBox(width: 16.0),
               Text(_value),
             ],
           ),

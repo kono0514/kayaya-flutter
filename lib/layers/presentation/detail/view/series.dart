@@ -22,7 +22,7 @@ class SeriesPage extends StatelessWidget {
   final Anime anime;
   final bool isMinimal;
 
-  SeriesPage(this.anime, {this.isMinimal = false});
+  const SeriesPage(this.anime, {this.isMinimal = false});
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class SeriesPage extends StatelessWidget {
                   anime: anime,
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               _SeriesSubscribeButton(
                 anime: anime,
                 isMinimal: isMinimal,
@@ -84,9 +84,9 @@ class SeriesPage extends StatelessWidget {
               TR.of(context).related,
             ],
             tabViews: [
-              InfoTabViewItem(tabKey: Key('Tab0')),
-              EpisodesTabViewItem(tabKey: Key('Tab1'), anime: anime),
-              RelatedTabViewItem(tabKey: Key('Tab2'), id: anime.id),
+              const InfoTabViewItem(tabKey: Key('Tab0')),
+              EpisodesTabViewItem(tabKey: const Key('Tab1'), anime: anime),
+              RelatedTabViewItem(tabKey: const Key('Tab2'), id: anime.id),
             ],
           );
         },
@@ -109,14 +109,13 @@ class _SeriesPlayButton extends StatelessWidget {
       height: 50,
       child: SpinnerButton(
         label: Text(TR.of(context).play.toUpperCase()),
-        loading: false,
-        icon: Icon(Icons.play_circle_outline),
+        icon: const Icon(Icons.play_circle_outline),
         onPressed: () {
           Navigator.of(context, rootNavigator: true).pushNamed(
             Routes.seriesPlayer,
             arguments: SeriesPlayerArguments(
               anime: anime,
-              episode: Right(1),
+              episode: const Right(1),
             ),
           );
         },
@@ -167,7 +166,7 @@ class _SeriesSubscribeButton extends StatelessWidget {
         child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
           builder: (context, state) {
             Icon icon;
-            Function onPressed = () {};
+            VoidCallback onPressed = () {};
             bool loading = true;
             Color buttonColor;
             String tooltip = '';
@@ -196,8 +195,9 @@ class _SeriesSubscribeButton extends StatelessWidget {
               child: Tooltip(
                 message: tooltip,
                 preferBelow: false,
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-                margin: EdgeInsets.only(bottom: 10.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 10.0),
+                margin: const EdgeInsets.only(bottom: 10.0),
                 child: SpinnerButton(
                   loading: loading,
                   icon: icon,
@@ -208,7 +208,7 @@ class _SeriesSubscribeButton extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     primary: buttonColor,
-                    padding: EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(0),
                   ),
                 ),
               ),

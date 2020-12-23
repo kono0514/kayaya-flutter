@@ -5,7 +5,7 @@ import '../../domain/entities/anime_relation.dart';
 import 'anime_model.dart';
 
 class AnimeRelationModel extends AnimeRelation {
-  AnimeRelationModel({
+  const AnimeRelationModel({
     @required List<AnimeRelatedModel> related,
     @required List<AnimeRecommendationModel> recommendations,
   }) : super(
@@ -27,7 +27,7 @@ class AnimeRelationModel extends AnimeRelation {
 }
 
 class AnimeRelatedModel extends AnimeRelated {
-  AnimeRelatedModel({
+  const AnimeRelatedModel({
     @required String relatedType,
     @required AnimeModel anime,
   }) : super(relatedType: relatedType, anime: anime);
@@ -42,7 +42,7 @@ class AnimeRelatedModel extends AnimeRelated {
 }
 
 class AnimeRecommendationModel extends AnimeRecommendation {
-  AnimeRecommendationModel({
+  const AnimeRecommendationModel({
     @required int rating,
     @required AnimeModel anime,
   }) : super(

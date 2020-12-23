@@ -15,23 +15,34 @@ class CustomListViewWidgetParser extends WidgetParser {
       scrollDirection = Axis.horizontal;
     }
 
-    var reverse = map.containsKey("reverse") ? map['reverse'] : false;
-    var shrinkWrap = map.containsKey("shrinkWrap") ? map["shrinkWrap"] : false;
-    var cacheExtent = map.containsKey("cacheExtent") ? map["cacheExtent"] : 0.0;
-    var padding = map.containsKey('padding')
-        ? parseEdgeInsetsGeometry(map['padding'])
+    final bool reverse = map.containsKey("reverse") && map['reverse'] as bool;
+    final bool shrinkWrap =
+        map.containsKey("shrinkWrap") && map["shrinkWrap"] as bool;
+    final double cacheExtent =
+        map.containsKey("cacheExtent") ? map["cacheExtent"] as double : 0.0;
+    final EdgeInsetsGeometry padding = map.containsKey('padding')
+        ? parseEdgeInsetsGeometry(map['padding'] as String)
         : null;
-    var itemExtent = map.containsKey("itemExtent") ? map["itemExtent"] : null;
-    var children = DynamicWidgetBuilder.buildWidgets(
-        map['children'], buildContext, listener);
-    var scrollPhysics = map.containsKey("scrollPhysics")
-        ? parseScrollPhysics(map['scrollPhysics'])
+    final double itemExtent =
+        map.containsKey("itemExtent") ? map["itemExtent"] as double : null;
+    final children = DynamicWidgetBuilder.buildWidgets(
+        map['children'] as List, buildContext, listener);
+    final ScrollPhysics scrollPhysics = map.containsKey("scrollPhysics")
+        ? parseScrollPhysics(map['scrollPhysics'] as String)
         : null;
 
-    var params = new ListViewParams(scrollDirection, reverse, shrinkWrap,
-        cacheExtent, padding, itemExtent, children, scrollPhysics);
-
-    return new ListViewWidget(params);
+    return ListViewWidget(
+      params: ListViewParams(
+        scrollDirection: scrollDirection,
+        reverse: reverse,
+        shrinkWrap: shrinkWrap,
+        cacheExtent: cacheExtent,
+        padding: padding,
+        itemExtent: itemExtent,
+        children: children,
+        scrollPhysics: scrollPhysics,
+      ),
+    );
   }
 
   @override
@@ -39,37 +50,38 @@ class CustomListViewWidgetParser extends WidgetParser {
 }
 
 class ListViewWidget extends StatefulWidget {
-  final ListViewParams _params;
+  final ListViewParams params;
 
-  ListViewWidget(this._params);
+  const ListViewWidget({@required this.params});
 
   @override
-  _ListViewWidgetState createState() => _ListViewWidgetState(_params);
+  _ListViewWidgetState createState() => _ListViewWidgetState();
 }
 
 class _ListViewWidgetState extends State<ListViewWidget> {
-  ListViewParams _params;
-  List<Widget> _items = [];
+  final _items = <Widget>[];
 
-  _ListViewWidgetState(this._params) {
-    if (_params.children != null) {
-      _items.addAll(_params.children);
+  @override
+  void initState() {
+    super.initState();
+    if (widget.params.children != null) {
+      _items.addAll(widget.params.children);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      scrollDirection: _params.scrollDirection,
-      reverse: _params.reverse,
-      shrinkWrap: _params.shrinkWrap,
-      cacheExtent: _params.cacheExtent,
-      padding: _params.padding,
+      scrollDirection: widget.params.scrollDirection,
+      reverse: widget.params.reverse,
+      shrinkWrap: widget.params.shrinkWrap,
+      cacheExtent: widget.params.cacheExtent,
+      padding: widget.params.padding,
       itemCount: _items.length,
       itemBuilder: (context, index) {
         return _items[index];
       },
-      physics: _params.scrollPhysics,
+      physics: widget.params.scrollPhysics,
     );
   }
 }
@@ -84,13 +96,14 @@ class ListViewParams {
   List<Widget> children;
   ScrollPhysics scrollPhysics;
 
-  ListViewParams(
-      this.scrollDirection,
-      this.reverse,
-      this.shrinkWrap,
-      this.cacheExtent,
-      this.padding,
-      this.itemExtent,
-      this.children,
-      this.scrollPhysics);
+  ListViewParams({
+    @required this.scrollDirection,
+    @required this.reverse,
+    @required this.shrinkWrap,
+    @required this.cacheExtent,
+    @required this.padding,
+    @required this.itemExtent,
+    @required this.children,
+    @required this.scrollPhysics,
+  });
 }

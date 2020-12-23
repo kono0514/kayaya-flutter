@@ -24,7 +24,7 @@ class SeekRectangleArcClipper extends CustomClipper<Path> {
   }
 
   Path _getBottomPath(Size size) {
-    var path = Path();
+    final path = Path();
     path.lineTo(0.0, size.height - height);
     path.quadraticBezierTo(
         size.width / 4, size.height, size.width / 2, size.height);
@@ -38,7 +38,7 @@ class SeekRectangleArcClipper extends CustomClipper<Path> {
   }
 
   Path _getTopPath(Size size) {
-    var path = Path();
+    final path = Path();
     path.moveTo(0.0, height);
 
     path.quadraticBezierTo(size.width / 4, 0.0, size.width / 2, 0.0);
@@ -52,7 +52,7 @@ class SeekRectangleArcClipper extends CustomClipper<Path> {
   }
 
   Path _getLeftPath(Size size) {
-    var path = Path();
+    final path = Path();
     path.moveTo(height, 0.0);
 
     path.quadraticBezierTo(0.0, size.height / 4, 0.0, size.height / 2);
@@ -66,7 +66,7 @@ class SeekRectangleArcClipper extends CustomClipper<Path> {
   }
 
   Path _getRightPath(Size size) {
-    var path = Path();
+    final path = Path();
     path.moveTo(size.width - height, 0.0);
 
     path.quadraticBezierTo(
@@ -83,7 +83,7 @@ class SeekRectangleArcClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    SeekRectangleArcClipper oldie = oldClipper as SeekRectangleArcClipper;
+    final oldie = oldClipper as SeekRectangleArcClipper;
     return height != oldie.height || side != oldie.side;
   }
 }

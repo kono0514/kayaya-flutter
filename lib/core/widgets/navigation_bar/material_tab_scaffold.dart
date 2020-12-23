@@ -16,7 +16,7 @@ class CurrentNavigationTabModel extends ChangeNotifier {
   CurrentNavigationTabModel({int defaultIndex = 0}) : _index = defaultIndex;
 
   void changeIndex(int index) {
-    this._index = index;
+    _index = index;
     notifyListeners();
   }
 }
@@ -52,7 +52,7 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
   final List<TabNavigatorItem> items = [
     TabNavigatorItem(
       navbarItem: () => BottomNavigationBarItem(
-        icon: Icon(Icons.donut_small),
+        icon: const Icon(Icons.donut_small),
         label: TR.current.tabs_discover,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
@@ -62,7 +62,7 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
     ),
     TabNavigatorItem(
       navbarItem: () => BottomNavigationBarItem(
-        icon: Icon(Icons.local_movies),
+        icon: const Icon(Icons.local_movies),
         label: TR.current.tabs_browse,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
@@ -72,7 +72,7 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
     ),
     TabNavigatorItem(
       navbarItem: () => BottomNavigationBarItem(
-        icon: Icon(Icons.library_books),
+        icon: const Icon(Icons.library_books),
         label: TR.current.tabs_library,
       ),
       navigatorKey: GlobalKey<NavigatorState>(),
@@ -82,7 +82,7 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
     ),
     TabNavigatorItem(
       navbarItem: () => BottomNavigationBarItem(
-        icon: Icon(Icons.search),
+        icon: const Icon(Icons.search),
         label: TR.current.tabs_search,
       ),
       route: Routes.searchPage,
@@ -115,14 +115,15 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
                   items[context.read<CurrentNavigationTabModel>().index];
 
               // Pop from the current tab's route stack, if possible.
-              var tabNavigatorPopped = await _currentTabNavigatorItem
+              final tabNavigatorPopped = await _currentTabNavigatorItem
                   .navigatorKey.currentState
                   .maybePop();
 
               // Nothing was popped. This means we're on a tab's root route and user pressed back button.
               if (!tabNavigatorPopped) {
-                if (context.read<CurrentNavigationTabModel>().index == 0)
-                  return await shouldPopAppRoot(context);
+                if (context.read<CurrentNavigationTabModel>().index == 0) {
+                  return shouldPopAppRoot(context);
+                }
 
                 _changeTab(0);
                 return false;
@@ -132,7 +133,7 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
             },
             child: PageView.builder(
               controller: _pageController,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               onPageChanged: (index) {
                 context.read<CurrentNavigationTabModel>().changeIndex(index);
               },
@@ -143,7 +144,6 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
                   navigatorKey: item.navigatorKey,
                   onGenerateRoute: MyRouter(),
                   builder: (context) {
-                    print('CustomMaterialTabView builder');
                     return KeepAliveWidget(
                       child: item.pageBuilder(item.scrollController),
                     );
@@ -162,10 +162,9 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
               border: Border(
                 top: BorderSide(
                   color: Theme.of(context).brightness == Brightness.dark
-                      ? Color(0x29000000)
-                      : Color(0x4C000000),
+                      ? const Color(0x29000000)
+                      : const Color(0x4C000000),
                   width: 0.0, // One physical pixel.
-                  style: BorderStyle.solid,
                 ),
               ),
             ),
@@ -173,7 +172,6 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
               builder: (context, tabModel, child) => BottomNavigationBar(
                 elevation: 0.0,
                 type: BottomNavigationBarType.fixed,
-                unselectedFontSize: 12.0,
                 selectedFontSize: 12.0,
                 showUnselectedLabels: false,
                 items: items.map((e) => e.navbarItem()).toList(),
@@ -183,7 +181,7 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
                   if (tabModel.index == index) {
                     final _currentTabNavigatorItem = items[tabModel.index];
 
-                    var canPop = _currentTabNavigatorItem
+                    final canPop = _currentTabNavigatorItem
                         .navigatorKey.currentState
                         ?.canPop();
 
@@ -223,12 +221,12 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
   }
 
   Future<bool> shouldPopAppRoot(BuildContext context) async {
-    final snackbarVisibleDuration = Duration(seconds: 2);
+    const snackbarVisibleDuration = Duration(seconds: 2);
     final now = DateTime.now();
 
-    var difference;
+    Duration difference;
     if (_lastBackPressTime == null) {
-      difference = Duration(seconds: 3);
+      difference = const Duration(seconds: 3);
     } else {
       difference = now.difference(_lastBackPressTime);
     }
@@ -247,7 +245,7 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
       Scaffold.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Press back again to exit'),
             duration: snackbarVisibleDuration,
           ),

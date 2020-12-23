@@ -10,7 +10,7 @@ class _PrefKeys {
 }
 
 abstract class PreferencesDatasource {
-  dynamic read(String key, {dynamic defaultValue});
+  T read<T>(String key, {T defaultValue});
   Future<void> write(String key, dynamic value);
   Future<void> remove(String key);
 }
@@ -22,8 +22,8 @@ class HivePreferencesDatasource implements PreferencesDatasource {
   HivePreferencesDatasource({@Named('preferencesBox') @required this.hiveBox});
 
   @override
-  dynamic read(String key, {dynamic defaultValue}) {
-    return hiveBox.get(key, defaultValue: defaultValue);
+  T read<T>(String key, {T defaultValue}) {
+    return hiveBox.get(key, defaultValue: defaultValue) as T;
   }
 
   @override
@@ -59,7 +59,7 @@ class PreferencesService {
     List<String> _history =
         dataSource.read(_PrefKeys.searchHistory, defaultValue: <String>[]);
     if (_history.length >= 20) {
-      _history = _history.getRange(0, 20);
+      _history = _history.getRange(0, 20).toList();
     }
 
     _history.removeWhere((element) => element == query);

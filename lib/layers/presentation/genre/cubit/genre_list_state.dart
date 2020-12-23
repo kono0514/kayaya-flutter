@@ -21,7 +21,7 @@ class GenreListLoading extends GenreListState {
 class GenreListLoaded extends GenreListState {
   final List<Genre> genres;
 
-  GenreListLoaded(this.genres);
+  const GenreListLoaded(this.genres);
 
   @override
   List<Object> get props => [genres];
@@ -30,7 +30,7 @@ class GenreListLoaded extends GenreListState {
 class GenreListError extends GenreListState {
   final String error;
 
-  GenreListError(this.error);
+  const GenreListError(this.error);
 
   @override
   List<Object> get props => [error];

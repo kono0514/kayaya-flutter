@@ -11,8 +11,8 @@ import 'package:injectable/injectable.dart';
 
 import 'core/services/notification_service.dart';
 import 'core/services/preferences_service.dart';
-import 'injection.config.dart';
 import 'core/utils/graphql_client.dart';
+import 'injection.config.dart';
 
 final getIt = GetIt.instance;
 
@@ -49,7 +49,7 @@ abstract class RegisterModule {
   NotificationService get notificationService => NotificationService();
 
   @lazySingleton
-  Algolia get algolia => Algolia.init(
+  Algolia get algolia => const Algolia.init(
         applicationId: 'IBF8ZIWBKS',
         apiKey: 'a248f7500d9424891a3892b7eadd25a7',
       );

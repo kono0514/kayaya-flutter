@@ -92,20 +92,16 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
   void setupVideo(Episode episode, {Release release}) {
     isPlayingValue = false;
     currentEpisode = episode;
-    if (release == null) {
-      release = episode.releases.first;
-    }
+    release ??= episode.releases.first;
     playerController = VideoPlayerController.network(release.url);
     chewieController = ChewieController(
       videoPlayerController: playerController,
       deviceOrientationsAfterFullScreen: [DeviceOrientation.portraitUp],
       aspectRatio: 16 / 9,
-      allowFullScreen: true,
       allowedScreenSleep: false,
       autoInitialize: true,
       autoPlay: true,
       allowMuting: false,
-      allowPlaybackSpeedChanging: true,
       showControlsOnInitialize: false,
       customControls: CustomMaterialControls(
         title: widget.anime.name,
@@ -195,7 +191,7 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
     }
   }
 
-  void changeVideo(Episode episode) async {
+  Future<void> changeVideo(Episode episode) async {
     // First create and assign new controllers for video player and chewie.
     // Then we dispose the old controllers after that. Disposing it this way (after)
     // is safe because it is no longer used by anything (video player or chewie)
@@ -240,7 +236,7 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
             child: AspectRatio(
               aspectRatio: 16 / 9,
               child: isLazyLoadInitialEpisode && !lazyLoadedInitialEpisode
-                  ? Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator())
                   : Chewie(controller: chewieController),
             ),
           ),
@@ -274,7 +270,7 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
             isLazyLoadInitialEpisode &&
             !lazyLoadedInitialEpisode) {
           lazyLoadedInitialEpisode = true;
-          var e = state.positiveEpisodes.elements.firstWhere(
+          final e = state.positiveEpisodes.elements.firstWhere(
               (episode) => episode.number == startingEpisode,
               orElse: () => null);
           if (e != null) {
@@ -301,14 +297,14 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
       },
       builder: (context, state) {
         if (state is PlayerEpisodesError) {
-          return Center(child: Text('Error'));
+          return const Center(child: Text('Error'));
         }
 
         if (state is PlayerEpisodesLoaded) {
           return _buildPlaylistList(state);
         }
 
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }

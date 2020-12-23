@@ -9,7 +9,7 @@ class SignInButton extends SpinnerButton {
     Widget label,
     bool loading = false,
     bool disabled = false,
-    Function onPressed,
+    VoidCallback onPressed,
     Color color,
     Color spinnerColor,
   }) : super(
@@ -38,7 +38,6 @@ class SignInButton extends SpinnerButton {
           spinnerColor: spinnerColor,
           childBuilder: (context, spinner) {
             return Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 icon,
                 Expanded(

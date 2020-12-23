@@ -31,7 +31,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   Stream<Transition<SearchEvent, SearchState>> transformEvents(
       Stream<SearchEvent> events, transitionFn) {
     return events
-        .debounceTime(Duration(milliseconds: 300))
+        .debounceTime(const Duration(milliseconds: 300))
         .switchMap(transitionFn);
   }
 
@@ -57,7 +57,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         yield currentState.copyWith(isLoading: true);
       } else {
         yield SearchLoaded(
-          result: [],
+          result: const [],
           query: event.query,
           isLoading: true,
         );

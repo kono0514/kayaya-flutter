@@ -24,7 +24,10 @@ class IconPopupMenu<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<T>(
-      offset: Offset(32.0, 0.0),
+      offset: const Offset(32.0, 0.0),
+      itemBuilder: (context) => items,
+      initialValue: initialValue ?? items.first.value,
+      onSelected: onSelected,
       child: Padding(
         padding: padding ?? const EdgeInsets.fromLTRB(0, 4, 8, 4),
         child: IconTheme(
@@ -37,15 +40,12 @@ class IconPopupMenu<T> extends StatelessWidget {
                   child: icon,
                 ),
               title,
-              SizedBox(width: 8.0),
-              Icon(Icons.arrow_drop_down),
+              const SizedBox(width: 8.0),
+              const Icon(Icons.arrow_drop_down),
             ],
           ),
         ),
       ),
-      itemBuilder: (context) => items,
-      initialValue: initialValue ?? items.first.value,
-      onSelected: onSelected,
     );
   }
 }

@@ -7,7 +7,7 @@ class AnimeRelation extends Equatable {
   final List<AnimeRelated> related;
   final List<AnimeRecommendation> recommendations;
 
-  AnimeRelation({
+  const AnimeRelation({
     @required this.related,
     @required this.recommendations,
   });
@@ -20,7 +20,7 @@ class AnimeRelated extends Equatable {
   final String relatedType;
   final Anime anime;
 
-  AnimeRelated({
+  const AnimeRelated({
     @required this.relatedType,
     @required this.anime,
   });
@@ -33,7 +33,7 @@ class AnimeRecommendation extends Equatable {
   final int rating;
   final Anime anime;
 
-  AnimeRecommendation({
+  const AnimeRecommendation({
     @required this.rating,
     @required this.anime,
   });

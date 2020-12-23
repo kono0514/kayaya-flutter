@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 import '../../domain/entities/user.dart';
 
 class UserModel extends User {
-  UserModel({
+  const UserModel({
     @required String id,
     @required String email,
     @required String name,
