@@ -11,8 +11,14 @@ typedef GetSearchSuggestions = Future<List<String>> Function();
 
 class Search extends SearchDelegate<String> {
   final SearchBloc searchBloc;
+  bool _doNextSearchImmediately = false;
 
   Search(this.searchBloc);
+
+  void searchTextImmediately(String text) {
+    _doNextSearchImmediately = true;
+    query = text;
+  }
 
   @override
   ThemeData appBarTheme(BuildContext context) {
@@ -36,7 +42,8 @@ class Search extends SearchDelegate<String> {
       IconButton(
         icon: const Icon(Icons.close),
         onPressed: () {
-          query = "";
+          searchTextImmediately('');
+          FocusScope.of(context).requestFocus();
         },
       ),
     ];
@@ -59,7 +66,12 @@ class Search extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    searchBloc.add(QueryChanged(query));
+    if (_doNextSearchImmediately) {
+      _doNextSearchImmediately = false;
+      searchBloc.add(QueryChanged(query));
+    } else {
+      searchBloc.add(QueryChangedTyping(query));
+    }
     return _buildResults(context);
   }
 
@@ -76,7 +88,8 @@ class Search extends SearchDelegate<String> {
             itemBuilder: (context, index) => SearchSuggestionItem(
               query: state.result[index],
               onTap: (value) {
-                query = value;
+                searchTextImmediately(value);
+                FocusScope.of(context).unfocus();
               },
             ),
             itemCount: state.result.length,

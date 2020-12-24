@@ -30,9 +30,18 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   @override
   Stream<Transition<SearchEvent, SearchState>> transformEvents(
       Stream<SearchEvent> events, transitionFn) {
-    return events
-        .debounceTime(const Duration(milliseconds: 300))
-        .switchMap(transitionFn);
+    final forwardStream = events.where((event) => event is QueryChanged);
+
+    final debounceStream = events
+        .where((event) => event is QueryChangedTyping)
+        .debounce((event) => event.query == ''
+            ? TimerStream(event, const Duration())
+            : TimerStream(event, const Duration(milliseconds: 500)));
+
+    return MergeStream([
+      forwardStream,
+      debounceStream,
+    ]).switchMap(transitionFn);
   }
 
   @override
@@ -41,43 +50,42 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   ) async* {
     final currentState = state;
 
-    if (event is QueryChanged) {
-      if (event.query.trim() == '') {
-        final _history = await getSearchHistoryUsecase(NoParams());
-        yield* _history.fold((l) async* {
-          yield SearchError(l.message);
-        }, (r) async* {
-          yield SearchHistoryLoaded(result: r);
-        });
-        return;
-      }
+    if (event.query.trim() == '') {
+      final _history = await getSearchHistoryUsecase(NoParams());
+      yield* _history.fold((l) async* {
+        yield SearchError(l.message);
+      }, (r) async* {
+        yield SearchHistoryLoaded(result: r);
+      });
+      return;
+    }
 
-      if (currentState is SearchLoaded) {
-        if (currentState.query == event.query) return;
-        yield currentState.copyWith(isLoading: true);
-      } else {
-        yield SearchLoaded(
-          result: const [],
-          query: event.query,
-          isLoading: true,
-        );
-      }
-
-      final result = await searchByTextUsecase(
-          SearchByTextUsecaseParams(text: event.query));
-
-      yield* result.fold(
-        (l) async* {
-          yield SearchError(l.message);
-        },
-        (r) async* {
-          yield SearchLoaded(
-            result: r,
-            query: event.query,
-            isLoading: false,
-          );
-        },
+    if (currentState is SearchLoaded) {
+      if (currentState.query == event.query) return;
+      yield currentState.copyWith(isLoading: true);
+    } else {
+      yield SearchLoaded(
+        result: const [],
+        query: event.query,
+        isLoading: true,
       );
     }
+
+    final result = await searchByTextUsecase(
+      SearchByTextUsecaseParams(text: event.query),
+    );
+
+    yield* result.fold(
+      (l) async* {
+        yield SearchError(l.message);
+      },
+      (r) async* {
+        yield SearchLoaded(
+          result: r,
+          query: event.query,
+          isLoading: false,
+        );
+      },
+    );
   }
 }
