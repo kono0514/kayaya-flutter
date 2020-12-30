@@ -167,9 +167,11 @@ packages:
   chewie:
     dependency: "direct main"
     description:
-      path: "../chewie"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "7a1c40aff9d2b774dd022e7e4d3496fa528f8b80"
+      url: "https://github.com/kono0514/chewie_extended.git"
+    source: git
     version: "0.10.4"
   cli_util:
     dependency: transitive
@@ -389,9 +391,11 @@ packages:
   flutter_auto_pip:
     dependency: "direct main"
     description:
-      path: "../flutter_auto_pip"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "519f68ef298d11a58d2afcd9695e93f45f6e623c"
+      url: "https://github.com/kono0514/flutter-auto-pip.git"
+    source: git
     version: "0.0.1"
   flutter_bloc:
     dependency: "direct main"
@@ -440,6 +444,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_staggered_animations:
+    dependency: "direct main"
+    description:
+      name: flutter_staggered_animations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -1148,23 +1159,29 @@ packages:
   video_player:
     dependency: transitive
     description:
-      path: "../plugins/packages/video_player/video_player"
-      relative: true
-    source: path
+      path: "packages/video_player/video_player"
+      ref: HEAD
+      resolved-ref: "439a89b327078a542fc257b62575fdf1d1e6c14b"
+      url: "https://github.com/kono0514/plugins.git"
+    source: git
     version: "1.0.1"
   video_player_platform_interface:
     dependency: transitive
     description:
-      path: "../plugins/packages/video_player/video_player_platform_interface"
-      relative: true
-    source: path
+      path: "packages/video_player/video_player_platform_interface"
+      ref: HEAD
+      resolved-ref: "439a89b327078a542fc257b62575fdf1d1e6c14b"
+      url: "https://github.com/kono0514/plugins.git"
+    source: git
     version: "2.2.0"
   video_player_web:
     dependency: transitive
     description:
-      path: "../plugins/packages/video_player/video_player_web"
-      relative: true
-    source: path
+      path: "packages/video_player/video_player_web"
+      ref: HEAD
+      resolved-ref: "439a89b327078a542fc257b62575fdf1d1e6c14b"
+      url: "https://github.com/kono0514/plugins.git"
+    source: git
     version: "0.1.4+1"
   wakelock:
     dependency: transitive
