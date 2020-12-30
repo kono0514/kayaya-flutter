@@ -393,7 +393,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "519f68ef298d11a58d2afcd9695e93f45f6e623c"
+      resolved-ref: "00e75e36f325bb69c5c73eb9b1bbac26d499e648"
       url: "https://github.com/kono0514/flutter-auto-pip.git"
     source: git
     version: "0.0.1"
