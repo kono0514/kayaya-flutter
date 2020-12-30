@@ -224,7 +224,7 @@ class AuthRepositoryFirebaseImpl implements AuthRepository {
       return Right(_token);
     } catch (e, s) {
       errorLog(e, s);
-      return Left(ServerFailure());
+      return const Left(ServerFailure());
     }
   }
 

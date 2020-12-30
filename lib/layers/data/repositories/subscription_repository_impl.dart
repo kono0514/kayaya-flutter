@@ -24,10 +24,10 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
       return Right(_result);
     } on ServerException catch (e, s) {
       errorLog(e.innerException, s);
-      return Left(ServerFailure());
+      return const Left(ServerFailure());
     } catch (e, s) {
       errorLog(e, s);
-      return Left(DataFailure());
+      return const Left(DataFailure());
     }
   }
 
@@ -38,10 +38,10 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
       return const Right(unit);
     } on ServerException catch (e, s) {
       errorLog(e.innerException, s);
-      return Left(ServerFailure());
+      return const Left(ServerFailure());
     } catch (e, s) {
       errorLog(e, s);
-      return Left(DataFailure());
+      return const Left(DataFailure());
     }
   }
 
@@ -52,10 +52,10 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
       return const Right(unit);
     } on ServerException catch (e, s) {
       errorLog(e.innerException, s);
-      return Left(ServerFailure());
+      return const Left(ServerFailure());
     } catch (e, s) {
       errorLog(e, s);
-      return Left(DataFailure());
+      return const Left(DataFailure());
     }
   }
 
@@ -66,10 +66,10 @@ class SubscriptionRepositoryImpl extends SubscriptionRepository {
       return Right(result);
     } on ServerException catch (e, s) {
       errorLog(e.innerException, s);
-      return Left(ServerFailure());
+      return const Left(ServerFailure());
     } catch (e, s) {
       errorLog(e, s);
-      return Left(DataFailure());
+      return const Left(DataFailure());
     }
   }
 }

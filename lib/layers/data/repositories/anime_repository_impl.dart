@@ -49,13 +49,13 @@ class AnimeRepositoryImpl implements AnimeRepository {
       return Right(result);
     } on ServerException catch (e, s) {
       errorLog(e.innerException, s);
-      return Left(ServerFailure());
+      return const Left(ServerFailure());
     } on CacheException catch (e, s) {
       errorLog(e.innerException, s);
-      return Left(CacheFailure());
+      return const Left(CacheFailure());
     } catch (e, s) {
       errorLog(e, s);
-      return Left(DataFailure());
+      return const Left(DataFailure());
     }
   }
 
@@ -66,10 +66,10 @@ class AnimeRepositoryImpl implements AnimeRepository {
       return Right(result);
     } on ServerException catch (e, s) {
       errorLog(e.innerException, s);
-      return Left(ServerFailure());
+      return const Left(ServerFailure());
     } catch (e, s) {
       errorLog(e, s);
-      return Left(DataFailure());
+      return const Left(DataFailure());
     }
   }
 
@@ -83,10 +83,10 @@ class AnimeRepositoryImpl implements AnimeRepository {
       return Right(result);
     } on ServerException catch (e, s) {
       errorLog(e.innerException, s);
-      return Left(ServerFailure());
+      return const Left(ServerFailure());
     } catch (e, s) {
       errorLog(e, s);
-      return Left(DataFailure());
+      return const Left(DataFailure());
     }
   }
 }

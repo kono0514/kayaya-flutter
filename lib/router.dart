@@ -50,7 +50,7 @@ class MyRouter {
   final _pagesMap = <String, RouteResolver>{
     Routes.homePage: (_) {
       return MaterialPageRoute(
-        builder: (context) => AppHome(),
+        builder: (context) => const AppHome(),
       );
     },
     Routes.seriesPage: (settings) {

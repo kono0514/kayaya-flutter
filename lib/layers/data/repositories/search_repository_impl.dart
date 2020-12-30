@@ -27,10 +27,10 @@ class SearchRepositoryImpl extends SearchRepository {
       return Right(_result);
     } on ServerException catch (e, s) {
       errorLog(e.innerException, s);
-      return Left(ServerFailure());
+      return const Left(ServerFailure());
     } catch (e, s) {
       errorLog(e, s);
-      return Left(DataFailure());
+      return const Left(DataFailure());
     }
   }
 
@@ -41,10 +41,10 @@ class SearchRepositoryImpl extends SearchRepository {
       return Right(_result);
     } on CacheException catch (e, s) {
       errorLog(e.innerException, s);
-      return Left(CacheFailure());
+      return const Left(CacheFailure());
     } catch (e, s) {
       errorLog(e, s);
-      return Left(DataFailure());
+      return const Left(DataFailure());
     }
   }
 
@@ -55,10 +55,10 @@ class SearchRepositoryImpl extends SearchRepository {
       return const Right(unit);
     } on CacheException catch (e, s) {
       errorLog(e.innerException, s);
-      return Left(CacheFailure());
+      return const Left(CacheFailure());
     } catch (e, s) {
       errorLog(e, s);
-      return Left(DataFailure());
+      return const Left(DataFailure());
     }
   }
 
@@ -69,10 +69,10 @@ class SearchRepositoryImpl extends SearchRepository {
       return const Right(unit);
     } on CacheException catch (e, s) {
       errorLog(e.innerException, s);
-      return Left(CacheFailure());
+      return const Left(CacheFailure());
     } catch (e, s) {
       errorLog(e, s);
-      return Left(DataFailure());
+      return const Left(DataFailure());
     }
   }
 }
