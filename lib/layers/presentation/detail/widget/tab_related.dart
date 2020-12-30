@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../locale/generated/l10n.dart';
@@ -56,23 +59,50 @@ class RelatedTabViewItem extends StatelessWidget {
                               scrollDirection: Axis.horizontal,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
-                              itemBuilder: (context, index) => Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: AnimeHorizTile(
-                                  anime: state.relations[index].anime,
-                                  height: 163,
-                                  onPressed: () {
-                                    final anime = state.relations[index].anime;
+                              itemBuilder: (context, index) {
+                                final child = Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: AnimeHorizTile(
+                                    anime: state.relations[index].anime,
+                                    height: 163,
+                                    onPressed: () {
+                                      final anime =
+                                          state.relations[index].anime;
 
-                                    Navigator.of(context, rootNavigator: true)
-                                        .pushNamed(
-                                      Routes.movieOrSeries,
-                                      arguments: MediaArguments(anime),
-                                    );
-                                  },
-                                ),
-                              ),
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pushNamed(
+                                        Routes.movieOrSeries,
+                                        arguments: MediaArguments(anime),
+                                      );
+                                    },
+                                  ),
+                                );
+
+                                // Animate the first 10 item,
+                                // but stagger only the first 5 item
+                                if (index < 10) {
+                                  final slideDurationMs =
+                                      250 + (15 * min(4, index).toInt());
+                                  final fadeDurationMs =
+                                      300 + (15 * min(4, index).toInt());
+                                  return AnimationConfiguration.staggeredList(
+                                    position: index,
+                                    child: SlideAnimation(
+                                      horizontalOffset: 200.0,
+                                      duration: Duration(
+                                          milliseconds: slideDurationMs),
+                                      child: FadeInAnimation(
+                                        duration: Duration(
+                                            milliseconds: fadeDurationMs),
+                                        child: child,
+                                      ),
+                                    ),
+                                  );
+                                }
+
+                                return child;
+                              },
                               itemCount: state.relations.length,
                             ),
                           ),
@@ -97,24 +127,50 @@ class RelatedTabViewItem extends StatelessWidget {
                               scrollDirection: Axis.horizontal,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
-                              itemBuilder: (context, index) => Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: AnimeHorizTile(
-                                  anime: state.recommendations[index].anime,
-                                  height: 163,
-                                  onPressed: () {
-                                    final anime =
-                                        state.recommendations[index].anime;
+                              itemBuilder: (context, index) {
+                                final child = Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: AnimeHorizTile(
+                                    anime: state.recommendations[index].anime,
+                                    height: 163,
+                                    onPressed: () {
+                                      final anime =
+                                          state.recommendations[index].anime;
 
-                                    Navigator.of(context, rootNavigator: true)
-                                        .pushNamed(
-                                      Routes.movieOrSeries,
-                                      arguments: MediaArguments(anime),
-                                    );
-                                  },
-                                ),
-                              ),
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pushNamed(
+                                        Routes.movieOrSeries,
+                                        arguments: MediaArguments(anime),
+                                      );
+                                    },
+                                  ),
+                                );
+
+                                // Animate the first 10 item,
+                                // but stagger only the first 5 item
+                                if (index < 10) {
+                                  final slideDurationMs =
+                                      250 + (15 * min(4, index).toInt());
+                                  final fadeDurationMs =
+                                      300 + (15 * min(4, index).toInt());
+                                  return AnimationConfiguration.staggeredList(
+                                    position: index,
+                                    child: SlideAnimation(
+                                      horizontalOffset: 200.0,
+                                      duration: Duration(
+                                          milliseconds: slideDurationMs),
+                                      child: FadeInAnimation(
+                                        duration: Duration(
+                                            milliseconds: fadeDurationMs),
+                                        child: child,
+                                      ),
+                                    ),
+                                  );
+                                }
+
+                                return child;
+                              },
                               itemCount: state.recommendations.length,
                             ),
                           ),

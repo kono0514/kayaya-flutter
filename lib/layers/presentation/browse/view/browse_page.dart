@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../core/widgets/app_bar/custom_sliver_app_bar.dart';
@@ -68,12 +70,16 @@ class _BrowsePageState extends State<BrowsePage> {
               if (state is BrowseLoaded) {
                 refreshCompleter?.complete();
                 refreshCompleter = Completer();
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  // _controller.forward();
+                });
               } else if (state is BrowseInitial) {
                 widget.scrollController.animateTo(
                   0.0,
                   duration: const Duration(milliseconds: 100),
                   curve: Curves.easeOut,
                 );
+                // _controller.reset();
               }
             },
             builder: (context, state) {
@@ -121,31 +127,55 @@ class _BrowsePageState extends State<BrowsePage> {
             context.read<BrowseBloc>().add(const BrowseRefreshed());
             return refreshCompleter.future;
           },
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return index >= state.animes.elements.length
-                        ? ListLoader(error: state.error != null)
-                        : BrowseListItem(
-                            anime: state.animes.elements[index],
-                            onPressed: () {
-                              final anime = state.animes.elements[index];
-                              Navigator.of(context, rootNavigator: true)
-                                  .pushNamed(
-                                Routes.movieOrSeries,
-                                arguments: MediaArguments(anime),
-                              );
-                            },
-                          );
-                  },
-                  childCount: state.animes.hasMorePages
-                      ? state.animes.elements.length + 1
-                      : state.animes.elements.length,
+          child: AnimationLimiter(
+            child: CustomScrollView(
+              slivers: <Widget>[
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      final child = index >= state.animes.elements.length
+                          ? ListLoader(error: state.error != null)
+                          : BrowseListItem(
+                              anime: state.animes.elements[index],
+                              onPressed: () {
+                                final anime = state.animes.elements[index];
+                                Navigator.of(context, rootNavigator: true)
+                                    .pushNamed(
+                                  Routes.movieOrSeries,
+                                  arguments: MediaArguments(anime),
+                                );
+                              },
+                            );
+
+                      // Animate the first 10 item,
+                      // but stagger only the first 5 item
+                      if (index < 10) {
+                        final slideDurationMs =
+                            250 + (15 * min(4, index).toInt());
+                        final fadeDurationMs =
+                            300 + (15 * min(4, index).toInt());
+                        return AnimationConfiguration.staggeredList(
+                          position: index,
+                          child: SlideAnimation(
+                            verticalOffset: 300.0,
+                            duration: Duration(milliseconds: slideDurationMs),
+                            child: FadeInAnimation(
+                              duration: Duration(milliseconds: fadeDurationMs),
+                              child: child,
+                            ),
+                          ),
+                        );
+                      }
+
+                      return child;
+                    },
+                    childCount: state.animes.hasMorePages
+                        ? state.animes.elements.length + 1
+                        : state.animes.elements.length,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

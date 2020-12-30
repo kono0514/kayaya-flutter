@@ -11,6 +11,7 @@ class RoundedCachedNetworkImage extends StatelessWidget {
   final Widget child;
   final Clip childClipBehavior;
   final Border border;
+  final double borderRadius;
 
   /// TODO: Assert Can't specify both adaptiveColor = true and placeholderColor
   const RoundedCachedNetworkImage({
@@ -24,6 +25,7 @@ class RoundedCachedNetworkImage extends StatelessWidget {
     this.boxShadow,
     this.childClipBehavior = Clip.none,
     this.border,
+    this.borderRadius = 12.0,
   }) : super(key: key);
 
   Widget _generatePlaceholder(BuildContext context) {
@@ -40,7 +42,7 @@ class RoundedCachedNetworkImage extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.0),
+        borderRadius: BorderRadius.circular(borderRadius),
         color: color,
       ),
     );
@@ -59,12 +61,16 @@ class RoundedCachedNetworkImage extends StatelessWidget {
         width: width ?? MediaQuery.of(context).size.width,
         height: height,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.0),
+          borderRadius: BorderRadius.circular(borderRadius),
+          border: border ??
+              Border.all(
+                color: Colors.transparent,
+                width: 0.0,
+              ), // Hack https://github.com/flutter/flutter/issues/13675
           image: DecorationImage(
             image: imageProvider,
             fit: BoxFit.cover,
           ),
-          border: border,
           boxShadow: boxShadow == null ? null : [boxShadow],
         ),
         clipBehavior: childClipBehavior,

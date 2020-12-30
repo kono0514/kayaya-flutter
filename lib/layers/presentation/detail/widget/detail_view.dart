@@ -71,11 +71,18 @@ class _DetailViewState extends State<DetailView>
                     title: _SliverAppBarTitle(
                       title: Text(widget.anime.name),
                     ),
+                    leading: _AppBarIconButton(
+                      icon: Icons.arrow_back,
+                      tooltip: TR.of(context).share,
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                    iconTheme: const IconThemeData(),
+                    actionsIconTheme: const IconThemeData(),
                     actions: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.share),
-                        onPressed: () => {},
+                      _AppBarIconButton(
+                        icon: Icons.ios_share,
                         tooltip: TR.of(context).share,
+                        onPressed: () => {},
                       ),
                     ],
                     flexibleSpace: FlexibleSpaceBar(
@@ -310,6 +317,40 @@ class __ActionButtonsState extends State<_ActionButtons>
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _AppBarIconButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onPressed;
+  final String tooltip;
+
+  const _AppBarIconButton({
+    Key key,
+    @required this.icon,
+    this.onPressed,
+    this.tooltip,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return UnconstrainedBox(
+      child: IconButton(
+        icon: Container(
+          decoration: ShapeDecoration(
+            color: _isDark ? Colors.black54 : Colors.white70,
+            shape: const CircleBorder(),
+          ),
+          child: Center(
+            child: Icon(icon),
+          ),
+        ),
+        onPressed: onPressed,
+        tooltip: tooltip,
       ),
     );
   }

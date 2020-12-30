@@ -16,6 +16,8 @@ class AnimeHorizTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const borderRadius = 12.0;
+
     return GestureDetector(
       onTap: onPressed,
       child: RoundedCachedNetworkImage(
@@ -25,25 +27,26 @@ class AnimeHorizTile extends StatelessWidget {
         placeholderColor: HexColor(
           anime.coverColor ?? "#000000",
         ),
-        childClipBehavior: Clip.hardEdge,
+        borderRadius: borderRadius,
         child: Align(
           alignment: Alignment.bottomCenter,
-          child: SizedBox(
-            width: double.infinity,
-            child: ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 10.0),
-                  child: Text(
-                    anime.name,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(borderRadius),
+                bottomRight: Radius.circular(borderRadius),
+              ),
+              color: Colors.grey.shade700.withOpacity(0.87),
+            ),
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+              child: Text(
+                anime.name,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),

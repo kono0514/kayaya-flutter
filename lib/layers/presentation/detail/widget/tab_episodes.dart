@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dartz/dartz.dart' show Left;
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../core/widgets/icon_popup_menu.dart';
@@ -107,63 +109,88 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
                 .add(EpisodesRefreshed(widget.anime.id));
             return _refreshCompleter.future;
           },
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverPadding(
-                padding:
-                    const EdgeInsets.only(left: 16.0, top: 12.0, bottom: 6.0),
-                sliver: SliverToBoxAdapter(
-                  child: UnconstrainedBox(
-                    alignment: Alignment.centerLeft,
-                    child: IconPopupMenu<String>(
-                      items: [
-                        PopupMenuItem<String>(
-                          value: 'asc',
-                          child: Text(TR.of(context).sort_asc),
-                        ),
-                        PopupMenuItem<String>(
-                          value: 'desc',
-                          child: Text(TR.of(context).sort_desc),
-                        ),
-                      ],
-                      title: Text(TR.of(context).sort),
-                      icon: const Icon(Icons.sort),
-                      iconColor: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white70
-                          : Colors.grey.shade700,
-                      initialValue: state.sortOrder,
-                      onSelected: (value) {
-                        context.read<EpisodesBloc>().add(
-                              EpisodesRefreshed(
-                                widget.anime.id,
-                                sortOrder: value,
-                              ),
-                            );
-                      },
+          child: AnimationLimiter(
+            child: CustomScrollView(
+              slivers: <Widget>[
+                SliverPadding(
+                  padding:
+                      const EdgeInsets.only(left: 16.0, top: 12.0, bottom: 6.0),
+                  sliver: SliverToBoxAdapter(
+                    child: UnconstrainedBox(
+                      alignment: Alignment.centerLeft,
+                      child: IconPopupMenu<String>(
+                        items: [
+                          PopupMenuItem<String>(
+                            value: 'asc',
+                            child: Text(TR.of(context).sort_asc),
+                          ),
+                          PopupMenuItem<String>(
+                            value: 'desc',
+                            child: Text(TR.of(context).sort_desc),
+                          ),
+                        ],
+                        title: Text(TR.of(context).sort),
+                        icon: const Icon(Icons.sort),
+                        iconColor:
+                            Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white70
+                                : Colors.grey.shade700,
+                        initialValue: state.sortOrder,
+                        onSelected: (value) {
+                          context.read<EpisodesBloc>().add(
+                                EpisodesRefreshed(
+                                  widget.anime.id,
+                                  sortOrder: value,
+                                ),
+                              );
+                        },
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SliverFixedExtentList(
-                itemExtent: 86,
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return index >= state.episodes.elements.length
-                        ? ListLoader(
-                            error: state.error != null,
-                            spinnerSize: 24.0,
-                          )
-                        : _EpisodeListItem(
-                            anime: widget.anime,
-                            episode: state.episodes.elements[index],
-                          );
-                  },
-                  childCount: state.episodes.hasMorePages
-                      ? state.episodes.elements.length + 1
-                      : state.episodes.elements.length,
+                SliverFixedExtentList(
+                  itemExtent: 86,
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      final child = index >= state.episodes.elements.length
+                          ? ListLoader(
+                              error: state.error != null,
+                              spinnerSize: 24.0,
+                            )
+                          : _EpisodeListItem(
+                              anime: widget.anime,
+                              episode: state.episodes.elements[index],
+                            );
+
+                      // Animate the first 10 item,
+                      // but stagger only the first 5 item
+                      if (index < 10) {
+                        final slideDurationMs =
+                            250 + (15 * min(4, index).toInt());
+                        final fadeDurationMs =
+                            300 + (15 * min(4, index).toInt());
+                        return AnimationConfiguration.staggeredList(
+                          position: index,
+                          child: SlideAnimation(
+                            verticalOffset: 200.0,
+                            duration: Duration(milliseconds: slideDurationMs),
+                            child: FadeInAnimation(
+                              duration: Duration(milliseconds: fadeDurationMs),
+                              child: child,
+                            ),
+                          ),
+                        );
+                      }
+
+                      return child;
+                    },
+                    childCount: state.episodes.hasMorePages
+                        ? state.episodes.elements.length + 1
+                        : state.episodes.elements.length,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
