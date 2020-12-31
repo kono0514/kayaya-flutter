@@ -1,5 +1,7 @@
 # kayaya_flutter
 
+[![Build Status](https://app.bitrise.io/app/af14e8c20650eb44/status.svg?token=3qLpr8MxbMQcWRWM0AUOwA&branch=master)](https://app.bitrise.io/app/af14e8c20650eb44)
+
 A new Flutter project.
 
 ## Download / Update schema files
