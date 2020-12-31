@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/services/preferences_service.dart';
+import '../../../../env_config.dart';
 
 part 'updater_state.dart';
 
@@ -53,7 +54,7 @@ class UpdaterCubit extends Cubit<UpdaterState> {
     emit(UpdaterInitial());
 
     FlutterXUpdate.checkUpdate(
-      url: 'http://aniim-api.test/v1/update',
+      url: EnvironmentConfig.updateServerEndpoint,
       theme: theme,
       locale: Intl.getCurrentLocale(),
     );

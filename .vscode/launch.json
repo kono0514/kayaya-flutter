@@ -8,21 +8,33 @@
             "name": "Flutter",
             "program": "lib/main.dart",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--dart-define=KAYAYA_GRAPHQL_SERVER=http://aniim-api.test/graphql",
+                "--dart-define=KAYAYA_UPDATE_SERVER=http://aniim-api.test/v1/update",
+            ]
         },
         {
             "name": "Flutter Profile",
             "program": "lib/main.dart",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "args": [
+                "--dart-define=KAYAYA_GRAPHQL_SERVER=http://aniim-api.test/graphql",
+                "--dart-define=KAYAYA_UPDATE_SERVER=http://aniim-api.test/v1/update",
+            ]
         },
         {
             "name": "Flutter Release",
             "program": "lib/main.dart",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "args": [
+                "--dart-define=KAYAYA_GRAPHQL_SERVER=http://aniim-api.test/graphql",
+                "--dart-define=KAYAYA_UPDATE_SERVER=http://aniim-api.test/v1/update",
+            ]
         }
     ]
 }

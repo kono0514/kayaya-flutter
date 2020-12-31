@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:graphql/client.dart';
 import 'package:meta/meta.dart';
 
+import '../../env_config.dart';
 import '../../layers/domain/usecases/authentication/get_id_token_usecase.dart';
 import '../usecase.dart';
 
@@ -13,8 +14,7 @@ GraphQLClient getGraphQLClient({
   final GraphQLCache cache = GraphQLCache();
 
   final httpLink = HttpLink(
-    // 'https://api.kayaya.stream/graphql',
-    'http://aniim-api.test/graphql',
+    EnvironmentConfig.graphqlServerEndpoint,
   );
   final authLink = AuthLink(
     getToken: () async {
