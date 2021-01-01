@@ -38,9 +38,6 @@ workflows:
         - android_additional_params: "--release --dart-define=KAYAYA_GRAPHQL_SERVER=$KAYAYA_GRAPHQL_SERVER
             --dart-define=KAYAYA_APPCENTER_URL=$KAYAYA_APPCENTER_URL"
         - platform: android
-    - sign-apk@1:
-        inputs:
-        - output_name: kayaya_staging
     - deploy-to-bitrise-io@1:
         is_always_run: false
     - appcenter-deploy-android@2:
