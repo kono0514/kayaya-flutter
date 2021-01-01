@@ -32,17 +32,18 @@ workflows:
     - flutter-build@0:
         inputs:
         - project_location: "$BITRISE_FLUTTER_PROJECT_LOCATION"
-        - android_additional_params: "--release --dart-define=KAYAYA_GRAPHQL_SERVER=$GRAPHQL_SERVER_URL
-            --dart-define=KAYAYA_UPDATE_SERVER=$UPDATE_SERVER_URL"
+        - android_additional_params: "--release --dart-define=KAYAYA_GRAPHQL_SERVER=$KAYAYA_GRAPHQL_SERVER
+            --dart-define=KAYAYA_APPCENTER_URL=$KAYAYA_APPCENTER_URL"
         - platform: android
     - deploy-to-bitrise-io@1:
         is_always_run: false
     - appcenter-deploy-android@2:
         inputs:
-        - owner_name: kono
-        - app_name: KayayaStaging
+        - owner_name: kono0514
+        - app_name: Kayaya
         - distribution_group: Public
         - distribution_store: ''
+        - app_path: "$BITRISE_APK_PATH"
         - api_token: "$APPCENTER_API_KEY"
     - cache-push@2: {}
     - discord-message@0:
@@ -51,8 +52,10 @@ workflows:
     envs:
     - opts:
         is_expand: false
-      KAYAYA_GRAPHQL_SERVER: http://aniim-api.test/graphql
-    - KAYAYA_UPDATE_SERVER: http://aniim-api.test/v1/update
+      KAYAYA_GRAPHQL_SERVER: https://api.kayaya.stream/graphql
+    - KAYAYA_APPCENTER_URL: https://api.appcenter.ms/v0.1/public/sdk/apps/b3f31029-2220-49da-afec-fd192346c2f0/distribution_groups/f2cb4a60-0240-4bd1-a9c7-bac2f5006aa9/releases/latest
+      opts:
+        is_expand: false
   analyze:
     steps:
     - activate-ssh-key@4:
@@ -90,15 +93,16 @@ workflows:
     - flutter-build@0:
         inputs:
         - project_location: "$BITRISE_FLUTTER_PROJECT_LOCATION"
-        - android_additional_params: "--release --dart-define=KAYAYA_GRAPHQL_SERVER=$GRAPHQL_SERVER_URL
-            --dart-define=KAYAYA_UPDATE_SERVER=$UPDATE_SERVER_URL"
+        - android_additional_params: "--release --dart-define=KAYAYA_GRAPHQL_SERVER=$KAYAYA_GRAPHQL_SERVER
+            --dart-define=KAYAYA_APPCENTER_URL=$KAYAYA_APPCENTER_URL"
         - platform: android
     - deploy-to-bitrise-io@1: {}
     - appcenter-deploy-android@2:
         inputs:
-        - owner_name: kono
-        - app_name: KayayaProduction
+        - owner_name: kono0514
+        - app_name: Kayaya-Production
         - distribution_group: Public
+        - app_path: "$BITRISE_APK_PATH"
         - api_token: "$APPCENTER_API_KEY"
     - cache-push@2: {}
     - discord-message@0:
@@ -107,8 +111,8 @@ workflows:
     envs:
     - opts:
         is_expand: false
-      KAYAYA_GRAPHQL_SERVER: http://aniim-api.test/graphql
-    - KAYAYA_UPDATE_SERVER: http://aniim-api.test/v1/update
+      KAYAYA_GRAPHQL_SERVER: https://api.kayaya.stream/graphql
+    - KAYAYA_APPCENTER_URL: https://api.appcenter.ms/v0.1/public/sdk/apps/f05a0575-bfea-4ba4-9975-9eb948681a41/distribution_groups/73345626-20eb-4005-8711-058a24bb1b1c/releases/latest
       opts:
         is_expand: false
 app:
