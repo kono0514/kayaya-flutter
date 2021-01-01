@@ -7,7 +7,7 @@ trigger_map:
   workflow: deploy-staging
 - pull_request_source_branch: "*"
   workflow: analyze
-- tag: release
+- tag: "*.*.*"
   workflow: deploy-production
 workflows:
   deploy-staging:
