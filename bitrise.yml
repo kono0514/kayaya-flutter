@@ -29,18 +29,24 @@ workflows:
         - destination: android/app/google-services.json
         - source: "$BITRISEIO_1_URL"
         title: File Downloader Firebase Config
+    - change-android-versioncode-and-versionname@1:
+        inputs:
+        - build_gradle_path: "$BITRISE_SOURCE_DIR/android/app/build.gradle"
     - flutter-build@0:
         inputs:
         - project_location: "$BITRISE_FLUTTER_PROJECT_LOCATION"
         - android_additional_params: "--release --dart-define=KAYAYA_GRAPHQL_SERVER=$KAYAYA_GRAPHQL_SERVER
             --dart-define=KAYAYA_APPCENTER_URL=$KAYAYA_APPCENTER_URL"
         - platform: android
+    - sign-apk@1:
+        inputs:
+        - output_name: kayaya_staging
     - deploy-to-bitrise-io@1:
         is_always_run: false
     - appcenter-deploy-android@2:
         inputs:
         - owner_name: kono0514
-        - app_name: Kayaya
+        - app_name: kayaya_staging
         - distribution_group: Public
         - distribution_store: ''
         - app_path: "$BITRISE_APK_PATH"
@@ -96,13 +102,18 @@ workflows:
         - android_additional_params: "--release --dart-define=KAYAYA_GRAPHQL_SERVER=$KAYAYA_GRAPHQL_SERVER
             --dart-define=KAYAYA_APPCENTER_URL=$KAYAYA_APPCENTER_URL"
         - platform: android
-    - deploy-to-bitrise-io@1: {}
+    - sign-apk@1:
+        inputs:
+        - output_name: kayaya
+    - deploy-to-bitrise-io@1:
+        is_always_run: false
     - appcenter-deploy-android@2:
         inputs:
         - owner_name: kono0514
-        - app_name: Kayaya-Production
+        - app_name: kayaya
         - distribution_group: Public
         - app_path: "$BITRISE_APK_PATH"
+        - release_notes: "$BITRISE_GIT_MESSAGE"
         - api_token: "$APPCENTER_API_KEY"
     - cache-push@2: {}
     - discord-message@0:
