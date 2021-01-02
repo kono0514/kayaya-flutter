@@ -25,7 +25,7 @@
     <string name="xupdate_start_download">Start download</string>
     <string name="xupdate_download_complete">Download complete, please click Install</string>
     <string name="xupdate_lab_ready_update">New version (%s) is out!</string>
-    <string name="xupdate_lab_new_version_size">Download size:</string>
+    <string name="xupdate_lab_new_version_size">Download size: </string>
     <string name="xupdate_lab_downloading">Downloading:</string>
     <string name="xupdate_tip_download_url_error">New version download path error</string>
 

@@ -25,7 +25,7 @@
     <string name="xupdate_start_download">Татаж эхлэх</string>
     <string name="xupdate_download_complete">Татаж дууслаа, "Суулгах" дээр дарна уу</string>
     <string name="xupdate_lab_ready_update">Шинэ хувилбарыг (%s) суулгах уу?</string>
-    <string name="xupdate_lab_new_version_size">Татах хэмжээ:</string>
+    <string name="xupdate_lab_new_version_size">Татах хэмжээ: </string>
     <string name="xupdate_lab_downloading">Татаж байна:</string>
     <string name="xupdate_tip_download_url_error">New version download path error</string>
 
