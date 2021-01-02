@@ -7,6 +7,7 @@ import 'package:flutter_xupdate/flutter_xupdate.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
+import 'package:package_info/package_info.dart';
 
 import '../../../../core/services/preferences_service.dart';
 import '../../../../core/utils/logger.dart';
@@ -17,6 +18,7 @@ part 'updater_state.dart';
 @Injectable()
 class UpdaterCubit extends Cubit<UpdaterState> {
   final PreferencesService pref;
+  int buildNumber;
 
   UpdaterCubit({@required this.pref}) : super(UpdaterUninitialized());
 
@@ -34,6 +36,13 @@ class UpdaterCubit extends Cubit<UpdaterState> {
   }
 
   Future<void> init() async {
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+      buildNumber = int.parse(packageInfo.buildNumber);
+    } catch (e, s) {
+      errorLog(e, s);
+    }
+
     if (Platform.isAndroid) {
       await FlutterXUpdate.init(
         debug: true,
@@ -45,11 +54,12 @@ class UpdaterCubit extends Cubit<UpdaterState> {
         UpdateEntity entity;
         try {
           final _json = jsonDecode(json) as Map<String, dynamic>;
+          final _versionCode = int.parse(_json['version'] as String);
           entity = UpdateEntity(
-            hasUpdate: _json['enabled'] as bool,
+            hasUpdate: _json['enabled'] as bool && _versionCode > buildNumber,
             isForce: _json['mandatory_update'] as bool,
             isIgnorable: false,
-            versionCode: int.parse(_json['version'] as String),
+            versionCode: _versionCode,
             versionName: _json['short_version'] as String,
             apkMd5: _json['fingerprint'] as String,
             apkSize: _json['size'] as int,
@@ -75,6 +85,7 @@ class UpdaterCubit extends Cubit<UpdaterState> {
   void checkForUpdate() {
     if (state is UpdaterUninitialized) return;
     if (EnvironmentConfig.appcenterUpdateServerEndpoint == '') return;
+    if (buildNumber == null) return;
 
     emit(UpdaterInitial());
 
