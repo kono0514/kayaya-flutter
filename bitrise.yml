@@ -79,6 +79,7 @@ workflows:
     - activate-ssh-key@4:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone@4: {}
+    - release-notes-extractor@0: {}
     - script@1:
         title: Do anything with Script step
     - flutter-installer@0:
@@ -110,7 +111,7 @@ workflows:
         - app_name: kayaya
         - distribution_group: Public
         - app_path: "$BITRISE_APK_PATH"
-        - release_notes: "$BITRISE_GIT_MESSAGE"
+        - release_notes: "$EXTRACTED_RELEASE_NOTES"
         - api_token: "$APPCENTER_API_KEY"
     - cache-push@2: {}
     - discord-message@0:
