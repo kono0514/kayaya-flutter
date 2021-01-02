@@ -8,7 +8,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name=".Application"
-        android:label="kayaya_flutter"
+        android:label="Kayaya"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <!-- Facebook Login SDK -->
