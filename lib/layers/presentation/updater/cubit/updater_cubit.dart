@@ -62,7 +62,7 @@ class UpdaterCubit extends Cubit<UpdaterState> {
             versionCode: _versionCode,
             versionName: _json['short_version'] as String,
             apkMd5: _json['fingerprint'] as String,
-            apkSize: _json['size'] as int,
+            apkSize: ((_json['size'] as int) / 1000).round(),
             downloadUrl: _json['download_url'] as String,
             updateContent: _json['release_notes'] as String,
           );
