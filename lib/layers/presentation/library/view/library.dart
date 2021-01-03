@@ -217,6 +217,7 @@ class _LibraryEmpty extends StatelessWidget {
           children: <Widget>[
             Text(
               TR.of(context).no_subscriptions,
+              textAlign: TextAlign.center,
             ),
             TextButton(
               onPressed: () {
