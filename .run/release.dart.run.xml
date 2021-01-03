@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="release.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="additionalArgs" value="--release --dart-define=KAYAYA_GRAPHQL_SERVER=http://aniim-api.test/graphql --dart-define=KAYAYA_APPCENTER_URL=https://api.appcenter.ms/v0.1/public/sdk/apps/0c544fa0-fb43-4397-9ba8-2ff8ad82f571/distribution_groups/4b188922-052b-4657-9d7a-50b977bf05d7/releases/latest" />
+    <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+    <method v="2" />
+  </configuration>
+</component>
