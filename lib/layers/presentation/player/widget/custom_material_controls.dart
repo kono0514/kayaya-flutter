@@ -569,6 +569,20 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
 
           if (chosenQuality != null) {
             // TODO
+            showDialog<void>(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('WIP'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Close'),
+                  )
+                ],
+              ),
+            );
           }
         },
       ),
@@ -926,7 +940,8 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
       _hideStuff = true;
 
       chewieController.toggleFullScreen();
-      _showAfterExpandCollapseTimer = Timer(const Duration(milliseconds: 300), () {
+      _showAfterExpandCollapseTimer =
+          Timer(const Duration(milliseconds: 300), () {
         setState(() {
           _cancelAndRestartTimer();
         });

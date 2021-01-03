@@ -72,17 +72,33 @@ class _DetailViewState extends State<DetailView>
                       title: Text(widget.anime.name),
                     ),
                     leading: _AppBarIconButton(
-                      icon: Icons.arrow_back,
-                      tooltip: TR.of(context).share,
-                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const BackButtonIcon(),
+                      tooltip:
+                          MaterialLocalizations.of(context).backButtonTooltip,
+                      onPressed: () => Navigator.of(context).maybePop(),
                     ),
                     iconTheme: const IconThemeData(),
                     actionsIconTheme: const IconThemeData(),
                     actions: <Widget>[
                       _AppBarIconButton(
-                        icon: Icons.ios_share,
+                        icon: const Icon(Icons.ios_share),
                         tooltip: TR.of(context).share,
-                        onPressed: () => {},
+                        onPressed: () {
+                          showDialog<void>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('WIP'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Close'),
+                                )
+                              ],
+                            ),
+                          );
+                        },
                       ),
                     ],
                     flexibleSpace: FlexibleSpaceBar(
@@ -323,7 +339,7 @@ class __ActionButtonsState extends State<_ActionButtons>
 }
 
 class _AppBarIconButton extends StatelessWidget {
-  final IconData icon;
+  final Widget icon;
   final VoidCallback onPressed;
   final String tooltip;
 
@@ -346,7 +362,7 @@ class _AppBarIconButton extends StatelessWidget {
             shape: const CircleBorder(),
           ),
           child: Center(
-            child: Icon(icon),
+            child: icon,
           ),
         ),
         onPressed: onPressed,
