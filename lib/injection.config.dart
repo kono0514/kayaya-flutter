@@ -184,8 +184,8 @@ Future<GetIt> $initGetIt(
       () => LoginWithGoogleUsecase(authRepo: get<AuthRepository>()));
   gh.factory<LoginWithPasswordUsecase>(
       () => LoginWithPasswordUsecase(authRepo: get<AuthRepository>()));
-  gh.factory<LogoutUsecase>(
-      () => LogoutUsecase(authRepo: get<AuthRepository>()));
+  gh.factory<LogoutUsecase>(() => LogoutUsecase(
+      authRepo: get<AuthRepository>(), pref: get<PreferencesService>()));
   gh.factoryParam<PlayerEpisodesBloc, String, int>(
       (id, startingEpisode) => PlayerEpisodesBloc(
             getEpisodesUsecase: get<GetEpisodesUsecase>(),
