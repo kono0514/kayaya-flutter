@@ -45,7 +45,7 @@ class UpdaterCubit extends Cubit<UpdaterState> {
 
     if (Platform.isAndroid) {
       await FlutterXUpdate.init(
-        debug: true,
+        // debug: true,
         isWifiOnly: false,
       );
 
