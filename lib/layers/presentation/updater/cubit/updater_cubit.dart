@@ -65,6 +65,7 @@ class UpdaterCubit extends Cubit<UpdaterState> {
             apkSize: ((_json['size'] as int) / 1000).round(),
             downloadUrl: _json['download_url'] as String,
             updateContent: _json['release_notes'] as String,
+            showNotification: true,
           );
         } catch (e, s) {
           errorLog(e, s);

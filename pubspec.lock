@@ -473,10 +473,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: c43f997bcdc91a031d8191e748c851a1cf24afc3
+      resolved-ref: e95cf539f845ce22a79857283a896bc81088d2fb
       url: "https://github.com/kono0514/flutter_xupdate"
     source: git
-    version: "1.0.0"
+    version: "1.0.2"
   font_awesome_flutter:
     dependency: transitive
     description:
