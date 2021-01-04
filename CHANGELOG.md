@@ -1,5 +1,8 @@
 # Release Changelog
 
+## 1.0.4
+Test fifth release
+
 ## 1.0.3
 Test fourth release  
 long changelog  
