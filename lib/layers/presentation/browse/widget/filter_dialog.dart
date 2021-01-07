@@ -103,6 +103,7 @@ class _FilterDialogState extends State<FilterDialog> {
                             style: _labelStyle,
                           ),
                           DropdownButtonFormField<FilterOrderBy>(
+                            key: const Key('FilterSortDropdownButton'),
                             items: _sortMap.entries
                                 .map(
                                   (e) => DropdownMenuItem(

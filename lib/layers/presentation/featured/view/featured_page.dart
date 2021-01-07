@@ -76,6 +76,7 @@ class _FeaturedPageState extends State<FeaturedPage> {
 
               if (state is FeaturedLoaded) {
                 return RefreshIndicator(
+                  key: const Key('FeaturedPageRefreshIndicator'),
                   onRefresh: () async => context.read<FeaturedCubit>().fetch(),
                   child: DynamicWidgetBuilder.build(
                     state.data,

@@ -38,7 +38,12 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     final result = await checkSubscriptionUsecase(
         CheckSubscriptionUsecaseParams(anime.id));
     result.fold(
-      (l) => () {},
+      (l) => emit(
+        const SubscriptionLoaded(
+          subscribed: false,
+          isDirty: false,
+        ),
+      ),
       (r) => emit(
         SubscriptionLoaded(
           subscribed: r,

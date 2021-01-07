@@ -6,4 +6,5 @@ class EnvironmentConfig {
   static const appcenterUpdateServerEndpoint = String.fromEnvironment(
     'KAYAYA_APPCENTER_URL',
   );
+  static const isWarmupMode = bool.fromEnvironment('KAYAYA_WARMUP_MODE');
 }

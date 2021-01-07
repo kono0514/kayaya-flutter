@@ -47,6 +47,7 @@ class _LibraryPageState extends State<LibraryPage> {
               title: Text(TR.of(context).tabs_library),
               actions: [
                 SliverButton(
+                  key: const Key('SettingsButton'),
                   text: Text(
                     TR.of(context).settings.toUpperCase(),
                     style: const TextStyle(
@@ -61,7 +62,9 @@ class _LibraryPageState extends State<LibraryPage> {
                       enableDrag: true,
                       height: 1.0,
                       labelBuilder: (context) => Text(TR.of(context).settings),
-                      builder: (context) => const SettingsDialog(),
+                      builder: (context) => const SettingsDialog(
+                        key: Key('SettingsDialog'),
+                      ),
                     );
                   },
                   collapsible: false,

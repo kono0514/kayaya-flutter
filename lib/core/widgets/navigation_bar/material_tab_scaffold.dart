@@ -170,6 +170,7 @@ class _MaterialTabScaffoldState extends State<MaterialTabScaffold> {
             ),
             child: Consumer<CurrentNavigationTabModel>(
               builder: (context, tabModel, child) => BottomNavigationBar(
+                key: const Key('BottomNavigationBar'),
                 elevation: 0.0,
                 type: BottomNavigationBarType.fixed,
                 selectedFontSize: 12.0,

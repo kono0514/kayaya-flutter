@@ -51,8 +51,7 @@ class Search extends SearchDelegate<String> {
 
   @override
   Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back),
+    return BackButton(
       onPressed: () {
         close(context, null);
       },

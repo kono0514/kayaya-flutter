@@ -5,6 +5,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../codegen/graphql_api.graphql.dart';
 import '../../core/usecase.dart';
+import '../../env_config.dart';
 import '../../layers/domain/usecases/authentication/is_logged_in_usecase.dart';
 import '../utils/utils.dart';
 import 'preferences_service.dart';
@@ -45,6 +46,8 @@ class NotificationService {
   }
 
   Future<void> uploadCurrentFcmToken({String token}) async {
+    if (EnvironmentConfig.isWarmupMode) return;
+
     final PreferencesService pref = GetIt.I();
     final GraphQLClient graphql = GetIt.I();
 

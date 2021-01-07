@@ -27,6 +27,15 @@ class User extends Equatable {
     providerIdentifier: null,
   );
 
+  static const testAnonUser = User(
+    id: '99999',
+    email: 'test@test.com',
+    name: 'Test User',
+    avatar: null,
+    provider: AuthProvider.anonymous,
+    providerIdentifier: null,
+  );
+
   bool get isAnonymous => provider == AuthProvider.anonymous;
 
   @override

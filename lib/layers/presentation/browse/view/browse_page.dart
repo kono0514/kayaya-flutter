@@ -129,8 +129,10 @@ class _BrowsePageState extends State<BrowsePage> {
           },
           child: AnimationLimiter(
             child: CustomScrollView(
+              key: const Key('BrowseScrollView'),
               slivers: <Widget>[
                 SliverList(
+                  key: const Key('BrowseSliverList'),
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
                       final child = index >= state.animes.elements.length

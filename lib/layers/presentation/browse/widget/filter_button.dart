@@ -21,6 +21,7 @@ class _FilterButtonState extends State<FilterButton> {
         final _hasFilter = state is BrowseFilterModified;
 
         return SliverButton(
+          key: const Key('FilterButton'),
           backgroundColor: _hasFilter ? Colors.blue : null,
           color: _hasFilter ? Colors.white : null,
           icon: const Icon(Icons.tune),
@@ -45,7 +46,9 @@ class _FilterButtonState extends State<FilterButton> {
                   BlocProvider.value(value: browseFilterCubit),
                   BlocProvider.value(value: genreListCubit),
                 ],
-                child: const FilterDialog(),
+                child: const FilterDialog(
+                  key: Key('FilterDialog'),
+                ),
               ),
             );
           },

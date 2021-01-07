@@ -149,6 +149,7 @@ class _EpisodesTabViewItemState extends State<EpisodesTabViewItem> {
                   ),
                 ),
                 SliverFixedExtentList(
+                  key: const Key('EpisodesSliverList'),
                   itemExtent: 86,
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {

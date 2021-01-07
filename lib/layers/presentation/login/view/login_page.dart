@@ -4,7 +4,10 @@ import 'package:get_it/get_it.dart';
 
 import '../../../../core/widgets/icon_popup_menu.dart';
 import '../../../../core/widgets/spinner_button.dart';
+import '../../../../env_config.dart';
 import '../../../../locale/generated/l10n.dart';
+import '../../../domain/entities/user.dart';
+import '../../authentication/bloc/authentication_bloc.dart';
 import '../../locale/cubit/locale_cubit.dart';
 import '../cubit/login_cubit.dart';
 import '../widget/sign_in_button.dart';
@@ -150,6 +153,8 @@ class LoginPage extends StatelessWidget {
                             const _FacebookButton(),
                             const SizedBox(height: 10),
                             if (!disableAnonymous) const _AnonymousButton(),
+                            if (EnvironmentConfig.isWarmupMode)
+                              const _TestUserButton(),
                           ],
                         ),
                       ),
@@ -160,6 +165,27 @@ class LoginPage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _TestUserButton extends StatelessWidget {
+  const _TestUserButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 46,
+      height: 46,
+      child: SpinnerButton(
+        label: const Text('TEST USER'),
+        onPressed: () {
+          context
+              .read<AuthenticationBloc>()
+              .add(const AuthenticationUserChanged(User.testAnonUser));
+        },
+        buttonType: TextButton,
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 
 import 'core/services/notification_service.dart';
 import 'core/widgets/navigation_bar/material_tab_scaffold.dart';
+import 'env_config.dart';
 import 'layers/presentation/authentication/bloc/authentication_bloc.dart';
 import 'layers/presentation/genre/cubit/genre_list_cubit.dart';
 import 'layers/presentation/library/cubit/subscription_list_cubit.dart';
@@ -70,7 +71,9 @@ class AppWrapper extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            locale: Locale(localeState.locale),
+            locale: EnvironmentConfig.isWarmupMode
+                ? const Locale('en')
+                : Locale(localeState.locale),
             supportedLocales: TR.delegate.supportedLocales,
             home: const AppHome(),
             onGenerateRoute: MyRouter(),

@@ -46,3 +46,6 @@ app.*.map.json
 
 node_modules/
 google-services.json
+
+flutter_*.sksl.json
+!flutter_shaders.sksl.json
