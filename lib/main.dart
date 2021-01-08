@@ -6,11 +6,14 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'app.dart';
 import 'core/utils/simple_bloc_observer.dart';
-import 'core/utils/utils.dart';
 import 'injection.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (kReleaseMode) {
+    debugPrint = (String message, {int wrapWidth}) {};
+  }
 
   await SentryFlutter.init(
     (options) => options

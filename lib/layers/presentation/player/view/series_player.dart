@@ -156,10 +156,10 @@ class _SeriesPlayerState extends State<SeriesPlayer> {
 
   void toggleAutoPipMode(bool value) {
     if (value) {
-      print('Enable Auto PIP mode');
+      debugPrint('Enable Auto PIP mode');
       FlutterAutoPip.autoPipModeEnable();
     } else {
-      print('Disable Auto PIP mode');
+      debugPrint('Disable Auto PIP mode');
       FlutterAutoPip.autoPipModeDisable();
     }
   }

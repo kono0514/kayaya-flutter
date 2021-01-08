@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'dart:io';
 
 import 'package:flutter_driver/flutter_driver.dart';
@@ -36,11 +37,11 @@ void main() {
 
 Future<void> runWarmup(FlutterDriver driver) async {
   print('> Login page');
-  var loginPhone = find.text('Sign in with Phone');
+  final loginPhone = find.text('Sign in with Phone');
   await driver.tap(loginPhone);
   // Show country picker bottom modal sheet
-  var countryPickerBtn = find.text('+976');
-  var countryPickerDialog = find.byType('CountryCodePicker');
+  final countryPickerBtn = find.text('+976');
+  final countryPickerDialog = find.byType('CountryCodePicker');
   await driver.tap(countryPickerBtn);
   // Close country picker bottom modal sheet
   await driver.scroll(
@@ -56,23 +57,23 @@ Future<void> runWarmup(FlutterDriver driver) async {
   sleep(const Duration(milliseconds: 500));
 
   print('> Featured page');
-  var navBar = find.byValueKey('BottomNavigationBar');
+  final navBar = find.byValueKey('BottomNavigationBar');
   await driver.waitFor(navBar);
 
-  var featuredTabItem = find.descendant(
+  final featuredTabItem = find.descendant(
     of: find.byType('BottomNavigationBar'),
     matching: find.text('Discover'),
     firstMatchOnly: true,
   );
   await driver.tap(featuredTabItem);
 
-  var dynamicBuild = find.byValueKey('FeaturedPageRefreshIndicator');
+  final dynamicBuild = find.byValueKey('FeaturedPageRefreshIndicator');
   await driver.waitFor(dynamicBuild);
 
   sleep(const Duration(milliseconds: 500));
 
   print('> Browse page');
-  var browseTabItem = find.descendant(
+  final browseTabItem = find.descendant(
     of: find.byType('BottomNavigationBar'),
     matching: find.text('Browse'),
     firstMatchOnly: true,
@@ -80,10 +81,10 @@ Future<void> runWarmup(FlutterDriver driver) async {
   await driver.tap(browseTabItem);
 
   // Wait for the populated list to show up
-  var browseList = find.byValueKey('BrowseSliverList');
+  final browseList = find.byValueKey('BrowseSliverList');
   await driver.waitFor(browseList);
   // Scroll the list so the appbar title and button in/out animation plays
-  var browseScrollView = find.byValueKey('BrowseScrollView');
+  final browseScrollView = find.byValueKey('BrowseScrollView');
   await driver.scroll(
     browseScrollView,
     0,
@@ -97,14 +98,14 @@ Future<void> runWarmup(FlutterDriver driver) async {
     const Duration(milliseconds: 300),
   );
   // Click on the first item
-  var firstItem = find.descendant(
+  final firstItem = find.descendant(
     of: find.byValueKey('BrowseSliverList'),
     matching: find.byType('BrowseListItem'),
     firstMatchOnly: true,
   );
   await driver.tap(firstItem);
   // Click Episodes tab (If series)
-  var episodesTab = find.descendant(
+  final episodesTab = find.descendant(
     of: find.byType('TabBar'),
     matching: find.text('EPISODES'),
     firstMatchOnly: true,
@@ -120,7 +121,7 @@ Future<void> runWarmup(FlutterDriver driver) async {
     await driver.waitFor(find.byValueKey('EpisodesSliverList'));
   }
   // Click Related tab
-  var relatedTab = find.descendant(
+  final relatedTab = find.descendant(
     of: find.byType('TabBar'),
     matching: find.text('RELATED'),
     firstMatchOnly: true,
@@ -130,9 +131,9 @@ Future<void> runWarmup(FlutterDriver driver) async {
   await driver.tap(find.pageBack());
 
   // Show filter bottom modal sheet
-  var filterButton = find.byValueKey('FilterButton');
+  final filterButton = find.byValueKey('FilterButton');
   await driver.tap(filterButton);
-  var filterDialog = find.byValueKey('FilterDialog');
+  final filterDialog = find.byValueKey('FilterDialog');
   await driver.waitFor(filterDialog);
   // Open filter sort dropdown
   await driver.tap(find.byValueKey('FilterSortDropdownButton'));
@@ -148,7 +149,7 @@ Future<void> runWarmup(FlutterDriver driver) async {
   );
 
   print('> Library page');
-  var libraryTabItem = find.descendant(
+  final libraryTabItem = find.descendant(
     of: find.byType('BottomNavigationBar'),
     matching: find.text('Library'),
     firstMatchOnly: true,
@@ -156,12 +157,12 @@ Future<void> runWarmup(FlutterDriver driver) async {
   await driver.tap(libraryTabItem);
 
   // Show settings bottom modal sheet
-  var settingsButton = find.byValueKey('SettingsButton');
+  final settingsButton = find.byValueKey('SettingsButton');
   await driver.tap(settingsButton);
-  var settingsDialog = find.byValueKey('SettingsDialog');
+  final settingsDialog = find.byValueKey('SettingsDialog');
   await driver.waitFor(settingsDialog);
   // Open language chooser dialog
-  var languageChooser = find.text('Language');
+  final languageChooser = find.text('Language');
   await driver.tap(languageChooser);
   // Close language chooser dialog
   await driver.tap(find.text('English'));
@@ -175,7 +176,7 @@ Future<void> runWarmup(FlutterDriver driver) async {
   );
 
   print('> Search page');
-  var searchTabItem = find.descendant(
+  final searchTabItem = find.descendant(
     of: find.byType('BottomNavigationBar'),
     matching: find.text('Search'),
     firstMatchOnly: true,

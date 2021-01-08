@@ -125,11 +125,11 @@ class _AppHomeState extends State<AppHome> {
   void _configureNotification() {
     GetIt.I<NotificationService>().configure(
       onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
+        debugPrint("onMessage: $message");
         // _showItemDialog(message);
       },
       onSelectNotification: (String payload) async {
-        print('onSelectNotification: $payload');
+        debugPrint('onSelectNotification: $payload');
         if (payload == null) return;
 
         final uri = Uri.parse(payload.trim());

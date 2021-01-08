@@ -102,7 +102,7 @@ class DefaultClickListener implements ClickListener {
 
   @override
   void onClicked(String event) {
-    print("Receive click event: $event");
+    debugPrint("Receive click event: $event");
     if (event.trim().isEmpty) return;
 
     final uri = Uri.parse(event.trim());

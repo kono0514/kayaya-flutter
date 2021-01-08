@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -54,7 +55,7 @@ class NotificationService {
     final newToken = token ?? await _firebaseMessaging.getToken();
     final oldToken = pref.currentSavedFcmToken;
     if (oldToken != newToken) {
-      print('Uploading firebase messaging token: $newToken');
+      debugPrint('Uploading firebase messaging token: $newToken');
       final args = UploadFcmTokenArguments(token: newToken, oldToken: oldToken);
       final result = await graphql.mutate(
         MutationOptions(
@@ -78,7 +79,8 @@ class NotificationService {
       try {
         largeIconPath = await downloadFile(notification.image);
       } catch (e) {
-        print(e);
+        debugPrint(
+            'Failed to download notification image ${notification.image}');
       }
     }
     await _localNotification.show(

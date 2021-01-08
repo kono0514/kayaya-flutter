@@ -5,3 +5,7 @@ analyzer:
     - lib/codegen/**
     - lib/locale/**
     - lib/injection.config.dart
+
+linter:
+  rules:
+    prefer_if_elements_to_conditional_expressions: false

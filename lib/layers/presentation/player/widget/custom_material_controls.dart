@@ -365,7 +365,8 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
                         createChooser: true,
                         chooserTitle: "Open with",
                       ).catchError((e) {
-                        print(e);
+                        debugPrint('Open with intent failed');
+                        debugPrint(e.toString());
                       });
                   } else if (value == 'change_speed') {
                     final wasPlaying = _latestValue?.isPlaying ?? false;
@@ -505,7 +506,8 @@ class _CustomMaterialControlsState extends State<CustomMaterialControls> {
         ..setAction('android.settings.PICTURE_IN_PICTURE_SETTINGS')
         ..setData(Uri.parse("package:${packageInfo.packageName}"))
         ..startActivity().catchError((e) {
-          print(e);
+          debugPrint('PIP settings intent failed');
+          debugPrint(e.toString());
         });
     }
 
