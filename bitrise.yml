@@ -16,9 +16,27 @@ workflows:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone@4: {}
     - script@1:
-        title: Do anything with Script step
+        title: Extract flutter version from pubspec.yaml
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            # debug log
+            set -x
+
+            sudo wget https://github.com/mikefarah/yq/releases/download/v4.2.1/yq_linux_amd64 -O /usr/bin/yq && sudo chmod +x /usr/bin/yq
+
+            EXTRACTED_FLUTTER_VERSION=`yq -e e '.environment.flutter' pubspec.yaml`
+            statusval=$?
+            echo "$EXTRACTED_FLUTTER_VERSION"
+
+            if [[ $statusval -ne 0 || -z $EXTRACTED_FLUTTER_VERSION ]]; then
+                EXTRACTED_FLUTTER_VERSION="stable"
+            fi
+
+            envman add --key FLUTTER_PUBSPEC_YAML_VERSION --value ${EXTRACTED_FLUTTER_VERSION}
     - flutter-installer@0:
         inputs:
+        - version: "$FLUTTER_PUBSPEC_YAML_VERSION"
         - is_update: 'false'
     - cache-pull@2: {}
     - flutter-analyze@0:
@@ -65,9 +83,27 @@ workflows:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone@4: {}
     - script@1:
-        title: Do anything with Script step
+        title: Extract flutter version from pubspec.yaml
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            # debug log
+            set -x
+
+            sudo wget https://github.com/mikefarah/yq/releases/download/v4.2.1/yq_linux_amd64 -O /usr/bin/yq && sudo chmod +x /usr/bin/yq
+
+            EXTRACTED_FLUTTER_VERSION=`yq -e e '.environment.flutter' pubspec.yaml`
+            statusval=$?
+            echo "$EXTRACTED_FLUTTER_VERSION"
+
+            if [[ $statusval -ne 0 || -z $EXTRACTED_FLUTTER_VERSION ]]; then
+                EXTRACTED_FLUTTER_VERSION="stable"
+            fi
+
+            envman add --key FLUTTER_PUBSPEC_YAML_VERSION --value ${EXTRACTED_FLUTTER_VERSION}
     - flutter-installer@0:
         inputs:
+        - version: "$FLUTTER_PUBSPEC_YAML_VERSION"
         - is_update: 'false'
     - cache-pull@2: {}
     - flutter-analyze@0:
@@ -81,9 +117,27 @@ workflows:
     - git-clone@4: {}
     - release-notes-extractor@0: {}
     - script@1:
-        title: Do anything with Script step
+        title: Extract flutter version from pubspec.yaml
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            # debug log
+            set -x
+
+            sudo wget https://github.com/mikefarah/yq/releases/download/v4.2.1/yq_linux_amd64 -O /usr/bin/yq && sudo chmod +x /usr/bin/yq
+
+            EXTRACTED_FLUTTER_VERSION=`yq -e e '.environment.flutter' pubspec.yaml`
+            statusval=$?
+            echo "$EXTRACTED_FLUTTER_VERSION"
+
+            if [[ $statusval -ne 0 || -z $EXTRACTED_FLUTTER_VERSION ]]; then
+                EXTRACTED_FLUTTER_VERSION="stable"
+            fi
+
+            envman add --key FLUTTER_PUBSPEC_YAML_VERSION --value ${EXTRACTED_FLUTTER_VERSION}
     - flutter-installer@0:
         inputs:
+        - version: "$FLUTTER_PUBSPEC_YAML_VERSION"
         - is_update: 'false'
     - cache-pull@2: {}
     - flutter-analyze@0:
