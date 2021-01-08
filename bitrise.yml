@@ -97,8 +97,8 @@ workflows:
     - flutter-build@0:
         inputs:
         - project_location: "$BITRISE_FLUTTER_PROJECT_LOCATION"
-        - android_additional_params: "--release --dart-define=KAYAYA_GRAPHQL_SERVER=$KAYAYA_GRAPHQL_SERVER
-            --dart-define=KAYAYA_APPCENTER_URL=$KAYAYA_APPCENTER_URL"
+        - android_additional_params: "--release --bundle-sksl-path flutter_shaders.sksl.json
+            --dart-define=KAYAYA_GRAPHQL_SERVER=$KAYAYA_GRAPHQL_SERVER --dart-define=KAYAYA_APPCENTER_URL=$KAYAYA_APPCENTER_URL"
         - platform: android
     - sign-apk@1:
         inputs:
