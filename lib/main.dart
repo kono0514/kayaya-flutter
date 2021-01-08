@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -16,7 +17,7 @@ Future<void> main() async {
       ..dsn =
           'https://f8cbc63ea9524db6a0ffe2e7a6f6334d@o465414.ingest.sentry.io/5557914'
       ..beforeSend = (SentryEvent event, {dynamic hint}) {
-        if (isInDebugMode) {
+        if (!kReleaseMode) {
           return null;
         }
         return event;
