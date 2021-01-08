@@ -1,5 +1,8 @@
 # Release Changelog
 
+## 1.0.5
+Test final release
+
 ## 1.0.4
 Test fifth release
 
