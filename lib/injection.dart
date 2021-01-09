@@ -51,7 +51,7 @@ abstract class RegisterModule {
   @lazySingleton
   Algolia get algolia => const Algolia.init(
         applicationId: 'IBF8ZIWBKS',
-        apiKey: 'a248f7500d9424891a3892b7eadd25a7',
+        apiKey: 'a248f7500d9424891a3892b7eadd25a7', // Search-only API key
       );
 
   @injectable
