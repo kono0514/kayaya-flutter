@@ -79,6 +79,7 @@ class AppWrapper extends StatelessWidget {
             onGenerateRoute: MyRouter(),
             // checkerboardRasterCacheImages: true,
             // checkerboardOffscreenLayers: true,
+            // showPerformanceOverlay: true,
           );
         },
       ),

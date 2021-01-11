@@ -11,6 +11,8 @@ import 'injection.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // timeDilation = 5.0;
+
   if (kReleaseMode) {
     debugPrint = (String message, {int wrapWidth}) {};
   }

@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,13 @@ ThemeData lightTheme = ThemeData(
   ),
   splashFactory: InkRipple.splashFactory,
   highlightColor: Colors.transparent,
+  pageTransitionsTheme: const PageTransitionsTheme(
+    builders: {
+      TargetPlatform.android: SharedAxisPageTransitionsBuilder(
+        transitionType: SharedAxisTransitionType.scaled,
+      ),
+    },
+  ),
 );
 
 ThemeData darkTheme = ThemeData(
@@ -58,4 +66,11 @@ ThemeData darkTheme = ThemeData(
   ),
   splashFactory: InkRipple.splashFactory,
   highlightColor: Colors.transparent,
+  pageTransitionsTheme: const PageTransitionsTheme(
+    builders: {
+      TargetPlatform.android: SharedAxisPageTransitionsBuilder(
+        transitionType: SharedAxisTransitionType.scaled,
+      ),
+    },
+  ),
 );

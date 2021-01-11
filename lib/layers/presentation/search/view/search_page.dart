@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide showSearch;
 import 'package:flutter/scheduler.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../domain/usecases/search/save_search_history_usecase.dart';
 import '../bloc/search_bloc.dart';
+import 'search.dart';
 import 'search_delegate.dart';
 
 class SearchPage extends StatefulWidget {

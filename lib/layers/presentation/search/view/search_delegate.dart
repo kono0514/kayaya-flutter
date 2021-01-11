@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide SearchDelegate;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../router.dart';
@@ -6,6 +6,7 @@ import '../../../domain/entities/anime.dart';
 import '../bloc/search_bloc.dart';
 import '../widget/search_result_list_item.dart';
 import '../widget/search_suggestion_item.dart';
+import 'search.dart';
 
 typedef GetSearchSuggestions = Future<List<String>> Function();
 
