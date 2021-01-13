@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../router.dart';
 import '../../../domain/entities/anime.dart';
+import '../../../domain/usecases/search/save_search_history_usecase.dart';
 import '../bloc/search_bloc.dart';
 import '../widget/search_result_list_item.dart';
 import '../widget/search_suggestion_item.dart';
@@ -54,7 +55,7 @@ class Search extends SearchDelegate<String> {
   Widget buildLeading(BuildContext context) {
     return BackButton(
       onPressed: () {
-        close(context, null);
+        Navigator.of(context).pop();
       },
     );
   }
@@ -85,14 +86,20 @@ class Search extends SearchDelegate<String> {
 
         if (state is SearchHistoryLoaded) {
           return ListView.builder(
-            itemBuilder: (context, index) => SearchSuggestionItem(
-              query: state.result[index],
-              onTap: (value) {
-                searchTextImmediately(value);
-                FocusScope.of(context).unfocus();
-              },
-            ),
-            itemCount: state.result.length,
+            itemCount: state.result.length + 1,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return const _SearchHeading(text: 'RECENT');
+              }
+
+              return SearchSuggestionItem(
+                query: state.result[index - 1],
+                onTap: (value) {
+                  searchTextImmediately(value);
+                  FocusScope.of(context).unfocus();
+                },
+              );
+            },
           );
         }
 
@@ -103,34 +110,40 @@ class Search extends SearchDelegate<String> {
                   ? const LinearProgressIndicator()
                   : const SizedBox.shrink(),
               ListView.builder(
-                itemCount: state.result.length,
-                itemBuilder: (context, index) => SearchResultListItem(
-                  item: state.result[index],
-                  onTap: (item) {
-                    // Close "showSearch" and "SearchPage",
-                    // then push new destination page on top.
-                    // So that when the destination page closes, user
-                    // returns to the page below "SearchPage"
-                    close(context, query);
-                    Navigator.of(context).pop();
+                itemCount: state.result.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    if (state.result.isEmpty) {
+                      return const _SearchHeading(text: 'NO RESULTS FOUND');
+                    }
+                    return const _SearchHeading(text: 'RESULT');
+                  }
 
-                    final anime = Anime(
-                      id: item.id,
-                      coverImage: item.image,
-                      name: item.name,
-                      type: item.type.toLowerCase() == 'movie'
-                          ? AnimeType.movie
-                          : AnimeType.series,
-                    );
-                    Navigator.of(context, rootNavigator: true).pushNamed(
-                      Routes.movieOrSeries,
-                      arguments: MediaArguments(
-                        anime,
-                        isMinimal: true,
-                      ),
-                    );
-                  },
-                ),
+                  return SearchResultListItem(
+                    item: state.result[index - 1],
+                    onTap: (item) async {
+                      searchBloc.saveSearchHistoryUsecase(
+                          SaveSearchHistoryUsecaseParams(text: query));
+
+                      final anime = Anime(
+                        id: item.id,
+                        coverImage: item.image,
+                        name: item.name,
+                        type: item.type.toLowerCase() == 'movie'
+                            ? AnimeType.movie
+                            : AnimeType.series,
+                      );
+
+                      Navigator.of(context, rootNavigator: true).pushNamed(
+                        Routes.movieOrSeries,
+                        arguments: MediaArguments(
+                          anime,
+                          isMinimal: true,
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ],
           );
@@ -138,6 +151,30 @@ class Search extends SearchDelegate<String> {
 
         return const LinearProgressIndicator();
       },
+    );
+  }
+}
+
+class _SearchHeading extends StatelessWidget {
+  final String text;
+
+  const _SearchHeading({Key key, @required this.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 16.0,
+        top: 18.0,
+        bottom: 6.0,
+      ),
+      child: Text(
+        text,
+        style: Theme.of(context)
+            .textTheme
+            .caption
+            .copyWith(fontWeight: FontWeight.bold),
+      ),
     );
   }
 }

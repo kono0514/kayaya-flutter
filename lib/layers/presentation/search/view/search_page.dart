@@ -2,7 +2,6 @@ import 'package:flutter/material.dart' hide showSearch;
 import 'package:flutter/scheduler.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../../domain/usecases/search/save_search_history_usecase.dart';
 import '../bloc/search_bloc.dart';
 import 'search.dart';
 import 'search_delegate.dart';
@@ -24,18 +23,11 @@ class _SearchPageState extends State<SearchPage> {
     searchBloc = GetIt.I<SearchBloc>();
 
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      final result = await showSearch<String>(
+      await showSearch<String>(
         context: context.findRootAncestorStateOfType<NavigatorState>().context,
         delegate: Search(searchBloc),
       );
-
-      if (result == null) {
-        // Close "SearchPage" on back button press from "showSearch"
-        Navigator.of(context).pop();
-      } else {
-        searchBloc.saveSearchHistoryUsecase(
-            SaveSearchHistoryUsecaseParams(text: result));
-      }
+      Navigator.of(context).pop();
     });
   }
 

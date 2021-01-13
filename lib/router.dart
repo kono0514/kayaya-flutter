@@ -83,8 +83,11 @@ class MyRouter {
       );
     },
     Routes.searchPage: (_) {
-      return MaterialPageRoute(
-        builder: (context) => const SearchPage(),
+      return PageRouteBuilder(
+        pageBuilder: (_, __, ___) => const SearchPage(),
+        opaque: false,
+        transitionDuration: const Duration(),
+        reverseTransitionDuration: const Duration(),
       );
     },
     Routes.loginPage: (settings) {
@@ -98,23 +101,21 @@ class MyRouter {
     },
     Routes.moviePlayer: (settings) {
       final args = settings.arguments as MoviePlayerArguments;
-      return PageRouteBuilder(
-        pageBuilder: (_, __, ___) => MoviePlayer(
+      return NoAnimationMaterialPageRoute(
+        builder: (context) => MoviePlayer(
           anime: args.anime,
           release: args.release,
         ),
-        transitionDuration: const Duration(),
       );
     },
     Routes.seriesPlayer: (settings) {
       final args = settings.arguments as SeriesPlayerArguments;
-      return PageRouteBuilder(
-        pageBuilder: (_, __, ___) => SeriesPlayer(
+      return NoAnimationMaterialPageRoute(
+        builder: (context) => SeriesPlayer(
           anime: args.anime,
           episode: args.episode,
           release: args.release,
         ),
-        transitionDuration: const Duration(),
       );
     }
   };
@@ -159,6 +160,31 @@ class MyRouter {
   static Route<dynamic> fromURI(Uri uri) {
     return MyRouter().onGenerateRoute(parseRouteFromURI(uri));
   }
+}
+
+class NoAnimationMaterialPageRoute<T> extends PageRoute<T>
+    with MaterialRouteTransitionMixin<T> {
+  NoAnimationMaterialPageRoute({
+    @required this.builder,
+    RouteSettings settings,
+    this.maintainState = true,
+    bool fullscreenDialog = false,
+  }) : super(settings: settings, fullscreenDialog: fullscreenDialog);
+
+  /// Builds the primary contents of the route.
+  final WidgetBuilder builder;
+
+  @override
+  Widget buildContent(BuildContext context) => builder(context);
+
+  @override
+  final bool maintainState;
+
+  @override
+  Duration get transitionDuration => const Duration();
+
+  @override
+  Duration get reverseTransitionDuration => const Duration();
 }
 
 class MediaArguments {
