@@ -1,5 +1,8 @@
 # Release Changelog
 
+## 1.0.6
+Search page revamp
+
 ## 1.0.5
 Test final release
 
