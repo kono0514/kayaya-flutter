@@ -1,11 +1,13 @@
 {
   "scripts": {
     "dl-schema": "node ./node_modules/graphql-cli/dist/bin.js codegen -p aniim && node ./node_modules/graphql-cli/dist/bin.js codegen -p anilist",
-    "gen-dart-types": "flutter pub run build_runner build --delete-conflicting-outputs"
+    "gen-dart-types": "flutter pub run build_runner build --delete-conflicting-outputs",
+    "merge-sksl": "node merge_sksl.js"
   },
   "devDependencies": {
     "@graphql-cli/codegen": "^1.17.7",
     "@graphql-codegen/schema-ast": "^1.17.7",
-    "graphql-cli": "^4.0.0"
+    "graphql-cli": "^4.0.0",
+    "minimist": "^1.2.5"
   }
 }

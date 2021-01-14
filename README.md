@@ -23,10 +23,15 @@ flutter run --profile --cache-sksl --dart-define=KAYAYA_WARMUP_MODE=true
 2. Use integration test to automate user interaction.
 ```bash
 flutter run --profile --cache-sksl --dart-define=KAYAYA_WARMUP_MODE=true .\test_driver\integration.dart
-flutter drive --write-sksl-on-exit --target=test_driver/integration.dart --use-existing-app=http://127.0.0.1:61163/*******=/
+flutter drive --write-sksl-on-exit=flutter_**.sksl.json --target=test_driver/integration.dart --use-existing-app=http://127.0.0.1:61163/*******=/
 ```
 
 Finally rename the output file ```flutter_**.sksl.json``` to ```/flutter_shaders.sksl.json```. CI can pick this file and pack it in the release APK.
+
+Merge multiple shader files with:
+```bash
+yarn merge-sksl
+```
 
 ## Download / Update schema files
 
