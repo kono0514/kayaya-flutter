@@ -4,8 +4,22 @@
 
 Download APK [here](https://install.appcenter.ms/users/kono0514/apps/kayaya/distribution_groups/public)
 
-#### Screenshot
-TODO
+#### Screenshots
+Featured (Server-side Dynamic Content/Layout)  |  Browse titles  |  Apply multiple filters
+:-------------------------:|:-------------------------:|:-------------------------:
+![](https://i.imgur.com/D7MFPEJ.jpg)  |  ![](https://i.imgur.com/Ry89v2C.jpg)  |  ![](https://i.imgur.com/Q9rQnFU.jpg)
+
+Details Information  |  Details Episodes  |  Details Related/Recommended
+:-------------------------:|:-------------------------:|:-------------------------:
+![](https://i.imgur.com/0TR2E0P.jpg)  |  ![](https://i.imgur.com/oNy4LJr.jpg)  |  ![](https://i.imgur.com/cMQeMgi.jpg)
+
+Manage Subscriptions (Notification)  |  Search Screen  |  Light Mode
+:-------------------------:|:-------------------------:|:-------------------------:
+![](https://i.imgur.com/GOtkMfm.jpg)  |  ![](https://i.imgur.com/EV69Jdx.jpg)  |  ![](https://i.imgur.com/J0V2z4P.jpg)
+
+Custom Player  |  Login Screen  |  Settings Screen
+:-------------------------:|:-------------------------:|:-------------------------:
+![](https://i.imgur.com/NIkhkyf.jpg)  |  ![](https://i.imgur.com/YOwCgye.jpg)  |  ![](https://i.imgur.com/K3pMT9c.jpg)
 
 ## Shader warmup before release
 
